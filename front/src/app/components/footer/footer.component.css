@@ -1,0 +1,10 @@
+.footer-links {
+  justify-content: flex-end;
+}
+@media (max-width: 768px) {
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+
