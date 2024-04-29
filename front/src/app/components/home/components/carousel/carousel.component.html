@@ -1,0 +1,11 @@
+<p-carousel [value]="products" [numVisible]="1" [numScroll]="1">
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="product-item-content">
+                <div class="mb-3">
+                    <img [src]="product.imageSrc" class="product-image" />
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-carousel>
