@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { PasswordModule } from 'primeng/password';
-import { FloatLabelModule } from 'primeng/floatlabel';
+
+// Login Animation
+import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CardModule, PasswordModule, FloatLabelModule],
+  imports: [LottieComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  value: string | undefined;
+
+  options: AnimationOptions = {
+    path: '../../../assets/json/WelcomePeople.json' // download the JSON version of animation in your project directory and add the path to it like ./assets/animations/example.json
+  };
 }
