@@ -1,0 +1,10 @@
+.card-header {
+    max-height: 300px; /* Ajusta esto según la altura deseada */
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
+}
+
+.card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cubre completamente el espacio, podría recortar partes de la imagen */
+}
