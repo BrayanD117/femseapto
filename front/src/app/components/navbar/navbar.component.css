@@ -1,21 +1,7 @@
 nav {
-  background: linear-gradient(
-    to left top,
-    #fecc00,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #fff,
-    #00783c
-  );
-  position: sticky;
+  background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  position: fixed;
   top: 0;
   z-index: 10;
   font-family: 'inter', sans-serif;
@@ -32,12 +18,6 @@ nav {
 .nav-item a {
   color: black;
   cursor: pointer;
-}
-
-.contdegradado {
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(to left, #fab600, #00783c);
 }
 
 .dropdown-menu {
