@@ -16,7 +16,7 @@ export const routes: Routes = [
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'savings' },
             { path: 'savings', component: SavingServiceComponent },
-            { path: 'credits', component: CreditServiceComponent },
+            { path: 'credits', component: CreditServiceComponent }
         ]
     },
     { path: 'login', component: LoginComponent }

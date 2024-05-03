@@ -13,10 +13,9 @@ import { CarouselModule } from 'primeng/carousel';
 export class CarouselComponent {
 
   // Imágenes para pantallas grandes
-  products = [
-    { imageSrc: 'front/src/assets/images/home/slider/sl1.jpg' },
-    { imageSrc: 'front/src/assets/images/home/slider/sl2.jpg' },
-    { imageSrc: 'front/src/assets/images/home/slider/sl3.jpg' },
-    { imageSrc: 'front/src/assets/images/home/slider/sl4.gif' },
+  images = [
+    { previewImageSrc: "../../../../assets/images/home/slider/sl1.jpg" },
+    { previewImageSrc: "../../../../assets/images/home/slider/sl2.jpg" },
+    { previewImageSrc: "../../../../assets/images/home/slider/sl3.jpg" }
   ];
 }
