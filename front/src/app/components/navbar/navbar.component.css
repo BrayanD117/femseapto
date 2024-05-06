@@ -20,11 +20,6 @@ nav {
   cursor: pointer;
 }
 
-.dropdown-menu {
-  background: linear-gradient(to left, #fab70065, #00783c65);
-  max-width: 300px;
-}
-
 i {
   color: #fab600;
 }

@@ -7,6 +7,7 @@ import { AgreementsComponent } from './components/agreements/agreements.componen
 import { CreditServiceComponent } from './components/credit-service/credit-service.component';
 import { SavingServiceComponent } from './components/saving-service/saving-service.component';
 import { LoginComponent } from './components/login/login.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
             { path: 'credits', component: CreditServiceComponent }
         ]
     },
-    { path: 'login', component: LoginComponent }
+    { path: 'login', component: LoginComponent },
+    { path: 'welcome', component: WelcomeComponent }
 ];

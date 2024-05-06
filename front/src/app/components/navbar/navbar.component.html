@@ -8,13 +8,29 @@
         </button>
         <div class="collapse navbar-collapse justify-content-start" id="navbarNavAltMarkup">
             <div class="navbar-nav flex-grow-1">
-                <a class="nav-link btn btn-outline-warning" aria-current="page" routerLink="">Inicio</a>
-                <a class="nav-link btn btn-outline-warning" routerLink="/services">Servicios</a>
-                <a class="nav-link btn btn-outline-warning" routerLink="/agreements">Convenios</a>
-                <a class="nav-link btn btn-outline-warning" routerLink="/about">Sobre nosotros</a>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-warning" aria-current="page" routerLink="">Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn btn-outline-warning" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Servicios
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" routerLink="/services/savings">Ahorros</a></li>
+                      <li><a class="dropdown-item" routerLink="/services/credits">Créditos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-warning" routerLink="/agreements">Convenios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-warning" routerLink="/about">Sobre Nosotros</a>
+                </li>
             </div>
             <div class="navbar-nav">
-                <a class="nav-link btn btn-outline-warning" routerLink="/login" >LOGIN</a>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-warning" routerLink="/login">Iniciar Sesión</a>
+                </li>
             </div>
         </div>
     </div>
