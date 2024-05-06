@@ -2,34 +2,33 @@
     <div class="container-fluid">
         <a class="navbar-brand pc" routerLink=""><img src="../../../assets/logo_femseapto.png" alt="Logo_Femseapto"
                 width="60"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" (click)="toggleMenu()" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-start" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse justify-content-start" [class.show]="!isMenuCollapsed" id="navbarNavAltMarkup">
             <div class="navbar-nav flex-grow-1">
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-warning" aria-current="page" routerLink="">Inicio</a>
+                    <a class="nav-link btn btn-outline-warning" aria-current="page" (click)="closeMenu()" routerLink="">Inicio</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn btn-outline-warning" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Servicios
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" routerLink="/services/savings">Ahorros</a></li>
-                      <li><a class="dropdown-item" routerLink="/services/credits">Créditos</a></li>
+                      <li><a class="dropdown-item" (click)="closeMenu()" routerLink="/services/savings">Ahorros</a></li>
+                      <li><a class="dropdown-item" (click)="closeMenu()" routerLink="/services/credits">Créditos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-warning" routerLink="/agreements">Convenios</a>
+                    <a class="nav-link btn btn-outline-warning" (click)="closeMenu()" routerLink="/agreements">Convenios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-warning" routerLink="/about">Sobre Nosotros</a>
+                    <a class="nav-link btn btn-outline-warning" (click)="closeMenu()" routerLink="/about">Sobre Nosotros</a>
                 </li>
             </div>
             <div class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-warning" routerLink="/login">Iniciar Sesión</a>
+                    <a class="nav-link btn btn-outline-warning" (click)="closeMenu()" routerLink="/login">Iniciar Sesión</a>
                 </li>
             </div>
         </div>

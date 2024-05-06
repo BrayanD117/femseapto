@@ -10,5 +10,13 @@ import { MenubarModule } from 'primeng/menubar';
   encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent {
+  isMenuCollapsed = true;
 
+  toggleMenu() {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
+
+  closeMenu() {
+    this.isMenuCollapsed = true;
+  }
 }
