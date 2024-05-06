@@ -8,14 +8,14 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title text-center">Iniciar Sesión</h5>
-            <form class="row g-3">
+            <form class="row g-3" (ngSubmit)="onLogin()">
               <div class="col-md-12">
                 <label class="form-label">Usuario</label>
-                <input type="email" class="form-control">
+                <input type="email" class="form-control" [(ngModel)]="usuario" name="usuario">
               </div>
               <div class="col-md-12">
                 <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control">
+                <input type="password" class="form-control" [(ngModel)]="contrasenia" name="contrasenia">
               </div>
               <div class="col-md-12">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
