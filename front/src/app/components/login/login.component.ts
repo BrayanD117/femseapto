@@ -29,7 +29,7 @@ export class LoginComponent {
           localStorage.setItem('auth_token', response.token);
           this.cookieService.set('auth_token', response.token, {
             expires: 1,
-            path: '/login',
+            path: '/',
           });
           if (!this.loginService.isTokenExpired()) {
             this.router.navigate(['/welcome']);

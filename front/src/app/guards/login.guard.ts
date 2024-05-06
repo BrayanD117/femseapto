@@ -10,15 +10,30 @@ export class LoginGuard implements CanActivate {
 
   constructor(private cookieService: CookieService, private router: Router, private jwtHelper: JwtHelperService) {}
 
-  canActivate(
+   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     const token = this.cookieService.get('auth_token');
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      return true;
-    } else {
-      this.router.navigate(['/login']);
-      return false;
+    if (token) {
+      try {
+        if (!this.jwtHelper.isTokenExpired(token)) {
+          return true;
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Error decoding token:', error.message);
+        } else {
+          console.error('Unexpected error', error);
+        }
+      }
     }
+
+    console.log('No valid token found, redirecting to /login...');
+    this.router.navigate(['/login']).then(() => {
+      console.log('Redirect successful');
+    }).catch(err => {
+      console.error('Redirect failed', err);
+    });
+    return false;
   }
 }
