@@ -16,6 +16,5 @@ export class CarouselComponent {
   images = [
     { previewImageSrc: "../../../../assets/images/home/slider/sl1.jpg" },
     { previewImageSrc: "../../../../assets/images/home/slider/sl2.jpg" },
-    { previewImageSrc: "../../../../assets/images/home/slider/sl3.jpg" }
   ];
 }

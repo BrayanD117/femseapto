@@ -1,7 +1,7 @@
 <p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="4000"
 [showIndicators]="false" [showNavigators]="false">
   <ng-template pTemplate="item" let-item>
-    <div class="image-container mb-1">
+    <div class="image-container">
       <img class="img-fluid rounded-start w-100" [src]="item.previewImageSrc">
     </div>
   </ng-template>
