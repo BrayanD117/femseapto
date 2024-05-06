@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
+import { Router } from '@angular/router';
 // Login Animation
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { LoginService } from '../../services/login.service';
@@ -17,7 +18,7 @@ export class LoginComponent {
   usuario: string = '';
   contrasenia: string = '';
 
-  constructor(private loginService: LoginService, private cookieService: CookieService) {}
+  constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router) {}
 
   onLogin(): void {
     this.loginService.login(this.usuario, this.contrasenia).subscribe({
@@ -26,6 +27,7 @@ export class LoginComponent {
           console.log('Login exitoso:', response);
           localStorage.setItem('auth_token', response.token);
           this.cookieService.set('auth_token', response.token, { expires: 1, path: '/' });
+          this.router.navigate(['/welcome']);
         } else {
           console.error('Error en login:', response.message);
         }
