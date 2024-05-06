@@ -21,6 +21,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "lottie-web": "^5.12.2",
+    "ngx-cookie-service": "^17.1.0",
     "ngx-lottie": "^11.0.2",
     "primeicons": "^7.0.0",
     "primeng": "^17.15.0",

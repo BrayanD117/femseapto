@@ -8,6 +8,7 @@ import { CreditServiceComponent } from './components/credit-service/credit-servi
 import { SavingServiceComponent } from './components/saving-service/saving-service.component';
 import { LoginComponent } from './components/login/login.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -21,5 +22,5 @@ export const routes: Routes = [
         ]
     },
     { path: 'login', component: LoginComponent },
-    { path: 'welcome', component: WelcomeComponent }
+    { path: 'welcome', component: WelcomeComponent, canActivate: [LoginGuard]  }
 ];
