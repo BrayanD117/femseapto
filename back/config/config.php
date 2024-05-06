@@ -1,11 +1,15 @@
 <?php
-// config.php - Configuración de conexión a la base de datos para XAMPP
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 
 // Variables de configuración de la base de datos
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_DATABASE', 'femseaptodb');
+define('DB_SERVER', $_ENV['DB_SERVER']);
+define('DB_USERNAME', $_ENV['DB_USERNAME']);
+define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
+define('DB_DATABASE', $_ENV['DB_DATABASE']);
 
 // Función para obtener la conexión
 function getDB() {
