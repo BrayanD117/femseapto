@@ -2,6 +2,7 @@
 require_once '../vendor/autoload.php';
 require_once '../src/models/UsuarioModel.php'; 
 require_once '../config/config.php';
+require_once 'verifyToken.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
