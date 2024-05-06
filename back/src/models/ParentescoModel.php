@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-class Genero {
+class Parentesco {
     public $id;
     public $nombre;
 
@@ -13,10 +13,10 @@ class Genero {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO generos (nombre) VALUES (?)");
+            $query = $db->prepare("INSERT INTO parentescos (nombre) VALUES (?)");
             $query->bind_param("s", $this->nombre);
         } else {
-            $query = $db->prepare("UPDATE generos SET nombre = ? WHERE id = ?");
+            $query = $db->prepare("UPDATE parentescos SET nombre = ? WHERE id = ?");
             $query->bind_param("si", $this->nombre, $this->id);
         }
         $query->execute();
@@ -29,35 +29,35 @@ class Genero {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, nombre FROM generos WHERE id = ?");
+        $query = $db->prepare("SELECT id, nombre FROM parentescos WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $nombre);
-        $genero = null;
+        $parentescos = null;
         if ($query->fetch()) {
-            $genero = new Genero($id, $nombre);
+            $parentescos = new Parentesco($id, $nombre);
         }
         $query->close();
         $db->close();
-        return $genero;
+        return $parentescos;
     }
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, nombre FROM generos";
+        $query = "SELECT id, nombre FROM parentescos";
         $result = $db->query($query);
-        $generos = [];
+        $parentescos = [];
         while ($row = $result->fetch_assoc()) {
-            $generos[] = new Genero($row['id'], $row['nombre']);
+            $parentescos[] = new Parentesco($row['id'], $row['nombre']);
         }
         $db->close();
-        return $generos;
+        return $parentescos;
     }
 
     public function eliminar() {
         $db = getDB();
         if ($this->id !== null) {
-            $query = $db->prepare("DELETE FROM generos WHERE id = ?");
+            $query = $db->prepare("DELETE FROM parentescos WHERE id = ?");
             $query->bind_param("i", $this->id);
             $query->execute();
             $query->close();
