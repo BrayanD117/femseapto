@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 // Login Animation
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
+import { RouterLink } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoginService } from '../../services/login.service';
 import { CookieService } from 'ngx-cookie-service'; 
@@ -10,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LottieComponent, FormsModule],
+  imports: [LottieComponent, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -32,7 +33,7 @@ export class LoginComponent {
             path: '/',
           });
           if (!this.loginService.isTokenExpired()) {
-            this.router.navigate(['/welcome']);
+            window.location.href = '/welcome'
           } else {
             console.error('Token ha expirado');
             this.router.navigate(['/login']);

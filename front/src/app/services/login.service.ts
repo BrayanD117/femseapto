@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+  private authStatus = new BehaviorSubject<boolean>(false);
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+    this.updateAuthStatus(!this.isTokenExpired());
+  }
 
   login(usuario: string, contrasenia: string): Observable<any> {
     const url = 'http://localhost/femseapto/back/auth/login.php';
@@ -17,8 +20,15 @@ export class LoginService {
         usuario,
         contrasenia,
       },
-      //{ withCredentials: true }
     );
+  }
+
+  updateAuthStatus(status: boolean): void {
+    this.authStatus.next(status);
+  }
+
+  getAuthStatusListener(): Observable<boolean> {
+    return this.authStatus.asObservable();
   }
 
   isTokenExpired(): boolean {
