@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
+import { UserInfoService } from '../../services/user-info.service';
 @Component({
   selector: 'app-welcome',
   standalone: true,
@@ -9,5 +9,23 @@ import { RouterLink } from '@angular/router';
   styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
+  userInfo: any;
 
+  constructor(private userInfoService: UserInfoService) {}
+
+  ngOnInit(): void {
+    this.userInfoService.getUserInfo().subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.userInfo = data.data;
+          console.log("User info", data.data);
+        } else {
+          console.error('Failed to retrieve user info:', data.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      }
+    });
+  }
 }
