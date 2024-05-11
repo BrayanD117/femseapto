@@ -122,7 +122,7 @@ class PersonaNatural {
             );
         } else {
             $query = $db->prepare("UPDATE personas_naturales SET nombres = ?, primer_apellido = ?, segundo_apellido = ?, id_genero = ?, id_tipo_documento = ?, numero_documento = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, cargo_ocupa = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
-            $query->bind_param("sssiissssssssiiisiiisisssississssi", $this->idUsuario, $this->nombres,
+            $query->bind_param("sssiissssssssiiisiiisisssississssi", $this->nombres,
             $this->primerApellido, $this->segundoApellido, $this->idGenero, $this->idTipoDocumento,
             $this->numeroDocumento, $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
             $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,

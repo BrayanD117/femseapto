@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { DividerModule } from 'primeng/divider';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-saving-service-home',
   standalone: true,
-  imports: [DividerModule],
+  imports: [RouterLink],
   templateUrl: './saving-service-home.component.html',
   styleUrl: './saving-service-home.component.css'
 })

@@ -55,6 +55,7 @@ class PersonaNaturalController {
             return false; // Si no existe, devolver false
         }
 
+        $personaNatural->id = $datos['id'];
         $personaNatural->idUsuario = $datos['idUsuario'];
         $personaNatural->nombres = $datos['nombres'];
         $personaNatural->primerApellido = $datos['primerApellido'];
