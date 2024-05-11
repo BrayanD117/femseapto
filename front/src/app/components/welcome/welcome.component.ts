@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UserInfoService } from '../../services/user-info.service';
+
 @Component({
   selector: 'app-welcome',
   standalone: true,
