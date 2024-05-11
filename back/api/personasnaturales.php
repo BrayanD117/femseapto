@@ -1,6 +1,6 @@
 <?php
 // Incluir el controlador de PersonaNatural
-require_once '../controllers/PersonaNaturalController.php';
+require_once '../src/controllers/PersonaNaturalController.php';
 
 // Crear una instancia del controlador
 $controlador = new PersonaNaturalController();
