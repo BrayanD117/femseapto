@@ -1,0 +1,47 @@
+.fondo {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.fondo:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    opacity: 0.6;
+    background-image: url('../../../../../assets/ayuda_mutua.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.card {
+    width: 30rem;
+    border: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.btn {
+    background-color: #00823d;
+    color: white;
+    justify-content: center;
+}
+
+.card-header {
+    color: #00823d;
+    justify-content: center;
+    display: flex;
+}
+
+@media (max-width: 760px) {
+    .fondo:before {
+        opacity: 0.2;
+    }
+}

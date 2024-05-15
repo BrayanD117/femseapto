@@ -18,5 +18,26 @@
 
 .card {
     width: 20rem;
-    background-color: transparent;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.btn {
+    background-color: #00823d;
+    color: white;
+}
+
+.card-header {
+    color: #00823d;
+}
+
+@media (max-width: 760px) {
+    .fondo:before {
+        opacity: 0.2;
+    }
 }
