@@ -20,3 +20,13 @@
   a{
     text-decoration: none !important; 
   }
+.custom-tooltip .p-tooltip-text {
+  background-color: #fab600;
+  color: #000000; 
+  padding: 5px 10px; 
+  border-radius: 5px; 
+  font-size: 14px; 
+}
+.custom-tooltip .p-tooltip-arrow {
+  border-left-color: #fab600;
+}
