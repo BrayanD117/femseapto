@@ -1,43 +1,58 @@
-.fondo {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-}
-
-.fondo:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    opacity: 0.6;
-    background-image: url('../../../../../assets/ahorroExtraordinario.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.card {
-    width: 20rem;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.btn {
-    background-color: #00823d;
-    color: white;
-}
-
-.card-header {
+h2, .card-title {
     color: #00823d;
 }
 
-@media (max-width: 760px) {
-    .fondo:before {
-        opacity: 0.2;
+.card {
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card a:hover {
+    text-decoration: none;
+}
+
+.icon {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 50%;
+    padding: 15px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-img-top {
+    position: relative;
+    z-index: 0;
+}
+
+.bi {
+    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .icon {
+        width: 50px;
+        height: 50px;
+        top: 65%;
+    }
+
+    .bi {
+        font-size: 2rem;
     }
 }
