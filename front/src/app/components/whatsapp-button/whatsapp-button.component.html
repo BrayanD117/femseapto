@@ -6,8 +6,14 @@
     direction="up" 
     type="linear" 
     buttonClassName="p-button-success">
+    <ng-template let-item pTemplate="item">
+        <button 
+            pButton 
+            [icon]="item.icon" 
+            (click)="navigate(item.url)"
+            pTooltip="{{ item.tooltip }}" 
+            tooltipPosition="left"
+            class="p-speeddial-action p-button-success">
+        </button>
+    </ng-template>
 </p-speedDial>
-
-<!-- <a href="https://api.whatsapp.com/send/?phone=573212289646" target="_blank" class="whatsapp-floating">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon" />
-</a> -->

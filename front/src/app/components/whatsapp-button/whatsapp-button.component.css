@@ -1,31 +1,3 @@
-/* .whatsapp-floating {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25d366;
-    color: #fff;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 30px;
-    z-index: 100;
-    box-shadow: 2px 2px 3px #999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-  }
-  
-  .whatsapp-floating img {
-    width: 80%;
-    transition: transform 0.3s ease;
-  }
-  
-  .whatsapp-floating:hover img {
-    transform: scale(1.1);
-  } */
-
   .speedDial {
     position: fixed;
     bottom: 230px;
@@ -41,8 +13,8 @@
   }
 
   .speedDial .p-speeddial-action {
-    background-color: #ffffff !important; /* Fondo blanco para las opciones */
-    color: #000000 !important; /* Color del icono */
+    background-color: #23c55f !important;
+    color: #ffffff !important;
     border-radius: 50% !important;
   }
   a{

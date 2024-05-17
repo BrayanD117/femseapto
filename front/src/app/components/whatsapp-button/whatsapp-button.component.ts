@@ -1,56 +1,36 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-whatsapp-button',
   standalone: true,
-  imports: [SpeedDialModule],
+  imports: [SpeedDialModule, TooltipModule],
   templateUrl: './whatsapp-button.component.html',
-//     `:host ::ng-deep {
-//         .speeddial-circle-demo {
-//             .p-speeddial-quarter-circle {
-//                 &.p-speeddial-direction-up-left {
-//                     right: 0;
-//                     bottom: 0;
-//                 }
-    
-//                 &.p-speeddial-direction-up-right {
-//                     left: 0;
-//                     bottom: 0;
-//                 }
-    
-//                 &.p-speeddial-direction-down-left {
-//                     right: 0;
-//                     top: 0;
-//                 }
-    
-//                 &.p-speeddial-direction-down-right {
-//                     left: 0;
-//                     top: 0;
-//                 }
-//             }
-//         }
-//     }`
-// ],
-  styleUrls: ['./whatsapp-button.component.css', ],
+  styleUrls: ['./whatsapp-button.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
 export class WhatsappButtonComponent implements OnInit {
-  items: MenuItem[] = [];
+  items: any[] = [];
   iconPath = '../../../assets/WhatsApp.svg.webp';
 
   ngOnInit() {
     this.items = [
       {
-          icon: "pi pi-whatsapp",
-          routerLink: ['/fileupload']
+        icon: "pi pi-phone",
+        url: 'https://api.whatsapp.com/send/?phone=573212289646',
+        tooltip: 'Álvaro Patiño'
       },
       {
-          icon: "pi pi-whatsapp",
-          target: '_blank',
-          url: 'https://api.whatsapp.com/send/?phone=573212289646'
+        icon: "pi pi-phone",
+        url: 'https://api.whatsapp.com/send/?phone=573212289646',
+        tooltip: 'Álvaro Patiño'
       }
-  ];
-}
+    ];
+  }
+
+  navigate(url: string) {
+    window.open(url, '_blank');
+  }
 }
