@@ -30,11 +30,11 @@ export const routes: Routes = [
     },
     { path: 'login', component: LoginComponent, canActivate: [LoginRedirectGuard] },
     { path: 'welcome', component: WelcomeComponent, canActivate: [LoginGuard]  },
-    { path: 'user', component: AboutComponent, canActivate: [LoginGuard], 
+    { path: 'user', canActivate: [LoginGuard], 
         children: [
-        { path: 'MyInformation', component: UserInfoComponent },
-        { path: 'MySavings', component: UserSavingComponent },
-        { path: 'MyCredits', component: UserCreditsComponent },
+        { path: 'information', component: UserInfoComponent },
+        { path: 'savings', component: UserSavingComponent },
+        { path: 'credits', component: UserCreditsComponent },
 
     ]}
 ];

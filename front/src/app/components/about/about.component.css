@@ -1,0 +1,16 @@
+.title-color {
+  color: #00823d;
+}
+
+.small-text {
+  margin-left: 150px;
+  margin-right: 150px;
+  text-align: center;
+}
+  
+  @media (max-width: 991.98px) {
+    .small-text {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }

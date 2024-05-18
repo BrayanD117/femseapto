@@ -1,1 +1,80 @@
-<h1>SOBRE NOSOTROS</h1>
+<div class="container">
+    <div class="text-center content-animate">
+        <h1 class="title-color mt-5 mb-5">Nuestro equipo</h1>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-lg-6 d-flex justify-content-center align-items-center">
+            <img class="img-fluid" src="../../../assets/team.png" alt="Nuesto equipo">
+        </div>
+        <div class="col-lg-6 col-12 text-center h-100 mt-3 mt-lg-0">
+            <div class="h2 title-color">
+                ¡Conócenos!
+            </div>
+            <div class="p-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tincidunt at lectus quis
+                    hendrerit. Praesent eu nisi lorem. Suspendisse quis dolor sodales, aliquet sem eu, tincidunt
+                    enim. Mauris bibendum tellus eu purus rhoncus, sed luctus turpis pharetra. Sed et metus eget
+                    enim porttitor dictum ut at massa. Sed augue velit, feugiat luctus ornare vel, bibendum id
+                    urna. Sed posuere enim nibh, vel faucibus turpis blandit a. Nullam in purus a turpis porta
+                    ullamcorper vitae ut sapien. Duis fermentum pretium eleifend. Sed suscipit sagittis sapien
+                    in rhoncus. Nulla facilisi. Proin non purus diam.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MISION -->
+
+    <div class="text-center content-animate">
+        <h1 class="title-color mt-5">Nuestra misión</h1>
+    </div>
+    <div class="m-3">
+        <p class="small-text">Mejorar la calidad de vida de los asociados mediante la promoción del ahorro, la
+            prestación de servicios
+            de crédito y el desarrollo de actividades de bienestar, optimizando sus condiciones sociales, culturales
+            y económicas a través de la administración eficaz de sus recursos.</p>
+    </div>
+
+    <!-- VISION -->
+
+    <div class="text-center content-animate">
+        <h1 class="title-color mt-5">Nuestra visión</h1>
+    </div>
+    <div class="m-3">
+        <p class="small-text">Ser reconocido en el 2026 como la primera y mejor alternativa en la oferta de servicios
+            de ahorro, crédito y bienestar social para los asociados.</p>
+    </div>
+
+    <!-- VALORES CORPORATIVOS -->
+
+    <div class="text-center content-animate">
+        <h1 class="title-color mt-5">Nuestros valores corporativos</h1>
+    </div>
+    <div class="m-3">
+        <p class="small-text">Trabajar bajo los principios cooperativos y solidarios, buscando que las acciones se
+            caractericen por un actuar ético y sostenible.</p>
+    </div>
+    <div class="text-center content-animate">
+        <h1 class="title-color mt-5">Nuestros valores corporativos</h1>
+    </div>
+    <div class="m-3">
+        <p class="small-text">Trabajar bajo los principios cooperativos y solidarios, buscando que las acciones se
+            caractericen por un actuar ético y sostenible.</p>
+    </div>
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <p-galleria [value]="images" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"
+            [containerStyle]="{ 'max-width': '640px' }" [showItemNavigators]="true" [showThumbnails]="false"
+            [responsiveOptions]="responsiveOptions">
+            <ng-template pTemplate="item" let-item>
+                <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+            </ng-template>
+            <ng-template pTemplate="caption" let-item>
+                <h4 style="margin-bottom: .5rem; color: #ffffff;">
+                    {{ item.title }}
+                </h4>
+                <p>{{ item.alt }}</p>
+            </ng-template>
+        </p-galleria>
+    </div>
+
+</div>
