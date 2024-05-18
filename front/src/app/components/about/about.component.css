@@ -14,3 +14,12 @@
       margin-right: 15px;
     }
   }
+  .p-galleria .p-galleria-item-container button{
+    z-index: 2;
+  }
+  
+  .p-galleria .p-galleria-caption h4{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ImageModule } from 'primeng/image';
 import { GalleriaModule } from 'primeng/galleria';
 
@@ -7,7 +7,8 @@ import { GalleriaModule } from 'primeng/galleria';
   standalone: true,
   imports: [ImageModule, GalleriaModule],
   templateUrl: './about.component.html',
-  styleUrl: './about.component.css'
+  styleUrl: './about.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AboutComponent {
 
