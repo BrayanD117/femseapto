@@ -91,10 +91,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ?");
         $query->bind_param("s", $usuario);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $activo);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
         $usuarioObj = null;
         if ($query->fetch()) {
-            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $activo);
+            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
         }
         $query->close();
         $db->close();
