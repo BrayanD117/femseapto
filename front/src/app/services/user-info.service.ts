@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserInfoService {
   
-  private apiUrl = 'http://localhost/femseapto/back/api/userInfo.php';  // Ajusta según tu configuración
+  private apiUrl = 'http://localhost/femseapto/back/api/userInfo.php';
 
   constructor(private http: HttpClient) { }
 

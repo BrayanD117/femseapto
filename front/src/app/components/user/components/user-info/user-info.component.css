@@ -1,0 +1,20 @@
+.title-color {
+    color: #00823d;
+  }
+  
+  .card {
+    margin: 0 auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input {
+    border-radius: 5px;
+  }
+  

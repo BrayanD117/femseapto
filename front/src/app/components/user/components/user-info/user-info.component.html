@@ -1,1 +1,174 @@
-<p>user-info works!</p>
+<div class="container mt-3">
+  <div *ngIf="loading" class="text-center">
+    <p>Cargando...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="alert alert-danger text-center">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="card shadow p-3 mb-5 bg-white rounded">
+    <h2 class="text-center title-color">Información del Usuario</h2>
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="primerNombre">Primer Nombre</label>
+          <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.primerNombre" name="primerNombre" required>
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="segundoNombre">Segundo Nombre</label>
+          <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.segundoNombre" name="segundoNombre">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="primerApellido">Primer Apellido</label>
+          <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.primerApellido" name="primerApellido" required>
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="segundoApellido">Segundo Apellido</label>
+          <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.segundoApellido" name="segundoApellido">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="correoElectronico">Correo Electrónico</label>
+          <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.correoElectronico" name="correoElectronico" required>
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" class="form-control" id="telefono" [(ngModel)]="userInfo.telefono" name="telefono">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="celular">Celular</label>
+          <input type="text" class="form-control" id="celular" [(ngModel)]="userInfo.celular" name="celular">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idGenero">Género</label>
+          <input type="text" class="form-control" id="idGenero" [(ngModel)]="userInfo.idGenero" name="idGenero">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idTipoDocumento">Tipo de Documento</label>
+          <input type="text" class="form-control" id="idTipoDocumento" [(ngModel)]="userInfo.idTipoDocumento" name="idTipoDocumento">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="numeroDocumento">Número de Documento</label>
+          <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.numeroDocumento" name="numeroDocumento">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="fechaExpDoc">Fecha de Expedición del Documento</label>
+          <input type="text" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.fechaExpDoc" name="fechaExpDoc">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="mpioExpDoc">Municipio de Expedición del Documento</label>
+          <input type="text" class="form-control" id="mpioExpDoc" [(ngModel)]="userInfo.mpioExpDoc" name="mpioExpDoc">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="fechaNacimiento">Fecha de Nacimiento</label>
+          <input type="text" class="form-control" id="fechaNacimiento" [(ngModel)]="userInfo.fechaNacimiento" name="fechaNacimiento">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="paisNacimiento">País de Nacimiento</label>
+          <input type="text" class="form-control" id="paisNacimiento" [(ngModel)]="userInfo.paisNacimiento" name="paisNacimiento">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="mpioNacimiento">Municipio de Nacimiento</label>
+          <input type="text" class="form-control" id="mpioNacimiento" [(ngModel)]="userInfo.mpioNacimiento" name="mpioNacimiento">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="otroLugarNacimiento">Otro Lugar de Nacimiento</label>
+          <input type="text" class="form-control" id="otroLugarNacimiento" [(ngModel)]="userInfo.otroLugarNacimiento" name="otroLugarNacimiento">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="mpioResidencia">Municipio de Residencia</label>
+          <input type="text" class="form-control" id="mpioResidencia" [(ngModel)]="userInfo.mpioResidencia" name="mpioResidencia">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idZonaResidencia">Zona de Residencia</label>
+          <input type="text" class="form-control" id="idZonaResidencia" [(ngModel)]="userInfo.idZonaResidencia" name="idZonaResidencia">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idTipoVivienda">Tipo de Vivienda</label>
+          <input type="text" class="form-control" id="idTipoVivienda" [(ngModel)]="userInfo.idTipoVivienda" name="idTipoVivienda">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="estrato">Estrato</label>
+          <input type="text" class="form-control" id="estrato" [(ngModel)]="userInfo.estrato" name="estrato">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="direccionResidencia">Dirección de Residencia</label>
+          <input type="text" class="form-control" id="direccionResidencia" [(ngModel)]="userInfo.direccionResidencia" name="direccionResidencia">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="aniosAntigVivienda">Años de Antigüedad de la Vivienda</label>
+          <input type="text" class="form-control" id="aniosAntigVivienda" [(ngModel)]="userInfo.aniosAntigVivienda" name="aniosAntigVivienda">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idEstadoCivil">Estado Civil</label>
+          <input type="text" class="form-control" id="idEstadoCivil" [(ngModel)]="userInfo.idEstadoCivil" name="idEstadoCivil">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="personasACargo">Personas a Cargo</label>
+          <input type="text" class="form-control" id="personasACargo" [(ngModel)]="userInfo.personasACargo" name="personasACargo">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="tieneHijos">¿Tiene Hijos?</label>
+          <input type="text" class="form-control" id="tieneHijos" [(ngModel)]="userInfo.tieneHijos" name="tieneHijos">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="numeroHijos">Número de Hijos</label>
+          <input type="text" class="form-control" id="numeroHijos" [(ngModel)]="userInfo.numeroHijos" name="numeroHijos">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idNivelEducativo">Nivel Educativo</label>
+          <input type="text" class="form-control" id="idNivelEducativo" [(ngModel)]="userInfo.idNivelEducativo" name="idNivelEducativo">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="profesion">Profesión</label>
+          <input type="text" class="form-control" id="profesion" [(ngModel)]="userInfo.profesion" name="profesion">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="ocupacionOficio">Ocupación u Oficio</label>
+          <input type="text" class="form-control" id="ocupacionOficio" [(ngModel)]="userInfo.ocupacionOficio" name="ocupacionOficio">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="idEmpresaLabor">Empresa donde Labora</label>
+          <input type="text" class="form-control" id="idEmpresaLabor" [(ngModel)]="userInfo.idEmpresaLabor" name="idEmpresaLabor">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="cargoOcupa">Cargo que Ocupa</label>
+          <input type="text" class="form-control" id="cargoOcupa" [(ngModel)]="userInfo.cargoOcupa" name="cargoOcupa">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="nombreEmergencia">Nombre de Contacto de Emergencia</label>
+          <input type="text" class="form-control" id="nombreEmergencia" [(ngModel)]="userInfo.nombreEmergencia" name="nombreEmergencia">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="numeroCedulaEmergencia">Número de Cédula de Contacto de Emergencia</label>
+          <input type="text" class="form-control" id="numeroCedulaEmergencia" [(ngModel)]="userInfo.numeroCedulaEmergencia" name="numeroCedulaEmergencia">
+        </div>
+        <div class="col-lg-3 col-md-4 col-12 form-group">
+          <label for="numeroCelularEmergencia">Número Celular de Contacto de Emergencia</label>
+          <input type="text" class="form-control" id="numeroCelularEmergencia" [(ngModel)]="userInfo.numeroCelularEmergencia" name="numeroCelularEmergencia">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="!isDirty">Actualizar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

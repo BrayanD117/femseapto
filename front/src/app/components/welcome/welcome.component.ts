@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UserInfoService } from '../../services/user-info.service';
 
@@ -7,26 +7,27 @@ import { UserInfoService } from '../../services/user-info.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
+  styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent {
-  userInfo: any;
+export class WelcomeComponent implements OnInit {
+  primerNombre: string = '';
+  primerApellido: string = '';
 
-  constructor(private userInfoService: UserInfoService) {}
+  constructor(private userInfoService: UserInfoService) { }
 
   ngOnInit(): void {
-    this.userInfoService.getUserInfo().subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.userInfo = data.data;
-          console.log("User info", data.data);
+    this.userInfoService.getUserInfo().subscribe(
+      response => {
+        if (response.success) {
+          this.primerNombre = response.data.primerNombre;
+          this.primerApellido = response.data.primerApellido;
         } else {
-          console.error('Failed to retrieve user info:', data.message);
+          console.error('Error al obtener la información del usuario:', response.message);
         }
       },
-      error: (error) => {
-        console.error('Error:', error);
+      error => {
+        console.error('Error de conexión:', error);
       }
-    });
+    );
   }
 }
