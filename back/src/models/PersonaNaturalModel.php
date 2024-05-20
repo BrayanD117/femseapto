@@ -4,12 +4,7 @@ require_once '../config/config.php';
 class PersonaNatural {
     public $id;
     public $idUsuario;
-    public $nombres;
-    public $primerApellido;
-    public $segundoApellido;
     public $idGenero;
-    public $idTipoDocumento;
-    public $numeroDocumento;
     public $fechaExpDoc;
     public $mpioExpDoc;
     public $fechaNacimiento;
@@ -39,12 +34,7 @@ class PersonaNatural {
     public $numeroCelularEmergencia;
 
     public function __construct($id = null, $idUsuario = '',
-        $nombres = '',
-        $primerApellido = '',
-        $segundoApellido = null,
         $idGenero = '',
-        $idTipoDocumento = '',
-        $numeroDocumento = '',
         $fechaExpDoc = '',
         $mpioExpDoc = '',
         $fechaNacimiento = '',
@@ -74,12 +64,7 @@ class PersonaNatural {
         $numeroCelularEmergencia) {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
-        $this->nombres = $nombres;
-        $this->primerApellido = $primerApellido;
-        $this->segundoApellido = $segundoApellido;
         $this->idGenero = $idGenero;
-        $this->idTipoDocumento = $idTipoDocumento;
-        $this->numeroDocumento = $numeroDocumento;
         $this->fechaExpDoc = $fechaExpDoc;
         $this->mpioExpDoc = $mpioExpDoc;
         $this->fechaNacimiento = $fechaNacimiento;
@@ -112,19 +97,17 @@ class PersonaNatural {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, nombres, primer_apellido, segundo_apellido, id_genero, id_tipo_documento, numero_documento, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isssiissssssssiiisiiisisssississss", $this->idUsuario, $this->nombres,
-                $this->primerApellido, $this->segundoApellido, $this->idGenero, $this->idTipoDocumento,
-                $this->numeroDocumento, $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
+            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("iisssssssiiisiiisisssississss", $this->idUsuario, $this->idGenero,
+                $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
                 $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
                 $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->cargoOcupa, $this->nombreEmergencia,
                 $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia
             );
         } else {
-            $query = $db->prepare("UPDATE personas_naturales SET nombres = ?, primer_apellido = ?, segundo_apellido = ?, id_genero = ?, id_tipo_documento = ?, numero_documento = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, cargo_ocupa = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
-            $query->bind_param("sssiissssssssiiisiiisisssississssi", $this->nombres,
-            $this->primerApellido, $this->segundoApellido, $this->idGenero, $this->idTipoDocumento,
-            $this->numeroDocumento, $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
+            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, cargo_ocupa = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
+            $query->bind_param("isssssssiiisiiisisssississssi", $this->idGenero,
+            $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
             $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
             $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->cargoOcupa, $this->nombreEmergencia,
             $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia, $this->id
@@ -140,17 +123,12 @@ class PersonaNatural {
 
     public static function obtenerPorId($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, nombres, primer_apellido, segundo_apellido, id_genero, id_tipo_documento, numero_documento, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT id, id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id,
         $idUsuario,
-        $nombres,
-        $primerApellido,
-        $segundoApellido,
         $idGenero,
-        $idTipoDocumento,
-        $numeroDocumento,
         $fechaExpDoc,
         $mpioExpDoc,
         $fechaNacimiento,
@@ -182,12 +160,7 @@ class PersonaNatural {
         if ($query->fetch()) {
             $personasNaturales = new PersonaNatural($id,
             $idUsuario,
-            $nombres,
-            $primerApellido,
-            $segundoApellido,
             $idGenero,
-            $idTipoDocumento,
-            $numeroDocumento,
             $fechaExpDoc,
             $mpioExpDoc,
             $fechaNacimiento,
@@ -223,18 +196,13 @@ class PersonaNatural {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, nombres, primer_apellido, segundo_apellido, id_genero, id_tipo_documento, numero_documento, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales";
+        $query = "SELECT id, id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales";
         $result = $db->query($query);
         $personasNaturales = [];
         while ($row = $result->fetch_assoc()) {
             $personasNaturales[] = new PersonaNatural($row['id'],
             $row['id_usuario'],
-            $row['nombres'],
-            $row['primer_apellido'],
-            $row['segundo_apellido'],
             $row['id_genero'],
-            $row['id_tipo_documento'],
-            $row['numero_documento'],
             $row['fecha_expedicion_doc'],
             $row['mpio_expedicion_doc'],
             $row['fecha_nacimiento'],

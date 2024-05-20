@@ -1,5 +1,4 @@
 <?php
-// Incluir el modelo de PersonaExpuestaPublicamente
 require_once '../models/PersonaNaturalModel.php';
 
 class PersonaNaturalController {
@@ -8,12 +7,7 @@ class PersonaNaturalController {
         $personaNatural = new PersonaNatural(
             null,
             $datos['idUsuario'],
-            $datos['nombres'],
-            $datos['primerApellido'],
-            $datos['segundoApellido'],
             $datos['idGenero'],
-            $datos['idTipoDocumento'],
-            $datos['numeroDocumento'],
             $datos['fechaExpedicionDoc'],
             $datos['mpioExpedicionDoc'],
             $datos['fechaNacimiento'],
@@ -57,12 +51,7 @@ class PersonaNaturalController {
 
         $personaNatural->id = $datos['id'];
         $personaNatural->idUsuario = $datos['idUsuario'];
-        $personaNatural->nombres = $datos['nombres'];
-        $personaNatural->primerApellido = $datos['primerApellido'];
-        $personaNatural->segundoApellido = $datos['segundoApellido'];
         $personaNatural->idGenero = $datos['idGenero'];
-        $personaNatural->idTipoDocumento = $datos['idTipoDocumento'];
-        $personaNatural->numeroDocumento = $datos['numeroDocumento'];
         $personaNatural->fechaExpDoc = $datos['fechaExpedicionDoc'];
         $personaNatural->mpioExpDoc = $datos['mpioExpedicionDoc'];
         $personaNatural->fechaNacimiento = $datos['fechaNacimiento'];
