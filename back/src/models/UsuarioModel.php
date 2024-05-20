@@ -15,7 +15,7 @@ class Usuario {
     public $activo;
 
     public function __construct($id = null, $id_rol = null, $usuario = '', $contrasenia = '',
-        $primerNombre = '', $segundoNombre = '', $primerApellido = '',
+        $primerNombre = '', $segundoNombre = null, $primerApellido = '',
         $segundoApellido = null, $idTipoDocumento = '', $numeroDocumento = '', $activo = null) {
         $this->id = $id;
         $this->id_rol = $id_rol;
