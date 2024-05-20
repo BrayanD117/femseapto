@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div class="d-flex justify-content-center">
-    <div class="card mb-3" style="max-width: 600px;">
+    <div class="card shadow mb-3" style="max-width: 600px;">
       <div class="row g-0">
         <div class="col-md-4">
           <ng-lottie class="animacion" [options]="options" width="200px"></ng-lottie>
@@ -11,11 +11,11 @@
             <form class="row g-3" (ngSubmit)="onLogin()">
               <div class="col-md-12">
                 <label class="form-label">Usuario</label>
-                <input type="email" class="form-control" [(ngModel)]="usuario" name="usuario">
+                <input type="email" class="form-control" [(ngModel)]="usuario" name="usuario" placeholder="nombre.apellido">
               </div>
               <div class="col-md-12">
                 <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control" [(ngModel)]="contrasenia" name="contrasenia">
+                <input type="password" class="form-control" [(ngModel)]="contrasenia" name="contrasenia" placeholder="Tu contraseña">
               </div>
               <div class="col-md-12">
                 <button routerLink="/welcome" type="submit" class="btn btn-primary">Ingresar</button>
