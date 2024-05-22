@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,12 +11,13 @@ import { CookieService } from 'ngx-cookie-service';
   standalone: true,
   imports: [MenubarModule, CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrls: ['./navbar.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   isMenuCollapsed = true;
   isAuthenticated = false;
+  showLogoutModal = false;
   private authListenerSubs: Subscription | undefined;
 
   constructor(
@@ -43,11 +44,21 @@ export class NavbarComponent implements OnInit {
     this.isAuthenticated = !this.loginService.isTokenExpired();
   }
 
-  logout() {
+  openLogoutModal() {
+    console.log("Modal abierto");  // Agregar el console.log aquí
+    this.showLogoutModal = true;
+  }
+
+  closeLogoutModal() {
+    this.showLogoutModal = false;
+  }
+
+  confirmLogout() {
     localStorage.removeItem('auth_token');
     this.cookieService.delete('auth_token');
     this.loginService.updateAuthStatus(false);
     this.router.navigate(['/login']);
+    this.closeLogoutModal();
   }
 
   toggleMenu() {
