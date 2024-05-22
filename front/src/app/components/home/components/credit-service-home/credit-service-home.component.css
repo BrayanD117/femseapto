@@ -31,11 +31,11 @@ h2, .card-title {
     padding: 7px;
 }
 
-.card-action:hover {
+.card:hover .card-action {
     background:  rgba(255,214,16, 1);
 }
 
-.card-action:hover i {
+.card:hover i {
     color: #00823d;
 }
 

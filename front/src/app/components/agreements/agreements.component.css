@@ -2,11 +2,15 @@ h1, h2 {
     color: #00823d;
 }
 
-.bi-house-heart-fill {
+.bi {
     font-size: 5rem;
 }
 
 .bi-arrow-right-square-fill {
     font-size: 2rem;
     color: #00823d;
+}
+
+.card:hover .bi-arrow-right-square-fill {
+    color: #23c55f;
 }
