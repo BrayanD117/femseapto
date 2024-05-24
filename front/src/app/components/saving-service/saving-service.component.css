@@ -6,24 +6,61 @@ h1, h2, h3, h4 {
     font-size: 1.5rem;
 }
 
-.btn{
+.btn {
     background-color: #00823d;
     border-color: #00823d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
-.btn:hover{
+
+.btn .icon {
+    color: white;
+}
+
+.btn:hover {
     background-color: #23c55f;
     border-color: #23c55f;
 }
 
-.card{
-    height: 100%;
+.btn:hover .icon {
+    color: white;
 }
 
-.card:hover .bi-arrow-right-square-fill {
-    color: #23c55f;
+.card {
+    height: 100%;
 }
 
 .card-header {
     background-color: #00823d;
     color: white;
-  }
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+}
+
+.list-group-item .bi {
+    margin-right: 10px;
+}
+
+.saving-line {
+    text-align: center;
+}
+
+.saving-line img {
+    width: 90%;
+    height: auto;
+    margin-bottom: 15px;
+    object-fit: cover;
+    max-height: 250px;
+}
+
+@media (max-width: 768px) {
+    .saving-line img {
+        width: 100%;
+        max-height: none;
+    }
+}

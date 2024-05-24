@@ -3,24 +3,42 @@
     <p class="subtitle">El Ahorro Voluntario es un servicio que permite a los asociados acumular un monto
         determinado mediante descuentos mensuales, con el destino que el asociado elija.</p>
 
-    <h2 class="fw-bold mt-3">Nuestras lineas de ahorro</h2>
+    <h2 class="fw-bold mt-3 text-center">Nuestras lineas de ahorro</h2>
 
     <div class="row align-items-start">
-        <div class="col-3 align-self-center">
+        <div class="col-12 col-md-3 align-self-center mt-3">
             <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="button">AHORRO VIVIENDA</button>
-                <button class="btn btn-primary" type="button">AHORRO NAVIDEÑO</button>
-                <button class="btn btn-primary" type="button">AHORRO VACACIONAL</button>
-                <button class="btn btn-primary" type="button">AHORRO EXTRAORDINARIO</button>
+                <button class="btn btn-primary" type="button" (click)="selectSavingLine('AHORRO VIVIENDA')"><i class="bi bi-house-fill icon"></i>AHORRO VIVIENDA</button>
+                <button class="btn btn-primary" type="button" (click)="selectSavingLine('AHORRO NAVIDEÑO')"><i class="bi bi-tree-fill icon"></i>AHORRO NAVIDEÑO</button>
+                <button class="btn btn-primary" type="button" (click)="selectSavingLine('AHORRO VACACIONAL')"><i class="bi bi-sunglasses icon"></i>AHORRO VACACIONAL</button>
+                <button class="btn btn-primary" type="button" (click)="selectSavingLine('AHORRO EXTRAORDINARIO')"><i class="bi bi-cash icon"></i>AHORRO EXTRAORDINARIO</button>
             </div>
         </div>
-        <div class="col-9 align-self-center">
-            One of three columns
+        <div class="col-12 col-md-9 align-self-center mt-3">
+            <div *ngIf="selectedSavingLine === 'AHORRO VIVIENDA'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Vivienda" class="img-fluid">
+                <h3>AHORRO VIVIENDA</h3>
+                <h5>Esta línea de ahorro está especialmente destinada para aquellos asociados que desean ahorrar para la compra de vivienda o para realizar mejoras en su hogar.</h5>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO NAVIDEÑO'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Navideño" class="img-fluid">
+                <h3>AHORRO NAVIDEÑO</h3>
+                <h5>El Ahorro Navideño está pensado para ayudar a los asociados a enfrentar los gastos típicos de la temporada decembrina.</h5>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO VACACIONAL'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Vacacional" class="img-fluid">
+                <h3>AHORRO VACACIONAL</h3>
+                <h5>Esta línea de ahorro te permite reservar fondos para financiar tus viajes y actividades de ocio durante las vacaciones.</h5>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO EXTRAORDINARIO'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Extraordinario" class="img-fluid">
+                <h3>AHORRO EXTRAORDINARIO</h3>
+                <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+            </div>
         </div>
-    </div>
 
     <!-- REQUISITOS -->
-    <h2 class="fw-bold mt-3">Requisitos para el ahorro voluntario en el fondo</h2>
+    <h2 class="fw-bold mt-3 text-center">Requisitos para el ahorro voluntario en el fondo</h2>
     <p class="subtitle">Para iniciar el ahorro voluntario en el Fondo, los asociados deben cumplir con los siguientes
         requisitos:</p>
     <div class="row">
@@ -62,3 +80,5 @@
             </div>
         </div>
     </div>
+
+</div>
