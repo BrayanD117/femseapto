@@ -1,0 +1,29 @@
+h1, h2, h3, h4 {
+    color: #00823d;
+}
+
+.bi {
+    font-size: 1.5rem;
+}
+
+.btn{
+    background-color: #00823d;
+    border-color: #00823d;
+}
+.btn:hover{
+    background-color: #23c55f;
+    border-color: #23c55f;
+}
+
+.card{
+    height: 100%;
+}
+
+.card:hover .bi-arrow-right-square-fill {
+    color: #23c55f;
+}
+
+.card-header {
+    background-color: #00823d;
+    color: white;
+  }
