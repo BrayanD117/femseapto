@@ -1,1 +1,109 @@
-<p>saving-service works!</p>
+<div class="container">
+    <h1 class="text-center fw-bold mt-3">Servicios de ahorro</h1>
+    <p class="subtitle">El Ahorro Voluntario es un servicio que permite a los asociados acumular un monto
+        determinado mediante descuentos mensuales, con el destino que el asociado elija.</p>
+
+    <p-divider />
+
+    <h2 class="fw-bold mt-3 text-center">Nuestras lineas de ahorro</h2>
+
+    <div class="row align-items-start">
+        <div class="col-12 col-lg-4 align-self-center mt-3">
+            <div class="d-flex flex-column h-100 button-column">
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectSavingLine('AHORRO VIVIENDA')">
+                    <i class="bi bi-house-fill icon"></i>AHORRO VIVIENDA
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectSavingLine('AHORRO NAVIDEÑO')">
+                    <i class="bi bi-tree-fill icon"></i>AHORRO NAVIDEÑO
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectSavingLine('AHORRO VACACIONAL')">
+                    <i class="bi bi-sunglasses icon"></i>AHORRO VACACIONAL
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectSavingLine('AHORRO EXTRAORDINARIO')">
+                    <i class="bi bi-cash icon"></i>AHORRO EXTRAORDINARIO
+                </button>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 align-self-center mt-3">
+            <div class="card shadow tipos-ahorro">
+            <div *ngIf="selectedSavingLine === 'AHORRO VIVIENDA'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Vivienda" class="img-fluid">
+                <h3>AHORRO VIVIENDA</h3>
+                <h5>Esta línea de ahorro está especialmente destinada para aquellos asociados que desean ahorrar para la compra de vivienda o para realizar mejoras en su hogar.</h5>
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <button class="text-center btn btn-primary" type="button" routerLink="/user/savings"><i class="bi bi-eye icon"></i>Ver más</button>
+                </div>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO NAVIDEÑO'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Navideño" class="img-fluid">
+                <h3>AHORRO NAVIDEÑO</h3>
+                <h5>El Ahorro Navideño está pensado para ayudar a los asociados a enfrentar los gastos típicos de la temporada decembrina.</h5>
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <button class="text-center btn btn-primary" type="button" routerLink="/user/savings"><i class="bi bi-eye icon"></i>Ver más</button>
+                </div>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO VACACIONAL'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Vacacional" class="img-fluid">
+                <h3>AHORRO VACACIONAL</h3>
+                <h5>Esta línea de ahorro te permite reservar fondos para financiar tus viajes y actividades de ocio durante las vacaciones.</h5>
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <button class="text-center btn btn-primary" type="button" routerLink="/user/savings"><i class="bi bi-eye icon"></i>Ver más</button>
+                </div>
+            </div>
+            <div *ngIf="selectedSavingLine === 'AHORRO EXTRAORDINARIO'" class="saving-line">
+                <img src="../../../assets/confianza.jpg" alt="Ahorro Extraordinario" class="img-fluid">
+                <h3>AHORRO EXTRAORDINARIO</h3>
+                <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <button class="text-center btn btn-primary" type="button" routerLink="/user/savings"><i class="bi bi-eye icon"></i>Ver más</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    
+
+    <!-- REQUISITOS -->
+    <h2 class="fw-bold mt-3 text-center">Requisitos para el ahorro voluntario en el fondo</h2>
+    <p class="subtitle">Para iniciar el ahorro voluntario en el Fondo, los asociados deben cumplir con los siguientes
+        requisitos:</p>
+    <div class="row">
+    
+        <div class="col-lg-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header fw-bold text-center h3">
+                    Requisitos
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-person-check-fill me-3"></i>
+                            <span>Ser admitido como asociado de FEMSEAPTO.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-clipboard-check-fill me-3"></i>
+                            <span>Completar correctamente la solicitud de ahorro voluntario y obtener la aprobación 
+                                de la Gerencia del Fondo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+        <div class="col-lg-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header fw-bold text-center h3">
+                    Plazo
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item"> Los asociados pueden realizar 
+                            sus ahorros durante el tiempo que deseen, siempre y cuando cuenten con capacidad de endeudamiento. 
+                            Cada asociado tiene un límite en el monto de su ahorro, determinado por su capacidad de descuento 
+                            de nómina.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
