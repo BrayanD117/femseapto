@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DividerModule } from 'primeng/divider';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-saving-service',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DividerModule, RouterLink],
   templateUrl: './saving-service.component.html',
   styleUrl: './saving-service.component.css'
 })

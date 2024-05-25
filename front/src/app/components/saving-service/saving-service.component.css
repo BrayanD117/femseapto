@@ -15,6 +15,10 @@ h1, h2, h3, h4 {
     gap: 10px;
 }
 
+.options{
+    height: 80px;
+}
+
 .btn .icon {
     color: white;
 }
@@ -50,17 +54,34 @@ h1, h2, h3, h4 {
     text-align: center;
 }
 
+.saving-line h5{
+    padding: 10px;
+}
+
 .saving-line img {
-    width: 90%;
+    width: 100%;
     height: auto;
     margin-bottom: 15px;
     object-fit: cover;
     max-height: 250px;
 }
 
+.button-column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 @media (max-width: 768px) {
     .saving-line img {
         width: 100%;
         max-height: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .options{
+        height: 50px;
+        width: auto;
     }
 }

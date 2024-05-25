@@ -20,12 +20,12 @@ export class WhatsappButtonComponent implements OnInit {
       {
         icon: "pi pi-phone",
         url: 'https://api.whatsapp.com/send/?phone=573212289646',
-        tooltip: 'Álvaro Patiño'
+        tooltip: 'Javier Patiño'
       },
       {
         icon: "pi pi-phone",
         url: 'https://api.whatsapp.com/send/?phone=573212289646',
-        tooltip: 'Álvaro Patiño'
+        tooltip: 'Javier Patiño'
       }
     ];
   }
