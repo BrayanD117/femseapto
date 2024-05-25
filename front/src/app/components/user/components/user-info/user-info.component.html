@@ -1,3 +1,132 @@
+<div class="container mt-5">
+  <div *ngIf="loading" class="text-center">
+    <p>Cargando...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="alert alert-danger text-center">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="card shadow p-3 mb-5 bg-white rounded">
+    <h2 class="text-center title-color">Información del Usuario</h2>
+  <form class="row g-3" (ngSubmit)="onSubmit()" #userForm="ngForm">
+    <div class="col-md-6">
+      <label class="form-label">Tipo de documento</label>
+      <select class="form-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="numeroDocumento" class="form-label">Número de documento</label>
+      <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.numeroDocumento" name="numeroDocumento">
+    </div>
+    <div class="col-md-6">
+      <label for="primerNombre" class="form-label">Primer Nombre</label>
+      <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.primerNombre" name="primerNombre" required>
+    </div>
+    <div class="col-md-6">
+      <label for="segundoNombre" class="form-label">Segundo Nombre</label>
+      <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.segundoNombre" name="segundoNombre">
+    </div>
+    <div class="col-md-6">
+      <label for="primerApellido" class="form-label">Primer Apellido</label>
+      <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.primerApellido" name="primerApellido" required>
+    </div>
+    <div class="col-md-6">
+      <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+      <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.segundoApellido" name="segundoApellido">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Género</label>
+      <select class="form-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+      <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.correoElectronico" name="correoElectronico" required>
+    </div>
+    <div class="col-md-6">
+      <label for="telefono" class="form-label">Teléfono</label>
+      <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="userInfo.telefono" name="telefono">
+    </div>
+    <div class="col-md-6">
+      <label for="celular" class="form-label">Celular</label>
+      <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="userInfo.celular" name="celular">
+    </div>
+    <div class="col-md-6">
+      <label for="fechaExpDoc" class="form-label">Fecha de expedición de documento</label>
+      <input type="date" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.fechaExpDoc" name="fechaExpDoc">
+    </div>
+    <div class="col-md-6">
+      <label for="fechaExpDoc" class="form-label">Departamento de expedición del documento</label>
+      <p-autoComplete 
+          [dropdown]="true" 
+          [suggestions]="filteredDepartments" 
+          (completeMethod)="filterDepartment($event)" 
+          field="nombre"
+          [(ngModel)]="selectedDepartment" 
+          name="selectedDepartment"
+          (onSelect)="onDepartmentSelect($event)"/>
+    </div>
+    <div class="col-md-6">
+      <label for="fechaExpDoc" class="form-label">Municipio de expedición del documento</label>
+      <p-autoComplete 
+          [dropdown]="true" 
+          [suggestions]="filteredCities" 
+          (completeMethod)="filterCity($event)" 
+          field="nombre"
+          [(ngModel)]="selectedCities" 
+          name="selectedCities"/>
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input type="password" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress" class="form-label">Address</label>
+      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress2" class="form-label">Address 2</label>
+      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+    </div>
+    <div class="col-md-6">
+      <label for="inputCity" class="form-label">City</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">State</label>
+      <select id="inputState" class="form-select">
+        <option selected>Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="inputZip" class="form-label">Zip</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+          Check me out
+        </label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+</div>
+
+
 <div class="container mt-3">
   <div *ngIf="loading" class="text-center">
     <p>Cargando...</p>

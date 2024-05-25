@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class Municipio {
     public $id;
@@ -15,8 +15,8 @@ class Municipio {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO municipios (id_departamento, nombre) VALUES (?, ?)");
-            $query->bind_param("ss", $this->id_departamento, $this->nombre);
+            $query = $db->prepare("INSERT INTO municipios (id, id_departamento, nombre) VALUES (?, ?, ?)");
+            $query->bind_param("sss", $this->id, $this->id_departamento, $this->nombre);
         } else {
             $query = $db->prepare("UPDATE municipios SET id_departamento = ?, nombre = ? WHERE id = ?");
             $query->bind_param("sss", $this->id_departamento, $this->nombre, $this->id);
@@ -52,6 +52,21 @@ class Municipio {
         while ($row = $result->fetch_assoc()) {
             $municipios[] = new Municipio($row['id'], $row['id_departamento'], $row['nombre']);
         }
+        $db->close();
+        return $municipios;
+    }
+
+    public static function obtenerPorIdDpto($idDpto) {
+        $db = getDB();
+        $query = $db->prepare("SELECT id, id_departamento, nombre FROM municipios WHERE id_departamento = ?");
+        $query->bind_param("s", $idDpto);
+        $query->execute();
+        $result = $query->get_result();
+        $municipios = [];
+        while ($row = $result->fetch_assoc()) {
+            $municipios[] = new Municipio($row['id'], $row['id_departamento'], $row['nombre']);
+        }
+        $query->close();
         $db->close();
         return $municipios;
     }

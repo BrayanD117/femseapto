@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class Departamento {
     public $id;
@@ -34,7 +34,7 @@ class Departamento {
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT id, nombre FROM departamentos WHERE id = ?");
-        $query->bind_param("i", $id);
+        $query->bind_param("s", $id);
         $query->execute();
         $query->bind_result($id, $nombre);
         $departamento = null;
