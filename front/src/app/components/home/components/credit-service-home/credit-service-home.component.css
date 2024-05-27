@@ -44,6 +44,20 @@ h2, .card-title {
     font-size: 2rem;
 }
 
+.btn {
+    background-color: #00823d;
+    border-color: #00823d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn:hover {
+    background-color: #23c55f;
+    border-color: #23c55f;
+}
+
 @media (max-width: 575.98px) {
     .card-action {
         margin-right: 40%;
