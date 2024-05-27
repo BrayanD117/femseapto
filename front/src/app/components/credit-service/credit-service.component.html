@@ -1,1 +1,257 @@
-<p>SE TE NOTA</p>
+<div class="container">
+    <h1 class="text-center fw-bold mt-3">Servicios de crédito</h1>
+    <p class="subtitle">Conoce nuestras lineas de crédito que tenemos para tí.</p>
+
+    <p-divider />
+
+    <h2 class="fw-bold mt-3 text-center">Nuestras lineas de crédito</h2>
+
+    <div class="row align-items-start">
+        <div class="col-12 col-lg-4 align-self-center mt-3">
+            <div class="d-flex flex-column h-100 button-column">
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO COMPRA O MEJORAS DE VIVIENDA')">
+                    <i class="bi bi-house-fill icon"></i>CREDITO VIVIENDA
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO VEHICULO')">
+                    <i class="bi bi-car-front-fill icon"></i>CREDITO VEHICULO
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO LIBRE INVERSION')">
+                    <i class="bi bi-person-arms-up icon"></i>CREDITO LIBRE INVERSION
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CONSUMO')">
+                    <i class="bi bi-basket2-fill icon"></i>CREDITO CONSUMO
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO EXTRAORDINARIO')">
+                    <i class="bi bi-star-fill icon"></i>CREDITO EXTRAORDINARIO
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CREDIPRIMA')">
+                    <i class="bi bi-calendar2-check icon"></i>CREDITO CREDIPRIMA
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO DE CALAMADAD')">
+                    <i class="bi bi-people-fill icon"></i>CREDITO DE CALAMADAD
+                </button> 
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO VACACIONAL')">
+                    <i class="bi bi-sunglasses icon"></i>CREDITO VACACIONAL 
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITOS PARA EDUCACION')">
+                    <i class="bi bi-mortarboard-fill icon"></i>CREDITOS PARA EDUCACION
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO MICROEMPRESA')">
+                    <i class="bi bi-building-fill icon"></i>CREDITO MICROEMPRESA
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CREDIAGIL')">
+                    <i class="bi bi-lightning-fill icon"></i>CREDITO CREDIAGIL
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO ORDINARIO')">
+                    <i class="bi bi-coin icon"></i>CREDITO ORDINARIO
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CREDIFACIL')">
+                    <i class="bi bi-clipboard-check-fill icon"></i>CREDITO CREDIFACIL
+                </button>
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CREDICUMPLEAÑOS')">
+                    <i class="bi bi-cake2-fill icon"></i>CREDITO CREDICUMPLEAÑOS
+                </button>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 align-self-center mt-3">
+            <div class="card shadow tipos-ahorro">
+                <div *ngIf="selectedCreditLine === 'CREDITO COMPRA O MEJORAS DE VIVIENDA'" class="credit-line">
+                    <img src="../../../assets/confianza.jpg" alt="Credito Vivienda" class="img-fluid">
+                    <h3>CREDITO COMPRA O MEJORAS DE VIVIENDA</h3>
+                    <h5>A través de este crédito, el fondo de empleados pretende ayudar a los asociados que tengan la
+                        oportunidad de adquirir vivienda propia aportando al pago de su cuota inicial o para mejoras de su
+                        vivienda.</h5>
+                        <ul class="list-group list-group-flush card-text text-start">
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                <span>Monto: Según la capacidad del asociado.</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                <span>Destinación: Adquisición de vivienda por primera vez o mejoras.</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                <span>Plazo maximo: 240 cuotas quincenales - (120 meses) - 10 años.</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                <span>La tasa de interés: </span>
+                                <p-divider layout="vertical" />
+                                <span>0.7% mensual - plazo máximo 5 años.</span>
+                                <p-divider layout="vertical" />
+                                <span>1.0% mensual - plazos de 5 y hasta 10 años.</span>
+                            </li>
+                        </ul>
+                        <p-divider/>
+                        <h4>CONDICIONES</h4>
+                        <p>
+                            ABONOS EXTRAS: En los casos en los que el plazo sea mayor a 6 años, el asociado debe
+                            comprometer el 100% de las primas a partir de la fecha de desembolso.
+                        </p>
+                        <ul class="list-group list-group-flush card-text text-start">
+                            <li class="list-group-item d-flex flex-column flex-lg-row align-items-center">
+                                <span class="text-center">Para mejoras Locativas en vivienda PROPIA.</span>
+                                <p-divider layout="vertical" class="d-none d-lg-block"/>
+                                <ul class="list-group list-group-flush card-text text-start mt-3 mt-lg-0 ms-lg-3">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-patch-check-fill me-3 description-icon"></i>
+                                        <span>Certificado de libertad y tradición.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-envelope-paper-fill me-3 description-icon"></i>
+                                        <span>Soportes de los arreglos efectuados, cotizaciones, facturas y contratos de obra o labor autenticados por el asociado y el maestro encargado de realizar la obra.</span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="list-group-item d-flex flex-column flex-lg-row align-items-center">
+                                <i class="bi bi-house-add-fill me-3 description-icon"></i>
+                                <span>Compra de vivienda, para compra de vivienda nueva.</span>
+                                <p-divider layout="vertical" class="d-none d-lg-block"/>
+                                <ul class="list-group list-group-flush card-text text-start mt-3 mt-lg-0 ms-lg-3">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-fill me-3 description-icon"></i>
+                                        <span>Anexar copia promesa de compraventa.</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO VEHICULO'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="Credito Vehiculo" class="img-fluid">
+                    <h3>CREDITO VEHICULO</h3>
+                    <h5>El Ahorro Navideño está pensado para ayudar a los asociados a enfrentar los gastos típicos de la
+                        temporada decembrina.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                            class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO LIBRE INVERSION'" class="credit-line">
+                    <img src="../../../assets/confianza.jpg" alt="Credito Libre Inversion" class="img-fluid">
+                    <h3>CREDITO LIBRE INVERSION</h3>
+                    <h5>Esta línea de ahorro te permite reservar fondos para financiar tus viajes y actividades de ocio
+                        durante las vacaciones.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO CONSUMO'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="Credito Consumo" class="img-fluid">
+                    <h3>CREDITO CONSUMO</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO EXTRAORDINARIO'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO EXTRAORDINARIO" class="img-fluid">
+                    <h3>CREDITO EXTRAORDINARIO</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO CREDIPRIMA'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIPRIMA" class="img-fluid">
+                    <h3>CREDITO CREDIPRIMA</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO DE CALAMADAD'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO DE CALAMADAD" class="img-fluid">
+                    <h3>CREDITO DE CALAMADAD</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO VACACIONAL'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO VACACIONAL" class="img-fluid">
+                    <h3>CREDITO VACACIONAL</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITOS PARA EDUCACION'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITOS PARA EDUCACION" class="img-fluid">
+                    <h3>CREDITOS PARA EDUCACION</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO MICROEMPRESA'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO MICROEMPRESA" class="img-fluid">
+                    <h3>CREDITO MICROEMPRESA</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO CREDIAGIL'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIAGIL" class="img-fluid">
+                    <h3>CREDITO CREDIAGIL</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO ORDINARIO'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO ORDINARIO" class="img-fluid">
+                    <h3>CREDITO ORDINARIO</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO CREDIFACIL'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIFACIL" class="img-fluid">
+                    <h3>CREDITO CREDIFACIL</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedCreditLine === 'CREDITO CREDICUMPLEAÑOS'" class="credit-line">
+                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDICUMPLEAÑOS" class="img-fluid">
+                    <h3>CREDITO CREDICUMPLEAÑOS</h3>
+                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
+                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
+                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
