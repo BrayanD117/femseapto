@@ -1,11 +1,12 @@
 <?php
-require_once '../src/controllers/LineaCreditoController.php';
+
+require_once __DIR__ . '/../src/controllers/LineaCreditoController.php';
 
 $controlador = new LineaCreditoController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idNuevaLineaCredito = $controlador->crear($_POST);
-    echo json_encode(['id' => $idNuevaLineaCredito]);
+    $idNuevaLinea = $controlador->crear($_POST);
+    echo json_encode(['id' => $idNuevaLinea]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     parse_str(file_get_contents("php://input"), $datos);
     $idExistente = $datos['id'];

@@ -11,7 +11,8 @@ class LineaCreditoController {
             $datos['destinacion'],
             $datos['plazo'],
             $datos['tasa_interes_1'],
-            $datos['tasa_interes_2']
+            $datos['tasa_interes_2'],
+            $datos['condiciones']
         );
 
         $lineaCredito->guardar();
@@ -22,7 +23,7 @@ class LineaCreditoController {
     public function actualizar($id, $datos) {
         $lineaCredito = LineaCredito::obtenerPorId($id);
         if (!$lineaCredito) {
-            return false;
+            return false; // Si no existe, devolver false
         }
 
         $lineaCredito->nombre = $datos['nombre'];
@@ -31,6 +32,7 @@ class LineaCreditoController {
         $lineaCredito->plazo = $datos['plazo'];
         $lineaCredito->tasa_interes_1 = $datos['tasa_interes_1'];
         $lineaCredito->tasa_interes_2 = $datos['tasa_interes_2'];
+        $lineaCredito->condiciones = $datos['condiciones'];
 
         $lineaCredito->guardar();
 
