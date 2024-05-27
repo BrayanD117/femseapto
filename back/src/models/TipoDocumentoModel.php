@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class TipoDocumento {
     public $id;
@@ -46,7 +46,7 @@ class TipoDocumento {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, abrevitura, nombre FROM tipos_documento";
+        $query = "SELECT id, abreviatura, nombre FROM tipos_documento";
         $result = $db->query($query);
         $tiposDoc = [];
         while ($row = $result->fetch_assoc()) {

@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class ZonaGeografica {
     public $id;
@@ -8,23 +8,6 @@ class ZonaGeografica {
     public function __construct($id = null, $nombre = '') {
         $this->id = $id;
         $this->nombre = $nombre;
-    }
-
-    public function guardar() {
-        $db = getDB();
-        if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO zonas_geograficas (nombre) VALUES (?)");
-            $query->bind_param("s", $this->nombre);
-        } else {
-            $query = $db->prepare("UPDATE zonas_geograficas SET nombre = ? WHERE id = ?");
-            $query->bind_param("si", $this->nombre, $this->id);
-        }
-        $query->execute();
-        if ($this->id === null) {
-            $this->id = $query->insert_id;
-        }
-        $query->close();
-        $db->close();
     }
 
     public static function obtenerPorId($id) {
@@ -52,17 +35,6 @@ class ZonaGeografica {
         }
         $db->close();
         return $zonas;
-    }
-
-    public function eliminar() {
-        $db = getDB();
-        if ($this->id !== null) {
-            $query = $db->prepare("DELETE FROM zonas_geograficas WHERE id = ?");
-            $query->bind_param("i", $this->id);
-            $query->execute();
-            $query->close();
-        }
-        $db->close();
     }
 }
 ?>

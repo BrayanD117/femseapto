@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class NivelEducativo {
     public $id;
@@ -51,7 +51,7 @@ class NivelEducativo {
             $nivelesEducativos[] = new NivelEducativo($row['id'], $row['nombre']);
         }
         $db->close();
-        return nivelesEducativos;
+        return $nivelesEducativos;
     }
 
     public function eliminar() {
