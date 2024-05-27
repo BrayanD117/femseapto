@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class OperacionesInternacionales {
     public $id;
@@ -69,7 +69,7 @@ class OperacionesInternacionales {
             $operaciones[] = new OperacionesInternacionales($row['id'], $row['id_usuario'], $row['transacciones_moneda_extranjera'], $row['trans_moneda_extranjera'], $row['otras_operaciones'], $row['cuentas_moneda_extranjera'], $row['banco_cuenta_extranjera'], $row['cuenta_moneda_extranjera'], $row['moneda_cuenta'], $row['id_pais_cuenta'], $row['ciudad_cuenta']);
         }
         $db->close();
-        return operaciones;
+        return $operaciones;
     }
 
     public function eliminar() {
