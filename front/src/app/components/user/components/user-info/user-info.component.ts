@@ -14,6 +14,17 @@ interface AutoCompleteCompleteEvent {
     query: string;
 }
 
+interface Department {
+    id: number;
+    nombre: string;
+}
+
+interface City {
+    id: number;
+    nombre: string;
+    id_departamento: number;
+}
+
 @Component({
   selector: 'app-user-info',
   standalone: true,
@@ -28,17 +39,17 @@ export class UserInfoComponent implements OnInit {
   originalUserInfo: any = {};
   isDirty: boolean = false;
 
-  departments: any[] = [];
-  selectedDepartment: any;
-  filteredDepartments: any[] = [];
+  departments: Department[] = [];
+  selectedDepartment: Department | undefined;
+  filteredDepartments: Department[] = [];
 
-  cities: any[] = [];
-  selectedCities: any;
-  filteredCities: any[] = [];
+  cities: City[] = [];
+  selectedCity: City | undefined;
+  filteredCities: City[] = [];
 
   constructor(private userInfoService: UserInfoService,
-    private departmentsService: DepartmentsService,
-    private citiesService: CitiesService) {}
+              private departmentsService: DepartmentsService,
+              private citiesService: CitiesService) {}
   
   ngOnInit(): void {
     this.userInfoService.getUserInfo().subscribe({
@@ -46,6 +57,7 @@ export class UserInfoComponent implements OnInit {
         if (data.success) {
           this.userInfo = data.data;
           this.originalUserInfo = { ...data.data };
+          this.loadDepartmentsAndCities();
         } else {
           this.error = data.message;
         }
@@ -57,8 +69,8 @@ export class UserInfoComponent implements OnInit {
       }
     });
 
-    this.departmentsService.getDepartments().subscribe((departaments) => {
-      this.departments = departaments;
+    this.departmentsService.getDepartments().subscribe((departments) => {
+      this.departments = departments;
     });
   }
 
@@ -67,12 +79,9 @@ export class UserInfoComponent implements OnInit {
 
     if (cityId) {
       this.citiesService.getCityById(cityId).subscribe(city => {
-        this.selectedCities = city;
-        //this.selectedDepartment = this.departments.find(dept => dept.id === city.idDpto);
-        //this.selectedCities = this.cities.find(muni => muni.id === this.userInfo.municipioId);
-        
-        if (this.selectedDepartment) {
-          this.onDepartmentSelect();
+        this.selectedCity = city;
+        if (this.selectedCity) {
+          this.selectedDepartment = this.departments.find(dept => dept.id === this.selectedCity?.id_departamento);
         }
       });
     }
@@ -91,12 +100,12 @@ export class UserInfoComponent implements OnInit {
   }
 
   filterDepartment(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
+    let filtered: Department[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.departments as any[]).length; i++) {
-        let dptm = (this.departments as any[])[i];
-        if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for (let i = 0; i < this.departments.length; i++) {
+        let dptm = this.departments[i];
+        if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
             filtered.push(dptm);
         }
     }
@@ -105,12 +114,12 @@ export class UserInfoComponent implements OnInit {
   }
 
   filterCity(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
+    let filtered: City[] = [];
     let query = event.query;
 
     for (let i = 0; i < this.cities.length; i++) {
         let city = this.cities[i];
-        if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
             filtered.push(city);
         }
     }
@@ -120,9 +129,9 @@ export class UserInfoComponent implements OnInit {
 
   onDepartmentSelect() {
     if (this.selectedDepartment && this.selectedDepartment.id) {
-      this.citiesService.getCitiesByDepartment(this.selectedDepartment.id).subscribe((cities) => {
+      this.citiesService.getCitiesByDepartment(this.selectedDepartment.id.toString()).subscribe((cities) => {
         this.cities = cities;
-        this.selectedCities = this.cities.find(muni => muni.id === this.userInfo.municipioId);
+        this.selectedCity = this.cities.find(muni => muni.id === this.userInfo.mpioExpDoc);
         this.filteredCities = []; // Clear filtered municipalities
       });
     }

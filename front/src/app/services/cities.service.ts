@@ -2,8 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Components
+// Environment component
 import { environment } from '../../environments/environment.development';
+
+interface City {
+  id: number;
+  nombre: string;
+  id_departamento: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +20,11 @@ export class CitiesService {
 
   constructor(private http: HttpClient) { }
 
-  getCityById(id: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/municipios.php?id=${id}`);
+  getCityById(id: string): Observable<City> {
+    return this.http.get<City>(`${this.apiUrl}/municipios.php?id=${id}`);
   }
 
-  getCitiesByDepartment(dptmId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/municipios.php?idDpto=${dptmId}`);
+  getCitiesByDepartment(dptmId: string): Observable<City[]> {
+    return this.http.get<City[]>(`${this.apiUrl}/municipios.php?idDpto=${dptmId}`);
   }
 }

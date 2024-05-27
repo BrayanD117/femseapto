@@ -82,7 +82,7 @@
           [suggestions]="filteredCities" 
           (completeMethod)="filterCity($event)" 
           field="nombre"
-          [(ngModel)]="selectedCities" 
+          [(ngModel)]="selectedCity" 
           name="selectedCities"/>
     </div>
     <div class="col-md-6">
@@ -127,7 +127,7 @@
 </div>
 
 
-<div class="container mt-3">
+<!-- <div class="container mt-3">
   <div *ngIf="loading" class="text-center">
     <p>Cargando...</p>
   </div>
@@ -300,4 +300,4 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->
