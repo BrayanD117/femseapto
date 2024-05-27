@@ -1,0 +1,95 @@
+h1, h2, h3, h4 {
+    color: #00823d;
+}
+
+.bi {
+    font-size: 1.5rem;
+}
+
+.btn {
+    background-color: #00823d;
+    border-color: #00823d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.options{
+    height: 80px;
+}
+
+.btn .icon {
+    color: white;
+}
+
+.btn:hover {
+    background-color: #23c55f;
+    border-color: #23c55f;
+}
+
+.btn:hover .icon {
+    color: white;
+}
+
+.card-header {
+    background-color: #00823d;
+    color: white;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+}
+
+.list-group-item .bi {
+    margin-right: 10px;
+}
+
+.credit-line {
+    text-align: center;
+}
+
+.credit-line h5{
+    padding: 10px;
+}
+
+.credit-line img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.button-column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+@media (max-width: 992px) {
+    .options{
+        height: 50px;
+        width: auto;
+    }
+}
+
+.simulator-card {
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.simulator-card h3 {
+    margin-bottom: 20px;
+}
+.form-group label {
+    font-weight: bold;
+}
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+}
+.result {
+    margin-top: 20px;
+}

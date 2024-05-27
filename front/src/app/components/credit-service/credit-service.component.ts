@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { RouterLink } from '@angular/router';
 
+import { SimulatorComponent } from './components/simulator/simulator.component';
+
 @Component({
   selector: 'app-credit-service',
   standalone: true,
-  imports: [DividerModule, CommonModule, RouterLink],
+  imports: [DividerModule, CommonModule, RouterLink,SimulatorComponent],
   templateUrl: './credit-service.component.html',
   styleUrl: './credit-service.component.css'
 })

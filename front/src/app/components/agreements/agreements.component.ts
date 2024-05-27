@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AgreementsCarouselComponent } from './agreements-carousel/agreements-carousel.component';
+import { AgreementsCarouselComponent } from './components/agreements-carousel/agreements-carousel.component';
 
 @Component({
   selector: 'app-agreements',
