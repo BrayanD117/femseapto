@@ -57,6 +57,7 @@ export class UserInfoComponent implements OnInit {
         if (data.success) {
           this.userInfo = data.data;
           this.originalUserInfo = { ...data.data };
+          console.log(this.userInfo)
           this.loadDepartmentsAndCities();
         } else {
           this.error = data.message;

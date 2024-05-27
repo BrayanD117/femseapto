@@ -1,5 +1,5 @@
 <?php
-require_once  __DIR__ . '/../../config/config.php';
+require_once '../config/config.php';
 
 class InformacionNucleoFamiliar {
     public $id;
@@ -45,20 +45,25 @@ class InformacionNucleoFamiliar {
         $db->close();
     }
 
-    public static function obtenerPorId($id) {
+    public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM informacion_nucleo_familiar WHERE id = ?");
-        $query->bind_param("i", $id);
+        $query = $db->prepare("SELECT id, id_usuario, nombre_completo, id_tipo_documento, numero_documento, id_parentesco, id_genero, fecha_nacimiento, id_nivel_educativo, trabaja, celular FROM informacion_nucleo_familiar WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $id_usuario, $nombre_completo, $id_tipo_documento, $numero_documento, $id_parentesco, $id_genero, $fecha_nacimiento, $id_nivel_educativo, $trabaja, $celular);
-        $infoFamiliar = null;
-        if ($query->fetch()) {
-            $infoFamiliar = new InformacionNucleoFamiliar($id, $id_usuario, $nombre_completo, $id_tipo_documento, $numero_documento, $id_parentesco, $id_genero, $fecha_nacimiento, $id_nivel_educativo, $trabaja, $celular);
+        
+        $infoFamiliar = [];
+    
+        while ($query->fetch()) {
+            $infoFamiliar[] = new InformacionNucleoFamiliar($id, $id_usuario, $nombre_completo, $id_tipo_documento, $numero_documento, $id_parentesco, $id_genero, $fecha_nacimiento, $id_nivel_educativo, $trabaja, $celular);
         }
+        
         $query->close();
         $db->close();
+        
         return $infoFamiliar;
     }
+    
 
     public static function obtenerTodos() {
         $db = getDB();

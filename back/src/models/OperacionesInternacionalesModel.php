@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
+require_once '../config/config.php';
 
 class OperacionesInternacionales {
     public $id;
@@ -45,10 +45,10 @@ class OperacionesInternacionales {
         $db->close();
     }
 
-    public static function obtenerPorId($id) {
+    public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id = ?");
-        $query->bind_param("i", $id);
+        $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta);
         $operacion = null;

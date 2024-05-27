@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config/config.php';
 
 class PersonaExpuestaPublicamente {
     public $id;
@@ -51,7 +51,7 @@ class PersonaExpuestaPublicamente {
         $db->close();
     }
 
-    public static function obtenerPorId($idUsuario) {
+    public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
         $query = $db->prepare("SELECT id, id_usuario, poder_publico, maneja_rec_public, reconoc_public, funciones_publicas, actividad_publica, funcion_publico_extranjero, fam_funcion_publico, socio_funcion_publico FROM personas_expuestas_publicamente WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);

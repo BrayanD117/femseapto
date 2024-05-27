@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config/config.php';
 
 class ReferenciaPersonalComercialBancaria {
     public $id;
@@ -37,20 +37,25 @@ class ReferenciaPersonalComercialBancaria {
         $db->close();
     }
 
-    public static function obtenerPorId($id) {
+    public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, nombre_razon_social, id_tipo_referencia, id_mpio, direccion, telefono FROM referencias_personales_comerciales_bancarias WHERE id = ?");
-        $query->bind_param("i", $id);
+        $query = $db->prepare("SELECT id, id_usuario, nombre_razon_social, id_tipo_referencia, id_mpio, direccion, telefono FROM referencias_personales_comerciales_bancarias WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono);
-        $referencias = null;
-        if ($query->fetch()) {
-            $referencias = new ReferenciaPersonalComercialBancaria($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono);
+        
+        $referencias = [];
+
+        while ($query->fetch()) {
+            $referencias[] = new ReferenciaPersonalComercialBancaria($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono);
         }
+        
         $query->close();
         $db->close();
+        
         return $referencias;
     }
+    
 
     public static function obtenerTodos() {
         $db = getDB();

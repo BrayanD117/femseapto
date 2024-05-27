@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config/config.php';
 
 class InformacionFinanciera {
     public $id;
@@ -47,10 +47,10 @@ class InformacionFinanciera {
         $db->close();
     }
 
-    public static function obtenerPorId($id) {
+    public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM informacion_financiera WHERE id = ?");
-        $query->bind_param("i", $id);
+        $query = $db->prepare("SELECT * FROM informacion_financiera WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $id_usuario, $ingresos_mensuales, $otros_ingresos_mensuales, $concepto_otros_ingresos_mens, $total_ingresos_mensuales, $egresos_mensuales, $otros_egresos_mensuales, $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio);
         $infoFinanciera = null;
