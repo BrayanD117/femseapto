@@ -62,6 +62,22 @@ export class UserInfoComponent implements OnInit {
     });
   }
 
+  loadDepartmentsAndCities() {
+    const cityId = this.userInfo.mpioExpDoc;
+
+    if (cityId) {
+      this.citiesService.getCityById(cityId).subscribe(city => {
+        this.selectedCities = city;
+        //this.selectedDepartment = this.departments.find(dept => dept.id === city.idDpto);
+        //this.selectedCities = this.cities.find(muni => muni.id === this.userInfo.municipioId);
+        
+        if (this.selectedDepartment) {
+          this.onDepartmentSelect();
+        }
+      });
+    }
+  }
+
   onInputChange(): void {
     this.isDirty = Object.keys(this.userInfo).some(
       key => this.userInfo[key] !== this.originalUserInfo[key]
@@ -102,11 +118,13 @@ export class UserInfoComponent implements OnInit {
     this.filteredCities = filtered;
   }
 
-  onDepartmentSelect(event: any) {
-    this.citiesService.getCitiesByDepartment(this.selectedDepartment.id).subscribe((cities) => {
-      this.cities = cities;
-      this.selectedCities = null; // Clear selected municipality when department changes
-      this.filteredCities = []; // Clear filtered municipalities
-    });
+  onDepartmentSelect() {
+    if (this.selectedDepartment && this.selectedDepartment.id) {
+      this.citiesService.getCitiesByDepartment(this.selectedDepartment.id).subscribe((cities) => {
+        this.cities = cities;
+        this.selectedCities = this.cities.find(muni => muni.id === this.userInfo.municipioId);
+        this.filteredCities = []; // Clear filtered municipalities
+      });
+    }
   }
 }

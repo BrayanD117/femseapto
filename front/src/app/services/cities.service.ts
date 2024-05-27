@@ -14,6 +14,10 @@ export class CitiesService {
 
   constructor(private http: HttpClient) { }
 
+  getCityById(id: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/municipios.php?id=${id}`);
+  }
+
   getCitiesByDepartment(dptmId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/municipios.php?idDpto=${dptmId}`);
   }

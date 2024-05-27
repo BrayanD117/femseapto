@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(404);
             echo json_encode(array("message" => "Municipio no encontrado."));
         }
-    } if (isset($_GET['idDpto'])) {
+    } elseif (isset($_GET['idDpto'])) {
         $idDpto = $_GET['idDpto'];
         $mpios = $controlador->obtenerPorIdDpto($idDpto);
         if ($mpios) {
