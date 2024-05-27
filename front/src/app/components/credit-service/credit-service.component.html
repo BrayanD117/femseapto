@@ -53,8 +53,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-12 col-lg-8 align-self-center mt-3">
+        <div class="col-12 col-lg-8 align-self-start mt-3">
             <div class="card shadow tipos-ahorro">
+                <!-- Contenido de los créditos, ejemplo para "CREDITO COMPRA O MEJORAS DE VIVIENDA" -->
                 <div *ngIf="selectedCreditLine === 'CREDITO COMPRA O MEJORAS DE VIVIENDA'" class="credit-line">
                     <img src="../../../assets/confianza.jpg" alt="Credito Vivienda" class="img-fluid">
                     <h3>CREDITO COMPRA O MEJORAS DE VIVIENDA</h3>
@@ -72,7 +73,7 @@
                             </li>
                             <li class="list-group-item d-flex align-items-center">
                                 <i class="bi bi-calendar-event me-3 description-icon"></i>
-                                <span>Plazo maximo: 240 cuotas quincenales - (120 meses) - 10 años.</span>
+                                <span>Plazo máximo: 240 cuotas quincenales - (120 meses) - 10 años.</span>
                             </li>
                             <li class="list-group-item d-flex align-items-center">
                                 <i class="bi bi-cash-coin me-3 description-icon"></i>
@@ -118,140 +119,527 @@
                         </ul>
 
                     <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
                     </div>
                 </div>
+                
                 <div *ngIf="selectedCreditLine === 'CREDITO VEHICULO'" class="credit-line">
                     <img src="../../../assets/honestidad.jpg" alt="Credito Vehiculo" class="img-fluid">
                     <h3>CREDITO VEHICULO</h3>
-                    <h5>El Ahorro Navideño está pensado para ayudar a los asociados a enfrentar los gastos típicos de la
-                        temporada decembrina.</h5>
+                    <h5>Esta línea de crédito está destinada para la compra de vehículos automotores propios. Para esta línea en particular el comité de crédito tendrá la facultad de estudiar cada caso y aprobar el monto que considere viable teniendo presente las condiciones del solicitante, en cuanto a visto bueno, antigüedad, reporte de centrales de riesgo, valor de aportes y ahorros en el fondo de empleados.</h5>
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                            <span>Monto: Según la capacidad del asociado.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                            <span>Destinación: Adquisición de Vehículo.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-calendar-event me-3 description-icon"></i>
+                            <span>Plazo máximo: 120 cuotas quincenales – (60) meses – 5 años.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-cash-coin me-3 description-icon"></i>
+                            <span>La tasa de interés: 1.0 % mensual.</span>
+                        </li>
+                    </ul>
+                    <p-divider/>
+                    <h4>CONDICIONES</h4>
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-calendar2-date me-3 description-icon"></i>
+                            <span>El modelo de los vehículos no podrá ser mayor a 15 años.</span>
+                        </li>
+                    </ul>
+                    <h4>LEGALIZACIÓN DEL CRÉDITO</h4>
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                            <span>Promesa de compraventa y/o valor del mercado (usado).</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-receipt me-3 description-icon"></i>
+                            <span>Cotizaciones (nuevo).</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-pencil-square me-3 description-icon"></i>
+                            <span>Registro de pignoración del vehículo al Fondo.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-card-list me-3 description-icon"></i>
+                            <span>Copia de tarjeta de propiedad.</span>
+                        </li>
+                    </ul>
                     <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                            class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
+                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
                     </div>
                 </div>
                 <div *ngIf="selectedCreditLine === 'CREDITO LIBRE INVERSION'" class="credit-line">
                     <img src="../../../assets/confianza.jpg" alt="Credito Libre Inversion" class="img-fluid">
                     <h3>CREDITO LIBRE INVERSION</h3>
-                    <h5>Esta línea de ahorro te permite reservar fondos para financiar tus viajes y actividades de ocio
-                        durante las vacaciones.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO CONSUMO'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="Credito Consumo" class="img-fluid">
-                    <h3>CREDITO CONSUMO</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO EXTRAORDINARIO'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO EXTRAORDINARIO" class="img-fluid">
-                    <h3>CREDITO EXTRAORDINARIO</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO CREDIPRIMA'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIPRIMA" class="img-fluid">
-                    <h3>CREDITO CREDIPRIMA</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO DE CALAMADAD'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO DE CALAMADAD" class="img-fluid">
-                    <h3>CREDITO DE CALAMADAD</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO VACACIONAL'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO VACACIONAL" class="img-fluid">
-                    <h3>CREDITO VACACIONAL</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITOS PARA EDUCACION'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITOS PARA EDUCACION" class="img-fluid">
-                    <h3>CREDITOS PARA EDUCACION</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO MICROEMPRESA'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO MICROEMPRESA" class="img-fluid">
-                    <h3>CREDITO MICROEMPRESA</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO CREDIAGIL'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIAGIL" class="img-fluid">
-                    <h3>CREDITO CREDIAGIL</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO ORDINARIO'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO ORDINARIO" class="img-fluid">
-                    <h3>CREDITO ORDINARIO</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO CREDIFACIL'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIFACIL" class="img-fluid">
-                    <h3>CREDITO CREDIFACIL</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
-                <div *ngIf="selectedCreditLine === 'CREDITO CREDICUMPLEAÑOS'" class="credit-line">
-                    <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDICUMPLEAÑOS" class="img-fluid">
-                    <h3>CREDITO CREDICUMPLEAÑOS</h3>
-                    <h5>Con esta línea de ahorro, los asociados pueden estar preparados para enfrentar cualquier emergencia
-                        financiera que pueda surgir, como reparaciones en el hogar, gastos médicos o pérdida de empleo.</h5>
-                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                        <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i
-                                class="bi bi-person-raised-hand icon"></i>Solicitalo aquí</button>
-                    </div>
-                </div>
+                    <h5>Se considera como crédito de libre inversión aquel que un asociado solicita para cubrir sus necesidades sin tener que justificar su destino.</h5>
+                    <ul class="list-group list-group-flush card-text text-start">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                            <span>Monto: Según la capacidad del asociado.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                            <span>Destinación: Libre Destino.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-calendar-event me-3 description-icon"></i>
+                            <span>Plazo máximo: 144 cuotas quincenales – (72) meses – 6 años.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-cash-coin me-3 description-icon"></i>
+                            <span>La tasa de interés: 1.2% mensual – plazo máximo 4 años, 1.5% mensual – plazos superiores a 4 y hasta 6 años.</span>
+                            </li>
+                            </ul>
+                            <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                            <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                            </div>
+                            
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO CONSUMO'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="Credito Consumo" class="img-fluid">
+                                <h3>CREDITO CONSUMO</h3>
+                                <h5>Se considera crédito de consumo, el solicitado por los asociados para retirar productos de otras entidades; y en los cuales el Fondo previamente ha realizado un contrato o Pacto de Comercio.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: valor de cotización – base de estudio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: adquisición de bienes y/o servicios.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 72 cuotas quincenales – (36) meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 0.8% mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Que el fondo previamente hubiese firmado un convenio comercial.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-card-checklist me-3 description-icon"></i>
+                                        <span>Autorización entrega, indicando el beneficiario, monto autorizado, y vigencia.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-receipt me-3 description-icon"></i>
+                                        <span>Factura a nombre del ASOCIADO, el Fondo solo se encargará en efectuar el pago con base en el crédito aprobado al asociado.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-pencil-square me-3 description-icon"></i>
+                                        <span>Firmar autorización de descuentos y presentar las respectivas garantías exigidas.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO EXTRAORDINARIO'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO EXTRAORDINARIO" class="img-fluid">
+                                <h3>CREDITO EXTRAORDINARIO</h3>
+                                <h5>El crédito extraordinario, será destinado a la adquisición de bienes y/o servicios para satisfacer las necesidades del asociado mediante actividades específicas programadas por el Fondo de Empleados. También se podrá destinar como crédito rotativo.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>Monto: $1.000.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: libre / actividades específicas.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 24 cuotas quincenales – (12) meses – 1 año.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO CREDIPRIMA'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIPRIMA" class="img-fluid">
+                                <h3>CREDITO CREDIPRIMA</h3>
+                                <h5>Entiéndase como el crédito otorgado para ser cubierto con la prima de servicios o prima de navidad. Esta línea de crédito no afecta cupo.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: Dependerá del valor calculado de la prima.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: libre / actividades específicas.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 1 cuota.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1% mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-check me-3 description-icon"></i>
+                                        <span>Se otorgará únicamente en los siguientes casos:</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-check me-3 description-icon"></i>
+                                        <span>Este crédito se debe tramitar tres meses antes de los meses de Junio y Diciembre.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Se tomará como base la prima del asociado.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>Para realizar la solicitud el asociado no debe tener pignoración de primas.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-receipt me-3 description-icon"></i>
+                                        <span>Se tomará en cuenta el último desprendible de nómina y el estado de cuenta.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO DE CALAMADAD'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO DE CALAMADAD" class="img-fluid">
+                                <h3>CREDITO DE CALAMADAD</h3>
+                                <h5>Entiéndase como crédito emergente o de calamidad doméstica, el que se otorga al asociado que, por un hecho imprevisible, aleatorio que no se puede evitar, causa un perjuicio temporal a él y/o su familia.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: $2.000.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Calamidad.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 48 cuotas quincenales – (24) meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 0.6 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-check me-3 description-icon"></i>
+                                        <span>No se requiere antigüedad, podrá acceder al crédito en el momento que se realice el primer descuento de la cuota de afiliación.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Se otorgará únicamente en los siguientes casos:</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-people-fill me-3 description-icon"></i>
+                                        <span>Fallecimiento del cónyuge, compañero(a), hijo o familiar hasta en segundo grado de consanguinidad (padres del asociado).</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-hospital me-3 description-icon"></i>
+                                        <span>Para pagos de hospitalización, cirugía, rayos X, exámenes especializados que no cubra el POS.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-house-door me-3 description-icon"></i>
+                                        <span>Por grave calamidad, producida por causas accidentales como incendio en su vivienda o lugar de residencia, inundaciones, tormentas, accidentes de tránsito, o similares debidamente comprobados.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-safe me-3 description-icon"></i>
+                                        <span>Por robo o hurto de enseres perpetrado en su vivienda o lugar de residencia, indispensables para el desarrollo de su normal vida de hogar, como enseres de cocina, estufa, máquina de coser dedicada a actividades productivas, ropa, y similares debidamente comprobados.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO VACACIONAL'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO VACACIONAL" class="img-fluid">
+                                <h3>CREDITO VACACIONAL</h3>
+                                <h5>Los asociados podrán adquirir un préstamo para sus vacaciones, este crédito se podrá solicitar con unos días de anticipación a la salida de vacaciones o durante dicho periodo.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: $3.000.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Vacaciones.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 48 cuotas quincenales – (24) meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITOS PARA EDUCACION'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITOS PARA EDUCACION" class="img-fluid">
+                                <h3>CREDITOS PARA EDUCACION</h3>
+                                <h5>Este crédito se otorgará a los asociados del fondo que requieran adelantar estudios superiores con el ánimo de capacitarse en programas que aporten a su desarrollo laboral y personal.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: Valor de recibo de matrícula – base de estudio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Estudio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 96 cuotas quincenales – (48) Meses – 4 años.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>El asociado en todos los casos debe anexar a su solicitud de crédito la documentación necesaria para probar el destino del crédito - Anexar recibo de matrícula.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>El fondo realizará el pago directamente a la entidad educativa.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO MICROEMPRESA'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO MICROEMPRESA" class="img-fluid">
+                                <h3>CREDITO MICROEMPRESA</h3>
+                                <h5>Los asociados podrán adquirir un préstamo para la creación de microempresa o para invertir en ella, contribuyendo así al crecimiento económico tanto a nivel personal como comunitario.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: $7.000.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Microempresa.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 96 cuotas quincenales – (48) meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Proyecto de inversión del negocio y soportes de las compras y demás documentos que sean requeridos acorde al tipo de negocio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-receipt me-3 description-icon"></i>
+                                        <span>Una vez otorgado el crédito y entregado al asociado el efectivo, éste deberá legalizar el crédito entregando en la oficina del Fondo fotocopia de las facturas y demás recibos que demuestren los gastos incurridos en la creación de la microempresa o de la inversión hecha.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO CREDIAGIL'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIAGIL" class="img-fluid">
+                                <h3>CREDITO CREDIAGIL</h3>
+                                <h5>El crédito Ágil, será destinado al pago de obligaciones específicas del asociado con la empresa patronal, específicamente para saldos de cartera.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: valor reportado de cartera – base de estudio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Obligaciones.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 60 cuotas quincenales – (30) meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1.5 % mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Reporte enviado por la empresa patronal (Área de Cartera).</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO ORDINARIO'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO ORDINARIO" class="img-fluid">
+                                <h3>CREDITO ORDINARIO</h3>
+                                <h5>El crédito Ordinario será destinado al pago de obligaciones del asociado, específicamente para pago de obligaciones que el asociado tenga.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: valor de cartera – base de estudio.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Compra Obligaciones.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 168 cuotas quincenales – (84) meses – 7 años.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1.0% mensual – plazo máximo 4 años, 1.4% mensual – plazos superiores a 4 y hasta 7 años.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-card-list me-3 description-icon"></i>
+                                        <span>Esta línea será destinada para apoyar a los asociados que presentan créditos de Libranza con la finalidad de poder prestarles a un bajo interés.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>Se proyecta el tiempo pendiente que tengan de la obligación actual.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>Se solicitará soporte de certificado de saldo para la respectiva solicitud.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-receipt me-3 description-icon"></i>
+                                        <span>El fondo realiza directamente el pago a la entidad.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO CREDIFACIL'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDIFACIL" class="img-fluid">
+                                <h3>CREDITO CREDIFACIL</h3>
+                                <h5>El crédito CrediFacil, será destinado para los nuevos asociados que se vinculen a través del programa SEAPTO Soluciones al instante, el cual tendrá las siguientes condiciones:</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: $2.000.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Libre Destino.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 24 cuotas quincenales – (12) Meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 1.2% mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-card-checklist me-3 description-icon"></i>
+                                        <span>Reporte de ingresos enviado por la empresa patronal.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>Los montos que superen el establecido serán aprobados teniendo presente los aportes y ahorros de los asociados, y las garantías que ofrezca el asociado.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>También se tendrá en cuenta su comportamiento y antigüedad, con la finalidad de mitigar el nivel de riesgo de cartera.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-receipt me-3 description-icon"></i>
+                                        <span>Todos los créditos de esta línea, en los que el asociado presenta saldo negativo en caso de liquidación, serán garantizados con el FRG o Avalando.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-journal-bookmark me-3 description-icon"></i>
+                                        <span>Para estos casos el comité de crédito y la gerencia se apoyarán con la Vicepresidencia de Junta Directiva quien tendrá la facultad en nombre de la Junta, para tomar decisiones en caso que se requiera.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedCreditLine === 'CREDITO CREDICUMPLEAÑOS'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO CREDICUMPLEAÑOS" class="img-fluid">
+                                <h3>CREDITO CREDICUMPLEAÑOS</h3>
+                                <h5>Crédito que el asociado podrá solicitar en el mes de su cumpleaños, para libre destinación.</h5>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-person-arms-up me-3 description-icon"></i>
+                                        <span>Monto: $1.500.000.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
+                                        <span>Destinación: Libre Destino.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-event me-3 description-icon"></i>
+                                        <span>Plazo máximo: 24 cuotas quincenales – (12) Meses.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-coin me-3 description-icon"></i>
+                                        <span>La tasa de interés: 0.9% mensual.</span>
+                                    </li>
+                                </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar2-date me-3 description-icon"></i>
+                                        <span>Todos los asociados podrán tener acceso a esta línea de crédito sin tener en cuenta la antigüedad.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-clipboard-data me-3 description-icon"></i>
+                                        <span>Los créditos de los asociados de soluciones al instante tendrán que llevar Garantía desde que el valor en caso de liquidación de saldo negativo.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                                    <button class="text-center btn btn-primary" type="button" routerLink="/user/credits"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                                </div>
+                            </div>
             </div>
         </div>
 </div>
