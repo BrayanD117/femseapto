@@ -69,10 +69,29 @@ export class SimulatorComponent implements OnInit {
 
   setInterestRate(): void {
     if (this.selectedCreditLineDetails) {
-      const loanTerm = Number((document.getElementById('loanTerm') as HTMLInputElement).value);
-      this.interestRate = this.selectedCreditLineDetails.tasa_interes_1;
-      if (loanTerm > 120 && this.selectedCreditLineDetails.tasa_interes_2) {
-        this.interestRate = this.selectedCreditLineDetails.tasa_interes_2;
+      const loanTerm = Number((document.getElementById('loanTerm') as HTMLInputElement).value) / 24; // Convert to years
+      const loanType = this.selectedCreditLineDetails.nombre.toLowerCase();
+      
+      if (loanType.includes('compra o mejoras de vivienda')) {
+        if (loanTerm <= 5) {
+          this.interestRate = 0.7;
+        } else if (loanTerm <= 10) {
+          this.interestRate = 1.0;
+        }
+      } else if (loanType.includes('libre inversion')) {
+        if (loanTerm <= 4) {
+          this.interestRate = 1.2;
+        } else if (loanTerm <= 6) {
+          this.interestRate = 1.5;
+        }
+      } else if (loanType.includes('credito ordinario')) {
+        if (loanTerm <= 4) {
+          this.interestRate = 1.0;
+        } else if (loanTerm <= 7) {
+          this.interestRate = 1.4;
+        }
+      } else {
+        this.interestRate = this.selectedCreditLineDetails.tasa_interes_1;
       }
     }
   }
