@@ -12,7 +12,7 @@
         <form>
           <div class="form-group">
             <label for="loanAmount">Monto del Crédito</label>
-            <input type="text" class="form-control mb-2" id="loanAmount" name="loanAmount" placeholder="Ingresa el monto del crédito" [(ngModel)]="loanAmount" (ngModelChange)="onLoanAmountChange($event)">
+            <input type="text" inputmode="numeric" class="form-control mb-2" id="loanAmount" name="loanAmount" placeholder="Ingresa el monto del crédito" (input)="onLoanAmountInput($event)">
           </div>
           <div class="form-group">
             <label for="interestRate">Tasa de Interés (%)</label>

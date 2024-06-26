@@ -14,7 +14,7 @@ import { CurrencyFormatPipe } from '../../../pipes/currency-format.pipe';
 })
 export class SimulatorComponent implements OnInit {
   lineasCredito: any[] = [];
-  selectedCreditLine: any; // Cambiado a any para que sea compatible con el Dropdown
+  selectedCreditLine: any;
   selectedCreditLineDetails: any;
   loanAmount = 0;
   interestRate: number | undefined;
@@ -59,19 +59,12 @@ export class SimulatorComponent implements OnInit {
     this.setInterestRate();
   }
 
-  onLoanAmountChange(value: string): void {
-    const numericValue = value.replace(/[^0-9]/g, '');
-    this.loanAmount = parseInt(numericValue, 10);
+  onLoanAmountInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const numericValue = inputElement.value.replace(/[^0-9]/g, '');
+    this.loanAmount = parseInt(numericValue, 10) || 0;
 
-    const inputElement = document.getElementById('loanAmount') as HTMLInputElement;
-    if (inputElement) {
-      inputElement.value = new Intl.NumberFormat('es-ES', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(this.loanAmount);
-    }
+    inputElement.value = `$ ${this.loanAmount.toLocaleString('es-ES')}`;
   }
 
   setInterestRate(): void {

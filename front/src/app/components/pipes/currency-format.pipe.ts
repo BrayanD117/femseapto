@@ -9,11 +9,7 @@ export class CurrencyFormatPipe implements PipeTransform {
     if (value == null) {
       return '';
     }
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const formattedValue = value.toLocaleString('es-ES');
+    return `$ ${formattedValue}`;
   }
 }
