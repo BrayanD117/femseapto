@@ -9,8 +9,10 @@ class ReferenciaPersonalComercialBancaria {
     public $idMunicipio;
     public $direccion;
     public $telefono;
+    public $creadoEl;
+    public $actualizadoEl;
 
-    public function __construct($id = null, $idUsuario = '', $nombreRazonSocial = '', $idTipoReferencia = '', $idMunicipio = '', $direccion = '', $telefono = '') {
+    public function __construct($id = null, $idUsuario = '', $nombreRazonSocial = '', $idTipoReferencia = '', $idMunicipio = '', $direccion = '', $telefono = '', $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->nombreRazonSocial = $nombreRazonSocial;
@@ -18,6 +20,8 @@ class ReferenciaPersonalComercialBancaria {
         $this->idMunicipio = $idMunicipio;
         $this->direccion = $direccion;
         $this->telefono = $telefono;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -39,15 +43,15 @@ class ReferenciaPersonalComercialBancaria {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, nombre_razon_social, id_tipo_referencia, id_mpio, direccion, telefono FROM referencias_personales_comerciales_bancarias WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT * FROM referencias_personales_comerciales_bancarias WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono);
+        $query->bind_result($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono, $creadoEl, $actualizadoEl);
         
         $referencias = [];
 
         while ($query->fetch()) {
-            $referencias[] = new ReferenciaPersonalComercialBancaria($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono);
+            $referencias[] = new ReferenciaPersonalComercialBancaria($id, $idUsuario, $nombreRazonSocial, $idTipoReferencia, $idMunicipio, $direccion, $telefono, $creadoEl, $actualizadoEl);
         }
         
         $query->close();
@@ -59,11 +63,11 @@ class ReferenciaPersonalComercialBancaria {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, nombre_razon_social, id_tipo_referencia, id_mpio, direccion, telefono FROM referencias_personales_comerciales_bancarias";
+        $query = "SELECT * FROM referencias_personales_comerciales_bancarias";
         $result = $db->query($query);
         $referencias = [];
         while ($row = $result->fetch_assoc()) {
-            $referencias[] = new ReferenciaPersonalComercialBancaria($row['id'], $row['nombre']);
+            $referencias[] = new ReferenciaPersonalComercialBancaria($row['id'], $row['id_usuario'], $row['nombre_razon_social'], $row['id_tipo_referencia'], $row['id_mpio'], $row['direccion'], $row['telefono'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $referencias;

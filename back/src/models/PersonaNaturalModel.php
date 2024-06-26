@@ -32,6 +32,8 @@ class PersonaNatural {
     public $nombreEmergencia;
     public $numeroCedulaEmergencia;
     public $numeroCelularEmergencia;
+    public $creadoEl;
+    public $actualizadoEl;
 
     public function __construct($id = null, $idUsuario = '',
         $idGenero = '',
@@ -61,7 +63,9 @@ class PersonaNatural {
         $cargoOcupa = '',
         $nombreEmergencia = '',
         $numeroCedulaEmergencia = '',
-        $numeroCelularEmergencia) {
+        $numeroCelularEmergencia,
+        $creadoEl = '',
+        $actualizadoEl = '') {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->idGenero = $idGenero;
@@ -92,6 +96,8 @@ class PersonaNatural {
         $this->nombreEmergencia = $nombreEmergencia;
         $this->numeroCedulaEmergencia = $numeroCedulaEmergencia;
         $this->numeroCelularEmergencia = $numeroCelularEmergencia;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -155,7 +161,9 @@ class PersonaNatural {
         $cargoOcupa,
         $nombreEmergencia,
         $numeroCedulaEmergencia,
-        $numeroCelularEmergencia);
+        $numeroCelularEmergencia,
+        $creadoEl,
+        $actualizadoEl);
         $personasNaturales = null;
         if ($query->fetch()) {
             $personasNaturales = new PersonaNatural($id,
@@ -187,7 +195,9 @@ class PersonaNatural {
             $cargoOcupa,
             $nombreEmergencia,
             $numeroCedulaEmergencia,
-            $numeroCelularEmergencia);
+            $numeroCelularEmergencia,
+            $creadoEl,
+            $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -196,7 +206,7 @@ class PersonaNatural {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales";
+        $query = "SELECT * FROM personas_naturales";
         $result = $db->query($query);
         $personasNaturales = [];
         while ($row = $result->fetch_assoc()) {
@@ -229,7 +239,9 @@ class PersonaNatural {
             $row['cargo_ocupa'],
             $row['nombre_emergencia'],
             $row['numero_cedula_emergencia'],
-            $row['numero_celular_emergencia']);
+            $row['numero_celular_emergencia'],
+            $row['creado_el'],
+            $row['actualizado_el']);
         }
         $db->close();
         return $personasNaturales;

@@ -13,6 +13,10 @@ import { UserInfoComponent } from './components/user/components/user-info/user-i
 import { UserSavingComponent } from './components/user/components/user-saving/user-saving.component';
 import { UserCreditsComponent } from './components/user/components/user-credits/user-credits.component';
 
+
+// Admin components
+import { AdminComponent } from './components/admin/admin.component';
+
 // Guards
 import { LoginGuard } from './guards/login.guard';
 import { LoginRedirectGuard } from './guards/login-redirect.guard';
@@ -36,5 +40,6 @@ export const routes: Routes = [
         { path: 'savings', component: UserSavingComponent },
         { path: 'credits', component: UserCreditsComponent },
 
-    ]}
+    ]},
+    { path: 'admin', component: AdminComponent }
 ];

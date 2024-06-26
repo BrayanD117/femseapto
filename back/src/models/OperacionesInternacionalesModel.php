@@ -13,8 +13,10 @@ class OperacionesInternacionales {
     public $moneda_cuenta;
     public $id_pais_cuenta;
     public $ciudad_cuenta;
+    public $creadoEl;
+    public $actualizadoEl;
 
-    public function __construct($id = null, $id_usuario = null, $transacciones_moneda_extranjera = '', $trans_moneda_extranjera = '', $otras_operaciones = '', $cuentas_moneda_extranjera = '', $banco_cuenta_extranjera = '', $cuenta_moneda_extranjera = '', $moneda_cuenta = '', $id_pais_cuenta = '', $ciudad_cuenta = '') {
+    public function __construct($id = null, $id_usuario = null, $transacciones_moneda_extranjera = '', $trans_moneda_extranjera = '', $otras_operaciones = '', $cuentas_moneda_extranjera = '', $banco_cuenta_extranjera = '', $cuenta_moneda_extranjera = '', $moneda_cuenta = '', $id_pais_cuenta = '', $ciudad_cuenta = '', $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->id_usuario = $id_usuario;
         $this->transacciones_moneda_extranjera = $transacciones_moneda_extranjera;
@@ -26,6 +28,8 @@ class OperacionesInternacionales {
         $this->moneda_cuenta = $moneda_cuenta;
         $this->id_pais_cuenta = $id_pais_cuenta;
         $this->ciudad_cuenta = $ciudad_cuenta;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -50,10 +54,10 @@ class OperacionesInternacionales {
         $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta);
+        $query->bind_result($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta, $creadoEl, $actualizadoEl);
         $operacion = null;
         if ($query->fetch()) {
-            $operacion = new OperacionesInternacionales($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta);
+            $operacion = new OperacionesInternacionales($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -66,7 +70,7 @@ class OperacionesInternacionales {
         $result = $db->query($query);
         $operaciones = [];
         while ($row = $result->fetch_assoc()) {
-            $operaciones[] = new OperacionesInternacionales($row['id'], $row['id_usuario'], $row['transacciones_moneda_extranjera'], $row['trans_moneda_extranjera'], $row['otras_operaciones'], $row['cuentas_moneda_extranjera'], $row['banco_cuenta_extranjera'], $row['cuenta_moneda_extranjera'], $row['moneda_cuenta'], $row['id_pais_cuenta'], $row['ciudad_cuenta']);
+            $operaciones[] = new OperacionesInternacionales($row['id'], $row['id_usuario'], $row['transacciones_moneda_extranjera'], $row['trans_moneda_extranjera'], $row['otras_operaciones'], $row['cuentas_moneda_extranjera'], $row['banco_cuenta_extranjera'], $row['cuenta_moneda_extranjera'], $row['moneda_cuenta'], $row['id_pais_cuenta'], $row['ciudad_cuenta'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $operaciones;

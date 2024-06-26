@@ -14,8 +14,15 @@ class InformacionFinanciera {
     public $total_activos;
     public $total_pasivos;
     public $total_patrimonio;
+    public $creadoEl;
+    public $actualizadoEl;
 
-    public function __construct($id = null, $id_usuario = null, $ingresos_mensuales = 0.00, $otros_ingresos_mensuales = 0.00, $concepto_otros_ingresos_mens = '', $total_ingresos_mensuales = 0.00, $egresos_mensuales = 0.00, $otros_egresos_mensuales = 0.00, $total_egresos_mensuales = 0.00, $total_activos = 0.00, $total_pasivos = 0.00, $total_patrimonio = 0.00) {
+    public function __construct($id = null, $id_usuario = null, $ingresos_mensuales = 0.00, 
+        $otros_ingresos_mensuales = 0.00, $concepto_otros_ingresos_mens = '',
+        $total_ingresos_mensuales = 0.00, $egresos_mensuales = 0.00,
+        $otros_egresos_mensuales = 0.00, $total_egresos_mensuales = 0.00,
+        $total_activos = 0.00, $total_pasivos = 0.00, $total_patrimonio = 0.00, $creadoEl = '',
+        $actualizadoEl = '') {
         $this->id = $id;
         $this->id_usuario = $id_usuario;
         $this->ingresos_mensuales = $ingresos_mensuales;
@@ -28,6 +35,8 @@ class InformacionFinanciera {
         $this->total_activos = $total_activos;
         $this->total_pasivos = $total_pasivos;
         $this->total_patrimonio = $total_patrimonio;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -52,10 +61,10 @@ class InformacionFinanciera {
         $query = $db->prepare("SELECT * FROM informacion_financiera WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $ingresos_mensuales, $otros_ingresos_mensuales, $concepto_otros_ingresos_mens, $total_ingresos_mensuales, $egresos_mensuales, $otros_egresos_mensuales, $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio);
+        $query->bind_result($id, $id_usuario, $ingresos_mensuales, $otros_ingresos_mensuales, $concepto_otros_ingresos_mens, $total_ingresos_mensuales, $egresos_mensuales, $otros_egresos_mensuales, $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio, $creadoEl, $actualizadoEl);
         $infoFinanciera = null;
         if ($query->fetch()) {
-            $infoFinanciera = new InformacionFinanciera($id, $id_usuario, $ingresos_mensuales, $otros_ingresos_mensuales, $concepto_otros_ingresos_mens, $total_ingresos_mensuales, $egresos_mensuales, $otros_egresos_mensuales, $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio);
+            $infoFinanciera = new InformacionFinanciera($id, $id_usuario, $ingresos_mensuales, $otros_ingresos_mensuales, $concepto_otros_ingresos_mens, $total_ingresos_mensuales, $egresos_mensuales, $otros_egresos_mensuales, $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -68,7 +77,7 @@ class InformacionFinanciera {
         $result = $db->query($query);
         $informacionFinanciera = [];
         while ($row = $result->fetch_assoc()) {
-            $informacionFinanciera[] = new InformacionFinanciera($row['id'], $row['id_usuario'], $row['ingresos_mensuales'], $row['otros_ingresos_mensuales'], $row['concepto_otros_ingresos_mens'], $row['total_ingresos_mensuales'], $row['egresos_mensuales'], $row['otros_egresos_mensuales'], $row['total_egresos_mensuales'], $row['total_activos'], $row['total_pasivos'], $row['total_patrimonio']);
+            $informacionFinanciera[] = new InformacionFinanciera($row['id'], $row['id_usuario'], $row['ingresos_mensuales'], $row['otros_ingresos_mensuales'], $row['concepto_otros_ingresos_mens'], $row['total_ingresos_mensuales'], $row['egresos_mensuales'], $row['otros_egresos_mensuales'], $row['total_egresos_mensuales'], $row['total_activos'], $row['total_pasivos'], $row['total_patrimonio'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $informacionFinanciera;

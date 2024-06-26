@@ -27,7 +27,15 @@ class Pais {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, nombre FROM paises";
+        $query = "SELECT id, nombre 
+        FROM paises 
+        ORDER BY 
+            CASE 
+                WHEN nombre = 'COLOMBIA' THEN 1
+                WHEN nombre = 'VENEZUELA' THEN 2
+                ELSE 3
+            END, 
+            nombre";
         $result = $db->query($query);
         $paises = [];
         while ($row = $result->fetch_assoc()) {

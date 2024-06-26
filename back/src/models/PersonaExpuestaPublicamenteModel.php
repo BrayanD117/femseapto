@@ -12,6 +12,8 @@ class PersonaExpuestaPublicamente {
     public $funcionarioPublicoExtranjero;
     public $famFuncionarioPublico;
     public $socioFuncionarioPublico;
+    public $creadoEl;
+    public $actualizadoEl;
 
     public function __construct($id = null, $idUsuario = '',
         $poderPublico = '',
@@ -21,7 +23,9 @@ class PersonaExpuestaPublicamente {
         $actividadPublica = '',
         $funcionarioPublicoExtranjero = '',
         $famFuncionarioPublico = '',
-        $socioFuncionarioPublico = '') {
+        $socioFuncionarioPublico = '',
+        $creadoEl = '',
+        $actualizadoEl = '') {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->poderPublico = $poderPublico;
@@ -32,6 +36,8 @@ class PersonaExpuestaPublicamente {
         $this->funcionarioPublicoExtranjero = $funcionarioPublicoExtranjero;
         $this->famFuncionarioPublico = $famFuncionarioPublico;
         $this->socioFuncionarioPublico = $socioFuncionarioPublico;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -53,13 +59,13 @@ class PersonaExpuestaPublicamente {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, poder_publico, maneja_rec_public, reconoc_public, funciones_publicas, actividad_publica, funcion_publico_extranjero, fam_funcion_publico, socio_funcion_publico FROM personas_expuestas_publicamente WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT * FROM personas_expuestas_publicamente WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico);
+        $query->bind_result($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico, $creadoEl, $actualizadoEl);
         $persExpuestasPubl = null;
         if ($query->fetch()) {
-            $persExpuestasPubl = new PersonaExpuestaPublicamente($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico);
+            $persExpuestasPubl = new PersonaExpuestaPublicamente($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -68,11 +74,11 @@ class PersonaExpuestaPublicamente {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, poder_publico, maneja_rec_public, reconoc_public, funciones_publicas, actividad_publica, funcion_publico_extranjero, fam_funcion_publico, socio_funcion_publico FROM personas_expuestas_publicamente";
+        $query = "SELECT * FROM personas_expuestas_publicamente";
         $result = $db->query($query);
         $persExpuestasPubl = [];
         while ($row = $result->fetch_assoc()) {
-            $persExpuestasPubl[] = new PersonaExpuestaPublicamente($row['id'], $row['abreviatura'], $row['nombre']);
+            $persExpuestasPubl[] = new PersonaExpuestaPublicamente($row['id'], $row['id_usuario'], $row['poder_publico'], $row['maneja_rec_public'], $row['reconoc_public'], $row['funciones_publicas'], $row['actividad_publica'], $row['funcion_publico_extranjero'], $row['fam_funcion_publico'], $row['socio_funcion_publico'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $persExpuestasPubl;

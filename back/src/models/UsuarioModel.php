@@ -13,10 +13,12 @@ class Usuario {
     public $idTipoDocumento;
     public $numeroDocumento;
     public $activo;
+    public $creadoEl;
+    public $actualizadoEl;
 
     public function __construct($id = null, $id_rol = null, $usuario = '', $contrasenia = '',
         $primerNombre = '', $segundoNombre = null, $primerApellido = '',
-        $segundoApellido = null, $idTipoDocumento = '', $numeroDocumento = '', $activo = null) {
+        $segundoApellido = null, $idTipoDocumento = '', $numeroDocumento = '', $activo = null, $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->id_rol = $id_rol;
         $this->usuario = $usuario;
@@ -28,6 +30,8 @@ class Usuario {
         $this->idTipoDocumento = $idTipoDocumento;
         $this->numeroDocumento = $numeroDocumento;
         $this->activo = $activo;
+        $this->creadoEl = $creadoEl;
+        $this->actualizadoEl = $actualizadoEl;
     }
 
     public function guardar() {
@@ -49,13 +53,13 @@ class Usuario {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_rol, usuario, contrasenia, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_tipo_documento, numero_documento, activo FROM usuarios WHERE id = ?");
+        $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo, $creadoEl, $actualizadoEl);
         $user = null;
         if ($query->fetch()) {
-            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -64,11 +68,11 @@ class Usuario {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_rol, usuario, contrasenia, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_tipo_documento, numero_documento, activo FROM usuarios";
+        $query = "SELECT * FROM usuarios";
         $result = $db->query($query);
         $users = [];
         while ($row = $result->fetch_assoc()) {
-            $users[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['activo']);
+            $users[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $users;
@@ -91,10 +95,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ?");
         $query->bind_param("s", $usuario);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo, $creadoEl, $actualizadoEl);
         $usuarioObj = null;
         if ($query->fetch()) {
-            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo);
+            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $activo, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
