@@ -25,10 +25,18 @@
           </div>
           <button type="button" class="btn btn-custom btn-block" [disabled]="isLoanTermInvalid" (click)="calculate()">Calcular</button>          
         </form>
-        <div class="result">
-          <h4>Resultados</h4>
-          <p><strong>Cuota Quincenal: </strong> <span id="biweeklyPayment">{{ biweeklyPayment | currencyFormat }}</span></p>
-          <p><strong>Total a Pagar: </strong> <span id="totalPayment">{{ totalPayment | currencyFormat }}</span></p>
+        <div class="row mt-4 align-items-center justify-content-center">
+          <div class="col-lg-6 d-flex flex-column align-items-center mb-3 mb-lg-0">
+            <div class="result text-center">
+              <h3>Resultados</h3>
+              <p class="h4"><strong>Cuota Quincenal: </strong> <span id="biweeklyPayment">{{ biweeklyPayment | currencyFormat }}</span></p>
+              <p class="h4"><strong>Total a Pagar: </strong> <span id="totalPayment">{{ totalPayment | currencyFormat }}</span></p>
+            </div>
+          </div>
+          <div class="col-lg-6 d-flex flex-column align-items-center text-center">
+            <ng-lottie class="animacion" [options]="options" width="200px"></ng-lottie>
+            <button type="button" class="btn btn-custom mt-3" routerLink="/login">Solicítalo Aquí</button>
+          </div>
         </div>
       </div>
     </div>

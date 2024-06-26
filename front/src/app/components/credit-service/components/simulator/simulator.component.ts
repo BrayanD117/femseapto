@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { LineasCreditoService } from '../../../../services/lineas-credito.service';
 import { CurrencyFormatPipe } from '../../../pipes/currency-format.pipe';
 
+import { LottieComponent, AnimationOptions } from 'ngx-lottie';
+
 @Component({
   selector: 'app-simulator',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule, CurrencyFormatPipe],
+  imports: [CommonModule, FormsModule, DropdownModule, CurrencyFormatPipe, LottieComponent, RouterLink],
   templateUrl: './simulator.component.html',
   styleUrls: ['./simulator.component.css']
 })
@@ -116,4 +119,8 @@ export class SimulatorComponent implements OnInit {
       this.totalPayment = 0;
     }
   }
+
+  options: AnimationOptions = {
+    path: '../../../assets/json/WomenLoan.json',
+  };
 }
