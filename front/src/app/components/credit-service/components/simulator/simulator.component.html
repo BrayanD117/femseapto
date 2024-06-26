@@ -5,9 +5,7 @@
       <div class="form-group">
         <label for="creditType">Tipo de Crédito</label>
         <p>Selecciona el tipo de crédito</p>
-        <select class="form-control mb-4" id="creditType" name="creditType" [(ngModel)]="selectedCreditLine" (change)="onCreditLineChange()">
-          <option *ngFor="let linea of lineasCredito" [value]="linea.id">{{ linea.nombre }}</option>
-        </select>
+        <p-dropdown [style]="{'width': '100%'}" [options]="lineasCredito" [(ngModel)]="selectedCreditLine" optionLabel="nombre" placeholder="Selecciona una opción" (onChange)="onCreditLineChange()"></p-dropdown>
       </div>
       <div class="card simulator-card">
         <h3 class="text-center">Calcula tus cuotas</h3>
@@ -23,8 +21,9 @@
           <div class="form-group">
             <label for="loanTerm">Plazo del Crédito (quincenas)</label>
             <input type="number" class="form-control mb-2" id="loanTerm" name="loanTerm" placeholder="Ingresa el número de quincenas" (input)="onLoanTermChange()">
+            <small *ngIf="isLoanTermInvalid" class="text-danger">El plazo no puede exceder el máximo de {{ selectedCreditLineDetails?.plazo }} quincenas</small>
           </div>
-          <button type="button" class="btn btn-custom btn-block" (click)="calculate()">Calcular</button>
+          <button type="button" class="btn btn-custom btn-block" [disabled]="isLoanTermInvalid" (click)="calculate()">Calcular</button>          
         </form>
         <div class="result">
           <h4>Resultados</h4>
@@ -41,7 +40,7 @@
     <h3 class="text-center">Descripción del crédito</h3>
     <p><strong>Monto:</strong> {{ selectedCreditLineDetails.monto | currencyFormat }}</p>
     <p><strong>Destinación:</strong> {{ selectedCreditLineDetails.destinacion }}</p>
-    <p><strong>Plazo:</strong> {{ selectedCreditLineDetails.plazo }} quincenas</p>
+    <p><strong>Plazo Maximo:</strong> {{ selectedCreditLineDetails.plazo }} quincenas</p>
     <p *ngIf="selectedCreditLineDetails.tasa_interes_1"><strong>Tasa de Interés 1:</strong> {{ selectedCreditLineDetails.tasa_interes_1 }}%</p>
     <p *ngIf="selectedCreditLineDetails.tasa_interes_2"><strong>Tasa de Interés 2:</strong> {{ selectedCreditLineDetails.tasa_interes_2 }}%</p>
   </div>

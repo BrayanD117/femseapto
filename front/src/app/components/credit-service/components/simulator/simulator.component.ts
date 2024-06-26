@@ -1,24 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 import { LineasCreditoService } from '../../../../services/lineas-credito.service';
 import { CurrencyFormatPipe } from '../../../pipes/currency-format.pipe';
 
 @Component({
   selector: 'app-simulator',
   standalone: true,
-  imports: [CommonModule, FormsModule, CurrencyFormatPipe],
+  imports: [CommonModule, FormsModule, DropdownModule, CurrencyFormatPipe],
   templateUrl: './simulator.component.html',
   styleUrls: ['./simulator.component.css']
 })
 export class SimulatorComponent implements OnInit {
   lineasCredito: any[] = [];
-  selectedCreditLine: number | undefined;
+  selectedCreditLine: any; // Cambiado a any para que sea compatible con el Dropdown
   selectedCreditLineDetails: any;
   loanAmount = 0;
   interestRate: number | undefined;
   biweeklyPayment = 0;
   totalPayment = 0;
+  isLoanTermInvalid = false;
 
   constructor(private lineasCreditoService: LineasCreditoService) { }
 
@@ -35,7 +37,7 @@ export class SimulatorComponent implements OnInit {
 
   onCreditLineChange(): void {
     if (this.selectedCreditLine) {
-      this.lineasCreditoService.obtenerLineaCreditoPorId(this.selectedCreditLine).subscribe(
+      this.lineasCreditoService.obtenerLineaCreditoPorId(this.selectedCreditLine.id).subscribe(
         data => {
           this.selectedCreditLineDetails = data;
           this.setInterestRate();
@@ -48,15 +50,19 @@ export class SimulatorComponent implements OnInit {
   }
 
   onLoanTermChange(): void {
+    const loanTerm = Number((document.getElementById('loanTerm') as HTMLInputElement).value);
+    if (this.selectedCreditLineDetails && loanTerm > this.selectedCreditLineDetails.plazo) {
+      this.isLoanTermInvalid = true;
+    } else {
+      this.isLoanTermInvalid = false;
+    }
     this.setInterestRate();
   }
 
   onLoanAmountChange(value: string): void {
-    // Remove any non-numeric characters
     const numericValue = value.replace(/[^0-9]/g, '');
     this.loanAmount = parseInt(numericValue, 10);
 
-    // Update the displayed value
     const inputElement = document.getElementById('loanAmount') as HTMLInputElement;
     if (inputElement) {
       inputElement.value = new Intl.NumberFormat('es-ES', {
@@ -71,7 +77,7 @@ export class SimulatorComponent implements OnInit {
   setInterestRate(): void {
     if (this.selectedCreditLineDetails) {
       const loanTerm = Number((document.getElementById('loanTerm') as HTMLInputElement).value);
-      this.interestRate = this.selectedCreditLineDetails.tasa_interes_1; // Default to tasa_interes_1
+      this.interestRate = this.selectedCreditLineDetails.tasa_interes_1;
       if (loanTerm > 120 && this.selectedCreditLineDetails.tasa_interes_2) {
         this.interestRate = this.selectedCreditLineDetails.tasa_interes_2;
       }
@@ -79,6 +85,10 @@ export class SimulatorComponent implements OnInit {
   }
 
   calculate(): void {
+    if (this.isLoanTermInvalid) {
+      return;
+    }
+
     const interestRate = this.interestRate ? this.interestRate / 100 : 0;
     const loanTerm = Number((document.getElementById('loanTerm') as HTMLInputElement).value);
 
