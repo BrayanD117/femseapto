@@ -119,7 +119,7 @@ h1, h2, h3, h4 {
   @media (min-width: 992px) {
     .simulator-card .result, .simulator-card .animacion {
       flex: 1 1 50%;
-      max-width: 50%;
+      max-width: 100%;
     }
   
     .simulator-card .result {
