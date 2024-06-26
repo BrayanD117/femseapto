@@ -44,7 +44,7 @@ class PersonaNaturalController {
 
     public function actualizar($id, $datos) {
 
-        $personaNatural = PersonaNatural::obtenerPorId($id);
+        $personaNatural = PersonaNatural::obtenerPorIdUsuario($id);
         if (!$personaNatural) {
             return false; // Si no existe, devolver false
         }
@@ -86,7 +86,7 @@ class PersonaNaturalController {
     }
 
     public function obtenerPorId($idUsuario) {
-        $persona = PersonaNatural::obtenerPorId($idUsuario);
+        $persona = PersonaNatural::obtenerPorIdUsuario($idUsuario);
         if ($persona) {
             return $persona;
         } else {

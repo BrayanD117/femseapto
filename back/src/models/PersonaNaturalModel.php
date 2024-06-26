@@ -129,7 +129,7 @@ class PersonaNatural {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, cargo_ocupa, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia FROM personas_naturales WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT * FROM personas_naturales WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id,
