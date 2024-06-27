@@ -119,80 +119,100 @@
         </div>
       </p-accordionTab>
       <!-- NUCLEO FAMILIAR -->
-      <p-accordionTab header="Núcleo Familiar" *ngFor="let familiar of userInfo.nucleoFamiliar">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label for="nombreCompleto" class="form-label">Nombre Completo</label>
-            <input type="text" class="form-control" id="nombreCompleto" [(ngModel)]="familiar.nombreCompleto" name="nombreCompleto">
-          </div>
-          <div class="col-md-6">
-            <label for="idTipoDocumento" class="form-label">Tipo de Documento</label>
-            <select class="form-select" [(ngModel)]="familiar.idTipoDocumento" name="idTipoDocumento">
-              <option value="1">Cédula de Ciudadanía</option>
-              <option value="2">Cédula de Extranjería</option>
-              <option value="3">Pasaporte</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="numeroDocumento" class="form-label">Número de Documento</label>
-            <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="familiar.numeroDocumento" name="numeroDocumento">
-          </div>
-          <div class="col-md-6">
-            <label for="idParentesco" class="form-label">Parentesco</label>
-            <select class="form-select" [(ngModel)]="familiar.idParentesco" name="idParentesco">
-              <option value="1">Padre/Madre</option>
-              <option value="2">Hermano/a</option>
-              <option value="3">Hijo/a</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="idGenero" class="form-label">Género</label>
-            <select class="form-select" [(ngModel)]="familiar.idGenero" name="idGenero">
-              <option value="1">Masculino</option>
-              <option value="2">Femenino</option>
-              <option value="3">Otro</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="fechaNacimiento" [(ngModel)]="familiar.fechaNacimiento" name="fechaNacimiento">
-          </div>
-          <div class="col-md-6">
-            <label for="trabaja" class="form-label">Trabaja</label>
-            <select class="form-select" [(ngModel)]="familiar.trabaja" name="trabaja">
-              <option value="SI">Sí</option>
-              <option value="NO">No</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="celular" class="form-label">Celular</label>
-            <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="familiar.celular" name="celular">
-          </div>
+      <p-accordionTab header="Núcleo Familiar">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nombre Completo</th>
+              <th>Tipo de Documento</th>
+              <th>Número de Documento</th>
+              <th>Parentesco</th>
+              <th>Género</th>
+              <th>Fecha de Nacimiento</th>
+              <th>Trabaja</th>
+              <th>Celular</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let familiar of userInfo.nucleoFamiliar; let i = index">
+              <td><input type="text" class="form-control" [(ngModel)]="familiar.nombreCompleto" name="nombreCompleto"></td>
+              <td>
+                <select class="form-select" [(ngModel)]="familiar.idTipoDocumento" name="idTipoDocumento">
+                  <option value="1">Cédula de Ciudadanía</option>
+                  <option value="2">Cédula de Extranjería</option>
+                  <option value="3">Pasaporte</option>
+                </select>
+              </td>
+              <td><input type="text" class="form-control" [(ngModel)]="familiar.numeroDocumento" name="numeroDocumento"></td>
+              <td>
+                <select class="form-select" [(ngModel)]="familiar.idParentesco" name="idParentesco">
+                  <option value="1">Padre/Madre</option>
+                  <option value="2">Hermano/a</option>
+                  <option value="3">Hijo/a</option>
+                </select>
+              </td>
+              <td>
+                <select class="form-select" [(ngModel)]="familiar.idGenero" name="idGenero">
+                  <option value="1">Masculino</option>
+                  <option value="2">Femenino</option>
+                  <option value="3">Otro</option>
+                </select>
+              </td>
+              <td><input type="date" class="form-control" [(ngModel)]="familiar.fechaNacimiento" name="fechaNacimiento"></td>
+              <td>
+                <select class="form-select" [(ngModel)]="familiar.trabaja" name="trabaja">
+                  <option value="SI">Sí</option>
+                  <option value="NO">No</option>
+                </select>
+              </td>
+              <td><input type="number" minlength="7" maxlength="10" class="form-control" [(ngModel)]="familiar.celular" name="celular"></td>
+              <td>
+                <button type="button" class="btn btn-danger trash-button" (click)="deleteNucleoFamiliar(i)">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" (click)="addNucleoFamiliar()">Agregar Familiar</button>
         </div>
       </p-accordionTab>
       <!-- Referencias -->
-      <p-accordionTab header="Referencias" *ngFor="let referencia of userInfo.referencias">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label for="nombreRazonSocial" class="form-label">Nombre o Razón Social</label>
-            <input type="text" class="form-control" id="nombreRazonSocial" [(ngModel)]="referencia.nombreRazonSocial" name="nombreRazonSocial">
-          </div>
-          <div class="col-md-6">
-            <label for="idTipoReferencia" class="form-label">Tipo de Referencia</label>
-            <select class="form-select" [(ngModel)]="referencia.idTipoReferencia" name="idTipoReferencia">
-              <option value="1">Personal</option>
-              <option value="2">Laboral</option>
-              <option value="3">Comercial</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccion" [(ngModel)]="referencia.direccion" name="direccion">
-          </div>
-          <div class="col-md-6">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="referencia.telefono" name="telefono">
-          </div>
+      <p-accordionTab header="Referencias">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nombre o Razón Social</th>
+              <th>Tipo de Referencia</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let referencia of userInfo.referencias; let i = index">
+              <td><input type="text" class="form-control" [(ngModel)]="referencia.nombreRazonSocial" name="nombreRazonSocial"></td>
+              <td>
+                <select class="form-select" [(ngModel)]="referencia.idTipoReferencia" name="idTipoReferencia">
+                  <option value="1">Personal</option>
+                  <option value="2">Laboral</option>
+                  <option value="3">Comercial</option>
+                </select>
+              </td>
+              <td><input type="text" class="form-control" [(ngModel)]="referencia.direccion" name="direccion"></td>
+              <td><input type="number" minlength="7" maxlength="10" class="form-control" [(ngModel)]="referencia.telefono" name="telefono"></td>
+              <td>
+                <button type="button" class="btn btn-danger" (click)="deleteReferencia(i)">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" (click)="addReferencia()">Agregar Referencia</button>
         </div>
       </p-accordionTab>
     </p-accordion>

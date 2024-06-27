@@ -135,4 +135,36 @@ export class UserInfoComponent implements OnInit {
       });
     }
   }
+
+  addNucleoFamiliar(): void {
+    this.userInfo.nucleoFamiliar.push({
+      nombreCompleto: '',
+      idTipoDocumento: null,
+      numeroDocumento: '',
+      idParentesco: null,
+      idGenero: null,
+      fechaNacimiento: '',
+      idNivelEducativo: null,
+      trabaja: '',
+      celular: ''
+    });
+  }
+
+  deleteNucleoFamiliar(index: number): void {
+    this.userInfo.nucleoFamiliar.splice(index, 1);
+  }
+
+  addReferencia(): void {
+    this.userInfo.referencias.push({
+      nombreRazonSocial: '',
+      idTipoReferencia: null,
+      idMunicipio: '',
+      direccion: '',
+      telefono: ''
+    });
+  }
+
+  deleteReferencia(index: number): void {
+    this.userInfo.referencias.splice(index, 1);
+  }
 }
