@@ -9,295 +9,195 @@
 
   <div *ngIf="!loading && !error" class="card shadow p-3 mb-5 bg-white rounded">
     <h2 class="text-center title-color">Información del Usuario</h2>
-  <form class="row g-3" (ngSubmit)="onSubmit()" #userForm="ngForm">
-    <div class="col-md-6">
-      <label class="form-label">Tipo de documento</label>
-      <select class="form-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+    <p-accordion>
+      <!-- DATOS PERSONALES -->
+      <p-accordionTab header="Datos Personales">
+        <form class="row g-3" (ngSubmit)="onSubmit()" #userForm="ngForm">
+          <div class="col-md-6">
+            <label class="form-label">Tipo de documento</label>
+            <select class="form-select" [(ngModel)]="userInfo.usuario.idTipoDocumento" name="idTipoDocumento">
+              <option value="1">Cédula de Ciudadanía</option>
+              <option value="2">Cédula de Extranjería</option>
+              <option value="3">Pasaporte</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="numeroDocumento" class="form-label">Número de documento</label>
+            <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.usuario.numeroDocumento" name="numeroDocumento">
+          </div>
+          <div class="col-md-6">
+            <label for="primerNombre" class="form-label">Primer Nombre</label>
+            <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.usuario.primerNombre" name="primerNombre" required>
+          </div>
+          <div class="col-md-6">
+            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
+            <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.usuario.segundoNombre" name="segundoNombre">
+          </div>
+          <div class="col-md-6">
+            <label for="primerApellido" class="form-label">Primer Apellido</label>
+            <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.usuario.primerApellido" name="primerApellido" required>
+          </div>
+          <div class="col-md-6">
+            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+            <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.usuario.segundoApellido" name="segundoApellido">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Género</label>
+            <select class="form-select" [(ngModel)]="userInfo.personaNatural.idGenero" name="idGenero">
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
+              <option value="3">Otro</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.personaNatural.correoElectronico" name="correoElectronico" required>
+          </div>
+        </form>
+      </p-accordionTab>
+      <!-- INFORMACIÓN DE CONTACTO -->
+      <p-accordionTab header="Información de Contacto">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="userInfo.personaNatural.telefono" name="telefono">
+          </div>
+          <div class="col-md-6">
+            <label for="celular" class="form-label">Celular</label>
+            <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="userInfo.personaNatural.celular" name="celular">
+          </div>
+          <div class="col-md-6">
+            <label for="fechaExpDoc" class="form-label">Fecha de expedición de documento</label>
+            <input type="date" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.personaNatural.fechaExpDoc" name="fechaExpDoc">
+          </div>
+          <div class="col-md-6">
+            <label for="fechaExpDoc" class="form-label">Departamento de expedición del documento</label>
+            <p-autoComplete 
+                [dropdown]="true" 
+                [suggestions]="filteredDepartments" 
+                (completeMethod)="filterDepartment($event)" 
+                field="nombre"
+                [(ngModel)]="selectedDepartment" 
+                name="selectedDepartment"
+                (onSelect)="onDepartmentSelect()"/>
+          </div>
+          <div class="col-md-6">
+            <label for="fechaExpDoc" class="form-label">Municipio de expedición del documento</label>
+            <p-autoComplete 
+                [dropdown]="true" 
+                [suggestions]="filteredCities" 
+                (completeMethod)="filterCity($event)" 
+                field="nombre"
+                [(ngModel)]="selectedCity" 
+                name="selectedCities"/>
+          </div>
+        </div>
+      </p-accordionTab>
+      <!-- INFORMACIÓN FINANCIERA -->
+      <p-accordionTab header="Información Financiera">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="ingresosMensuales" class="form-label">Ingresos Mensuales</label>
+            <input type="number" class="form-control" id="ingresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.ingresosMensuales" name="ingresosMensuales">
+          </div>
+          <div class="col-md-6">
+            <label for="otrosIngresosMensuales" class="form-label">Otros Ingresos Mensuales</label>
+            <input type="number" class="form-control" id="otrosIngresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.otrosIngresosMensuales" name="otrosIngresosMensuales">
+          </div>
+          <div class="col-md-6">
+            <label for="egresosMensuales" class="form-label">Egresos Mensuales</label>
+            <input type="number" class="form-control" id="egresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.egresosMensuales" name="egresosMensuales">
+          </div>
+          <div class="col-md-6">
+            <label for="totalActivos" class="form-label">Total Activos</label>
+            <input type="number" class="form-control" id="totalActivos" [(ngModel)]="userInfo.informacionFinanciera.totalActivos" name="totalActivos">
+          </div>
+          <div class="col-md-6">
+            <label for="totalPasivos" class="form-label">Total Pasivos</label>
+            <input type="number" class="form-control" id="totalPasivos" [(ngModel)]="userInfo.informacionFinanciera.totalPasivos" name="totalPasivos">
+          </div>
+        </div>
+      </p-accordionTab>
+      <!-- NUCLEO FAMILIAR -->
+      <p-accordionTab header="Núcleo Familiar" *ngFor="let familiar of userInfo.nucleoFamiliar">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="nombreCompleto" [(ngModel)]="familiar.nombreCompleto" name="nombreCompleto">
+          </div>
+          <div class="col-md-6">
+            <label for="idTipoDocumento" class="form-label">Tipo de Documento</label>
+            <select class="form-select" [(ngModel)]="familiar.idTipoDocumento" name="idTipoDocumento">
+              <option value="1">Cédula de Ciudadanía</option>
+              <option value="2">Cédula de Extranjería</option>
+              <option value="3">Pasaporte</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="numeroDocumento" class="form-label">Número de Documento</label>
+            <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="familiar.numeroDocumento" name="numeroDocumento">
+          </div>
+          <div class="col-md-6">
+            <label for="idParentesco" class="form-label">Parentesco</label>
+            <select class="form-select" [(ngModel)]="familiar.idParentesco" name="idParentesco">
+              <option value="1">Padre/Madre</option>
+              <option value="2">Hermano/a</option>
+              <option value="3">Hijo/a</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="idGenero" class="form-label">Género</label>
+            <select class="form-select" [(ngModel)]="familiar.idGenero" name="idGenero">
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
+              <option value="3">Otro</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento" [(ngModel)]="familiar.fechaNacimiento" name="fechaNacimiento">
+          </div>
+          <div class="col-md-6">
+            <label for="trabaja" class="form-label">Trabaja</label>
+            <select class="form-select" [(ngModel)]="familiar.trabaja" name="trabaja">
+              <option value="SI">Sí</option>
+              <option value="NO">No</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="celular" class="form-label">Celular</label>
+            <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="familiar.celular" name="celular">
+          </div>
+        </div>
+      </p-accordionTab>
+      <!-- Referencias -->
+      <p-accordionTab header="Referencias" *ngFor="let referencia of userInfo.referencias">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nombreRazonSocial" class="form-label">Nombre o Razón Social</label>
+            <input type="text" class="form-control" id="nombreRazonSocial" [(ngModel)]="referencia.nombreRazonSocial" name="nombreRazonSocial">
+          </div>
+          <div class="col-md-6">
+            <label for="idTipoReferencia" class="form-label">Tipo de Referencia</label>
+            <select class="form-select" [(ngModel)]="referencia.idTipoReferencia" name="idTipoReferencia">
+              <option value="1">Personal</option>
+              <option value="2">Laboral</option>
+              <option value="3">Comercial</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" [(ngModel)]="referencia.direccion" name="direccion">
+          </div>
+          <div class="col-md-6">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="referencia.telefono" name="telefono">
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+    <div class="col-12 mt-3 text-center">
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </div>
-    <div class="col-md-6">
-      <label for="numeroDocumento" class="form-label">Número de documento</label>
-      <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.numeroDocumento" name="numeroDocumento">
-    </div>
-    <div class="col-md-6">
-      <label for="primerNombre" class="form-label">Primer Nombre</label>
-      <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.primerNombre" name="primerNombre" required>
-    </div>
-    <div class="col-md-6">
-      <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-      <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.segundoNombre" name="segundoNombre">
-    </div>
-    <div class="col-md-6">
-      <label for="primerApellido" class="form-label">Primer Apellido</label>
-      <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.primerApellido" name="primerApellido" required>
-    </div>
-    <div class="col-md-6">
-      <label for="segundoApellido" class="form-label">Segundo Apellido</label>
-      <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.segundoApellido" name="segundoApellido">
-    </div>
-    <div class="col-md-6">
-      <label class="form-label">Género</label>
-      <select class="form-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-    </div>
-    <div class="col-md-6">
-      <label for="correoElectronico" class="form-label">Correo Electrónico</label>
-      <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.correoElectronico" name="correoElectronico" required>
-    </div>
-    <div class="col-md-6">
-      <label for="telefono" class="form-label">Teléfono</label>
-      <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="userInfo.telefono" name="telefono">
-    </div>
-    <div class="col-md-6">
-      <label for="celular" class="form-label">Celular</label>
-      <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="userInfo.celular" name="celular">
-    </div>
-    <div class="col-md-6">
-      <label for="fechaExpDoc" class="form-label">Fecha de expedición de documento</label>
-      <input type="date" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.fechaExpDoc" name="fechaExpDoc">
-    </div>
-    <div class="col-md-6">
-      <label for="fechaExpDoc" class="form-label">Departamento de expedición del documento</label>
-      <p-autoComplete 
-          [dropdown]="true" 
-          [suggestions]="filteredDepartments" 
-          (completeMethod)="filterDepartment($event)" 
-          field="nombre"
-          [(ngModel)]="selectedDepartment" 
-          name="selectedDepartment"
-          (onSelect)="onDepartmentSelect()"/>
-    </div>
-    <div class="col-md-6">
-      <label for="fechaExpDoc" class="form-label">Municipio de expedición del documento</label>
-      <p-autoComplete 
-          [dropdown]="true" 
-          [suggestions]="filteredCities" 
-          (completeMethod)="filterCity($event)" 
-          field="nombre"
-          [(ngModel)]="selectedCity" 
-          name="selectedCities"/>
-    </div>
-    <div class="col-md-6">
-      <label for="inputPassword4" class="form-label">Password</label>
-      <input type="password" class="form-control" id="inputPassword4">
-    </div>
-    <div class="col-12">
-      <label for="inputAddress" class="form-label">Address</label>
-      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-    </div>
-    <div class="col-12">
-      <label for="inputAddress2" class="form-label">Address 2</label>
-      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
-    <div class="col-md-6">
-      <label for="inputCity" class="form-label">City</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="col-md-4">
-      <label for="inputState" class="form-label">State</label>
-      <select id="inputState" class="form-select">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label for="inputZip" class="form-label">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
-    </div>
-    <div class="col-12">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck">
-        <label class="form-check-label" for="gridCheck">
-          Check me out
-        </label>
-      </div>
-    </div>
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary">Sign in</button>
-    </div>
-  </form>
+  </div>
 </div>
-
-
-<!-- <div class="container mt-3">
-  <div *ngIf="loading" class="text-center">
-    <p>Cargando...</p>
-  </div>
-
-  <div *ngIf="!loading && error" class="alert alert-danger text-center">
-    <p>{{ error }}</p>
-  </div>
-
-  <div *ngIf="!loading && !error" class="card shadow p-3 mb-5 bg-white rounded">
-    <h2 class="text-center title-color">Información del Usuario</h2>
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="primerNombre">Primer Nombre</label>
-          <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.primerNombre" name="primerNombre" required>
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="segundoNombre">Segundo Nombre</label>
-          <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.segundoNombre" name="segundoNombre">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="primerApellido">Primer Apellido</label>
-          <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.primerApellido" name="primerApellido" required>
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="segundoApellido">Segundo Apellido</label>
-          <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.segundoApellido" name="segundoApellido">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="correoElectronico">Correo Electrónico</label>
-          <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.correoElectronico" name="correoElectronico" required>
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="telefono">Teléfono</label>
-          <input type="text" class="form-control" id="telefono" [(ngModel)]="userInfo.telefono" name="telefono">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="celular">Celular</label>
-          <input type="text" class="form-control" id="celular" [(ngModel)]="userInfo.celular" name="celular">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idGenero">Género</label>
-          <input type="text" class="form-control" id="idGenero" [(ngModel)]="userInfo.idGenero" name="idGenero">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idTipoDocumento">Tipo de Documento</label>
-          <input type="text" class="form-control" id="idTipoDocumento" [(ngModel)]="userInfo.idTipoDocumento" name="idTipoDocumento">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="numeroDocumento">Número de Documento</label>
-          <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.numeroDocumento" name="numeroDocumento">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="fechaExpDoc">Fecha de Expedición del Documento</label>
-          <input type="text" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.fechaExpDoc" name="fechaExpDoc">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="mpioExpDoc">Municipio de Expedición del Documento</label>
-          <input type="text" class="form-control" id="mpioExpDoc" [(ngModel)]="userInfo.mpioExpDoc" name="mpioExpDoc">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="fechaNacimiento">Fecha de Nacimiento</label>
-          <input type="text" class="form-control" id="fechaNacimiento" [(ngModel)]="userInfo.fechaNacimiento" name="fechaNacimiento">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="paisNacimiento">País de Nacimiento</label>
-          <input type="text" class="form-control" id="paisNacimiento" [(ngModel)]="userInfo.paisNacimiento" name="paisNacimiento">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="mpioNacimiento">Municipio de Nacimiento</label>
-          <input type="text" class="form-control" id="mpioNacimiento" [(ngModel)]="userInfo.mpioNacimiento" name="mpioNacimiento">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="otroLugarNacimiento">Otro Lugar de Nacimiento</label>
-          <input type="text" class="form-control" id="otroLugarNacimiento" [(ngModel)]="userInfo.otroLugarNacimiento" name="otroLugarNacimiento">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="mpioResidencia">Municipio de Residencia</label>
-          <input type="text" class="form-control" id="mpioResidencia" [(ngModel)]="userInfo.mpioResidencia" name="mpioResidencia">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idZonaResidencia">Zona de Residencia</label>
-          <input type="text" class="form-control" id="idZonaResidencia" [(ngModel)]="userInfo.idZonaResidencia" name="idZonaResidencia">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idTipoVivienda">Tipo de Vivienda</label>
-          <input type="text" class="form-control" id="idTipoVivienda" [(ngModel)]="userInfo.idTipoVivienda" name="idTipoVivienda">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="estrato">Estrato</label>
-          <input type="text" class="form-control" id="estrato" [(ngModel)]="userInfo.estrato" name="estrato">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="direccionResidencia">Dirección de Residencia</label>
-          <input type="text" class="form-control" id="direccionResidencia" [(ngModel)]="userInfo.direccionResidencia" name="direccionResidencia">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="aniosAntigVivienda">Años de Antigüedad de la Vivienda</label>
-          <input type="text" class="form-control" id="aniosAntigVivienda" [(ngModel)]="userInfo.aniosAntigVivienda" name="aniosAntigVivienda">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idEstadoCivil">Estado Civil</label>
-          <input type="text" class="form-control" id="idEstadoCivil" [(ngModel)]="userInfo.idEstadoCivil" name="idEstadoCivil">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="personasACargo">Personas a Cargo</label>
-          <input type="text" class="form-control" id="personasACargo" [(ngModel)]="userInfo.personasACargo" name="personasACargo">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="tieneHijos">¿Tiene Hijos?</label>
-          <input type="text" class="form-control" id="tieneHijos" [(ngModel)]="userInfo.tieneHijos" name="tieneHijos">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="numeroHijos">Número de Hijos</label>
-          <input type="text" class="form-control" id="numeroHijos" [(ngModel)]="userInfo.numeroHijos" name="numeroHijos">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idNivelEducativo">Nivel Educativo</label>
-          <input type="text" class="form-control" id="idNivelEducativo" [(ngModel)]="userInfo.idNivelEducativo" name="idNivelEducativo">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="profesion">Profesión</label>
-          <input type="text" class="form-control" id="profesion" [(ngModel)]="userInfo.profesion" name="profesion">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="ocupacionOficio">Ocupación u Oficio</label>
-          <input type="text" class="form-control" id="ocupacionOficio" [(ngModel)]="userInfo.ocupacionOficio" name="ocupacionOficio">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="idEmpresaLabor">Empresa donde Labora</label>
-          <input type="text" class="form-control" id="idEmpresaLabor" [(ngModel)]="userInfo.idEmpresaLabor" name="idEmpresaLabor">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="cargoOcupa">Cargo que Ocupa</label>
-          <input type="text" class="form-control" id="cargoOcupa" [(ngModel)]="userInfo.cargoOcupa" name="cargoOcupa">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="nombreEmergencia">Nombre de Contacto de Emergencia</label>
-          <input type="text" class="form-control" id="nombreEmergencia" [(ngModel)]="userInfo.nombreEmergencia" name="nombreEmergencia">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="numeroCedulaEmergencia">Número de Cédula de Contacto de Emergencia</label>
-          <input type="text" class="form-control" id="numeroCedulaEmergencia" [(ngModel)]="userInfo.numeroCedulaEmergencia" name="numeroCedulaEmergencia">
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 form-group">
-          <label for="numeroCelularEmergencia">Número Celular de Contacto de Emergencia</label>
-          <input type="text" class="form-control" id="numeroCelularEmergencia" [(ngModel)]="userInfo.numeroCelularEmergencia" name="numeroCelularEmergencia">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 text-center mt-3">
-          <button type="submit" class="btn btn-primary" [disabled]="!isDirty">Actualizar</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div> -->

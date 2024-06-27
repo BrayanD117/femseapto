@@ -3,18 +3,20 @@
   font-weight: bold;
 }
   
-/*.card {
-  margin: 0 auto;
+.container {
+  margin-top: 20px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.card {
+  padding: 20px;
 }
 
-label {
-  font-weight: bold;
+.btn-primary {
+  background-color: #00823d;
+  border-color: #00823d;
 }
 
-input {
-  border-radius: 5px;
-}*/
+.btn-primary:hover {
+  background-color: #23c55f;
+  border-color: #23c55f;
+}

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-// Components
+import { AccordionModule } from 'primeng/accordion';
 import { UserInfoService } from '../../../../services/user-info.service';
 import { DepartmentsService } from '../../../../services/departments.service';
 import { CitiesService } from '../../../../services/cities.service';
-
 import { AutoCompleteModule } from 'primeng/autocomplete';
 
 interface AutoCompleteCompleteEvent {
@@ -28,7 +26,7 @@ interface City {
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, AccordionModule],
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.css']
 })
@@ -57,7 +55,7 @@ export class UserInfoComponent implements OnInit {
         if (data.success) {
           this.userInfo = data.data;
           this.originalUserInfo = { ...data.data };
-          console.log(this.userInfo)
+          console.log("User Info: ", this.userInfo);
           this.loadDepartmentsAndCities();
         } else {
           this.error = data.message;
@@ -76,7 +74,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   loadDepartmentsAndCities() {
-    const cityId = this.userInfo.mpioExpDoc;
+    const cityId = this.userInfo.personaNatural.mpioExpDoc;
 
     if (cityId) {
       this.citiesService.getCityById(cityId).subscribe(city => {
@@ -132,7 +130,7 @@ export class UserInfoComponent implements OnInit {
     if (this.selectedDepartment && this.selectedDepartment.id) {
       this.citiesService.getCitiesByDepartment(this.selectedDepartment.id.toString()).subscribe((cities) => {
         this.cities = cities;
-        this.selectedCity = this.cities.find(muni => muni.id === this.userInfo.mpioExpDoc);
+        this.selectedCity = this.cities.find(muni => muni.id === this.userInfo.personaNatural.mpioExpDoc);
         this.filteredCities = []; // Clear filtered municipalities
       });
     }
