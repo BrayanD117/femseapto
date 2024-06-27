@@ -8,7 +8,7 @@ import { SimulatorComponent } from './components/simulator/simulator.component';
 @Component({
   selector: 'app-credit-service',
   standalone: true,
-  imports: [DividerModule, CommonModule, RouterLink,SimulatorComponent],
+  imports: [DividerModule, CommonModule, RouterLink, SimulatorComponent],
   templateUrl: './credit-service.component.html',
   styleUrl: './credit-service.component.css'
 })

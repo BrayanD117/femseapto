@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
-import { UserInfoService } from '../../../../services/user-info.service';
-import { DepartmentsService } from '../../../../services/departments.service';
-import { CitiesService } from '../../../../services/cities.service';
+import { UserInfoService } from '../../../../../services/user-info.service';
+import { DepartmentsService } from '../../../../../services/departments.service';
+import { CitiesService } from '../../../../../services/cities.service';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 
 interface AutoCompleteCompleteEvent {

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { RouterLink } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from '../../../services/login.service';
 import { CookieService } from 'ngx-cookie-service'; 
 
 @Component({
@@ -33,7 +33,7 @@ export class LoginComponent {
             path: '/',
           });
           if (!this.loginService.isTokenExpired()) {
-            window.location.href = '/welcome'
+            window.location.href = 'auth/user/welcome'
           } else {
             console.error('Token ha expirado');
             this.router.navigate(['/login']);

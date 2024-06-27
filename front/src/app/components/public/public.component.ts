@@ -4,18 +4,18 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet, NavigationEnd } fro
 import { filter } from 'rxjs/operators';
 
 // Components
-import { NavbarComponent } from './components/public/navbar/navbar.component';
-import { FooterComponent } from './components/public/footer/footer.component';
-import { WhatsappButtonComponent } from './components/public/whatsapp-button/whatsapp-button.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { WhatsappButtonComponent } from './whatsapp-button/whatsapp-button.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-public',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NavbarComponent, FooterComponent, WhatsappButtonComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './public.component.html',
+  styleUrl: './public.component.css'
 })
-export class AppComponent {
+export class PublicComponent {
   title = 'front';
 
   private router = inject(Router);

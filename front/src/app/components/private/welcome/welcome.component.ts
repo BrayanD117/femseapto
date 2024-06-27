@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { UserInfoService } from '../../services/user-info.service';
+import { UserInfoService } from '../../../services/user-info.service';
 
 @Component({
   selector: 'app-welcome',
