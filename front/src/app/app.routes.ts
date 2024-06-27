@@ -22,6 +22,7 @@ import { LoginGuard } from './guards/login.guard';
 import { LoginRedirectGuard } from './guards/login-redirect.guard';
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
+import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -39,11 +40,12 @@ export const routes: Routes = [
             { path: 'login', component: LoginComponent, canActivate: [LoginRedirectGuard] }
         ]
     },
-    { path: 'auth', component: PrivateComponent,
+    { path: 'auth', component: PrivateComponent, canActivate: [LoginGuard],
         children: [
-            { path: 'user', canActivate: [LoginGuard], 
+            // Hacer componente para Not Found{ path: '', redirectTo: 'user/welcome', pathMatch: 'full' },
+            { path: 'user', 
                 children: [
-                    { path: 'welcome', component: WelcomeComponent },
+                    { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
                     { path: 'savings', component: UserSavingComponent },
                     { path: 'credits', component: UserCreditsComponent },
@@ -51,8 +53,7 @@ export const routes: Routes = [
             },
             { path: 'admin', component: AdminComponent,
                 children: [
-                    { path: 'aboutnew', component: AboutComponent},
-                    { path: 'agreements', component: AgreementsComponent},
+                    { path: '', component: AdminWelcomeComponent },
                 ]
             }
         ]
