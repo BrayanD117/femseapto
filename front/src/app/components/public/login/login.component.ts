@@ -33,7 +33,7 @@ export class LoginComponent {
             path: '/',
           });
           if (!this.loginService.isTokenExpired()) {
-            window.location.href = 'auth/user/welcome'
+            window.location.href = 'auth/user'
           } else {
             console.error('Token ha expirado');
             this.router.navigate(['/login']);

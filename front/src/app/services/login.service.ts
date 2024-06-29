@@ -19,7 +19,7 @@ export class LoginService {
   }
 
   login(usuario: string, contrasenia: string): Observable<any> {
-    const url = 'http://localhost:8080/femseapto/back/auth/login.php';
+    const url = 'http://localhost/femseapto/back/auth/login.php';
     return this.http.post(
       url,
       {
