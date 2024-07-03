@@ -3,8 +3,8 @@
   font-weight: bold;
 }
   
-.container {
-  margin-top: 20px;
+.container-fluid {
+  padding: 50px;
 }
 
 .card {
@@ -12,7 +12,7 @@
 }
 
 .btn-primary {
-  background-color: #00823d;
+  background-color: #565f5a;
   border-color: #00823d;
 }
 
