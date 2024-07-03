@@ -30,7 +30,7 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'about', component: AboutComponent },
             { path: 'agreements', component: AgreementsComponent },
-            { path: 'services', component: PublicComponent,
+            { path: 'services',
                 children: [
                     { path: '', pathMatch: 'full', redirectTo: 'savings' },
                     { path: 'savings', component: SavingServiceComponent },
