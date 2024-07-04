@@ -14,7 +14,7 @@ export class LoginRedirectGuard implements CanActivate {
   canActivate(): boolean {
     const token = this.cookieService.get('auth_token');
     if (token && !this.jwtHelper.isTokenExpired(token)) {
-      this.router.navigate(['/welcome']);
+      this.router.navigate(['/auth/user']);
       return false;
     }
     return true;

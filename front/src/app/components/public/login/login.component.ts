@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 // Login Animation
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { RouterLink } from '@angular/router';
-import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginService } from '../../../services/login.service';
 import { CookieService } from 'ngx-cookie-service'; 
 
@@ -20,7 +20,7 @@ export class LoginComponent {
   usuario: string = '';
   contrasenia: string = '';
 
-  constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router) {}
+  constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router, private jwtHelper: JwtHelperService) {}
 
   onLogin(): void {
     this.loginService.login(this.usuario, this.contrasenia).subscribe({
@@ -32,8 +32,18 @@ export class LoginComponent {
             expires: 1,
             path: '/',
           });
+
+          const decodedToken = this.jwtHelper.decodeToken(response.token);
+          const rol = decodedToken.id_rol;
+          console.log('ROOOOL:', rol);
+
           if (!this.loginService.isTokenExpired()) {
-            window.location.href = 'auth/user'
+            if (rol === 1) { // Suponiendo que 1 es el rol de administrador
+              this.router.navigate(['/auth/admin']);
+            } else {
+              this.router.navigate(['/auth/user']);
+            }
+            //window.location.href = 'auth/user'
           } else {
             console.error('Token ha expirado');
             this.router.navigate(['/login']);
