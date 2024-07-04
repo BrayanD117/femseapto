@@ -19,8 +19,8 @@ export class WhatsappButtonComponent implements OnInit {
     this.items = [
       {
         icon: "pi pi-phone",
-        url: 'https://api.whatsapp.com/send/?phone=573212289646',
-        tooltip: 'Javier Patiño'
+        url: 'https://api.whatsapp.com/send/?phone=573213856420',
+        tooltip: 'Andrea Cárdenas'
       },
       {
         icon: "pi pi-phone",
