@@ -1,5 +1,5 @@
 <?php
-require_once '../models/PersonaNaturalModel.php';
+require_once __DIR__ . '/../models/PersonaNaturalModel.php';
 
 class PersonaNaturalController {
     
@@ -21,17 +21,24 @@ class PersonaNaturalController {
             $datos['direccionResidencia'],
             $datos['aniosAntiguedadVivienda'],
             $datos['idEstadoCivil'],
+            $datos['cabezaFamilia'],
             $datos['personasACargo'],
             $datos['tieneHijos'],
             $datos['numeroHijos'],
             $datos['correoElectronico'],
             $datos['telefono'],
             $datos['celular'],
+            $datos['telefonoOficina'],
             $datos['idNivelEducativo'],
             $datos['profesion'],
             $datos['ocupacionOficio'],
             $datos['idEmpresaLabor'],
+            $datos['idTipoContrato'],
+            $datos['dependenciaEmpresa'],
             $datos['cargoOcupa'],
+            $datos['aniosAntiguedadEmpresa'],
+            $datos['mesesAntiguedadEmpresa'],
+            $datos['mesSaleVacaciones'],
             $datos['nombreEmergencia'],
             $datos['numeroCedulaEmergencia'],
             $datos['numeroCelularEmergencia']
@@ -49,8 +56,6 @@ class PersonaNaturalController {
             return false; // Si no existe, devolver false
         }
 
-        $personaNatural->id = $datos['id'];
-        $personaNatural->idUsuario = $datos['idUsuario'];
         $personaNatural->idGenero = $datos['idGenero'];
         $personaNatural->fechaExpDoc = $datos['fechaExpedicionDoc'];
         $personaNatural->mpioExpDoc = $datos['mpioExpedicionDoc'];
@@ -65,17 +70,24 @@ class PersonaNaturalController {
         $personaNatural->direccionResidencia = $datos['direccionResidencia'];
         $personaNatural->aniosAntigVivienda = $datos['aniosAntiguedadVivienda'];
         $personaNatural->idEstadoCivil = $datos['idEstadoCivil'];
+        $personaNatural->cabezaFamilia = $datos['cabezaFamilia'];
         $personaNatural->personasACargo = $datos['personasACargo'];
         $personaNatural->tieneHijos = $datos['tieneHijos'];
         $personaNatural->numeroHijos = $datos['numeroHijos'];
         $personaNatural->correoElectronico = $datos['correoElectronico'];
         $personaNatural->telefono = $datos['telefono'];
         $personaNatural->celular = $datos['celular'];
+        $personaNatural->telefonoOficina = $datos['telefonoOficina'];
         $personaNatural->idNivelEducativo = $datos['idNivelEducativo'];
         $personaNatural->profesion = $datos['profesion'];
         $personaNatural->ocupacionOficio = $datos['ocupacionOficio'];
         $personaNatural->idEmpresaLabor = $datos['idEmpresaLabor'];
+        $personaNatural->idTipoContrato = $datos['idTipoContrato'];
+        $personaNatural->dependenciaEmpresa = $datos['dependenciaEmpresa'];
         $personaNatural->cargoOcupa = $datos['cargoOcupa'];
+        $personaNatural->aniosAntigEmpresa = $datos['aniosAntigEmpresa'];
+        $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'];
+        $personaNatural->mesSaleVacaciones = $datos['mesSaleVacaciones'];
         $personaNatural->nombreEmergencia = $datos['nombreEmergencia'];
         $personaNatural->numeroCedulaEmergencia = $datos['numeroCedulaEmergencia'];
         $personaNatural->numeroCelularEmergencia = $datos['numeroCelularEmergencia'];
@@ -85,7 +97,7 @@ class PersonaNaturalController {
         return true;
     }
 
-    public function obtenerPorId($idUsuario) {
+    public function obtenerPorIdUsuario($idUsuario) {
         $persona = PersonaNatural::obtenerPorIdUsuario($idUsuario);
         if ($persona) {
             return $persona;

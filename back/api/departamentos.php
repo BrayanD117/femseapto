@@ -4,15 +4,7 @@ require_once '../src/controllers/DepartamentoController.php';
 
 $controlador = new DepartamentoController();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idNuevoDpto = $controlador->crear($_POST);
-    echo json_encode(['id' => $idNuevoDpto]);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    parse_str(file_get_contents("php://input"), $datos);
-    $idDptoExistente = $datos['id'];
-    $actualizacionExitosa = $controlador->actualizar($idDptoExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $dpto = $controlador->obtenerPorId($id);

@@ -71,7 +71,21 @@ export class UserInfoComponent implements OnInit {
     this.departmentsService.getDepartments().subscribe((departments) => {
       this.departments = departments;
     });
+
+    this.getPersona(2);
   }
+
+  getPersona(idUsuario: number): void {
+    this.userInfoService.getPersona(idUsuario).subscribe(
+      data => {
+        console.log(data); // Imprimir el resultado en la consola
+      },
+      error => {
+        console.error('Error:', error); // Manejo de errores
+      }
+    );
+  }
+
 
   loadDepartmentsAndCities() {
     const cityId = this.userInfo.personaNatural.mpioExpDoc;
