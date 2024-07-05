@@ -62,16 +62,16 @@ class InformacionFinanciera {
                                     egresos_mensuales, obligacion_financiera, otros_egresos_mensuales,
                                     total_egresos_mensuales, total_activos, total_pasivos, total_patrimonio, monto_max_ahorro)
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isisdddsdddddddddd", $this->id_usuario, $this->nombre_banco,
+            $query->bind_param("isisdddsddddddddd", $this->id_usuario, $this->nombre_banco,
                                 $this->id_tipo_cuenta_banc, $this->numero_cuenta_banc, $this->ingresos_mensuales,
                                 $this->prima_productividad, $this->otros_ingresos_mensuales,
                                 $this->concepto_otros_ingresos_mens, $this->total_ingresos_mensuales,
                                 $this->egresos_mensuales, $this->obligacion_financiera,
                                 $this->otros_egresos_mensuales, $this->total_egresos_mensuales,
-                                $this->total_activos, $this->total_pasivos, $this->total_patrimonio);
+                                $this->total_activos, $this->total_pasivos, $this->total_patrimonio, $this->monto_max_ahorro);
         } else {
             $query = $db->prepare("UPDATE informacion_financiera SET nombre_banco = ?, id_tipo_cuenta_banc = ?, numero_cuenta_banc = ?, ingresos_mensuales = ?, prima_productividad = ? otros_ingresos_mensuales = ?, concepto_otros_ingresos_mens = ?, total_ingresos_mensuales = ?, egresos_mensuales = ?, obligacion_financiera = ?, otros_egresos_mensuales = ?, total_egresos_mensuales = ?, total_activos = ?, total_pasivos = ?, total_patrimonio = ?, monto_max_ahorro = ? WHERE id = ?");
-            $query->bind_param("sisdddsddddddddddi", $this->id_usuario, $this->ingresos_mensuales, $this->otros_ingresos_mensuales, $this->concepto_otros_ingresos_mens, $this->total_ingresos_mensuales, $this->egresos_mensuales, $this->otros_egresos_mensuales, $this->total_egresos_mensuales, $this->total_activos, $this->total_pasivos, $this->total_patrimonio, $this->id);
+            $query->bind_param("sisdddsdddddddddi", $this->id_usuario, $this->ingresos_mensuales, $this->otros_ingresos_mensuales, $this->concepto_otros_ingresos_mens, $this->total_ingresos_mensuales, $this->egresos_mensuales, $this->otros_egresos_mensuales, $this->total_egresos_mensuales, $this->total_activos, $this->total_pasivos, $this->total_patrimonio, $this->monto_max_ahorro, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
