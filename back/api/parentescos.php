@@ -1,21 +1,9 @@
 <?php
 
-require_once '../src/controllers/SolicitudCreditoController.php';
-require_once '../auth/verifyToken.php';
-
-$key = $_ENV['JWT_SECRET_KEY'];
-$token = $_COOKIE['auth_token'] ?? '';
-
-$decodedToken = verifyJWTToken($token, $key);
-
-if ($decodedToken === null) {
-    http_response_code(401);
-    echo json_encode(array("message" => "Token no válido o no proporcionado."));
-    exit(); // Terminar la ejecución si el token no es válido
-}
+require_once '../src/controllers/ParentescoController.php';
 
 // Crear una instancia del controlador
-$controlador = new SolicitudCreditoController();
+$controlador = new ParentescoController();
 
 // Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,17 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $resp = $controlador->obtenerPorId($id);
-        if ($resp) {
-            // Establecer el encabezado de respuesta JSON
-            header('Content-Type: application/json');
-            echo json_encode($resp);
-        } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Solicitud de crédito no encontrada."));
-        }
-    } elseif (isset($_GET['idUsuario'])) {
-        $id = $_GET['idUsuario'];
-        $resp = $controlador->obtenerPorIdUsuario($id);
         if ($resp) {
             // Establecer el encabezado de respuesta JSON
             header('Content-Type: application/json');

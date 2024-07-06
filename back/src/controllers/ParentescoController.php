@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/ParentescoModel.php';
+require_once __DIR__ . '/../models/ParentescoModel.php';
 
 class ParentescoController {
 

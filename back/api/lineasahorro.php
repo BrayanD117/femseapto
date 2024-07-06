@@ -1,24 +1,24 @@
 <?php
 
-require_once '../src/controllers/GeneroController.php';
+require_once '../src/controllers/LineaAhorroController.php';
 
-$controlador = new GeneroController();
+$controlador = new LineaAhorroController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $genero = $controlador->obtenerPorId($id);
-        if ($genero) {
+        $resp = $controlador->obtenerPorId($id);
+        if ($resp) {
             header('Content-Type: application/json');
-            echo json_encode($genero);
+            echo json_encode($resp);
         } else {
             http_response_code(404);
-            echo json_encode(array("message" => "Género no encontrado."));
+            echo json_encode(array("message" => "País no encontrado."));
         }
     } else {
-        $generos = $controlador->obtenerTodos();
+        $resp = $controlador->obtenerTodos();
         header('Content-Type: application/json');
-        echo json_encode($generos);
+        echo json_encode($resp);
     }
 } else {
     http_response_code(405);

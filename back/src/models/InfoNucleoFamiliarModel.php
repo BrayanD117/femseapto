@@ -41,7 +41,7 @@ class InformacionNucleoFamiliar {
             $query->bind_param("isissiisiss", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular);
         } else {
             $query = $db->prepare("UPDATE informacion_nucleo_familiar SET nombre_completo = ?, id_tipo_documento = ?, numero_documento = ?, id_mpio_exp_doc = ?, id_parentesco = ?, id_genero = ?, fecha_nacimiento = ?, id_nivel_educativo = ?, trabaja = ?, celular = ? WHERE id = ?");
-            $query->bind_param("sissiisissi", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular, $this->id);
+            $query->bind_param("sissiisissi", $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular, $this->id);
         }
         $query->execute();
         if ($this->id === null) {

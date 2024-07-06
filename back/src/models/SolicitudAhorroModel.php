@@ -61,14 +61,35 @@ class SolicitudAhorro {
         return $solicitud;
     }
 
+    public static function obtenerPorIdUsuario($idUsuario) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM solicitudes_ahorro WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud);
+        
+        $solAhorros = [];
+
+        while ($query->fetch()) {
+            $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($id);
+            $solAhorros[] = new SolicitudAhorro($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud, $lineas);
+        }
+        
+        $query->close();
+        $db->close();
+        
+        return $solAhorros;
+    }
+
     public static function obtenerTodos() {
         $db = getDB();
         $query = "SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, fecha_solicitud FROM solicitudes_ahorro";
         $result = $db->query($query);
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
-            $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($row['id']);
-            $solicitudes[] = new SolicitudAhorro($row['id'], $row['idUsuario'], $row['montoTotalAhorrar'], $row['quincena'], $row['mes'], $row['fechaSolicitud'], $lineas);
+            $id = $row['id'];
+            $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($id);
+            $solicitudes[] = new SolicitudAhorro($row['id'], $row['id_usuario'], $row['monto_total_ahorrar'], $row['quincena'], $row['mes'], $row['fecha_solicitud'], $lineas);
         }
         $db->close();
         return $solicitudes;

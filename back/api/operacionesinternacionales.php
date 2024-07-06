@@ -17,7 +17,9 @@ if ($decodedToken === null) {
 $controlador = new OperacionesInternacionalesController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idNuevaOperacion = $controlador->crear($_POST);
+    //$datos = $_POST;
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $idNuevaOperacion = $controlador->crear($datos);
     echo json_encode(['id' => $idNuevaOperacion]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);

@@ -8,8 +8,8 @@ class PersonaNaturalController {
             null,
             $datos['idUsuario'],
             $datos['idGenero'],
-            $datos['fechaExpedicionDoc'],
-            $datos['mpioExpedicionDoc'],
+            $datos['fechaExpDoc'],
+            $datos['mpioExpDoc'],
             $datos['fechaNacimiento'],
             $datos['paisNacimiento'],
             $datos['mpioNacimiento'],
@@ -19,7 +19,7 @@ class PersonaNaturalController {
             $datos['idTipoVivienda'],
             $datos['estrato'],
             $datos['direccionResidencia'],
-            $datos['aniosAntiguedadVivienda'],
+            $datos['aniosAntigVivienda'],
             $datos['idEstadoCivil'],
             $datos['cabezaFamilia'],
             $datos['personasACargo'],
@@ -36,8 +36,8 @@ class PersonaNaturalController {
             $datos['idTipoContrato'],
             $datos['dependenciaEmpresa'],
             $datos['cargoOcupa'],
-            $datos['aniosAntiguedadEmpresa'],
-            $datos['mesesAntiguedadEmpresa'],
+            $datos['aniosAntigEmpresa'],
+            $datos['mesesAntigEmpresa'],
             $datos['mesSaleVacaciones'],
             $datos['nombreEmergencia'],
             $datos['numeroCedulaEmergencia'],
@@ -51,14 +51,14 @@ class PersonaNaturalController {
 
     public function actualizar($id, $datos) {
 
-        $personaNatural = PersonaNatural::obtenerPorIdUsuario($id);
+        $personaNatural = PersonaNatural::obtenerPorId($id);
         if (!$personaNatural) {
             return false; // Si no existe, devolver false
         }
 
         $personaNatural->idGenero = $datos['idGenero'];
-        $personaNatural->fechaExpDoc = $datos['fechaExpedicionDoc'];
-        $personaNatural->mpioExpDoc = $datos['mpioExpedicionDoc'];
+        $personaNatural->fechaExpDoc = $datos['fechaExpDoc'];
+        $personaNatural->mpioExpDoc = $datos['mpioExpDoc'];
         $personaNatural->fechaNacimiento = $datos['fechaNacimiento'];
         $personaNatural->paisNacimiento = $datos['paisNacimiento'];
         $personaNatural->mpioNacimiento = $datos['mpioNacimiento'];
@@ -68,7 +68,7 @@ class PersonaNaturalController {
         $personaNatural->idTipoVivienda = $datos['idTipoVivienda'];
         $personaNatural->estrato = $datos['estrato'];
         $personaNatural->direccionResidencia = $datos['direccionResidencia'];
-        $personaNatural->aniosAntigVivienda = $datos['aniosAntiguedadVivienda'];
+        $personaNatural->aniosAntigVivienda = $datos['aniosAntigVivienda'];
         $personaNatural->idEstadoCivil = $datos['idEstadoCivil'];
         $personaNatural->cabezaFamilia = $datos['cabezaFamilia'];
         $personaNatural->personasACargo = $datos['personasACargo'];
@@ -95,6 +95,16 @@ class PersonaNaturalController {
         $personaNatural->guardar();
 
         return true;
+    }
+
+    public function obtenerPorId($id) {
+        $persona = PersonaNatural::obtenerPorId($id);
+        if ($persona) {
+            return $persona;
+        } else {
+            http_response_code(404);
+            return array("message" => "Persona no encontrada.");
+        }
     }
 
     public function obtenerPorIdUsuario($idUsuario) {

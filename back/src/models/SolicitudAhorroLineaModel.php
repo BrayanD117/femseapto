@@ -48,17 +48,21 @@ class SolicitudAhorroLinea {
 
     public static function obtenerPorSolicitudId($idSolicitudAhorro) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_solicitud_ahorro, id_linea_ahorro, monto_ahorrar FROM solicitudes_ahorro_lineas WHERE id_solicitud_ahorro = ?");
+        $query = $db->prepare("SELECT * FROM solicitudes_ahorro_lineas WHERE id_solicitud_ahorro = ?");
         $query->bind_param("i", $idSolicitudAhorro);
         $query->execute();
-        $result = $query->get_result();
-        $solicitudesLineas = [];
-        while ($row = $result->fetch_assoc()) {
-            $solicitudesLineas[] = new SolicitudAhorroLinea($row['id'], $row['idSolicitudAhorro'], $row['idLineaAhorro'], $row['montoAhorrar']);
+        $query->bind_result($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);
+        
+        $solAhorros = [];
+
+        while ($query->fetch()) {
+            $solAhorros[] = new SolicitudAhorroLinea($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);
         }
+        
         $query->close();
         $db->close();
-        return $solicitudesLineas;
+        
+        return $solAhorros;
     }
 
     public function eliminar() {

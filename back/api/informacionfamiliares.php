@@ -19,7 +19,8 @@ $controlador = new InformacionNucleoFamiliarController();
 
 // Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $datos = $_POST;
+    //$datos = $_POST;
+    $datos = json_decode(file_get_contents("php://input"), true);
     $idNuevo = $controlador->crear($datos);
     echo json_encode(['id' => $idNuevo]); // Devuelve el ID de la nueva persona creada
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -56,8 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } elseif($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Obtener el ID del registro a eliminar
-    parse_str(file_get_contents("php://input"), $datos);
-    $idEliminar = $datos['id']; // Obtener el ID de la información familiar a eliminar
+    $idEliminar = $_GET['id'];
 
     $eliminacionExitosa = $controlador->eliminar($idEliminar);
     echo json_encode(['success' => $eliminacionExitosa]);

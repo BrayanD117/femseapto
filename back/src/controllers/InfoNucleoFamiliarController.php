@@ -6,15 +6,15 @@ class InformacionNucleoFamiliarController {
     public function crear($datos) {
         $infoFamiliar = new InformacionNucleoFamiliar(
             null,
-            $datos['id_usuario'],
-            $datos['nombre_completo'],
-            $datos['id_tipo_documento'],
-            $datos['numero_documento'],
-            $datos['id_mpio_exp_doc'],
-            $datos['id_parentesco'],
-            $datos['id_genero'],
-            $datos['fecha_nacimiento'],
-            $datos['id_nivel_educativo'],
+            $datos['idUsuario'],
+            $datos['nombreCompleto'],
+            $datos['idTipoDocumento'],
+            $datos['numeroDocumento'],
+            $datos['idMpioExpDoc'],
+            $datos['idParentesco'],
+            $datos['idGenero'],
+            $datos['fechaNacimiento'],
+            $datos['idNivelEducativo'],
             $datos['trabaja'],
             $datos['celular'],
             null,
@@ -32,14 +32,14 @@ class InformacionNucleoFamiliarController {
             return false;
         }
 
-        $infoFamiliar->nombre_completo = $datos['nombre_completo'];
-        $infoFamiliar->id_tipo_documento = $datos['id_tipo_documento'];
-        $infoFamiliar->numero_documento = $datos['numero_documento'];
-        $infoFamiliar->id_mpio_exp_doc = $datos['id_mpio_exp_doc'];
-        $infoFamiliar->id_parentesco = $datos['id_parentesco'];
-        $infoFamiliar->id_genero = $datos['id_genero'];
-        $infoFamiliar->fecha_nacimiento = $datos['fecha_nacimiento'];
-        $infoFamiliar->id_nivel_educativo = $datos['id_nivel_educativo'];
+        $infoFamiliar->nombreCompleto = $datos['nombreCompleto'];
+        $infoFamiliar->idTipoDocumento = $datos['idTipoDocumento'];
+        $infoFamiliar->numeroDocumento = $datos['numeroDocumento'];
+        $infoFamiliar->idMpioExpDoc = $datos['idMpioExpDoc'];
+        $infoFamiliar->idParentesco = $datos['idParentesco'];
+        $infoFamiliar->idGenero = $datos['idGenero'];
+        $infoFamiliar->fechaNacimiento = $datos['fechaNacimiento'];
+        $infoFamiliar->idNivelEducativo = $datos['idNivelEducativo'];
         $infoFamiliar->trabaja = $datos['trabaja'];
         $infoFamiliar->celular = $datos['celular'];
 

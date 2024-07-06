@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/LineaAhorroModel.php';
+require_once __DIR__ . '/../models/LineaAhorroModel.php';
 
 class LineaAhorroController {
 

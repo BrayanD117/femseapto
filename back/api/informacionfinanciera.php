@@ -17,11 +17,13 @@ if ($decodedToken === null) {
 $controlador = new InfoFinancieraController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idNuevo = $controlador->crear($_POST);
+    //$datos = $_POST;
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $idNuevo = $controlador->crear($datos);
     echo json_encode(['id' => $idNuevo]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idExistente = $datos['id'];
+    $idExistente = $datos['idUsuario'];
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
     echo json_encode(['success' => $actualizacionExitosa]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {

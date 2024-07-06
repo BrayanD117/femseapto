@@ -136,7 +136,7 @@ class PersonaNatural {
             $query->bind_param("isssssssiiisiisisissssissiissiissssi", $this->idGenero,
             $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
             $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
-            $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->idEstadoCivil, $this->nombreEmergencia,
+            $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
             $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia, $this->id
             );
         }
@@ -146,6 +146,97 @@ class PersonaNatural {
         }
         $query->close();
         $db->close();
+    }
+
+    public static function obtenerPorId($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM personas_naturales WHERE id = ?");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($id,
+        $idUsuario,
+        $idGenero,
+        $fechaExpDoc,
+        $mpioExpDoc,
+        $fechaNacimiento,
+        $paisNacimiento,
+        $mpioNacimiento,
+        $otroLugarNacimiento,
+        $mpioResidencia,
+        $idZonaResidencia,
+        $idTipoVivienda,
+        $estrato,
+        $direccionResidencia,
+        $aniosAntigVivienda,
+        $idEstadoCivil,
+        $cabezaFamilia,
+        $personasACargo,
+        $tieneHijos,
+        $numeroHijos,
+        $correoElectronico,
+        $telefono,
+        $celular,
+        $telefonoOficina,
+        $idNivelEducativo,
+        $profesion,
+        $ocupacionOficio,
+        $idEmpresaLabor,
+        $idTipoContrato,
+        $dependenciaEmpresa,
+        $cargoOcupa,
+        $aniosAntigEmpresa,
+        $mesesAntigEmpresa,
+        $mesSaleVacaciones,
+        $nombreEmergencia,
+        $numeroCedulaEmergencia,
+        $numeroCelularEmergencia,
+        $creadoEl,
+        $actualizadoEl);
+        $personasNaturales = null;
+        if ($query->fetch()) {
+            $personasNaturales = new PersonaNatural($id,
+            $idUsuario,
+            $idGenero,
+            $fechaExpDoc,
+            $mpioExpDoc,
+            $fechaNacimiento,
+            $paisNacimiento,
+            $mpioNacimiento,
+            $otroLugarNacimiento,
+            $mpioResidencia,
+            $idZonaResidencia,
+            $idTipoVivienda,
+            $estrato,
+            $direccionResidencia,
+            $aniosAntigVivienda,
+            $idEstadoCivil,
+            $cabezaFamilia,
+            $personasACargo,
+            $tieneHijos,
+            $numeroHijos,
+            $correoElectronico,
+            $telefono,
+            $celular,
+            $telefonoOficina,
+            $idNivelEducativo,
+            $profesion,
+            $ocupacionOficio,
+            $idEmpresaLabor,
+            $idTipoContrato,
+            $dependenciaEmpresa,
+            $cargoOcupa,
+            $aniosAntigEmpresa,
+            $mesesAntigEmpresa,
+            $mesSaleVacaciones,
+            $nombreEmergencia,
+            $numeroCedulaEmergencia,
+            $numeroCelularEmergencia,
+            $creadoEl,
+            $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $personasNaturales;
     }
 
     public static function obtenerPorIdUsuario($idUsuario) {

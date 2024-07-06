@@ -3,7 +3,6 @@
 require_once '../src/controllers/PersonaNaturalController.php';
 require_once '../auth/verifyToken.php';
 
-
 $key = $_ENV['JWT_SECRET_KEY'];
 $token = $_COOKIE['auth_token'] ?? '';
 
@@ -15,22 +14,36 @@ if ($decodedToken === null) {
     exit(); // Terminar la ejecución si el token no es válido
 }
 
+
 // Crear una instancia del controlador
 $controlador = new PersonaNaturalController();
 
 // Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Crear una nueva persona natural
-    $idNuevaPersona = $controlador->crear($_POST);
+    //$datos = $_POST;
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $idNuevaPersona = $controlador->crear($datos);
     echo json_encode(['id' => $idNuevaPersona]); // Devuelve el ID de la nueva persona creada
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Actualizar la información de una persona natural existente
-    parse_str(file_get_contents("php://input"), $datos); // Obtener los datos de la solicitud PUT
-    $idPersonaExistente = $datos['idUsuario']; // Obtener el ID de la persona a actualizar
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $idPersonaExistente = $datos['id']; // Obtener el ID de la persona a actualizar
     $actualizacionExitosa = $controlador->actualizar($idPersonaExistente, $datos);
     echo json_encode(['success' => $actualizacionExitosa]); // Devuelve true si la actualización fue exitosa
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['idUsuario'])) {
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $persona = $controlador->obtenerPorId($id);
+        if ($persona) {
+            // Establecer el encabezado de respuesta JSON
+            header('Content-Type: application/json');
+            echo json_encode($persona);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Persona no encontrada."));
+        }
+    } elseif (isset($_GET['idUsuario'])) {
         $id = $_GET['idUsuario'];
         $persona = $controlador->obtenerPorIdUsuario($id);
         if ($persona) {

@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/SolicitudAhorroModel.php';
+require_once __DIR__ . '/../models/SolicitudAhorroModel.php';
 
 class SolicitudAhorroController {
 
@@ -91,6 +91,21 @@ class SolicitudAhorroController {
         } else {
             http_response_code(404);
             return array("message" => "Solicitud de ahorro no encontrada.");
+        }
+    }
+
+    /**
+     * Obtiene las solicitud de ahorro por ID de usuario.
+     * @param int $idUsuario ID del usuario a obtener.
+     * @return SolicitudAhorro|array Las solicitudes de ahorro encontradas o un array con un mensaje de error si no se encuentra.
+     */
+    public function obtenerPorIdUsuario($idUsuario) {
+        $solicitud = SolicitudAhorro::obtenerPorIdUsuario($idUsuario);
+        if ($solicitud) {
+            return $solicitud;
+        } else {
+            http_response_code(404);
+            return array("message" => "Solicitudes de ahorro no encontradas.");
         }
     }
 

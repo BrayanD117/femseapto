@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/controllers/PersonaExpuestaPublicamenteController.php';
+require_once '../src/controllers/SolicitudAhorroController.php';
 require_once '../auth/verifyToken.php';
 
 $key = $_ENV['JWT_SECRET_KEY'];
@@ -14,43 +14,46 @@ if ($decodedToken === null) {
     exit(); // Terminar la ejecución si el token no es válido
 }
 
-$controlador = new PersonaExpuestaPublicamenteController();
+// Crear una instancia del controlador
+$controlador = new SolicitudAhorroController();
 
+// Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //$datos = $_POST;
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idNuevaOperacion = $controlador->crear($datos);
-    echo json_encode(['id' => $idNuevaOperacion]);
+    $idNuevo = $controlador->crear($datos);
+    echo json_encode(['id' => $idNuevo]); // Devuelve el ID
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idExistente = $datos['id'];
+    $idExistente = $datos['id']; // Obtener el ID
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]);
+    echo json_encode(['success' => $actualizacionExitosa]); // Devuelve true si la actualización fue exitosa
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $operacion = $controlador->obtenerPorId($id);
-        if ($operacion) {
+        $resp = $controlador->obtenerPorId($id);
+        if ($resp) {
+            // Establecer el encabezado de respuesta JSON
             header('Content-Type: application/json');
-            echo json_encode($operacion);
+            echo json_encode($resp);
         } else {
             http_response_code(404);
-            echo json_encode(array("message" => "Operación internacional no encontrada."));
+            echo json_encode(array("message" => "Solicitud de crédito no encontrada."));
         }
-    } elseif(isset($_GET['idUsuario'])) {
+    } elseif (isset($_GET['idUsuario'])) {
         $id = $_GET['idUsuario'];
-        $operacion = $controlador->obtenerPorIdUsuario($id);
-        if ($operacion) {
+        $resp = $controlador->obtenerPorIdUsuario($id);
+        if ($resp) {
+            // Establecer el encabezado de respuesta JSON
             header('Content-Type: application/json');
-            echo json_encode($operacion);
+            echo json_encode($resp);
         } else {
             http_response_code(404);
-            echo json_encode(array("message" => "Operación internacional no encontrada."));
+            echo json_encode(array("message" => "Tipo de vinculación no encontrada."));
         }
     } else {
-        $operaciones = $controlador->obtenerTodos();
+        $resp = $controlador->obtenerTodos();
         header('Content-Type: application/json');
-        echo json_encode($operaciones);
+        echo json_encode($resp);
     }
 } else {
     http_response_code(405);
