@@ -3,31 +3,31 @@ require_once '../config/config.php';
 
 class OperacionesInternacionales {
     public $id;
-    public $id_usuario;
-    public $transacciones_moneda_extranjera;
-    public $trans_moneda_extranjera;
-    public $otras_operaciones;
-    public $cuentas_moneda_extranjera;
-    public $banco_cuenta_extranjera;
-    public $cuenta_moneda_extranjera;
-    public $moneda_cuenta;
-    public $id_pais_cuenta;
-    public $ciudad_cuenta;
+    public $idUsuario;
+    public $transaccionesMonedaExtranjera;
+    public $transMonedaExtranjera;
+    public $otrasOperaciones;
+    public $cuentasMonedaExtranjera;
+    public $bancoCuentaExtranjera;
+    public $cuentaMonedaExtranjera;
+    public $monedaCuenta;
+    public $idPaisCuenta;
+    public $ciudadCuenta;
     public $creadoEl;
     public $actualizadoEl;
 
-    public function __construct($id = null, $id_usuario = null, $transacciones_moneda_extranjera = '', $trans_moneda_extranjera = '', $otras_operaciones = '', $cuentas_moneda_extranjera = '', $banco_cuenta_extranjera = '', $cuenta_moneda_extranjera = '', $moneda_cuenta = '', $id_pais_cuenta = '', $ciudad_cuenta = '', $creadoEl = '', $actualizadoEl = '') {
+    public function __construct($id = null, $idUsuario = null, $transaccionesMonedaExtranjera = '', $transMonedaExtranjera = '', $otrasOperaciones = '', $cuentasMonedaExtranjera = '', $bancoCuentaExtranjera = '', $cuentaMonedaExtranjera = '', $monedaCuenta = '', $idPaisCuenta = '', $ciudadCuenta = '', $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
-        $this->id_usuario = $id_usuario;
-        $this->transacciones_moneda_extranjera = $transacciones_moneda_extranjera;
-        $this->trans_moneda_extranjera = $trans_moneda_extranjera;
-        $this->otras_operaciones = $otras_operaciones;
-        $this->cuentas_moneda_extranjera = $cuentas_moneda_extranjera;
-        $this->banco_cuenta_extranjera = $banco_cuenta_extranjera;
-        $this->cuenta_moneda_extranjera = $cuenta_moneda_extranjera;
-        $this->moneda_cuenta = $moneda_cuenta;
-        $this->id_pais_cuenta = $id_pais_cuenta;
-        $this->ciudad_cuenta = $ciudad_cuenta;
+        $this->idUsuario = $idUsuario;
+        $this->transaccionesMonedaExtranjera = $transaccionesMonedaExtranjera;
+        $this->transMonedaExtranjera = $transMonedaExtranjera;
+        $this->otrasOperaciones = $otrasOperaciones;
+        $this->cuentasMonedaExtranjera = $cuentasMonedaExtranjera;
+        $this->bancoCuentaExtranjera = $bancoCuentaExtranjera;
+        $this->cuentaMonedaExtranjera = $cuentaMonedaExtranjera;
+        $this->monedaCuenta = $monedaCuenta;
+        $this->idPaisCuenta = $idPaisCuenta;
+        $this->ciudadCuenta = $ciudadCuenta;
         $this->creadoEl = $creadoEl;
         $this->actualizadoEl = $actualizadoEl;
     }
@@ -36,10 +36,10 @@ class OperacionesInternacionales {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO operaciones_internacionales (id_usuario, transacciones_moneda_extranjera, trans_moneda_extranjera, otras_operaciones, cuentas_moneda_extranjera, banco_cuenta_extranjera, cuenta_moneda_extranjera, moneda_cuenta, id_pais_cuenta, ciudad_cuenta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isssssssss", $this->id_usuario, $this->transacciones_moneda_extranjera, $this->trans_moneda_extranjera, $this->otras_operaciones, $this->cuentas_moneda_extranjera, $this->banco_cuenta_extranjera, $this->cuenta_moneda_extranjera, $this->moneda_cuenta, $this->id_pais_cuenta, $this->ciudad_cuenta);
+            $query->bind_param("isssssssss", $this->idUsuario, $this->transaccionesMonedaExtranjera, $this->transMonedaExtranjera, $this->otrasOperaciones, $this->cuentasMonedaExtranjera, $this->bancoCuentaExtranjera, $this->cuentaMonedaExtranjera, $this->monedaCuenta, $this->idPaisCuenta, $this->ciudadCuenta);
         } else {
-            $query = $db->prepare("UPDATE operaciones_internacionales SET id_usuario = ?, transacciones_moneda_extranjera = ?, trans_moneda_extranjera = ?, otras_operaciones = ?, cuentas_moneda_extranjera = ?, banco_cuenta_extranjera = ?, cuenta_moneda_extranjera = ?, moneda_cuenta = ?, id_pais_cuenta = ?, ciudad_cuenta = ? WHERE id = ?");
-            $query->bind_param("isssssssssi", $this->id_usuario, $this->transacciones_moneda_extranjera, $this->trans_moneda_extranjera, $this->otras_operaciones, $this->cuentas_moneda_extranjera, $this->banco_cuenta_extranjera, $this->cuenta_moneda_extranjera, $this->moneda_cuenta, $this->id_pais_cuenta, $this->ciudad_cuenta, $this->id);
+            $query = $db->prepare("UPDATE operaciones_internacionales SET transacciones_moneda_extranjera = ?, trans_moneda_extranjera = ?, otras_operaciones = ?, cuentas_moneda_extranjera = ?, banco_cuenta_extranjera = ?, cuenta_moneda_extranjera = ?, moneda_cuenta = ?, id_pais_cuenta = ?, ciudad_cuenta = ? WHERE id = ?");
+            $query->bind_param("sssssssssi", $this->transaccionesMonedaExtranjera, $this->transMonedaExtranjera, $this->otrasOperaciones, $this->cuentasMonedaExtranjera, $this->bancoCuentaExtranjera, $this->cuentaMonedaExtranjera, $this->monedaCuenta, $this->idPaisCuenta, $this->ciudadCuenta, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -49,15 +49,30 @@ class OperacionesInternacionales {
         $db->close();
     }
 
+    public static function obtenerPorId($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id = ?");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
+        $operacion = null;
+        if ($query->fetch()) {
+            $operacion = new OperacionesInternacionales($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $operacion;
+    }
+
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
         $operacion = null;
         if ($query->fetch()) {
-            $operacion = new OperacionesInternacionales($id, $id_usuario, $transacciones_moneda_extranjera, $trans_moneda_extranjera, $otras_operaciones, $cuentas_moneda_extranjera, $banco_cuenta_extranjera, $cuenta_moneda_extranjera, $moneda_cuenta, $id_pais_cuenta, $ciudad_cuenta, $creadoEl, $actualizadoEl);
+            $operacion = new OperacionesInternacionales($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();

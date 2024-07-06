@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/controllers/OperacionesInternacionalesController.php';
+require_once __DIR__ . '/../src/controllers/PersonaExpuestaPublicamenteController.php';
 require_once '../auth/verifyToken.php';
 
 $key = $_ENV['JWT_SECRET_KEY'];
@@ -14,7 +14,7 @@ if ($decodedToken === null) {
     exit(); // Terminar la ejecución si el token no es válido
 }
 
-$controlador = new OperacionesInternacionalesController();
+$controlador = new PersonaExpuestaPublicamenteController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idNuevaOperacion = $controlador->crear($_POST);
@@ -50,13 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Content-Type: application/json');
         echo json_encode($operaciones);
     }
-} elseif($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    // Obtener el ID del registro a eliminar
-    parse_str(file_get_contents("php://input"), $datos);
-    $idEliminar = $datos['id']; // Obtener el ID de la información familiar a eliminar
-
-    $eliminacionExitosa = $controlador->eliminar($idEliminar);
-    echo json_encode(['success' => $eliminacionExitosa]);
 } else {
     http_response_code(405);
     echo json_encode(array("message" => "Método no permitido."));

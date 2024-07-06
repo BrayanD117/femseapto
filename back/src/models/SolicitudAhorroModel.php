@@ -1,23 +1,23 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-require_once __DIR__ . '/SolicitudAhorroLinea.php';
+require_once __DIR__ . '/SolicitudAhorroLineaModel.php';
 
 class SolicitudAhorro {
     public $id;
-    public $id_usuario;
-    public $monto_total_ahorrar;
+    public $idUsuario;
+    public $montoTotalAhorrar;
     public $quincena;
     public $mes;
-    public $fecha_solicitud;
+    public $fechaSolicitud;
     public $lineas;
 
-    public function __construct($id = null, $id_usuario = null, $monto_total_ahorrar = null, $quincena = null, $mes = null, $fecha_solicitud = null, $lineas = []) {
+    public function __construct($id = null, $idUsuario = null, $montoTotalAhorrar = null, $quincena = null, $mes = null, $fechaSolicitud = null, $lineas = []) {
         $this->id = $id;
-        $this->id_usuario = $id_usuario;
-        $this->monto_total_ahorrar = $monto_total_ahorrar;
+        $this->idUsuario = $idUsuario;
+        $this->montoTotalAhorrar = $montoTotalAhorrar;
         $this->quincena = $quincena;
         $this->mes = $mes;
-        $this->fecha_solicitud = $fecha_solicitud;
+        $this->fechaSolicitud = $fechaSolicitud;
         $this->lineas = $lineas;
     }
 
@@ -25,20 +25,20 @@ class SolicitudAhorro {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO solicitudes_ahorro (id_usuario, monto_total_ahorrar, quincena, mes, fecha_solicitud) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
-            $query->bind_param("idss", $this->id_usuario, $this->monto_total_ahorrar, $this->quincena, $this->mes);
+            $query->bind_param("idss", $this->idUsuario, $this->montoTotalAhorrar, $this->quincena, $this->mes);
             $query->execute();
             $this->id = $query->insert_id;
             $query->close();
         } else {
             $query = $db->prepare("UPDATE solicitudes_ahorro SET monto_total_ahorrar = ?, quincena = ?, mes = ? WHERE id = ?");
-            $query->bind_param("dssi", $this->monto_total_ahorrar, $this->quincena, $this->mes, $this->id);
+            $query->bind_param("dssi", $this->montoTotalAhorrar, $this->quincena, $this->mes, $this->id);
             $query->execute();
             $query->close();
         }
 
         // Guardar las líneas de ahorro asociadas
         foreach ($this->lineas as $linea) {
-            $linea->id_solicitud_ahorro = $this->id;
+            $linea->idSolicitudAhorro = $this->id;
             $linea->guardar();
         }
 
@@ -50,11 +50,11 @@ class SolicitudAhorro {
         $query = $db->prepare("SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, fecha_solicitud FROM solicitudes_ahorro WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $monto_total_ahorrar, $quincena, $mes, $fecha_solicitud);
+        $query->bind_result($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud);
         $solicitud = null;
         if ($query->fetch()) {
             $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($id);
-            $solicitud = new SolicitudAhorro($id, $id_usuario, $monto_total_ahorrar, $quincena, $mes, $fecha_solicitud, $lineas);
+            $solicitud = new SolicitudAhorro($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud, $lineas);
         }
         $query->close();
         $db->close();
@@ -68,7 +68,7 @@ class SolicitudAhorro {
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
             $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($row['id']);
-            $solicitudes[] = new SolicitudAhorro($row['id'], $row['id_usuario'], $row['monto_total_ahorrar'], $row['quincena'], $row['mes'], $row['fecha_solicitud'], $lineas);
+            $solicitudes[] = new SolicitudAhorro($row['id'], $row['idUsuario'], $row['montoTotalAhorrar'], $row['quincena'], $row['mes'], $row['fechaSolicitud'], $lineas);
         }
         $db->close();
         return $solicitudes;

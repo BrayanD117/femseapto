@@ -3,51 +3,51 @@ require_once '../config/config.php';
 
 class InformacionFinanciera {
     public $id;
-    public $id_usuario;
-    public $nombre_banco;
-    public $id_tipo_cuenta_banc;
-    public $numero_cuenta_banc;
-    public $ingresos_mensuales;
-    public $prima_productividad;
-    public $otros_ingresos_mensuales;
-    public $concepto_otros_ingresos_mens;
-    public $total_ingresos_mensuales;
-    public $egresos_mensuales;
-    public $obligacion_financiera;
-    public $otros_egresos_mensuales;
-    public $total_egresos_mensuales;
-    public $total_activos;
-    public $total_pasivos;
-    public $total_patrimonio;
-    public $monto_max_ahorro;
+    public $idUsuario;
+    public $nombreBanco;
+    public $idTipoCuentaBanc;
+    public $numeroCuentaBanc;
+    public $ingresosMensuales;
+    public $primaProductividad;
+    public $otrosIngresosMensuales;
+    public $conceptoOtrosIngresosMens;
+    public $totalIngresosMensuales;
+    public $egresosMensuales;
+    public $obligacionFinanciera;
+    public $otrosEgresosMensuales;
+    public $totalEgresosMensuales;
+    public $totalActivos;
+    public $totalPasivos;
+    public $totalPatrimonio;
+    public $montoMaxAhorro;
     public $creadoEl;
     public $actualizadoEl;
 
-    public function __construct($id = null, $id_usuario = null, $nombre_banco = '',
-        $id_tipo_cuenta_banc = null, $numero_cuenta_banc = '', $ingresos_mensuales = 0.00, 
-        $prima_productividad = 0.00, $otros_ingresos_mensuales = 0.00, $concepto_otros_ingresos_mens = '',
-        $total_ingresos_mensuales = 0.00, $egresos_mensuales = 0.00, $obligacion_financiera = 0.00,
-        $otros_egresos_mensuales = 0.00, $total_egresos_mensuales = 0.00,
-        $total_activos = 0.00, $total_pasivos = 0.00, $total_patrimonio = 0.00,
-        $monto_max_ahorro = 0.00, $creadoEl = '', $actualizadoEl = '') {
+    public function __construct($id = null, $idUsuario = null, $nombreBanco = '',
+        $idTipoCuentaBanc = null, $numeroCuentaBanc = '', $ingresosMensuales = 0.00, 
+        $primaProductividad = 0.00, $otrosIngresosMensuales = 0.00, $conceptoOtrosIngresosMens = '',
+        $totalIngresosMensuales = 0.00, $egresosMensuales = 0.00, $obligacionFinanciera = 0.00,
+        $otrosEgresosMensuales = 0.00, $totalEgresosMensuales = 0.00,
+        $totalActivos = 0.00, $totalPasivos = 0.00, $totalPatrimonio = 0.00,
+        $montoMaxAhorro = 0.00, $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
-        $this->id_usuario = $id_usuario;
-        $this->nombre_banco = $nombre_banco;
-        $this->id_tipo_cuenta_banc = $id_tipo_cuenta_banc;
-        $this->numero_cuenta_banc = $numero_cuenta_banc;
-        $this->ingresos_mensuales = $ingresos_mensuales;
-        $this->prima_productividad = $prima_productividad;
-        $this->otros_ingresos_mensuales = $otros_ingresos_mensuales;
-        $this->concepto_otros_ingresos_mens = $concepto_otros_ingresos_mens;
-        $this->total_ingresos_mensuales = $total_ingresos_mensuales;
-        $this->egresos_mensuales = $egresos_mensuales;
-        $this->obligacion_financiera = $obligacion_financiera;
-        $this->otros_egresos_mensuales = $otros_egresos_mensuales;
-        $this->total_egresos_mensuales = $total_egresos_mensuales;
-        $this->total_activos = $total_activos;
-        $this->total_pasivos = $total_pasivos;
-        $this->total_patrimonio = $total_patrimonio;
-        $this->monto_max_ahorro = $monto_max_ahorro;
+        $this->idUsuario = $idUsuario;
+        $this->nombreBanco = $nombreBanco;
+        $this->idTipoCuentaBanc = $idTipoCuentaBanc;
+        $this->numeroCuentaBanc = $numeroCuentaBanc;
+        $this->ingresosMensuales = $ingresosMensuales;
+        $this->primaProductividad = $primaProductividad;
+        $this->otrosIngresosMensuales = $otrosIngresosMensuales;
+        $this->conceptoOtrosIngresosMens = $conceptoOtrosIngresosMens;
+        $this->totalIngresosMensuales = $totalIngresosMensuales;
+        $this->egresosMensuales = $egresosMensuales;
+        $this->obligacionFinanciera = $obligacionFinanciera;
+        $this->otrosEgresosMensuales = $otrosEgresosMensuales;
+        $this->totalEgresosMensuales = $totalEgresosMensuales;
+        $this->totalActivos = $totalActivos;
+        $this->totalPasivos = $totalPasivos;
+        $this->totalPatrimonio = $totalPatrimonio;
+        $this->montoMaxAhorro = $montoMaxAhorro;
         $this->creadoEl = $creadoEl;
         $this->actualizadoEl = $actualizadoEl;
     }
@@ -62,16 +62,16 @@ class InformacionFinanciera {
                                     egresos_mensuales, obligacion_financiera, otros_egresos_mensuales,
                                     total_egresos_mensuales, total_activos, total_pasivos, total_patrimonio, monto_max_ahorro)
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isisdddsddddddddd", $this->id_usuario, $this->nombre_banco,
-                                $this->id_tipo_cuenta_banc, $this->numero_cuenta_banc, $this->ingresos_mensuales,
-                                $this->prima_productividad, $this->otros_ingresos_mensuales,
-                                $this->concepto_otros_ingresos_mens, $this->total_ingresos_mensuales,
-                                $this->egresos_mensuales, $this->obligacion_financiera,
-                                $this->otros_egresos_mensuales, $this->total_egresos_mensuales,
-                                $this->total_activos, $this->total_pasivos, $this->total_patrimonio, $this->monto_max_ahorro);
+            $query->bind_param("isisdddsddddddddd", $this->idUsuario, $this->nombreBanco,
+                                $this->idTipoCuentaBanc, $this->numeroCuentaBanc, $this->ingresosMensuales,
+                                $this->primaProductividad, $this->otrosIngresosMensuales,
+                                $this->conceptoOtrosIngresosMens, $this->totalIngresosMensuales,
+                                $this->egresosMensuales, $this->obligacionFinanciera,
+                                $this->otrosEgresosMensuales, $this->totalEgresosMensuales,
+                                $this->totalActivos, $this->totalPasivos, $this->totalPatrimonio, $this->montoMaxAhorro);
         } else {
-            $query = $db->prepare("UPDATE informacion_financiera SET nombre_banco = ?, id_tipo_cuenta_banc = ?, numero_cuenta_banc = ?, ingresos_mensuales = ?, prima_productividad = ? otros_ingresos_mensuales = ?, concepto_otros_ingresos_mens = ?, total_ingresos_mensuales = ?, egresos_mensuales = ?, obligacion_financiera = ?, otros_egresos_mensuales = ?, total_egresos_mensuales = ?, total_activos = ?, total_pasivos = ?, total_patrimonio = ?, monto_max_ahorro = ? WHERE id = ?");
-            $query->bind_param("sisdddsdddddddddi", $this->id_usuario, $this->ingresos_mensuales, $this->otros_ingresos_mensuales, $this->concepto_otros_ingresos_mens, $this->total_ingresos_mensuales, $this->egresos_mensuales, $this->otros_egresos_mensuales, $this->total_egresos_mensuales, $this->total_activos, $this->total_pasivos, $this->total_patrimonio, $this->monto_max_ahorro, $this->id);
+            $query = $db->prepare("UPDATE informacion_financiera SET nombre_banco = ?, id_tipo_cuenta_banc = ?, numero_cuenta_banc = ?, ingresos_mensuales = ?, prima_productividad = ?, otros_ingresos_mensuales = ?, concepto_otros_ingresos_mens = ?, total_ingresos_mensuales = ?, egresos_mensuales = ?, obligacion_financiera = ?, otros_egresos_mensuales = ?, total_egresos_mensuales = ?, total_activos = ?, total_pasivos = ?, total_patrimonio = ?, monto_max_ahorro = ? WHERE id = ?");
+            $query->bind_param("sisdddsdddddddddi", $this->nombreBanco, $this->idTipoCuentaBanc, $this->numeroCuentaBanc, $this->ingresosMensuales, $this->primaProductividad, $this->otrosIngresosMensuales, $this->conceptoOtrosIngresosMens, $this->totalIngresosMensuales, $this->egresosMensuales, $this->obligacionFinanciera, $this->otrosEgresosMensuales, $this->totalEgresosMensuales, $this->totalActivos, $this->totalPasivos, $this->totalPatrimonio, $this->montoMaxAhorro, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -86,20 +86,20 @@ class InformacionFinanciera {
         $query = $db->prepare("SELECT * FROM informacion_financiera WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $nombre_banco, $id_tipo_cuenta_banc, $numero_cuenta_banc,
-                            $ingresos_mensuales, $prima_productividad, $otros_ingresos_mensuales,
-                            $concepto_otros_ingresos_mens, $total_ingresos_mensuales,
-                            $egresos_mensuales, $obligacion_financiera, $otros_egresos_mensuales,
-                            $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio,
-                            $monto_max_ahorro, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $idUsuario, $nombreBanco, $idTipoCuentaBanc, $numeroCuentaBanc,
+                            $ingresosMensuales, $primaProductividad, $otrosIngresosMensuales,
+                            $conceptoOtrosIngresosMens, $totalIngresosMensuales,
+                            $egresosMensuales, $obligacionFinanciera, $otrosEgresosMensuales,
+                            $totalEgresosMensuales, $totalActivos, $totalPasivos, $totalPatrimonio,
+                            $montoMaxAhorro, $creadoEl, $actualizadoEl);
         $infoFinanciera = null;
         if ($query->fetch()) {
-            $infoFinanciera = new InformacionFinanciera($id, $id_usuario, $nombre_banco, $id_tipo_cuenta_banc, $numero_cuenta_banc,
-                                $ingresos_mensuales, $prima_productividad, $otros_ingresos_mensuales,
-                                $concepto_otros_ingresos_mens, $total_ingresos_mensuales,
-                                $egresos_mensuales, $obligacion_financiera, $otros_egresos_mensuales,
-                                $total_egresos_mensuales, $total_activos, $total_pasivos, $total_patrimonio,
-                                $monto_max_ahorro, $creadoEl, $actualizadoEl);
+            $infoFinanciera = new InformacionFinanciera($id, $idUsuario, $nombreBanco, $idTipoCuentaBanc, $numeroCuentaBanc,
+                                $ingresosMensuales, $primaProductividad, $otrosIngresosMensuales,
+                                $conceptoOtrosIngresosMens, $totalIngresosMensuales,
+                                $egresosMensuales, $obligacionFinanciera, $otrosEgresosMensuales,
+                                $totalEgresosMensuales, $totalActivos, $totalPasivos, $totalPatrimonio,
+                                $montoMaxAhorro, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();

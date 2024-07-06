@@ -5,26 +5,26 @@ class Empresa {
     public $id;
     public $nit;
     public $nombre;
-    public $id_tipo_empresa;
-    public $id_tipo_vinculacion;
-    public $id_municipio;
+    public $idTipoEmpresa;
+    public $idTipoVinculacion;
+    public $idMunicipio;
     public $direccion;
     public $telefono;
     public $fax;
-    public $actividad_economica;
+    public $actividadEconomica;
     public $ciiu;
 
-    public function __construct($id = null, $nit = '', $nombre = '', $id_tipo_empresa = null, $id_tipo_vinculacion = null, $id_municipio = '', $direccion = '', $telefono = '', $fax = '', $actividad_economica = '', $ciiu = '') {
+    public function __construct($id = null, $nit = '', $nombre = '', $idTipoEmpresa = null, $idTipoVinculacion = null, $idMunicipio = '', $direccion = '', $telefono = '', $fax = '', $actividadEconomica = '', $ciiu = '') {
         $this->id = $id;
         $this->nit = $nit;
         $this->nombre = $nombre;
-        $this->id_tipo_empresa = $id_tipo_empresa;
-        $this->id_tipo_vinculacion = $id_tipo_vinculacion;
-        $this->id_municipio = $id_municipio;
+        $this->idTipoEmpresa = $idTipoEmpresa;
+        $this->idTipoVinculacion = $idTipoVinculacion;
+        $this->idMunicipio = $idMunicipio;
         $this->direccion = $direccion;
         $this->telefono = $telefono;
         $this->fax = $fax;
-        $this->actividad_economica = $actividad_economica;
+        $this->actividadEconomica = $actividadEconomica;
         $this->ciiu = $ciiu;
     }
 
@@ -32,10 +32,10 @@ class Empresa {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO empresas (nit, nombre, id_tipo_empresa, id_tipo_vinculacion, id_municipio, direccion, telefono, fax, actividad_economica, ciiu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("ssiissssss", $this->nit, $this->nombre, $this->id_tipo_empresa, $this->id_tipo_vinculacion, $this->id_municipio, $this->direccion, $this->telefono, $this->fax, $this->actividad_economica, $this->ciiu);
+            $query->bind_param("ssiissssss", $this->nit, $this->nombre, $this->idTipoEmpresa, $this->idTipoVinculacion, $this->idMunicipio, $this->direccion, $this->telefono, $this->fax, $this->actividadEconomica, $this->ciiu);
         } else {
             $query = $db->prepare("UPDATE empresas SET nit = ?, nombre = ?, id_tipo_empresa = ?, id_tipo_vinculacion = ?, id_municipio = ?, direccion = ?, telefono = ?, fax = ?, actividad_economica = ?, ciiu = ? WHERE id = ?");
-            $query->bind_param("ssiissssssi", $this->nit, $this->nombre, $this->id_tipo_empresa, $this->id_tipo_vinculacion, $this->id_municipio, $this->direccion, $this->telefono, $this->fax, $this->actividad_economica, $this->ciiu, $this->id);
+            $query->bind_param("ssiissssssi", $this->nit, $this->nombre, $this->idTipoEmpresa, $this->idTipoVinculacion, $this->idMunicipio, $this->direccion, $this->telefono, $this->fax, $this->actividadEconomica, $this->ciiu, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -47,13 +47,13 @@ class Empresa {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, nit, nombre, id_tipo_empresa, id_tipo_vinculacion, id_municipio, direccion, telefono, fax, actividad_economica, ciiu FROM empresas WHERE id = ?");
+        $query = $db->prepare("SELECT * FROM empresas WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $nit, $nombre, $id_tipo_empresa, $id_tipo_vinculacion, $id_municipio, $direccion, $telefono, $fax, $actividad_economica, $ciiu);
+        $query->bind_result($id, $nit, $nombre, $idTipoEmpresa, $idTipoVinculacion, $idMunicipio, $direccion, $telefono, $fax, $actividadEconomica, $ciiu);
         $empresa = null;
         if ($query->fetch()) {
-            $empresa = new Empresa($id, $nit, $nombre, $id_tipo_empresa, $id_tipo_vinculacion, $id_municipio, $direccion, $telefono, $fax, $actividad_economica, $ciiu);
+            $empresa = new Empresa($id, $nit, $nombre, $idTipoEmpresa, $idTipoVinculacion, $idMunicipio, $direccion, $telefono, $fax, $actividadEconomica, $ciiu);
         }
         $query->close();
         $db->close();
@@ -62,7 +62,7 @@ class Empresa {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, nit, nombre, id_tipo_empresa, id_tipo_vinculacion, id_municipio, direccion, telefono, fax, actividad_economica, ciiu FROM empresas";
+        $query = "SELECT * FROM empresas";
         $result = $db->query($query);
         $empresas = [];
         while ($row = $result->fetch_assoc()) {

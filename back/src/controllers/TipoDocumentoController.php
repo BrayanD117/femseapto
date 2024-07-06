@@ -6,7 +6,7 @@ class TipoDocumentoController {
     
     public function crear($datos) {
         $tipoDoc = new TipoDocumento(
-            $datos['id'],
+            null,
             $datos['abreviatura'],
             $datos['nombre']
         );
@@ -23,7 +23,6 @@ class TipoDocumentoController {
             return false;
         }
 
-        $tipoDoc->id = $datos['id'];
         $tipoDoc->abreviatura = $datos['abreviatura'];
         $tipoDoc->nombre = $datos['nombre'];
 

@@ -57,6 +57,21 @@ class PersonaExpuestaPublicamente {
         $db->close();
     }
 
+    public static function obtenerPorId($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM personas_expuestas_publicamente WHERE id = ?");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico, $creadoEl, $actualizadoEl);
+        $persExpuestasPubl = null;
+        if ($query->fetch()) {
+            $persExpuestasPubl = new PersonaExpuestaPublicamente($id, $idUsuario, $poderPublico, $manejaRecPublicos, $reconocimientoPublico, $funcionesPublicas, $actividadPublica, $funcionarioPublicoExtranjero, $famFuncionarioPublico, $socioFuncionarioPublico, $creadoEl, $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $persExpuestasPubl;
+    }
+
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM personas_expuestas_publicamente WHERE id_usuario = ?");

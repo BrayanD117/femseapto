@@ -1,8 +1,9 @@
 <?php
+
 require_once __DIR__ . '/../models/OperacionesInternacionalesModel.php';
 
 class OperacionesInternacionalesController {
-    
+
     public function crear($datos) {
         $operacion = new OperacionesInternacionales(
             null,
@@ -15,21 +16,22 @@ class OperacionesInternacionalesController {
             $datos['cuenta_moneda_extranjera'],
             $datos['moneda_cuenta'],
             $datos['id_pais_cuenta'],
-            $datos['ciudad_cuenta']
+            $datos['ciudad_cuenta'],
+            null,
+            null
         );
 
         $operacion->guardar();
-        
+
         return $operacion->id;
     }
 
     public function actualizar($id, $datos) {
         $operacion = OperacionesInternacionales::obtenerPorId($id);
         if (!$operacion) {
-            return false; // Si no existe, devolver false
+            return false;
         }
 
-        $operacion->id_usuario = $datos['id_usuario'];
         $operacion->transacciones_moneda_extranjera = $datos['transacciones_moneda_extranjera'];
         $operacion->trans_moneda_extranjera = $datos['trans_moneda_extranjera'];
         $operacion->otras_operaciones = $datos['otras_operaciones'];
@@ -55,6 +57,16 @@ class OperacionesInternacionalesController {
         }
     }
 
+    public function obtenerPorIdUsuario($idUsuario) {
+        $operacion = OperacionesInternacionales::obtenerPorIdUsuario($idUsuario);
+        if ($operacion) {
+            return $operacion;
+        } else {
+            http_response_code(404);
+            return array("message" => "Operación internacional no encontrada.");
+        }
+    }
+
     public function obtenerTodos() {
         $operaciones = OperacionesInternacionales::obtenerTodos();
         if ($operaciones) {
@@ -63,6 +75,16 @@ class OperacionesInternacionalesController {
             http_response_code(404);
             return array("message" => "No se encontraron operaciones internacionales.");
         }
+    }
+
+    public function eliminar($id) {
+        $operacion = OperacionesInternacionales::obtenerPorId($id);
+        if (!$operacion) {
+            return array("message" => "Operación internacional no encontrada.");
+        }
+
+        $operacion->eliminar();
+        return array("message" => "Operación internacional eliminada correctamente.");
     }
 }
 ?>

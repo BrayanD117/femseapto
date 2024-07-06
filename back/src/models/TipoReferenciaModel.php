@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 class TipoReferencia {
     public $id;
@@ -46,7 +46,7 @@ class TipoReferencia {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, abrevitura, nombre FROM tipos_referencia";
+        $query = "SELECT id, abreviatura, nombre FROM tipos_referencia";
         $result = $db->query($query);
         $tiposRef = [];
         while ($row = $result->fetch_assoc()) {

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 
-class TipoEmpresa {
+class TipoAsociado {
     public $id;
     public $nombre;
 
@@ -13,10 +13,10 @@ class TipoEmpresa {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO tipos_empresa (nombre) VALUES (?)");
+            $query = $db->prepare("INSERT INTO tipos_asociados (nombre) VALUES (?)");
             $query->bind_param("s", $this->nombre);
         } else {
-            $query = $db->prepare("UPDATE tipos_empresa SET nombre = ? WHERE id = ?");
+            $query = $db->prepare("UPDATE tipos_asociados SET nombre = ? WHERE id = ?");
             $query->bind_param("si", $this->nombre, $this->id);
         }
         $query->execute();
@@ -29,35 +29,35 @@ class TipoEmpresa {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, nombre FROM tipos_empresa WHERE id = ?");
+        $query = $db->prepare("SELECT * FROM tipos_asociados WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $nombre);
-        $tiposEmpresa = null;
+        $tAsociado = null;
         if ($query->fetch()) {
-            $tiposEmpresa = new TipoEmpresa($id, $nombre);
+            $tAsociado = new TipoAsociado($id, $nombre);
         }
         $query->close();
         $db->close();
-        return $tiposEmpresa;
+        return $tAsociado;
     }
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, nombre FROM tipos_empresa";
+        $query = "SELECT * FROM tipos_asociados";
         $result = $db->query($query);
-        $tiposEmpresa = [];
+        $tAsociados = [];
         while ($row = $result->fetch_assoc()) {
-            $tiposEmpresa[] = new TipoEmpresa($row['id'], $row['nombre']);
+            $tAsociados[] = new TipoAsociado($row['id'], $row['nombre']);
         }
         $db->close();
-        return $tiposEmpresa;
+        return $tAsociados;
     }
 
     public function eliminar() {
         $db = getDB();
         if ($this->id !== null) {
-            $query = $db->prepare("DELETE FROM tipos_empresa WHERE id = ?");
+            $query = $db->prepare("DELETE FROM tipos_asociados WHERE id = ?");
             $query->bind_param("i", $this->id);
             $query->execute();
             $query->close();

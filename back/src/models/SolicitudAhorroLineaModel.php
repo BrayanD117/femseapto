@@ -3,28 +3,28 @@ require_once __DIR__ . '/../../config/config.php';
 
 class SolicitudAhorroLinea {
     public $id;
-    public $id_solicitud_ahorro;
-    public $id_linea_ahorro;
-    public $monto_ahorrar;
+    public $idSolicitudAhorro;
+    public $idLineaAhorro;
+    public $montoAhorrar;
 
-    public function __construct($id = null, $id_solicitud_ahorro = null, $id_linea_ahorro = null, $monto_ahorrar = null) {
+    public function __construct($id = null, $idSolicitudAhorro = null, $idLineaAhorro = null, $montoAhorrar = null) {
         $this->id = $id;
-        $this->id_solicitud_ahorro = $id_solicitud_ahorro;
-        $this->id_linea_ahorro = $id_linea_ahorro;
-        $this->monto_ahorrar = $monto_ahorrar;
+        $this->idSolicitudAhorro = $idSolicitudAhorro;
+        $this->idLineaAhorro = $idLineaAhorro;
+        $this->montoAhorrar = $montoAhorrar;
     }
 
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO solicitudes_ahorro_lineas (id_solicitud_ahorro, id_linea_ahorro, monto_ahorrar) VALUES (?, ?, ?)");
-            $query->bind_param("iid", $this->id_solicitud_ahorro, $this->id_linea_ahorro, $this->monto_ahorrar);
+            $query->bind_param("iid", $this->idSolicitudAhorro, $this->idLineaAhorro, $this->montoAhorrar);
             $query->execute();
             $this->id = $query->insert_id;
             $query->close();
         } else {
             $query = $db->prepare("UPDATE solicitudes_ahorro_lineas SET id_solicitud_ahorro = ?, id_linea_ahorro = ?, monto_ahorrar = ? WHERE id = ?");
-            $query->bind_param("iidi", $this->id_solicitud_ahorro, $this->id_linea_ahorro, $this->monto_ahorrar, $this->id);
+            $query->bind_param("iidi", $this->idSolicitudAhorro, $this->idLineaAhorro, $this->montoAhorrar, $this->id);
             $query->execute();
             $query->close();
         }
@@ -36,25 +36,25 @@ class SolicitudAhorroLinea {
         $query = $db->prepare("SELECT id, id_solicitud_ahorro, id_linea_ahorro, monto_ahorrar FROM solicitudes_ahorro_lineas WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_solicitud_ahorro, $id_linea_ahorro, $monto_ahorrar);
+        $query->bind_result($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);
         $solicitudLinea = null;
         if ($query->fetch()) {
-            $solicitudLinea = new SolicitudAhorroLinea($id, $id_solicitud_ahorro, $id_linea_ahorro, $monto_ahorrar);
+            $solicitudLinea = new SolicitudAhorroLinea($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);
         }
         $query->close();
         $db->close();
         return $solicitudLinea;
     }
 
-    public static function obtenerPorSolicitudId($id_solicitud_ahorro) {
+    public static function obtenerPorSolicitudId($idSolicitudAhorro) {
         $db = getDB();
         $query = $db->prepare("SELECT id, id_solicitud_ahorro, id_linea_ahorro, monto_ahorrar FROM solicitudes_ahorro_lineas WHERE id_solicitud_ahorro = ?");
-        $query->bind_param("i", $id_solicitud_ahorro);
+        $query->bind_param("i", $idSolicitudAhorro);
         $query->execute();
         $result = $query->get_result();
         $solicitudesLineas = [];
         while ($row = $result->fetch_assoc()) {
-            $solicitudesLineas[] = new SolicitudAhorroLinea($row['id'], $row['id_solicitud_ahorro'], $row['id_linea_ahorro'], $row['monto_ahorrar']);
+            $solicitudesLineas[] = new SolicitudAhorroLinea($row['id'], $row['idSolicitudAhorro'], $row['idLineaAhorro'], $row['montoAhorrar']);
         }
         $query->close();
         $db->close();

@@ -3,37 +3,37 @@ require_once __DIR__ . '/../../config/config.php';
 
 class SolicitudCredito {
     public $id;
-    public $id_usuario;
-    public $monto_solicitado;
-    public $plazo_quincenal;
-    public $valor_cuota_quincenal;
-    public $id_linea_credito;
+    public $idUsuario;
+    public $montoSolicitado;
+    public $plazoQuincenal;
+    public $valorCuotaQuincenal;
+    public $idLineaCredito;
     public $reestructurado;
-    public $periocidad_pago;
-    public $tasa_interes;
-    public $fecha_solicitud;
+    public $periocidadPago;
+    public $tasaInteres;
+    public $fechaSolicitud;
 
-    public function __construct($id = null, $id_usuario = null, $monto_solicitado = null, $plazo_quincenal = null, $valor_cuota_quincenal = null, $id_linea_credito = null, $reestructurado = null, $periocidad_pago = null, $tasa_interes = null, $fecha_solicitud = null) {
+    public function __construct($id = null, $idUsuario = null, $montoSolicitado = null, $plazoQuincenal = null, $valorCuotaQuincenal = null, $idLineaCredito = null, $reestructurado = null, $periocidadPago = null, $tasaInteres = null, $fechaSolicitud = null) {
         $this->id = $id;
-        $this->id_usuario = $id_usuario;
-        $this->monto_solicitado = $monto_solicitado;
-        $this->plazo_quincenal = $plazo_quincenal;
-        $this->valor_cuota_quincenal = $valor_cuota_quincenal;
-        $this->id_linea_credito = $id_linea_credito;
+        $this->idUsuario = $idUsuario;
+        $this->montoSolicitado = $montoSolicitado;
+        $this->plazoQuincenal = $plazoQuincenal;
+        $this->valorCuotaQuincenal = $valorCuotaQuincenal;
+        $this->idLineaCredito = $idLineaCredito;
         $this->reestructurado = $reestructurado;
-        $this->periocidad_pago = $periocidad_pago;
-        $this->tasa_interes = $tasa_interes;
-        $this->fecha_solicitud = $fecha_solicitud;
+        $this->periocidadPago = $periocidadPago;
+        $this->tasaInteres = $tasaInteres;
+        $this->fechaSolicitud = $fechaSolicitud;
     }
 
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO solicitudes_credito (id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("ididisss", $this->id_usuario, $this->monto_solicitado, $this->plazo_quincenal, $this->valor_cuota_quincenal, $this->id_linea_credito, $this->reestructurado, $this->periocidad_pago, $this->tasa_interes);
+            $query->bind_param("ididisss", $this->idUsuario, $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres);
         } else {
             $query = $db->prepare("UPDATE solicitudes_credito SET monto_solicitado = ?, plazo_quincenal = ?, valor_cuota_quincenal = ?, id_linea_credito = ?, reestructurado = ?, periocidad_pago = ?, tasa_interes = ? WHERE id = ?");
-            $query->bind_param("didisssi", $this->id_usuario, $this->monto_solicitado, $this->plazo_quincenal, $this->valor_cuota_quincenal, $this->id_linea_credito, $this->reestructurado, $this->periocidad_pago, $this->tasa_interes, $this->id);
+            $query->bind_param("didisssi", $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -48,14 +48,33 @@ class SolicitudCredito {
         $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, fecha_solicitud FROM solicitudes_credito WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_usuario, $monto_solicitado, $plazo_quincenal, $valor_cuota_quincenal, $id_linea_credito, $reestructurado, $periocidad_pago, $tasa_interes, $fecha_solicitud);
+        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
         $solicitud = null;
         if ($query->fetch()) {
-            $solicitud = new SolicitudCredito($id, $id_usuario, $monto_solicitado, $plazo_quincenal, $valor_cuota_quincenal, $id_linea_credito, $reestructurado, $periocidad_pago, $tasa_interes, $fecha_solicitud);
+            $solicitud = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
         }
         $query->close();
         $db->close();
         return $solicitud;
+    }
+
+    public static function obtenerPorIdUsuario($idUsuario) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM solicitudes_credito WHERE id_usuario = ?");
+        $query->bind_param("i", $idUsuario);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+        
+        $solCred = [];
+
+        while ($query->fetch()) {
+            $solCred[] = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+        }
+        
+        $query->close();
+        $db->close();
+        
+        return $solCred;
     }
 
     public static function obtenerTodos() {

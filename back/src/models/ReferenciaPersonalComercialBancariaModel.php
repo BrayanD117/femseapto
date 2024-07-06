@@ -36,7 +36,7 @@ class ReferenciaPersonalComercialBancaria {
             $query->bind_param("ississss", $this->idUsuario, $this->nombreRazonSocial, $this->parentesco, $this->idTipoReferencia, $this->idMunicipio, $this->direccion, $this->telefono, $this->correoElectronico);
         } else {
             $query = $db->prepare("UPDATE referencias_personales_comerciales_bancarias SET nombre_razon_social = ?, parentesco = ?, id_tipo_referencia = ?, id_mpio = ?, direccion = ?, telefono = ?, correo_electronico = ? WHERE id = ?");
-            $query->bind_param("ssissssi", $this->nombreRazonSocial, $this->idTipoReferencia, $this->idMunicipio, $this->direccion, $this->telefono, $this->id);
+            $query->bind_param("ssissssi", $this->nombreRazonSocial, $this->parentesco, $this->idTipoReferencia, $this->idMunicipio, $this->direccion, $this->telefono, $this->correoElectronico, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -44,6 +44,21 @@ class ReferenciaPersonalComercialBancaria {
         }
         $query->close();
         $db->close();
+    }
+
+    public static function obtenerPorId($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM referencias_personales_comerciales_bancarias WHERE id = ?");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $nombreRazonSocial, $parentesco, $idTipoReferencia, $idMunicipio, $direccion, $telefono, $correoElectronico, $creadoEl, $actualizadoEl);
+        $referencia = null;
+        if ($query->fetch()) {
+            $referencia = new ReferenciaPersonalComercialBancaria($id, $idUsuario, $nombreRazonSocial, $parentesco, $idTipoReferencia, $idMunicipio, $direccion, $telefono, $correoElectronico, $creadoEl, $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $referencia;
     }
 
     public static function obtenerPorIdUsuario($idUsuario) {
