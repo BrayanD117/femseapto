@@ -15,6 +15,9 @@
           <span class="fs-5 fw-semibold">{{ userRole === 1 ? 'Panel de administrador' : 'Panel de usuario' }}</span>
         </a>
         <ul class="list-unstyled ps-0">
+          <a href="/" class="btn btn-home d-inline-flex align-items-center rounded border-0 mb-1" aria-expanded="false" >
+            Inicio
+          </a>
           <li class="mb-1" *ngIf="userRole === 1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#admin-collapse" aria-expanded="false">
               Admin Menu
@@ -41,8 +44,30 @@
             </div>
           </li>
         </ul>
+        <div class="mt-auto">
+          <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">Cerrar Sesión</button>
+        </div>
       </div>
       <div class="b-example-vr"></div>
     </main>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Confirmar Cierre de Sesión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea cerrar sesión?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmLogout()">Cerrar Sesión</button>
+      </div>
+    </div>
   </div>
 </div>
