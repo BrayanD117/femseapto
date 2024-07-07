@@ -6,7 +6,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <main class="d-flex flex-nowrap">
+    <main class="d-flex flex-nowrap" style="height: 100%;">
       <div class="flex-shrink-0 p-3" style="width: 95%;">
         <a [routerLink]="userRole === 1 ? '/auth/admin' : '/auth/user'" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" fill="currentColor" class="bi bi-person-fill-gear" viewBox="0 0 16 16">
@@ -22,6 +22,7 @@
             <div class="collapse" id="admin-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a routerLink="/auth/admin/welcome" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Dashboard</a></li>
+                <!-- Más enlaces de administrador -->
               </ul>
             </div>
           </li>
@@ -35,12 +36,13 @@
                 <li><a routerLink="/auth/user/information" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Información</a></li>
                 <li><a routerLink="/auth/user/savings" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Ahorros</a></li>
                 <li><a routerLink="/auth/user/credits" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Créditos</a></li>
+                <!-- Más enlaces de usuario -->
               </ul>
             </div>
           </li>
         </ul>
       </div>
-      <div class="b-example-divider b-example-vr"></div>
+      <div class="b-example-vr"></div>
     </main>
   </div>
 </div>
