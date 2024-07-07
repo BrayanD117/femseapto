@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<div class="row">
+    <div class="col-xl-2">
+      <app-sidebar [userRole]="userRole"></app-sidebar>
+    </div>
+    <div class="col-xl-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
