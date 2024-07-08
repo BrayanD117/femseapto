@@ -131,6 +131,18 @@ export class RequestSavingComponent implements OnInit {
     this.validateTotalSavingsAmount();
   }
 
+  resetForm(): void {
+    this.savingsForm.reset({
+      totalSavingsAmount: 0,
+      fortnight: '',
+      month: '',
+    });
+
+    const linesArray = this.savingsForm.get('lines') as FormArray;
+    linesArray.clear();
+    this.addSavingLinesControls();
+  }
+
   onSubmit(): void {
     if (this.savingsForm.valid) {
       const token = this.loginService.getTokenClaims();
@@ -155,6 +167,7 @@ export class RequestSavingComponent implements OnInit {
         this.savingsService.createSavingsRequest(savingsData).subscribe(
           (response: any) => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de ahorro creada exitosamente.' });
+            this.resetForm();
             setTimeout(() => {
               this.router.navigate(['/auth/user']);
             }, 3000);

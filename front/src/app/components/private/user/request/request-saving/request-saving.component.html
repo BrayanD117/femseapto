@@ -58,7 +58,7 @@
       <div formArrayName="lines">
         <div *ngFor="let line of lines.controls; let i = index" [formGroupName]="i" class="d-flex align-items-center mb-2">
           <div class="form-check flex-grow-1 w-50">
-            <input class="form-check-input me-2" type="checkbox" formControlName="selected" (change)="onLineSelected(i)">
+            <input class="form-check-input me-2" type="checkbox" formControlName="selected" (change)="onLineSelected(i)" style="transform: scale(1.5);">
             <label class="form-check-label">
               {{ savingLines[i]?.nombre }}
             </label>
