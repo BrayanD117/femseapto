@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class RequestSavingComponent implements OnInit {
   savingsForm: FormGroup;
   maxSavingsAmount: number = 0;
+  savingLines: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +36,6 @@ export class RequestSavingComponent implements OnInit {
 
     if (token) {
       const userId = token.userId;
-      console.log('User ID', userId);
       this.savingsService.getFinancialInfo(userId).subscribe(
         (data: any) => {
           this.maxSavingsAmount = data.montoMaxAhorro;
@@ -45,9 +45,26 @@ export class RequestSavingComponent implements OnInit {
           console.error('Error fetching financial information', error);
         }
       );
+
+      this.savingsService.getSavingLines().subscribe(
+        (data: any) => {
+          this.savingLines = data;
+          this.addSavingLinesControls();
+        },
+        (error: any) => {
+          console.error('Error fetching saving lines', error);
+        }
+      );
     } else {
       console.error('User ID not found');
     }
+  }
+
+  addSavingLinesControls(): void {
+    const linesArray = this.savingsForm.get('lines') as FormArray;
+    this.savingLines.forEach(() => {
+      linesArray.push(this.fb.control(false));
+    });
   }
 
   onSubmit(): void {
@@ -56,9 +73,14 @@ export class RequestSavingComponent implements OnInit {
 
       if (token) {
         const userId = token.userId;
+        const selectedLines = this.savingsForm.value.lines
+          .map((checked: boolean, i: number) => checked ? this.savingLines[i].id : null)
+          .filter((v: any) => v !== null);
+
         const savingsData = {
           idUsuario: userId,
-          ...this.savingsForm.value
+          ...this.savingsForm.value,
+          lines: selectedLines
         };
 
         this.savingsService.createSavingsRequest(savingsData).subscribe(
@@ -77,14 +99,5 @@ export class RequestSavingComponent implements OnInit {
 
   get lines(): FormArray {
     return this.savingsForm.get('lines') as FormArray;
-  }
-
-  addLine(): void {
-    this.lines.push(this.fb.group({
-    }));
-  }
-
-  removeLine(index: number): void {
-    this.lines.removeAt(index);
   }
 }

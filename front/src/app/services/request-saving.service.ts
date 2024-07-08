@@ -18,4 +18,8 @@ export class SolicitudAhorroService {
   createSavingsRequest(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/solicitudAhorro.php`, data);
   }
+
+  getSavingLines(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/lineasAhorro.php`, { withCredentials: true });
+  }
 }
