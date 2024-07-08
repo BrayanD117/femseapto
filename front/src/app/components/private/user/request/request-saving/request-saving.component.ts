@@ -4,14 +4,16 @@ import { Router } from '@angular/router';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
 import { LoginService } from '../../../../../services/login.service';
 import { CommonModule } from '@angular/common';
-import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CurrencyFormatPipe } from '../../../../pipes/currency-format.pipe';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-request-saving',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DialogModule, ButtonModule, CurrencyFormatPipe],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, ButtonModule, CurrencyFormatPipe],
+  providers: [MessageService],
   templateUrl: './request-saving.component.html',
   styleUrls: ['./request-saving.component.css']
 })
@@ -19,13 +21,12 @@ export class RequestSavingComponent implements OnInit {
   savingsForm: FormGroup;
   maxSavingsAmount: number = 0;
   savingLines: any[] = [];
-  showModal = false;
-  modalMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private savingsService: SolicitudAhorroService,
     private loginService: LoginService,
+    private messageService: MessageService,
     private router: Router
   ) {
     this.savingsForm = this.fb.group({
@@ -87,6 +88,8 @@ export class RequestSavingComponent implements OnInit {
       montoControl?.disable();
       montoControl?.setValue(0);
     }
+
+    this.validateTotalSavingsAmount();
   }
 
   onMontoAhorrarInput(event: Event, index: number): void {
@@ -95,6 +98,28 @@ export class RequestSavingComponent implements OnInit {
     const montoControl = this.lines.at(index).get('montoAhorrar');
     montoControl?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
     inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+
+    this.validateTotalSavingsAmount();
+  }
+
+  validateTotalSavingsAmount(): void {
+    const totalSavingsAmount = this.savingsForm.get('totalSavingsAmount')?.value;
+    const totalLinesAmount = this.lines.controls
+      .map(control => control.get('montoAhorrar')?.value || 0)
+      .reduce((acc, value) => acc + value, 0);
+
+    if (totalLinesAmount > totalSavingsAmount) {
+      this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'La suma de las líneas de ahorro no puede exceder el monto total de ahorro.' });
+      this.lines.controls.forEach(control => {
+        if (control.get('selected')?.value) {
+          control.get('montoAhorrar')?.setErrors({ max: true });
+        }
+      });
+    } else {
+      this.lines.controls.forEach(control => {
+        control.get('montoAhorrar')?.setErrors(null);
+      });
+    }
   }
 
   onTotalSavingsAmountInput(event: Event): void {
@@ -102,6 +127,8 @@ export class RequestSavingComponent implements OnInit {
     const numericValue = inputElement.value.replace(/[^0-9]/g, '');
     this.savingsForm.get('totalSavingsAmount')?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
     inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+
+    this.validateTotalSavingsAmount();
   }
 
   onSubmit(): void {
@@ -127,15 +154,13 @@ export class RequestSavingComponent implements OnInit {
 
         this.savingsService.createSavingsRequest(savingsData).subscribe(
           (response: any) => {
-            this.modalMessage = 'Solicitud de ahorro creada exitosamente.';
-            this.showModal = true;
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de ahorro creada exitosamente.' });
             setTimeout(() => {
               this.router.navigate(['/auth/user']);
             }, 3000);
           },
           (error: any) => {
-            this.modalMessage = 'Error al crear la solicitud de ahorro.';
-            this.showModal = true;
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear la solicitud de ahorro.' });
             console.error('Error creating savings request', error);
           }
         );
@@ -147,9 +172,5 @@ export class RequestSavingComponent implements OnInit {
 
   get lines(): FormArray {
     return this.savingsForm.get('lines') as FormArray;
-  }
-
-  closeModal(): void {
-    this.showModal = false;
   }
 }

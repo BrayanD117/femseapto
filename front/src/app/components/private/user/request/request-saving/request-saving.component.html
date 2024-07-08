@@ -1,4 +1,5 @@
 <div class="container mt-5">
+  <p-toast></p-toast>
   <h2>Solicitud de Ahorro</h2>
   <form [formGroup]="savingsForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
@@ -69,12 +70,4 @@
 
     <button type="submit" class="btn btn-primary" [disabled]="savingsForm.invalid">Enviar Solicitud</button>
   </form>
-
-  <!-- PrimeNG Modal -->
-  <p-dialog header="Confirmación" [(visible)]="showModal" [modal]="true" [closable]="false" [dismissableMask]="true">
-    <p>{{ modalMessage }}</p>
-    <p-footer>
-      <button type="button" pButton label="Aceptar" (click)="closeModal()"></button>
-    </p-footer>
-  </p-dialog>
 </div>
