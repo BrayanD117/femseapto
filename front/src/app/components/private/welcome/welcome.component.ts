@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../../services/user.service';
+import { LoginService } from '../../../services/login.service';
 import { UserInfoService } from '../../../services/user-info.service';
 
 @Component({
@@ -13,21 +15,29 @@ export class WelcomeComponent implements OnInit {
   primerNombre: string = '';
   primerApellido: string = '';
 
-  constructor(private userInfoService: UserInfoService) { }
+  constructor(private userService: UserService, private loginService: LoginService, private userInfo: UserInfoService) { }
 
   ngOnInit(): void {
-    this.userInfoService.getUserInfo().subscribe(
-      response => {
-        if (response.success) {
-          this.primerNombre = response.data.primerNombre;
-          this.primerApellido = response.data.primerApellido;
-        } else {
-          console.error('Error al obtener la información del usuario:', response.message);
-        }
+    const token = this.loginService.getTokenClaims();
+
+    this.userService.getById(token.userId).subscribe({
+      next: (response) => {
+        this.primerNombre = response.primerNombre;
+        this.primerApellido = response.primerApellido;
+
       },
-      error => {
-        console.error('Error de conexión:', error);
+      error: (error) => {
+        console.error('Error al obtener la información del usuario:', error);
       }
-    );
+    });
+
+    this.userInfo.getUserInfo().subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.error('Error al obtener la información del usuario:', error);
+      }
+    });
   }
 }

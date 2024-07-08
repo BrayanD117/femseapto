@@ -1,0 +1,33 @@
+<form [formGroup]="userForm" (ngSubmit)="guardarUsuario()">
+    <div class="row g-3">
+        <input type="hidden" formControlName="id" />
+        <div class="col-md-6">
+            <label for="primerNombre" class="form-label">Primer Nombre</label>
+            <input formControlName="primerNombre" type="text" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
+            <input formControlName="segundoNombre" type="text" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="primerApellido" class="form-label">Primer Apellido</label>
+            <input formControlName="primerApellido" type="text" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+            <input formControlName="segundoApellido" type="text" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="idTipoDocumento" class="form-label">Tipo de documento</label>
+            <input formControlName="idTipoDocumento" type="text" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="numeroDocumento" class="form-label">Número de documento</label>
+            <input formControlName="numeroDocumento" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+  

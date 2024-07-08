@@ -1,223 +1,40 @@
-<div class="container-fluid mt-2">
-  <div *ngIf="loading" class="text-center">
-    <p>Cargando...</p>
-  </div>
-
-  <div *ngIf="!loading && error" class="alert alert-danger text-center">
-    <p>{{ error }}</p>
-  </div>
-
-  <div *ngIf="!loading && !error" class="card shadow p-3 mb-5 bg-white rounded">
-    <h2 class="text-center title-color">Información del Usuario</h2>
-    <p-accordion>
-      <!-- DATOS PERSONALES -->
-      <p-accordionTab header="Datos Personales">
-        <form class="row g-3" (ngSubmit)="onSubmit()" #userForm="ngForm">
-          <div class="col-md-6">
-            <label class="form-label">Tipo de documento</label>
-            <select class="form-select" [(ngModel)]="userInfo.usuario.idTipoDocumento" name="idTipoDocumento">
-              <option value="1">Cédula de Ciudadanía</option>
-              <option value="2">Cédula de Extranjería</option>
-              <option value="3">Pasaporte</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="numeroDocumento" class="form-label">Número de documento</label>
-            <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="userInfo.usuario.numeroDocumento" name="numeroDocumento">
-          </div>
-          <div class="col-md-6">
-            <label for="primerNombre" class="form-label">Primer Nombre</label>
-            <input type="text" class="form-control" id="primerNombre" [(ngModel)]="userInfo.usuario.primerNombre" name="primerNombre" required>
-          </div>
-          <div class="col-md-6">
-            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-            <input type="text" class="form-control" id="segundoNombre" [(ngModel)]="userInfo.usuario.segundoNombre" name="segundoNombre">
-          </div>
-          <div class="col-md-6">
-            <label for="primerApellido" class="form-label">Primer Apellido</label>
-            <input type="text" class="form-control" id="primerApellido" [(ngModel)]="userInfo.usuario.primerApellido" name="primerApellido" required>
-          </div>
-          <div class="col-md-6">
-            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
-            <input type="text" class="form-control" id="segundoApellido" [(ngModel)]="userInfo.usuario.segundoApellido" name="segundoApellido">
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Género</label>
-            <select class="form-select" [(ngModel)]="userInfo.personaNatural.idGenero" name="idGenero">
-              <option value="1">Masculino</option>
-              <option value="2">Femenino</option>
-              <option value="3">Otro</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="correoElectronico" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="correoElectronico" [(ngModel)]="userInfo.personaNatural.correoElectronico" name="correoElectronico" required>
-          </div>
-        </form>
-      </p-accordionTab>
-      <!-- INFORMACIÓN DE CONTACTO -->
-      <p-accordionTab header="Información de Contacto">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="number" minlength="7" maxlength="10" class="form-control" id="telefono" [(ngModel)]="userInfo.personaNatural.telefono" name="telefono">
-          </div>
-          <div class="col-md-6">
-            <label for="celular" class="form-label">Celular</label>
-            <input type="number" minlength="7" maxlength="10" class="form-control" id="celular" [(ngModel)]="userInfo.personaNatural.celular" name="celular">
-          </div>
-          <div class="col-md-6">
-            <label for="fechaExpDoc" class="form-label">Fecha de expedición de documento</label>
-            <input type="date" class="form-control" id="fechaExpDoc" [(ngModel)]="userInfo.personaNatural.fechaExpDoc" name="fechaExpDoc">
-          </div>
-          <div class="col-md-6">
-            <label for="fechaExpDoc" class="form-label">Departamento de expedición del documento</label>
-            <p-autoComplete 
-                [dropdown]="true" 
-                [suggestions]="filteredDepartments" 
-                (completeMethod)="filterDepartment($event)" 
-                field="nombre"
-                [(ngModel)]="selectedDepartment" 
-                name="selectedDepartment"
-                (onSelect)="onDepartmentSelect()"/>
-          </div>
-          <div class="col-md-6">
-            <label for="fechaExpDoc" class="form-label">Municipio de expedición del documento</label>
-            <p-autoComplete 
-                [dropdown]="true" 
-                [suggestions]="filteredCities" 
-                (completeMethod)="filterCity($event)" 
-                field="nombre"
-                [(ngModel)]="selectedCity" 
-                name="selectedCities"/>
-          </div>
+<div class="container mt-5">
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Accordion Item #1
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <app-user></app-user>
         </div>
-      </p-accordionTab>
-      <!-- INFORMACIÓN FINANCIERA -->
-      <p-accordionTab header="Información Financiera">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label for="ingresosMensuales" class="form-label">Ingresos Mensuales</label>
-            <input type="number" class="form-control" id="ingresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.ingresosMensuales" name="ingresosMensuales">
-          </div>
-          <div class="col-md-6">
-            <label for="otrosIngresosMensuales" class="form-label">Otros Ingresos Mensuales</label>
-            <input type="number" class="form-control" id="otrosIngresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.otrosIngresosMensuales" name="otrosIngresosMensuales">
-          </div>
-          <div class="col-md-6">
-            <label for="egresosMensuales" class="form-label">Egresos Mensuales</label>
-            <input type="number" class="form-control" id="egresosMensuales" [(ngModel)]="userInfo.informacionFinanciera.egresosMensuales" name="egresosMensuales">
-          </div>
-          <div class="col-md-6">
-            <label for="totalActivos" class="form-label">Total Activos</label>
-            <input type="number" class="form-control" id="totalActivos" [(ngModel)]="userInfo.informacionFinanciera.totalActivos" name="totalActivos">
-          </div>
-          <div class="col-md-6">
-            <label for="totalPasivos" class="form-label">Total Pasivos</label>
-            <input type="number" class="form-control" id="totalPasivos" [(ngModel)]="userInfo.informacionFinanciera.totalPasivos" name="totalPasivos">
-          </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Accordion Item #2
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
-      </p-accordionTab>
-      <!-- NUCLEO FAMILIAR -->
-      <p-accordionTab header="Núcleo Familiar">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nombre Completo</th>
-              <th>Tipo de Documento</th>
-              <th>Número de Documento</th>
-              <th>Parentesco</th>
-              <th>Género</th>
-              <th>Fecha de Nacimiento</th>
-              <th>Trabaja</th>
-              <th>Celular</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let familiar of userInfo.nucleoFamiliar; let i = index">
-              <td><input type="text" class="form-control" [(ngModel)]="familiar.nombreCompleto" name="nombreCompleto"></td>
-              <td>
-                <select class="form-select" [(ngModel)]="familiar.idTipoDocumento" name="idTipoDocumento">
-                  <option value="1">Cédula de Ciudadanía</option>
-                  <option value="2">Cédula de Extranjería</option>
-                  <option value="3">Pasaporte</option>
-                </select>
-              </td>
-              <td><input type="text" class="form-control" [(ngModel)]="familiar.numeroDocumento" name="numeroDocumento"></td>
-              <td>
-                <select class="form-select" [(ngModel)]="familiar.idParentesco" name="idParentesco">
-                  <option value="1">Padre/Madre</option>
-                  <option value="2">Hermano/a</option>
-                  <option value="3">Hijo/a</option>
-                </select>
-              </td>
-              <td>
-                <select class="form-select" [(ngModel)]="familiar.idGenero" name="idGenero">
-                  <option value="1">Masculino</option>
-                  <option value="2">Femenino</option>
-                  <option value="3">Otro</option>
-                </select>
-              </td>
-              <td><input type="date" class="form-control" [(ngModel)]="familiar.fechaNacimiento" name="fechaNacimiento"></td>
-              <td>
-                <select class="form-select" [(ngModel)]="familiar.trabaja" name="trabaja">
-                  <option value="SI">Sí</option>
-                  <option value="NO">No</option>
-                </select>
-              </td>
-              <td><input type="number" minlength="7" maxlength="10" class="form-control" [(ngModel)]="familiar.celular" name="celular"></td>
-              <td>
-                <button type="button" class="btn btn-danger trash-button" (click)="deleteNucleoFamiliar(i)">
-                  <i class="pi pi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-center">
-          <button type="button" class="btn btn-primary" (click)="addNucleoFamiliar()">Agregar Familiar</button>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Accordion Item #3
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
-      </p-accordionTab>
-      <!-- Referencias -->
-      <p-accordionTab header="Referencias">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nombre o Razón Social</th>
-              <th>Tipo de Referencia</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let referencia of userInfo.referencias; let i = index">
-              <td><input type="text" class="form-control" [(ngModel)]="referencia.nombreRazonSocial" name="nombreRazonSocial"></td>
-              <td>
-                <select class="form-select" [(ngModel)]="referencia.idTipoReferencia" name="idTipoReferencia">
-                  <option value="1">Personal</option>
-                  <option value="2">Laboral</option>
-                  <option value="3">Comercial</option>
-                </select>
-              </td>
-              <td><input type="text" class="form-control" [(ngModel)]="referencia.direccion" name="direccion"></td>
-              <td><input type="number" minlength="7" maxlength="10" class="form-control" [(ngModel)]="referencia.telefono" name="telefono"></td>
-              <td>
-                <button type="button" class="btn btn-danger" (click)="deleteReferencia(i)">
-                  <i class="pi pi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-center">
-          <button type="button" class="btn btn-primary" (click)="addReferencia()">Agregar Referencia</button>
-        </div>
-      </p-accordionTab>
-    </p-accordion>
-    <div class="col-12 mt-3 text-center">
-      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </div>
     </div>
   </div>
 </div>

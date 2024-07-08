@@ -18,8 +18,4 @@ export class UserInfoService {
   getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/userInfo.php`, { withCredentials: true });
   }
-
-  getPersona(idUsuario: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/personasnaturales.php?idUsuario=${idUsuario}`, { withCredentials: true });
-  }
 }

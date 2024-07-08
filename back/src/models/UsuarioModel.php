@@ -18,8 +18,7 @@ class Usuario {
     public $actualizadoEl;
 
     public function __construct($id = null, $id_rol = null, $usuario = '', $contrasenia = '',
-        $primerNombre = '', $segundoNombre = null, $primerApellido = '',
-        $segundoApellido = null, $idTipoDocumento = '', $numeroDocumento = '', $id_tipo_asociado = '', $activo = null, $creadoEl = '', $actualizadoEl = '') {
+    $primerApellido = '', $segundoApellido = null, $primerNombre = '', $segundoNombre = null, $idTipoDocumento = '', $numeroDocumento = '', $id_tipo_asociado = '', $activo = null, $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->id_rol = $id_rol;
         $this->usuario = $usuario;
@@ -61,10 +60,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
         $user = null;
         if ($query->fetch()) {
-            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
