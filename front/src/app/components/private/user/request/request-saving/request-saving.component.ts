@@ -89,6 +89,14 @@ export class RequestSavingComponent implements OnInit {
     }
   }
 
+  onMontoAhorrarInput(event: Event, index: number): void {
+    const inputElement = event.target as HTMLInputElement;
+    const numericValue = inputElement.value.replace(/[^0-9]/g, '');
+    const montoControl = this.lines.at(index).get('montoAhorrar');
+    montoControl?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
+    inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+  }
+
   onSubmit(): void {
     if (this.savingsForm.valid) {
       const token = this.loginService.getTokenClaims();

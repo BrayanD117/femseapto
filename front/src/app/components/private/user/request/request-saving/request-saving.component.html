@@ -61,7 +61,7 @@
               {{ savingLines[i]?.nombre }}
             </label>
           </div>
-          <input type="number" class="form-control w-50" formControlName="montoAhorrar" [disabled]="!line.get('selected')?.value">
+          <input type="text" class="form-control w-50" formControlName="montoAhorrar" (input)="onMontoAhorrarInput($event, i)">
         </div>
       </div>
     </div>
