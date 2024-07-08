@@ -22,12 +22,12 @@ export class UserService {
 
   create(user: User): Observable<User> {
     const url = `${this.apiUrl}/usuarios.php`;
-    return this.http.post<User>(url, user);
+    return this.http.post<User>(url, user, { withCredentials: true });
   }
 
   update(user: User): Observable<User> {
     const url = `${this.apiUrl}/usuarios.php`;
-    return this.http.put<User>(url, user);
+    return this.http.put<User>(url, user, { withCredentials: true });
   }
 }
 
