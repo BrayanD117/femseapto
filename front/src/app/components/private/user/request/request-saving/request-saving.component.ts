@@ -97,6 +97,13 @@ export class RequestSavingComponent implements OnInit {
     inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
   }
 
+  onTotalSavingsAmountInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const numericValue = inputElement.value.replace(/[^0-9]/g, '');
+    this.savingsForm.get('totalSavingsAmount')?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
+    inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+  }
+
   onSubmit(): void {
     if (this.savingsForm.valid) {
       const token = this.loginService.getTokenClaims();
