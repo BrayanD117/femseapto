@@ -1,0 +1,57 @@
+<div class="container mt-5">
+    <h2>Savings Request</h2>
+    <form [formGroup]="savingsForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="totalSavingsAmount" class="form-label">Total Savings Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          id="totalSavingsAmount"
+          formControlName="totalSavingsAmount"
+          [max]="maxSavingsAmount"
+        />
+        <div *ngIf="savingsForm.get('totalSavingsAmount')?.invalid && (savingsForm.get('totalSavingsAmount')?.dirty || savingsForm.get('totalSavingsAmount')?.touched)" class="text-danger">
+          <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['required']">This field is required.</div>
+          <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['min']">The amount must be greater than 0.</div>
+          <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['max']">The amount cannot exceed {{maxSavingsAmount}}.</div>
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="fortnight" class="form-label">Fortnight</label>
+        <select class="form-control" id="fortnight" formControlName="fortnight">
+          <option value="" disabled selected>Select a fortnight</option>
+          <option value="1">First Fortnight</option>
+          <option value="2">Second Fortnight</option>
+        </select>
+        <div *ngIf="savingsForm.get('fortnight')?.invalid && (savingsForm.get('fortnight')?.dirty || savingsForm.get('fortnight')?.touched)" class="text-danger">
+          <div *ngIf="savingsForm.get('fortnight')?.errors?.['required']">This field is required.</div>
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="month" class="form-label">Month</label>
+        <select class="form-control" id="month" formControlName="month">
+          <option value="" disabled selected>Select a month</option>
+          <option value="january">January</option>
+          <option value="february">February</option>
+          <option value="march">March</option>
+          <option value="april">April</option>
+          <option value="may">May</option>
+          <option value="june">June</option>
+          <option value="july">July</option>
+          <option value="august">August</option>
+          <option value="september">September</option>
+          <option value="october">October</option>
+          <option value="november">November</option>
+          <option value="december">December</option>
+        </select>
+        <div *ngIf="savingsForm.get('month')?.invalid && (savingsForm.get('month')?.dirty || savingsForm.get('month')?.touched)" class="text-danger">
+          <div *ngIf="savingsForm.get('month')?.errors?.['required']">This field is required.</div>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="savingsForm.invalid">Submit Request</button>
+    </form>
+  </div>
+  

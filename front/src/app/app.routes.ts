@@ -12,7 +12,9 @@ import { WelcomeComponent } from './components/private/welcome/welcome.component
 import { UserInfoComponent } from './components/private/user/components/user-info/user-info.component';
 import { UserSavingComponent } from './components/private/user/components/user-saving/user-saving.component';
 import { UserCreditsComponent } from './components/private/user/components/user-credits/user-credits.component';
-
+// Request Components
+import { RequestCreditComponent } from './components/private/user/request/request-credit/request-credit.component';
+import { RequestSavingComponent } from './components/private/user/request/request-saving/request-saving.component';
 
 // Admin components
 import { AdminComponent } from './components/private/admin/admin.component';
@@ -49,6 +51,12 @@ export const routes: Routes = [
                     { path: 'information', component: UserInfoComponent },
                     { path: 'savings', component: UserSavingComponent },
                     { path: 'credits', component: UserCreditsComponent },
+                    { path: 'request', 
+                        children: [
+                            { path: 'credit', component: RequestCreditComponent },
+                            { path: 'saving', component: RequestSavingComponent },
+                        ], 
+                    },    
                 ]
             },
             { path: 'admin', component: AdminComponent,
@@ -58,6 +66,4 @@ export const routes: Routes = [
             }
         ]
     }
-
-    
 ];
