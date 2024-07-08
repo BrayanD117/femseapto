@@ -12,7 +12,7 @@ export class SolicitudAhorroService {
   constructor(private http: HttpClient) { }
 
   getFinancialInfo(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/infoFinanciera.php?idUsuario=${userId}`);
+    return this.http.get(`${this.apiUrl}/informacionfinanciera.php?idUsuario=${userId}` , { withCredentials: true });
   }
 
   createSavingsRequest(data: any): Observable<any> {

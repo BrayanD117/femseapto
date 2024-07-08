@@ -47,4 +47,9 @@ export class LoginService {
     return token ? this.jwtHelper.decodeToken(token) : null;
   }
 
+  getUserId(): number | null {
+    const claims = this.getTokenClaims();
+    return claims ? claims.userId : null;
+  }
+
 }
