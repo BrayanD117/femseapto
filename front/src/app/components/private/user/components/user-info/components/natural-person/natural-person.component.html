@@ -10,32 +10,20 @@
       </select>
     </div>
     <div class="col-md-6">
-      <label for="fechaExpDoc" class="form-label"
-        >Fecha de expedición de documento</label
-      >
+      <label for="fechaExpDoc" class="form-label">Fecha de expedición de documento</label>
       <input formControlName="fechaExpDoc" type="date" class="form-control" />
     </div>
     <div class="col-md-6">
-        <label for="mpioExpDoc" class="form-label">Departamento de expedición del documento</label>
-        <p-autoComplete
-          [suggestions]="filteredDepartments"
-          (completeMethod)="filterDepartment($event)"
-          field="nombre"
-          placeholder="Seleccione departamento"
-          formControlName="mpioExpDoc"
-          [dropdown]="true"
-        ></p-autoComplete>
-      </div>
-      <div class="col-md-6">
-        <label for="mpioExpDoc" class="form-label">Municipio de expedición del documento</label>
-        <p-autoComplete
-          [suggestions]="filteredCities"
-          (completeMethod)="filterCity($event)"
-          field="nombre"
-          placeholder="Seleccione municipio"
-          [dropdown]="true"
-        ></p-autoComplete>
-      </div>
+      <label for="departamentoExpDoc" class="form-label">Departamento de expedición del documento</label>
+      <p-autoComplete [suggestions]="filteredDepartments" (completeMethod)="filterDepartment($event)" field="nombre"
+        placeholder="Seleccione departamento" formControlName="departamentoExpDoc" (onSelect)="onDepartmentSelect()"
+        [dropdown]="true"></p-autoComplete>
+    </div>
+    <div class="col-md-6">
+      <label for="mpioExpDoc" class="form-label">Municipio de expedición del documento</label>
+      <p-autoComplete [suggestions]="filteredCities" (completeMethod)="filterCity($event)" field="nombre"
+        placeholder="Seleccione municipio" formControlName="mpioExpDoc" [dropdown]="true"></p-autoComplete>
+    </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button class="btn btn-primary me-md-2" type="submit">Guardar</button>
     </div>

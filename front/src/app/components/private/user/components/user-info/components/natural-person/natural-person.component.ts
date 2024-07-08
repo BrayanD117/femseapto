@@ -27,9 +27,9 @@ interface City {
 @Component({
   selector: 'app-natural-person',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, AutoCompleteModule ],
+  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule],
   templateUrl: './natural-person.component.html',
-  styleUrl: './natural-person.component.css'
+  styleUrls: ['./natural-person.component.css']
 })
 export class NaturalPersonComponent implements OnInit {
   natPersonForm: FormGroup;
@@ -44,19 +44,27 @@ export class NaturalPersonComponent implements OnInit {
   selectedCity: City | undefined;
   filteredCities: City[] = [];
 
-  constructor(private fb: FormBuilder, private naturalPersonService: NaturalpersonService, private loginService: LoginService, private genderService: GenderService,
-    private departmentsService: DepartmentsService, private citiesService: CitiesService
-  ) { 
+  constructor(
+    private fb: FormBuilder,
+    private naturalPersonService: NaturalpersonService,
+    private loginService: LoginService,
+    private genderService: GenderService,
+    private departmentsService: DepartmentsService,
+    private citiesService: CitiesService
+  ) {
     this.natPersonForm = this.fb.group({
       id: [''],
       idUsuario: [''],
       idGenero: ['', Validators.required],
       fechaExpDoc: ['', Validators.required],
+      departamentoExpDoc: ['', Validators.required],
       mpioExpDoc: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       paisNacimiento: ['', Validators.required],
+      departamentoNacimiento: ['', Validators.required],
       mpioNacimiento: ['', Validators.required],
       otroLugarNacimiento: [''],
+      departamentoResidencia: ['', Validators.required],
       mpioResidencia: ['', Validators.required],
       idZonaResidencia: ['', Validators.required],
       idTipoVivienda: ['', Validators.required],
@@ -110,14 +118,15 @@ export class NaturalPersonComponent implements OnInit {
 
   loadDepartmentsAndCities() {
     const cityId = this.natPerson.mpioExpDoc;
-    console.log("CIUDAD", cityId);
-
     if (cityId) {
       this.citiesService.getCityById(cityId).subscribe(city => {
         this.selectedCity = city;
-        console.log("CIUDAD new", this.selectedCity);
         if (this.selectedCity) {
           this.selectedDepartment = this.departments.find(dept => dept.id === this.selectedCity?.id_departamento);
+          this.natPersonForm.patchValue({
+            departamentoExpDoc: this.selectedDepartment ? this.selectedDepartment.nombre : '',
+            mpioExpDoc: this.selectedCity ? this.selectedCity.nombre : ''
+          });
         }
       });
     }
@@ -138,10 +147,10 @@ export class NaturalPersonComponent implements OnInit {
     let query = event.query;
 
     for (let i = 0; i < this.departments.length; i++) {
-        let dptm = this.departments[i];
-        if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-            filtered.push(dptm);
-        }
+      let dptm = this.departments[i];
+      if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        filtered.push(dptm);
+      }
     }
 
     this.filteredDepartments = filtered;
@@ -152,10 +161,10 @@ export class NaturalPersonComponent implements OnInit {
     let query = event.query;
 
     for (let i = 0; i < this.cities.length; i++) {
-        let city = this.cities[i];
-        if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-            filtered.push(city);
-        }
+      let city = this.cities[i];
+      if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        filtered.push(city);
+      }
     }
 
     this.filteredCities = filtered;
