@@ -2,48 +2,40 @@
   <div class="row g-3">
     <input type="hidden" formControlName="id" />
     <div class="col-md-6">
-        <label for="idGenero" class="form-label">Género</label>
-        <select class="form-select" formControlName="idGenero">
-          <option *ngFor="let type of genders" [value]="type.id">
-            {{ type.nombre }}
-          </option>
-        </select>
+      <label for="idGenero" class="form-label">Género</label>
+      <select class="form-select" formControlName="idGenero">
+        <option *ngFor="let type of genders" [value]="type.id">
+          {{ type.nombre }}
+        </option>
+      </select>
     </div>
     <div class="col-md-6">
-      <label for="idGenero" class="form-label">Primer Nombre</label>
-      <input formControlName="idGenero" type="text" class="form-control" />
-    </div>
-    <div class="col-md-6">
-      <label for="fechaExpDoc" class="form-label">Segundo Nombre</label>
-      <input formControlName="fechaExpDoc" type="text" class="form-control" />
-    </div>
-    <div class="col-md-6">
-      <label for="mpioExpDoc" class="form-label">Primer Apellido</label>
-      <input
-        formControlName="mpioExpDoc"
-        type="text"
-        class="form-control"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="segundoApellido" class="form-label">Segundo Apellido</label>
-      <input
-        formControlName="segundoApellido"
-        type="text"
-        class="form-control"
-      />
-    </div>
-    
-    <div class="col-md-6">
-      <label for="numeroDocumento" class="form-label"
-        >Número de documento</label
+      <label for="fechaExpDoc" class="form-label"
+        >Fecha de expedición de documento</label
       >
-      <input
-        formControlName="numeroDocumento"
-        type="text"
-        class="form-control"
-      />
+      <input formControlName="fechaExpDoc" type="date" class="form-control" />
     </div>
+    <div class="col-md-6">
+        <label for="mpioExpDoc" class="form-label">Departamento de expedición del documento</label>
+        <p-autoComplete
+          [suggestions]="filteredDepartments"
+          (completeMethod)="filterDepartment($event)"
+          field="nombre"
+          placeholder="Seleccione departamento"
+          formControlName="mpioExpDoc"
+          [dropdown]="true"
+        ></p-autoComplete>
+      </div>
+      <div class="col-md-6">
+        <label for="mpioExpDoc" class="form-label">Municipio de expedición del documento</label>
+        <p-autoComplete
+          [suggestions]="filteredCities"
+          (completeMethod)="filterCity($event)"
+          field="nombre"
+          placeholder="Seleccione municipio"
+          [dropdown]="true"
+        ></p-autoComplete>
+      </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button class="btn btn-primary me-md-2" type="submit">Guardar</button>
     </div>

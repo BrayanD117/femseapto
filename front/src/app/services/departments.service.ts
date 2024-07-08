@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 interface Department {
-  id: number;
+  id: string;
   nombre: string;
 }
 

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 interface City {
-  id: number;
+  id: string;
   nombre: string;
-  id_departamento: number;
+  id_departamento: string;
 }
 
 @Injectable({
