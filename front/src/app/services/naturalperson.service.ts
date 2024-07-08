@@ -13,7 +13,47 @@ export class NaturalpersonService {
 
   constructor(private http: HttpClient) { }
 
-  get(userId: number): Observable<any> {
+  getByUserId(userId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/personasnaturales.php?idUsuario=${userId}`, { withCredentials: true });
   }
+}
+
+export interface NaturalPerson {
+  id: number;
+  idUsuario: number;
+  idGenero: number;
+  fechaExpDoc: string;
+  mpioExpDoc: string;
+  fechaNacimiento: string;
+  paisNacimiento: string;
+  mpioNacimiento: string;
+  otroLugarNacimiento?: string;
+  mpioResidencia: string;
+  idZonaResidencia: number;
+  idTipoVivienda: number;
+  estrato: number;
+  direccionResidencia: string;
+  aniosAntigVivienda: number;
+  idEstadoCivil: number;
+  cabezaFamilia: boolean;
+  personasACargo: number;
+  tieneHijos: boolean;
+  numeroHijos: number;
+  correoElectronico: string;
+  telefono: string;
+  celular: string;
+  telefonoOficina: string;
+  idNivelEducativo: number;
+  profesion: string;
+  ocupacionOficio: string;
+  idEmpresaLabor: number;
+  idTipoContrato: number;
+  dependenciaEmpresa: string;
+  cargoOcupa: string;
+  aniosAntigEmpresa: number;
+  mesesAntigEmpresa: number;
+  mesSaleVacaciones: string;
+  nombreEmergencia: string;
+  numeroCedulaEmergencia: string;
+  numeroCelularEmergencia: string;
 }

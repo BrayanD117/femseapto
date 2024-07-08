@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+
+
 import { UserComponent } from './components/user/user.component';
+import { NaturalPersonComponent } from './components/natural-person/natural-person.component';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -24,7 +27,7 @@ interface City {
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, AccordionModule, UserComponent],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, AccordionModule, UserComponent, NaturalPersonComponent],
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.css']
 })

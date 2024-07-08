@@ -1,19 +1,26 @@
-<p-toast></p-toast>
-<form [formGroup]="userForm" (ngSubmit)="guardarUsuario()">
+<form [formGroup]="natPersonForm" (ngSubmit)="onSubmit()">
   <div class="row g-3">
     <input type="hidden" formControlName="id" />
     <div class="col-md-6">
-      <label for="primerNombre" class="form-label">Primer Nombre</label>
-      <input formControlName="primerNombre" type="text" class="form-control" />
+        <label for="idGenero" class="form-label">Género</label>
+        <select class="form-select" formControlName="idGenero">
+          <option *ngFor="let type of genders" [value]="type.id">
+            {{ type.nombre }}
+          </option>
+        </select>
     </div>
     <div class="col-md-6">
-      <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-      <input formControlName="segundoNombre" type="text" class="form-control" />
+      <label for="idGenero" class="form-label">Primer Nombre</label>
+      <input formControlName="idGenero" type="text" class="form-control" />
     </div>
     <div class="col-md-6">
-      <label for="primerApellido" class="form-label">Primer Apellido</label>
+      <label for="fechaExpDoc" class="form-label">Segundo Nombre</label>
+      <input formControlName="fechaExpDoc" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="mpioExpDoc" class="form-label">Primer Apellido</label>
       <input
-        formControlName="primerApellido"
+        formControlName="mpioExpDoc"
         type="text"
         class="form-control"
       />
@@ -26,14 +33,7 @@
         class="form-control"
       />
     </div>
-    <div class="col-md-6">
-      <label for="idTipoDocumento" class="form-label">Tipo de documento</label>
-      <select class="form-select" formControlName="idTipoDocumento">
-        <option *ngFor="let tipo of documentTypes" [value]="tipo.id">
-          {{ tipo.nombre }}
-        </option>
-      </select>
-    </div>
+    
     <div class="col-md-6">
       <label for="numeroDocumento" class="form-label"
         >Número de documento</label
