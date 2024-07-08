@@ -54,11 +54,14 @@
     <div class="mb-3">
       <label for="savingLines" class="form-label">Líneas de Ahorro</label>
       <div formArrayName="lines">
-        <div *ngFor="let line of lines.controls; let i = index" [formGroupName]="i" class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="selected">
-          <label class="form-check-label">
-            {{ savingLines[i]?.nombre }}
-          </label>
+        <div *ngFor="let line of lines.controls; let i = index" [formGroupName]="i" class="d-flex align-items-center mb-2">
+          <div class="form-check flex-grow-1 w-50">
+            <input class="form-check-input me-2" type="checkbox" formControlName="selected" (change)="onLineSelected(i)">
+            <label class="form-check-label">
+              {{ savingLines[i]?.nombre }}
+            </label>
+          </div>
+          <input type="number" class="form-control w-50" formControlName="montoAhorrar" [disabled]="!line.get('selected')?.value">
         </div>
       </div>
     </div>

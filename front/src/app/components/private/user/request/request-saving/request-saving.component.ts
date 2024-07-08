@@ -6,11 +6,12 @@ import { LoginService } from '../../../../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { CurrencyFormatPipe } from '../../../../pipes/currency-format.pipe';
 
 @Component({
   selector: 'app-request-saving',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DialogModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule, ButtonModule, CurrencyFormatPipe],
   templateUrl: './request-saving.component.html',
   styleUrls: ['./request-saving.component.css']
 })
@@ -31,7 +32,7 @@ export class RequestSavingComponent implements OnInit {
       totalSavingsAmount: [0, [Validators.required, Validators.min(1)]],
       fortnight: ['', Validators.required],
       month: ['', Validators.required],
-      lines: this.fb.array([])  // FormArray for saving lines
+      lines: this.fb.array([])
     });
   }
 
@@ -69,9 +70,23 @@ export class RequestSavingComponent implements OnInit {
     this.savingLines.forEach((line: any) => {
       linesArray.push(this.fb.group({
         id: [line.id],
-        selected: [false]
+        selected: [false],
+        montoAhorrar: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1)]]
       }));
     });
+  }
+
+  onLineSelected(index: number): void {
+    const linesArray = this.savingsForm.get('lines') as FormArray;
+    const selectedControl = linesArray.at(index).get('selected');
+    const montoControl = linesArray.at(index).get('montoAhorrar');
+
+    if (selectedControl?.value) {
+      montoControl?.enable();
+    } else {
+      montoControl?.disable();
+      montoControl?.setValue(0);
+    }
   }
 
   onSubmit(): void {
@@ -83,7 +98,8 @@ export class RequestSavingComponent implements OnInit {
         const selectedLines = this.savingsForm.value.lines
           .filter((line: any) => line.selected)
           .map((line: any) => ({
-            idLineaAhorro: line.id
+            idLineaAhorro: line.id,
+            montoAhorrar: line.montoAhorrar
           }));
 
         const savingsData = {
