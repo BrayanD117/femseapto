@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
 import { LoginService } from '../../../../../services/login.service';
@@ -31,8 +31,11 @@ export class RequestSavingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userId = this.loginService.getUserId();
-    if (userId) {
+    const token = this.loginService.getTokenClaims();
+
+    if (token) {
+      const userId = token.userId;
+      console.log('User ID', userId);
       this.savingsService.getFinancialInfo(userId).subscribe(
         (data: any) => {
           this.maxSavingsAmount = data.montoMaxAhorro;
@@ -49,8 +52,10 @@ export class RequestSavingComponent implements OnInit {
 
   onSubmit(): void {
     if (this.savingsForm.valid) {
-      const userId = this.loginService.getUserId();
-      if (userId) {
+      const token = this.loginService.getTokenClaims();
+
+      if (token) {
+        const userId = token.userId;
         const savingsData = {
           idUsuario: userId,
           ...this.savingsForm.value
@@ -68,5 +73,18 @@ export class RequestSavingComponent implements OnInit {
         console.error('User ID not found');
       }
     }
+  }
+
+  get lines(): FormArray {
+    return this.savingsForm.get('lines') as FormArray;
+  }
+
+  addLine(): void {
+    this.lines.push(this.fb.group({
+    }));
+  }
+
+  removeLine(index: number): void {
+    this.lines.removeAt(index);
   }
 }

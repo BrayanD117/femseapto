@@ -46,10 +46,4 @@ export class LoginService {
     const token = localStorage.getItem('auth_token');
     return token ? this.jwtHelper.decodeToken(token) : null;
   }
-
-  getUserId(): number | null {
-    const claims = this.getTokenClaims();
-    return claims ? claims.userId : null;
-  }
-
 }
