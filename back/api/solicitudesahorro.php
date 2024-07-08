@@ -2,6 +2,7 @@
 
 require_once '../src/controllers/SolicitudAhorroController.php';
 require_once '../auth/verifyToken.php';
+require_once '../config/cors.php';
 
 $key = $_ENV['JWT_SECRET_KEY'];
 $token = $_COOKIE['auth_token'] ?? '';

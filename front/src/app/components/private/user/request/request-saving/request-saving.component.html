@@ -21,8 +21,8 @@
       <label for="fortnight" class="form-label">Quincena</label>
       <select class="form-control" id="fortnight" formControlName="fortnight">
         <option value="" disabled selected>Seleccione una quincena</option>
-        <option value="1">Primera Quincena</option>
-        <option value="2">Segunda Quincena</option>
+        <option value="Primera">Primera Quincena</option>
+        <option value="Segunda">Segunda Quincena</option>
       </select>
       <div *ngIf="savingsForm.get('fortnight')?.invalid && (savingsForm.get('fortnight')?.dirty || savingsForm.get('fortnight')?.touched)" class="text-danger">
         <div *ngIf="savingsForm.get('fortnight')?.errors?.['required']">Este campo es requerido.</div>
@@ -33,18 +33,18 @@
       <label for="month" class="form-label">Mes</label>
       <select class="form-control" id="month" formControlName="month">
         <option value="" disabled selected>Seleccione un mes</option>
-        <option value="january">Enero</option>
-        <option value="february">Febrero</option>
-        <option value="march">Marzo</option>
-        <option value="april">Abril</option>
-        <option value="may">Mayo</option>
-        <option value="june">Junio</option>
-        <option value="july">Julio</option>
-        <option value="august">Agosto</option>
-        <option value="september">Septiembre</option>
-        <option value="october">Octubre</option>
-        <option value="november">Noviembre</option>
-        <option value="december">Diciembre</option>
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
       </select>
       <div *ngIf="savingsForm.get('month')?.invalid && (savingsForm.get('month')?.dirty || savingsForm.get('month')?.touched)" class="text-danger">
         <div *ngIf="savingsForm.get('month')?.errors?.['required']">Este campo es requerido.</div>
@@ -53,10 +53,10 @@
 
     <div class="mb-3">
       <label for="savingLines" class="form-label">Líneas de Ahorro</label>
-      <div formArrayName="lines" *ngFor="let line of lines.controls; let i = index">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" [formControlName]="i" id="line{{i}}">
-          <label class="form-check-label" for="line{{i}}">
+      <div formArrayName="lines">
+        <div *ngFor="let line of lines.controls; let i = index" [formGroupName]="i" class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="selected">
+          <label class="form-check-label">
             {{ savingLines[i]?.nombre }}
           </label>
         </div>
@@ -65,4 +65,12 @@
 
     <button type="submit" class="btn btn-primary" [disabled]="savingsForm.invalid">Enviar Solicitud</button>
   </form>
+
+  <!-- PrimeNG Modal -->
+  <p-dialog header="Confirmación" [(visible)]="showModal" [modal]="true" [closable]="false" [dismissableMask]="true">
+    <p>{{ modalMessage }}</p>
+    <p-footer>
+      <button type="button" pButton label="Aceptar" (click)="closeModal()"></button>
+    </p-footer>
+  </p-dialog>
 </div>

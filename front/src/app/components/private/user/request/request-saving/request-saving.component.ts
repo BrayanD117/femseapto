@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
 import { LoginService } from '../../../../../services/login.service';
 import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-request-saving',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule, ButtonModule],
   templateUrl: './request-saving.component.html',
   styleUrls: ['./request-saving.component.css']
 })
@@ -16,6 +18,8 @@ export class RequestSavingComponent implements OnInit {
   savingsForm: FormGroup;
   maxSavingsAmount: number = 0;
   savingLines: any[] = [];
+  showModal = false;
+  modalMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +31,7 @@ export class RequestSavingComponent implements OnInit {
       totalSavingsAmount: [0, [Validators.required, Validators.min(1)]],
       fortnight: ['', Validators.required],
       month: ['', Validators.required],
-      lines: this.fb.array([])
+      lines: this.fb.array([])  // FormArray for saving lines
     });
   }
 
@@ -62,8 +66,11 @@ export class RequestSavingComponent implements OnInit {
 
   addSavingLinesControls(): void {
     const linesArray = this.savingsForm.get('lines') as FormArray;
-    this.savingLines.forEach(() => {
-      linesArray.push(this.fb.control(false));
+    this.savingLines.forEach((line: any) => {
+      linesArray.push(this.fb.group({
+        id: [line.id],
+        selected: [false]
+      }));
     });
   }
 
@@ -74,20 +81,30 @@ export class RequestSavingComponent implements OnInit {
       if (token) {
         const userId = token.userId;
         const selectedLines = this.savingsForm.value.lines
-          .map((checked: boolean, i: number) => checked ? this.savingLines[i].id : null)
-          .filter((v: any) => v !== null);
+          .filter((line: any) => line.selected)
+          .map((line: any) => ({
+            idLineaAhorro: line.id
+          }));
 
         const savingsData = {
           idUsuario: userId,
-          ...this.savingsForm.value,
-          lines: selectedLines
+          montoTotalAhorrar: this.savingsForm.value.totalSavingsAmount,
+          quincena: this.savingsForm.value.fortnight,
+          mes: this.savingsForm.value.month,
+          lineas: selectedLines
         };
 
         this.savingsService.createSavingsRequest(savingsData).subscribe(
           (response: any) => {
-            console.log('Savings request created', response);
+            this.modalMessage = 'Solicitud de ahorro creada exitosamente.';
+            this.showModal = true;
+            setTimeout(() => {
+              this.router.navigate(['/auth/user']);
+            }, 3000);
           },
           (error: any) => {
+            this.modalMessage = 'Error al crear la solicitud de ahorro.';
+            this.showModal = true;
             console.error('Error creating savings request', error);
           }
         );
@@ -99,5 +116,9 @@ export class RequestSavingComponent implements OnInit {
 
   get lines(): FormArray {
     return this.savingsForm.get('lines') as FormArray;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
   }
 }
