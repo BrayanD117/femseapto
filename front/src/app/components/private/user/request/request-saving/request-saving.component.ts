@@ -21,6 +21,8 @@ export class RequestSavingComponent implements OnInit {
   savingsForm: FormGroup;
   maxSavingsAmount: number = 0;
   savingLines: any[] = [];
+  toastDisplayed = false;
+  previousTotalLinesAmount = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -108,8 +110,18 @@ export class RequestSavingComponent implements OnInit {
       .map(control => control.get('montoAhorrar')?.value || 0)
       .reduce((acc, value) => acc + value, 0);
 
-    if (totalLinesAmount > totalSavingsAmount) {
-      this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'La suma de las líneas de ahorro no puede exceder el monto total de ahorro.' });
+    if (totalLinesAmount > totalSavingsAmount && totalLinesAmount !== this.previousTotalLinesAmount) {
+      if (!this.toastDisplayed) {
+        this.toastDisplayed = true;
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Advertencia',
+          detail: `La suma de las líneas de ahorro no puede exceder el monto total de ahorro. Monto máximo permitido: $ ${this.maxSavingsAmount.toLocaleString('es-ES')}`
+        });
+        setTimeout(() => {
+          this.toastDisplayed = false;
+        }, 3000);
+      }
       this.lines.controls.forEach(control => {
         if (control.get('selected')?.value) {
           control.get('montoAhorrar')?.setErrors({ max: true });
@@ -120,6 +132,8 @@ export class RequestSavingComponent implements OnInit {
         control.get('montoAhorrar')?.setErrors(null);
       });
     }
+
+    this.previousTotalLinesAmount = totalLinesAmount;
   }
 
   onTotalSavingsAmountInput(event: Event): void {

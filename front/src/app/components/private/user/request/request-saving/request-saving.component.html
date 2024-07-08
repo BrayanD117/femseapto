@@ -15,7 +15,7 @@
       <div *ngIf="savingsForm.get('totalSavingsAmount')?.invalid && (savingsForm.get('totalSavingsAmount')?.dirty || savingsForm.get('totalSavingsAmount')?.touched)" class="text-danger">
         <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['required']">Este campo es requerido.</div>
         <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['min']">El monto debe ser mayor a 0.</div>
-        <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['max']">El monto no puede exceder de {{maxSavingsAmount | currencyFormat}}.</div>
+        <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['max']">El monto no puede exceder de {{ maxSavingsAmount | currencyFormat }}.</div>
       </div>
     </div>
 
