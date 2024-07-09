@@ -37,7 +37,8 @@ export class RequestCreditComponent implements OnInit {
       plazoQuincenal: ['', [Validators.required, this.maxTermValidator.bind(this)]],
       valorCuotaQuincenal: [{ value: 0, disabled: false }, [Validators.required, Validators.min(1)]],
       idLineaCredito: ['', Validators.required],
-      tasaInteres: [{ value: '', disabled: false }, Validators.required]
+      tasaInteres: [{ value: '', disabled: false }, Validators.required],
+      valorMensual: [{ value: '', disabled: true }]
     });
   }
 
@@ -118,8 +119,15 @@ export class RequestCreditComponent implements OnInit {
       formattedCuota = `$ ${valorCuota.toLocaleString('es-CO')}`;
 
       this.creditForm.get('valorCuotaQuincenal')?.setValue(formattedCuota);
+      this.calculateValorMensual(valorCuota);
       console.log('Valor Cuota Quincenal:', formattedCuota);  // Verificar el valor de la cuota
     }
+  }
+
+  calculateValorMensual(valorCuotaQuincenal: number): void {
+    const valorMensual = valorCuotaQuincenal * 2;
+    this.creditForm.get('valorMensual')?.setValue(`$ ${valorMensual.toLocaleString('es-CO')}`);
+    console.log('Valor Mensual:', valorMensual);  // Verificar el valor mensual
   }
 
   maxLimitValidator(control: AbstractControl): ValidationErrors | null {
