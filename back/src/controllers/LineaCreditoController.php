@@ -10,8 +10,8 @@ class LineaCreditoController {
             $datos['monto'],
             $datos['destinacion'],
             $datos['plazo'],
-            $datos['tasa_interes_1'],
-            $datos['tasa_interes_2'],
+            $datos['tasaInteres1'],
+            $datos['tasaInteres2'],
             $datos['condiciones']
         );
 
@@ -30,8 +30,8 @@ class LineaCreditoController {
         $lineaCredito->monto = $datos['monto'];
         $lineaCredito->destinacion = $datos['destinacion'];
         $lineaCredito->plazo = $datos['plazo'];
-        $lineaCredito->tasa_interes_1 = $datos['tasa_interes_1'];
-        $lineaCredito->tasa_interes_2 = $datos['tasa_interes_2'];
+        $lineaCredito->tasaInteres1 = $datos['tasaInteres1'];
+        $lineaCredito->tasaInteres2 = $datos['tasaInteres2'];
         $lineaCredito->condiciones = $datos['condiciones'];
 
         $lineaCredito->guardar();

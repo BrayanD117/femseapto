@@ -94,7 +94,7 @@ export class SimulatorComponent implements OnInit {
           this.interestRate = 1.4;
         }
       } else {
-        this.interestRate = this.selectedCreditLineDetails.tasa_interes_1;
+        this.interestRate = this.selectedCreditLineDetails.tasaInteres1;
       }
     }
   }

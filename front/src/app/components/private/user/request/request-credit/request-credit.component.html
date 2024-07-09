@@ -1,1 +1,109 @@
-<p>request-credit works!</p>
+<p-toast></p-toast>
+<div class="container mt-5">
+  <div class="card">
+    <h1 class="card-header">Solicitud de crédito</h1>
+    <div class="card-body">
+      <form class="row g-3" [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+        <div class="col-md-12">
+          <label for="idLineaCredito" class="form-label"
+            >Línea de crédito a solicitar</label
+          >
+          <select
+            class="form-select"
+            formControlName="idLineaCredito"
+            (change)="onCreditLineChange()"
+          >
+            <option *ngFor="let line of creditLines" [value]="line.id">
+              {{ line.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="montoSolicitado" class="form-label"
+            >Monto a solicitar</label
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            formControlName="montoSolicitado"
+            class="form-control"
+            placeholder="Ingresa el monto del crédito"
+            (input)="onLoanAmountInput($event)"
+          />
+          <div
+            *ngIf="
+              creditForm.controls['montoSolicitado'].hasError(
+                'maxLimitExceeded'
+              )
+            "
+          >
+            <small class="text-danger"
+              >El monto solicitado excede el límite permitido.</small
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="plazoQuincenal" class="form-label"
+            >Plazo en quincenas</label
+          >
+          <input
+            type="number"
+            formControlName="plazoQuincenal"
+            class="form-control"
+            (input)="onPlazoChange()"
+          />
+          <div
+            *ngIf="
+              creditForm.controls['plazoQuincenal'].hasError('maxTermExceeded')
+            "
+          >
+            <small class="text-danger"
+              >El plazo excede el máximo permitido.</small
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="tasaInteres" class="form-label"
+            >Tasa de Interés (%)</label
+          >
+          <input
+            type="text"
+            formControlName="tasaInteres"
+            class="form-control"
+            readonly
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="valorCuotaQuincenal" class="form-label"
+            >Valor cuota quincenal</label
+          >
+          <input
+            type="text"
+            formControlName="valorCuotaQuincenal"
+            class="form-control"
+            readonly
+          />
+        </div>
+        <div class="col-12">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="creditForm.invalid"
+          >
+            Enviar Solicitud
+          </button>
+        </div>
+      </form>
+      <h5 class="mt-5">Condiciones del Crédito</h5>
+      <div *ngIf="selectedCreditLine">
+        <!-- Otra estructura HTML de tu formulario -->
+        <p>Condiciones para el crédito seleccionado:</p>
+        <ul>
+          <li *ngFor="let condition of creditConditions">
+            {{ condition }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,8 +17,8 @@ class SolicitudCreditoController {
             $datos['plazoQuincenal'],
             $datos['valorCuotaQuincenal'],
             $datos['idLineaCredito'],
-            $datos['reestructurado'],
-            $datos['periocidadPago'],
+            null,//$datos['reestructurado'],
+            null,//$datos['periocidadPago'],
             $datos['tasaInteres'],
             null
         );
