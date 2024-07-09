@@ -48,15 +48,51 @@ export class FinancialInfoComponent implements OnInit {
 
     if (token) {
       this.financialInfoService.getFinancialInfo(token.userId).subscribe(financialInfo => {
+        // Apply currency format to the loaded values
+        financialInfo.ingresosMensuales = this.formatCurrency(financialInfo.ingresosMensuales);
+        financialInfo.primaProductividad = this.formatCurrency(financialInfo.primaProductividad);
+        financialInfo.otrosIngresosMensuales = this.formatCurrency(financialInfo.otrosIngresosMensuales);
+        financialInfo.totalIngresosMensuales = this.formatCurrency(financialInfo.totalIngresosMensuales);
+        financialInfo.egresosMensuales = this.formatCurrency(financialInfo.egresosMensuales);
+        financialInfo.obligacionFinanciera = this.formatCurrency(financialInfo.obligacionFinanciera);
+        financialInfo.otrosEgresosMensuales = this.formatCurrency(financialInfo.otrosEgresosMensuales);
+        financialInfo.totalEgresosMensuales = this.formatCurrency(financialInfo.totalEgresosMensuales);
+        financialInfo.totalActivos = this.formatCurrency(financialInfo.totalActivos);
+        financialInfo.totalPasivos = this.formatCurrency(financialInfo.totalPasivos);
+        financialInfo.totalPatrimonio = this.formatCurrency(financialInfo.totalPatrimonio);
+        financialInfo.montoMaxAhorro = this.formatCurrency(financialInfo.montoMaxAhorro);
+
         this.financialForm.patchValue(financialInfo);
       });
     }
   }
 
+  formatCurrency(value: number): string {
+    if (value == null) {
+      return '';
+    }
+    const formattedValue = value.toLocaleString('es-ES');
+    return `$ ${formattedValue}`;
+  }
+
+  formatCurrencyInput(event: Event, controlName: string): void {
+    const inputElement = event.target as HTMLInputElement;
+    const numericValue = inputElement.value.replace(/[^0-9]/g, '');
+    const value = numericValue ? parseInt(numericValue, 10) : 0;
+    this.financialForm.get(controlName)?.setValue(value);
+    inputElement.value = `$ ${value.toLocaleString('es-ES')}`;
+  }
+
   onSubmit(): void {
     if (this.financialForm.valid) {
       const token = this.loginService.getTokenClaims();
-      this.financialInfoService.updateFinancialInfo(token.userId, this.financialForm.value).subscribe({
+      const formattedData = { ...this.financialForm.value };
+      Object.keys(formattedData).forEach(key => {
+        if (typeof formattedData[key] === 'string') {
+          formattedData[key] = parseInt(formattedData[key].replace(/[^0-9]/g, ''), 10);
+        }
+      });
+      this.financialInfoService.updateFinancialInfo(token.userId, formattedData).subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera actualizada correctamente' });
         },

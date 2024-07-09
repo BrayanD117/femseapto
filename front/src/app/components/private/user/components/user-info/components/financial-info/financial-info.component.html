@@ -15,15 +15,15 @@
     </div>
     <div class="col-md-6">
       <label for="ingresosMensuales" class="form-label">Ingresos Mensuales</label>
-      <input formControlName="ingresosMensuales" type="text" class="form-control" />
+      <input formControlName="ingresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'ingresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="primaProductividad" class="form-label">Prima de Productividad</label>
-      <input formControlName="primaProductividad" type="text" class="form-control" />
+      <input formControlName="primaProductividad" type="text" class="form-control" (input)="formatCurrencyInput($event, 'primaProductividad')" />
     </div>
     <div class="col-md-6">
       <label for="otrosIngresosMensuales" class="form-label">Otros Ingresos Mensuales</label>
-      <input formControlName="otrosIngresosMensuales" type="text" class="form-control" />
+      <input formControlName="otrosIngresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'otrosIngresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="conceptoOtrosIngresosMens" class="form-label">Concepto de Otros Ingresos Mensuales</label>
@@ -31,39 +31,39 @@
     </div>
     <div class="col-md-6">
       <label for="totalIngresosMensuales" class="form-label">Total de Ingresos Mensuales</label>
-      <input formControlName="totalIngresosMensuales" type="text" class="form-control" />
+      <input formControlName="totalIngresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'totalIngresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="egresosMensuales" class="form-label">Egresos Mensuales</label>
-      <input formControlName="egresosMensuales" type="text" class="form-control" />
+      <input formControlName="egresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'egresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="obligacionFinanciera" class="form-label">Obligación Financiera</label>
-      <input formControlName="obligacionFinanciera" type="text" class="form-control" />
+      <input formControlName="obligacionFinanciera" type="text" class="form-control" (input)="formatCurrencyInput($event, 'obligacionFinanciera')" />
     </div>
     <div class="col-md-6">
       <label for="otrosEgresosMensuales" class="form-label">Otros Egresos Mensuales</label>
-      <input formControlName="otrosEgresosMensuales" type="text" class="form-control" />
+      <input formControlName="otrosEgresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'otrosEgresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="totalEgresosMensuales" class="form-label">Total de Egresos Mensuales</label>
-      <input formControlName="totalEgresosMensuales" type="text" class="form-control" />
+      <input formControlName="totalEgresosMensuales" type="text" class="form-control" (input)="formatCurrencyInput($event, 'totalEgresosMensuales')" />
     </div>
     <div class="col-md-6">
       <label for="totalActivos" class="form-label">Total de Activos</label>
-      <input formControlName="totalActivos" type="text" class="form-control" />
+      <input formControlName="totalActivos" type="text" class="form-control" (input)="formatCurrencyInput($event, 'totalActivos')" />
     </div>
     <div class="col-md-6">
       <label for="totalPasivos" class="form-label">Total de Pasivos</label>
-      <input formControlName="totalPasivos" type="text" class="form-control" />
+      <input formControlName="totalPasivos" type="text" class="form-control" (input)="formatCurrencyInput($event, 'totalPasivos')" />
     </div>
     <div class="col-md-6">
       <label for="totalPatrimonio" class="form-label">Total de Patrimonio</label>
-      <input formControlName="totalPatrimonio" type="text" class="form-control" />
+      <input formControlName="totalPatrimonio" type="text" class="form-control" (input)="formatCurrencyInput($event, 'totalPatrimonio')" />
     </div>
     <div class="col-md-6">
       <label for="montoMaxAhorro" class="form-label">Monto Máximo de Ahorro</label>
-      <input formControlName="montoMaxAhorro" type="text" class="form-control" />
+      <input formControlName="montoMaxAhorro" type="text" class="form-control" (input)="formatCurrencyInput($event, 'montoMaxAhorro')" />
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button class="btn btn-primary me-md-2" type="submit">Guardar</button>
