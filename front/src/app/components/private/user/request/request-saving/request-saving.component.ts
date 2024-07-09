@@ -98,8 +98,9 @@ export class RequestSavingComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     const numericValue = inputElement.value.replace(/[^0-9]/g, '');
     const montoControl = this.lines.at(index).get('montoAhorrar');
-    montoControl?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
-    inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+    const value = numericValue ? parseInt(numericValue, 10) : 0;
+    montoControl?.setValue(value);
+    inputElement.value = `$ ${value.toLocaleString('es-ES')}`;
 
     this.validateTotalSavingsAmount();
   }
@@ -116,7 +117,7 @@ export class RequestSavingComponent implements OnInit {
         this.messageService.add({
           severity: 'warn',
           summary: 'Advertencia',
-          detail: `La suma de las líneas de ahorro no puede exceder el monto total de ahorro. Monto máximo permitido: $ ${this.maxSavingsAmount.toLocaleString('es-ES')}`
+          detail: `La suma de las líneas de ahorro no puede exceder el monto total de ahorro.`
         });
         setTimeout(() => {
           this.toastDisplayed = false;
@@ -139,8 +140,9 @@ export class RequestSavingComponent implements OnInit {
   onTotalSavingsAmountInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const numericValue = inputElement.value.replace(/[^0-9]/g, '');
-    this.savingsForm.get('totalSavingsAmount')?.setValue(numericValue ? parseInt(numericValue, 10) : 0);
-    inputElement.value = `$ ${parseInt(numericValue, 10).toLocaleString('es-ES')}`;
+    const value = numericValue ? parseInt(numericValue, 10) : 0;
+    this.savingsForm.get('totalSavingsAmount')?.setValue(value);
+    inputElement.value = `$ ${value.toLocaleString('es-ES')}`;
 
     this.validateTotalSavingsAmount();
   }
