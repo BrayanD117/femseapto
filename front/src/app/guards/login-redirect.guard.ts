@@ -1,4 +1,3 @@
-// login-redirect.guard.ts
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -14,7 +13,12 @@ export class LoginRedirectGuard implements CanActivate {
   canActivate(): boolean {
     const token = this.cookieService.get('auth_token');
     if (token && !this.jwtHelper.isTokenExpired(token)) {
-      this.router.navigate(['/auth/user']);
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      if (decodedToken.id_rol === 1) {
+        this.router.navigate(['/auth/admin']);
+      } else if (decodedToken.id_rol === 2) {
+        this.router.navigate(['/auth/user']);
+      }
       return false;
     }
     return true;

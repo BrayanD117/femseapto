@@ -22,6 +22,9 @@ import { AdminComponent } from './components/private/admin/admin.component';
 // Guards
 import { LoginGuard } from './guards/login.guard';
 import { LoginRedirectGuard } from './guards/login-redirect.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
+
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
 import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
@@ -45,7 +48,7 @@ export const routes: Routes = [
     { path: 'auth', component: PrivateComponent, canActivate: [LoginGuard],
         children: [
             // Hacer componente para Not Found{ path: '', redirectTo: 'user/welcome', pathMatch: 'full' },
-            { path: 'user', 
+            { path: 'user', canActivate: [UserGuard], 
                 children: [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
@@ -59,7 +62,7 @@ export const routes: Routes = [
                     },    
                 ]
             },
-            { path: 'admin', component: AdminComponent,
+            { path: 'admin', component: AdminComponent, canActivate: [AdminGuard],
                 children: [
                     { path: '', component: AdminWelcomeComponent },
                 ]
