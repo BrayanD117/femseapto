@@ -71,7 +71,7 @@ export class FinancialInfoComponent implements OnInit {
     if (value == null) {
       return '';
     }
-    const formattedValue = value.toLocaleString('es-ES');
+    const formattedValue = Math.round(value).toLocaleString('es-ES');
     return `$ ${formattedValue}`;
   }
 
