@@ -7,6 +7,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { UserComponent } from './components/user/user.component';
 import { NaturalPersonComponent } from './components/natural-person/natural-person.component';
+import { FinancialInfoComponent } from './components/financial-info/financial-info.component';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -27,7 +28,7 @@ interface City {
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, AccordionModule, UserComponent, NaturalPersonComponent],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, AccordionModule, UserComponent, NaturalPersonComponent, FinancialInfoComponent],
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.css']
 })
