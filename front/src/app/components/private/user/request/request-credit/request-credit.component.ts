@@ -102,7 +102,7 @@ export class RequestCreditComponent implements OnInit {
       }
 
       this.creditForm.get('tasaInteres')?.setValue(tasaInteres);
-      console.log('Tasa de Interés:', tasaInteres);  // Verificar la tasa de interés
+      // console.log('Tasa de Interés:', tasaInteres);  // Verificar la tasa de interés
     }
   }
 
@@ -115,19 +115,20 @@ export class RequestCreditComponent implements OnInit {
       const tasaInteresQuincenal = tasaInteres / 100 / 2;
       const valorCuota = (montoSolicitado * tasaInteresQuincenal) / (1 - Math.pow(1 + tasaInteresQuincenal, -plazoQuincenal));
       
-      let formattedCuota = valorCuota.toFixed(2);
-      formattedCuota = `$ ${valorCuota.toLocaleString('es-CO')}`;
+      let roundedCuota = Math.round(valorCuota);
+      let formattedCuota = `$ ${roundedCuota.toLocaleString('es-CO')}`;
 
       this.creditForm.get('valorCuotaQuincenal')?.setValue(formattedCuota);
-      this.calculateValorMensual(valorCuota);
-      console.log('Valor Cuota Quincenal:', formattedCuota);  // Verificar el valor de la cuota
+      this.calculateValorMensual(roundedCuota);
+      // console.log('Valor Cuota Quincenal:', formattedCuota);  // Verificar el valor de la cuota
     }
   }
 
   calculateValorMensual(valorCuotaQuincenal: number): void {
     const valorMensual = valorCuotaQuincenal * 2;
-    this.creditForm.get('valorMensual')?.setValue(`$ ${valorMensual.toLocaleString('es-CO')}`);
-    console.log('Valor Mensual:', valorMensual);  // Verificar el valor mensual
+    let formattedMensual = `$ ${valorMensual.toLocaleString('es-CO')}`;
+    this.creditForm.get('valorMensual')?.setValue(formattedMensual);
+    // console.log('Valor Mensual:', formattedMensual);  // Verificar el valor mensual
   }
 
   maxLimitValidator(control: AbstractControl): ValidationErrors | null {
