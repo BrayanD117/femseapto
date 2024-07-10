@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // Environment component
 import { environment } from '../../environments/environment.development';
@@ -19,6 +20,12 @@ export class LineasCreditoService {
   
     obtenerLineaCreditoPorId(id: number): Observable<any> {
       return this.http.get<any>(`${this.apiUrl}/lineascredito.php?id=${id}`);
+    }
+
+    getNameById(id: number): Observable<string> {
+      return this.http.get<any>(`${this.apiUrl}/lineascredito.php?id=${id}`).pipe(
+        map(response => response.nombre) // Suponiendo que 'nombre' es la propiedad que contiene el nombre de la línea de crédito
+      );
     }
   
     crearLineaCredito(lineaCredito: any): Observable<any> {

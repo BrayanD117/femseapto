@@ -60,7 +60,7 @@ class SaldoCredito {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, valor_pagado, valor_saldo, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, valor_pagado, valor_saldo, DATE_FORMAT(creado_el, '%d/%m/%Y') as creado_el, DATE_FORMAT(creado_el, '%d/%m/%Y') as actualizado_el FROM saldo_creditos WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $valorPagado, $valorSaldo, $creadoEl, $actualizadoEl);

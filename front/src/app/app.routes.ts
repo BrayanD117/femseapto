@@ -28,6 +28,7 @@ import { UserGuard } from './guards/user.guard';
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
 import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
+import { CreditBalanceComponent } from './components/private/user/credit-balance/credit-balance.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -53,7 +54,11 @@ export const routes: Routes = [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
                     { path: 'savings', component: UserSavingComponent },
-                    { path: 'credits', component: UserCreditsComponent },
+                    { path: 'credits',
+                        children: [
+                        { path: 'balance', component: CreditBalanceComponent },
+                    ],
+                    },
                     { path: 'request', 
                         children: [
                             { path: 'credit', component: RequestCreditComponent },

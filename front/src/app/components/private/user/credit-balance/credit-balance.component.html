@@ -1,0 +1,43 @@
+<div class="container mt-5">
+    <h1>Información sobre sus créditos vigentes</h1>
+    <div class="card mt-3">
+        <p-table [value]="creditsBalance" [tableStyle]="{'min-width': '60rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="idLineaCredito" style="width:30%">
+                        Línea Crédito <p-sortIcon field="idLineaCredito" />
+                    </th>
+                    <th pSortableColumn="cuotaActual" style="width:5%">
+                        Cuota Actual <p-sortIcon field="cuotaActual" />
+                    </th>
+                    <th pSortableColumn="cuotasTotales" style="width:5%">
+                        Total Cuotas <p-sortIcon field="cuotasTotales" />
+                    </th>
+                    <th pSortableColumn="valorSolicitado" style="width:10%">
+                        Valor Crédito <p-sortIcon field="valorSolicitado" />
+                    </th>
+                    <th pSortableColumn="valorPagado" style="width:10%">
+                        Total Pagado <p-sortIcon field="valorPagado" />
+                    </th>
+                    <th pSortableColumn="valorSaldo" style="width:10%">
+                        Saldo por Pagar <p-sortIcon field="valorSaldo" />
+                    </th>
+                    <th pSortableColumn="actualizadoEl" style="width:10%">
+                        Fecha Actualización <p-sortIcon field="actualizadoEl" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-credit>
+                <tr>
+                    <td>{{ credit.lineaCreditoNombre }}</td>
+                    <td>{{ credit.cuotaActual }}</td>
+                    <td>{{ credit.cuotasTotales }}</td>
+                    <td>{{ credit.valorSolicitado }}</td>
+                    <td>{{ credit.valorPagado }}</td>
+                    <td>{{ credit.valorSaldo }}</td>
+                    <td>{{ credit.actualizadoEl }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
