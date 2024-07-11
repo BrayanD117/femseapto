@@ -4,14 +4,14 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 // Environment component
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
 
-  private apiUrl: string = environment.apiUrl;
+  private authUrl: string = environment.authUrl;
 
   private authStatus = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
@@ -19,7 +19,7 @@ export class LoginService {
   }
 
   login(usuario: string, contrasenia: string): Observable<any> {
-    const url = 'http://localhost/femseapto/back/auth/login.php';
+    const url = `${this.authUrl}/auth/login.php`;
     return this.http.post(
       url,
       {
