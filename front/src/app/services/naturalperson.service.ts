@@ -14,7 +14,17 @@ export class NaturalpersonService {
   constructor(private http: HttpClient) { }
 
   getByUserId(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/personasnaturales.php?idUsuario=${userId}`, { withCredentials: true });
+    return this.http.get<NaturalPerson>(`${this.apiUrl}/personasnaturales.php?idUsuario=${userId}`, { withCredentials: true });
+  }
+
+  create(natPerson: NaturalPerson): Observable<NaturalPerson> {
+    const url = `${this.apiUrl}/personasnaturales.php`;
+    return this.http.post<NaturalPerson>(url, natPerson, { withCredentials: true });
+  }
+
+  update(natPerson: NaturalPerson): Observable<NaturalPerson> {
+    const url = `${this.apiUrl}/personasnaturales.php`;
+    return this.http.put<NaturalPerson>(url, natPerson, { withCredentials: true });
   }
 }
 

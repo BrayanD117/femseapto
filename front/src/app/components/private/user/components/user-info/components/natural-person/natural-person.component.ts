@@ -1,12 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputMaskModule } from 'primeng/inputmask';
+
+// Services
 import { LoginService } from '../../../../../../../services/login.service';
 import { NaturalPerson, NaturalpersonService } from '../../../../../../../services/naturalperson.service';
 import { Gender, GenderService } from '../../../../../../../services/gender.service';
-import { CommonModule } from '@angular/common';
 import { DepartmentsService } from '../../../../../../../services/departments.service';
 import { CitiesService } from '../../../../../../../services/cities.service';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { Zone, ZoneService } from '../../../../../../../services/zone.service';
+import { HouseType, HouseTypeService } from '../../../../../../../services/house-type.service';
+import { MaritalStatus, MaritalStatusService } from '../../../../../../../services/marital-status.service';
+import { EducationLevel, EducationLevelService } from '../../../../../../../services/education-level.service';
+import { Company, CompanyService } from '../../../../../../../services/company.service';
+import { ContractType, ContractTypeService } from '../../../../../../../services/contract-type.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -27,7 +36,7 @@ interface City {
 @Component({
   selector: 'app-natural-person',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule],
+  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule, InputMaskModule],
   templateUrl: './natural-person.component.html',
   styleUrls: ['./natural-person.component.css']
 })
@@ -35,6 +44,12 @@ export class NaturalPersonComponent implements OnInit {
   natPersonForm: FormGroup;
   natPerson!: NaturalPerson;
   genders: Gender[] = [];
+  zones: Zone[] = [];
+  houseTypes: HouseType[] = [];
+  maritalStatus: MaritalStatus[] = [];
+  educationLevels: EducationLevel[] = [];
+  companies: Company[] = [];
+  contractTypes: ContractType[] = [];
 
   departments: Department[] = [];
   selectedDepartment: Department | undefined;
@@ -50,11 +65,16 @@ export class NaturalPersonComponent implements OnInit {
     private loginService: LoginService,
     private genderService: GenderService,
     private departmentsService: DepartmentsService,
-    private citiesService: CitiesService
+    private citiesService: CitiesService,
+    private zoneService: ZoneService,
+    private houseTypeService: HouseTypeService,
+    private maritalStatusService: MaritalStatusService,
+    private educationLevelService: EducationLevelService,
+    private companyService: CompanyService,
+    private contractTypeService: ContractTypeService
   ) {
     this.natPersonForm = this.fb.group({
       id: [''],
-      idUsuario: [''],
       idGenero: ['', Validators.required],
       fechaExpDoc: ['', Validators.required],
       departamentoExpDoc: ['', Validators.required],
@@ -75,9 +95,9 @@ export class NaturalPersonComponent implements OnInit {
       cabezaFamilia: ['', Validators.required],
       personasACargo: ['', Validators.required],
       tieneHijos: ['', Validators.required],
-      numeroHijos: ['', Validators.required],
+      numeroHijos: [''],
       correoElectronico: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
+      telefono: [''],
       celular: ['', Validators.required],
       telefonoOficina: ['', Validators.required],
       idNivelEducativo: ['', Validators.required],
@@ -114,6 +134,30 @@ export class NaturalPersonComponent implements OnInit {
     this.departmentsService.getDepartments().subscribe((departments) => {
       this.departments = departments;
     });
+
+    this.zoneService.getAll().subscribe(types => {
+      this.zones = types;
+    });
+
+    this.houseTypeService.getAll().subscribe(types => {
+      this.houseTypes = types;
+    });
+
+    this.maritalStatusService.getAll().subscribe(types => {
+      this.maritalStatus = types;
+    });
+
+    this.educationLevelService.getAll().subscribe(types => {
+      this.educationLevels = types;
+    });
+
+    this.companyService.getAll().subscribe(types => {
+      this.companies = types;
+    });
+
+    this.contractTypeService.getAll().subscribe(types => {
+      this.contractTypes = types;
+    });
   }
 
   loadDepartmentsAndCities() {
@@ -133,8 +177,10 @@ export class NaturalPersonComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.natPerson.celular);
     if (this.natPersonForm.valid) {
       // Aquí es donde manejarás la lógica para enviar los datos al backend
+      
       console.log(this.natPersonForm.value);
     } else {
       // Manejo de formulario inválido
