@@ -34,7 +34,8 @@ export class CreditBalanceComponent implements OnInit {
             lineaCreditoNombre: nombre,
             valorSolicitado: this.formatNumber(credit.valorSolicitado),
             valorPagado: this.formatNumber(credit.valorPagado),
-            valorSaldo: this.formatNumber(credit.valorSaldo)
+            valorSaldo: this.formatNumber(credit.valorSaldo),
+            cuotasPendientes: credit.cuotasTotales - credit.cuotaActual
           }))
         );
       });

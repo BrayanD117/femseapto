@@ -177,6 +177,9 @@ export class RequestCreditComponent implements OnInit {
         this.creditsService.create(creditData).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de crédito creada correctamente' });
+            setTimeout(() => {
+              this.router.navigate(['/auth/user']);
+            }, 3000);
           },
           error: (err) => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la solicitud de crédito. Por favor, intente otra vez' });
