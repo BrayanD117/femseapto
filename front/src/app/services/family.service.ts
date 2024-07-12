@@ -12,21 +12,46 @@ export class FamilyService {
 
   constructor(private http: HttpClient) { }
 
-  getById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/usuarios.php?id=${id}`, { withCredentials: true });
+  getById(id: number): Observable<Family> {
+    return this.http.get<Family>(`${this.apiUrl}/informacionfamiliares.php?id=${id}`, { withCredentials: true });
   }
 
-  getAll(): Observable<any> {
-    return this.http.get<any[]>(`${this.apiUrl}/usuarios.php`, { withCredentials: true });
+  getByUserId(userId: number): Observable<Family[]> {
+    return this.http.get<Family[]>(`${this.apiUrl}/informacionfamiliares.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
-  create(user: any): Observable<any> {
-    const url = `${this.apiUrl}/usuarios.php`;
-    return this.http.post<any>(url, user, { withCredentials: true });
+  getAll(): Observable<Family[]> {
+    return this.http.get<Family[]>(`${this.apiUrl}/informacionfamiliares.php`, { withCredentials: true });
   }
 
-  update(user: any): Observable<any> {
-    const url = `${this.apiUrl}/usuarios.php`;
-    return this.http.put<any>(url, user, { withCredentials: true });
+  create(familiar: Family): Observable<Family> {
+    const url = `${this.apiUrl}/informacionfamiliares.php`;
+    return this.http.post<Family>(url, familiar, { withCredentials: true });
   }
+
+  update(familiar: Family): Observable<Family> {
+    const url = `${this.apiUrl}/informacionfamiliares.php`;
+    return this.http.put<Family>(url, familiar, { withCredentials: true });
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/informacionfamiliares.php?id=${id}`, { withCredentials: true });
+  }
+}
+
+export interface Family {
+  id: number;
+  idUsuario: number;
+  nombreCompleto: string;
+  idTipoDocumento: number;
+  numeroDocumento: string;
+  idMpioExpDoc: string;
+  idParentesco: number;
+  idGenero: number;
+  fechaNacimiento: Date;
+  idNivelEducativo: number;
+  trabaja: string;
+  celular: string;
+  creadoEl: Date;
+  actualizadoEl: Date;
 }

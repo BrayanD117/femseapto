@@ -96,7 +96,7 @@ class Usuario {
     // User Login
     public static function buscarPorUsuario($usuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ?");
+        $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ? AND activo = 1");
         $query->bind_param("s", $usuario);
         $query->execute();
         $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);

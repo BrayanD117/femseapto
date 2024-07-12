@@ -13,11 +13,11 @@ export class HouseTypeService {
   constructor(private http: HttpClient) { }
 
   getById(id: number): Observable<any> {
-    return this.http.get<HouseType>(`${this.apiUrl}/tiposVivienda.php?id=${id}`, { withCredentials: true });
+    return this.http.get<HouseType>(`${this.apiUrl}/tiposvivienda.php?id=${id}`, { withCredentials: true });
   }
 
   getAll(): Observable<any> {
-    return this.http.get<HouseType[]>(`${this.apiUrl}/tiposVivienda.php`, { withCredentials: true });
+    return this.http.get<HouseType[]>(`${this.apiUrl}/tiposvivienda.php`, { withCredentials: true });
   }
 }
 
