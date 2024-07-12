@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Family, FamilyService } from '../../../../../../../services/family.service';
@@ -120,13 +120,11 @@ export class FamilyInformationComponent implements OnInit{
       this.familyService.getByUserId(this.userId).subscribe((data: Family[]) => {
         const requests: Observable<any>[] = data.map((familiar: Family) => {
           const parentescoNombre = this.getRelationshipName(familiar.idParentesco);
-          return this.familyService.update(familiar).pipe(
-            map(() => ({
-              ...familiar,
-              parentescoNombre: parentescoNombre,
-              // Añadir más mapeos aquí según sea necesario
-            }))
-          );
+          return of({
+            ...familiar,
+            parentescoNombre: parentescoNombre,
+            // Agregar más mapeos aquí según sea necesario
+          });
         });
 
         forkJoin(requests).subscribe(results => {
@@ -178,6 +176,10 @@ export class FamilyInformationComponent implements OnInit{
   cancelarEdicion(): void {
     this.editMode = false;
     this.selectedFamiliar = null;
+    this.familiarForm.reset();
+  }
+
+  formReset() {
     this.familiarForm.reset();
   }
 }
