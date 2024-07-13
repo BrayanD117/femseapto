@@ -168,8 +168,8 @@ export class NaturalPersonComponent implements OnInit {
         if (this.selectedCity) {
           this.selectedDepartment = this.departments.find(dept => dept.id === this.selectedCity?.id_departamento);
           this.natPersonForm.patchValue({
-            departamentoExpDoc: this.selectedDepartment ? this.selectedDepartment.nombre : '',
-            mpioExpDoc: this.selectedCity ? this.selectedCity.nombre : ''
+            departamentoExpDoc: this.selectedDepartment ? this.selectedDepartment.id : '',
+            mpioExpDoc: this.selectedCity ? this.selectedCity.id : ''
           });
         }
       });
@@ -177,13 +177,9 @@ export class NaturalPersonComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.natPerson.celular);
     if (this.natPersonForm.valid) {
-      // Aquí es donde manejarás la lógica para enviar los datos al backend
-      
       console.log(this.natPersonForm.value);
     } else {
-      // Manejo de formulario inválido
       console.log('Formulario inválido');
     }
   }
@@ -216,12 +212,15 @@ export class NaturalPersonComponent implements OnInit {
     this.filteredCities = filtered;
   }
 
-  onDepartmentSelect() {
-    if (this.selectedDepartment && this.selectedDepartment.id) {
-      this.citiesService.getCitiesByDepartment(this.selectedDepartment.id.toString()).subscribe((cities) => {
+  onDepartmentSelect(departmentField: string, cityField: string) {
+    const selectedDepartmentId = this.natPersonForm.get(departmentField)?.value;
+    this.selectedDepartment = this.departments.find(dept => dept.id === selectedDepartmentId.id);
+
+    if (this.selectedDepartment) {
+      this.citiesService.getCitiesByDepartment(this.selectedDepartment.id).subscribe((cities) => {
         this.cities = cities;
-        this.selectedCity = this.cities.find(muni => muni.id === this.natPerson.mpioExpDoc);
-        this.filteredCities = []; // Clear filtered municipalities
+        this.filteredCities = [];
+        this.natPersonForm.get(cityField)?.setValue('');
       });
     }
   }
