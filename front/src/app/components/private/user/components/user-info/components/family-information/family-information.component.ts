@@ -186,6 +186,7 @@ export class FamilyInformationComponent implements OnInit{
   eliminarFamiliar(id: number): void {
     this.familyService.delete(id).subscribe({
       next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Info. familiar eliminada exitosamente.' });
         this.cargarFamilia();
       },
       error: (err) => {

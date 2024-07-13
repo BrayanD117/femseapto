@@ -28,13 +28,13 @@ export class FinancialInfoComponent implements OnInit {
       idTipoCuentaBanc: ['', Validators.required],
       numeroCuentaBanc: ['', Validators.required],
       ingresosMensuales: ['', Validators.required],
-      primaProductividad: [''],
-      otrosIngresosMensuales: [''],
+      primaProductividad: ['', Validators.required],
+      otrosIngresosMensuales: ['', Validators.required],
       conceptoOtrosIngresosMens: [''],
       totalIngresosMensuales: ['', Validators.required],
       egresosMensuales: ['', Validators.required],
-      obligacionFinanciera: [''],
-      otrosEgresosMensuales: [''],
+      obligacionFinanciera: ['', Validators.required],
+      otrosEgresosMensuales: ['', Validators.required],
       totalEgresosMensuales: ['', Validators.required],
       totalActivos: ['', Validators.required],
       totalPasivos: ['', Validators.required],
@@ -48,8 +48,7 @@ export class FinancialInfoComponent implements OnInit {
 
     if (token) {
       this.financialInfoService.getFinancialInfo(token.userId).subscribe(financialInfo => {
-        // Apply currency format to the loaded values
-        financialInfo.ingresosMensuales = this.formatCurrency(financialInfo.ingresosMensuales);
+        financialInfo.ingresosMensuales = this.formatNumber(financialInfo.ingresosMensuales);
         financialInfo.primaProductividad = this.formatCurrency(financialInfo.primaProductividad);
         financialInfo.otrosIngresosMensuales = this.formatCurrency(financialInfo.otrosIngresosMensuales);
         financialInfo.totalIngresosMensuales = this.formatCurrency(financialInfo.totalIngresosMensuales);
@@ -73,6 +72,15 @@ export class FinancialInfoComponent implements OnInit {
     }
     const formattedValue = Math.round(value).toLocaleString('es-ES');
     return `$ ${formattedValue}`;
+  }
+
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
   }
 
   formatCurrencyInput(event: Event, controlName: string): void {

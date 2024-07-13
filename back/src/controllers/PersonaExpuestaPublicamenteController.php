@@ -12,7 +12,7 @@ class PersonaExpuestaPublicamenteController {
             $datos['manejaRecPublicos'],
             $datos['reconocimientoPublico'],
             $datos['funcionesPublicas'],
-            $datos['actividadPublica'],
+            $datos['actividadPublica'] ?? null,
             $datos['funcionarioPublicoExtranjero'],
             $datos['famFuncionarioPublico'],
             $datos['socioFuncionarioPublico']
@@ -33,7 +33,7 @@ class PersonaExpuestaPublicamenteController {
         $persona->manejaRecPublicos = $datos['manejaRecPublicos'];
         $persona->reconocimientoPublico = $datos['reconocimientoPublico'];
         $persona->funcionesPublicas = $datos['funcionesPublicas'];
-        $persona->actividadPublica = $datos['actividadPublica'];
+        $persona->actividadPublica = $datos['actividadPublica'] ?? null;
         $persona->funcionarioPublicoExtranjero = $datos['funcionarioPublicoExtranjero'];
         $persona->famFuncionarioPublico = $datos['famFuncionarioPublico'];
         $persona->socioFuncionarioPublico = $datos['socioFuncionarioPublico'];

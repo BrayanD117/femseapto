@@ -38,14 +38,14 @@ export class InternationalTransactionsService {
 export interface InternationalTransaction {
   id: number;
   idUsuario: number;
-  transaccionesMonedaExtranjera: number;
-  transMonedaExtranjera: number;
-  otrasOperaciones: number;
-  cuentasMonedaExtranjera: number;
-  bancoCuentaExtranjera: number;
-  cuentaMonedaExtranjera: number;
-  monedaCuenta: number;
-  idPaisCuenta: number;
+  transaccionesMonedaExtranjera: string;
+  transMonedaExtranjera: string;
+  otrasOperaciones: string;
+  cuentasMonedaExtranjera: string;
+  bancoCuentaExtranjera: string;
+  cuentaMonedaExtranjera: string;
+  monedaCuenta: string;
+  idPaisCuenta: string;
   ciudadCuenta: string;
   creadoEl: Date;
   actualizadoEl: Date;

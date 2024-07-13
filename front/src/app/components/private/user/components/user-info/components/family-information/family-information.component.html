@@ -80,6 +80,9 @@
       </tr>
     </ng-template>
   </p-table>
+  <div *ngIf="!family || family.length === 0" class="text-center mt-3">
+    No hay familiares registrados.
+  </div>
 
   <!-- Modal -->
   <div

@@ -9,14 +9,14 @@ class OperacionesInternacionalesController {
             null,
             $datos['idUsuario'],
             $datos['transaccionesMonedaExtranjera'],
-            $datos['transMonedaExtranjera'],
-            $datos['otrasOperaciones'],
+            $datos['transMonedaExtranjera'] ?? null,
+            $datos['otrasOperaciones'] ?? null,
             $datos['cuentasMonedaExtranjera'],
-            $datos['bancoCuentaExtranjera'],
-            $datos['cuentaMonedaExtranjera'],
-            $datos['monedaCuenta'],
-            $datos['idPaisCuenta'],
-            $datos['ciudadCuenta'],
+            $datos['bancoCuentaExtranjera'] ?? null,
+            $datos['cuentaMonedaExtranjera'] ?? null,
+            $datos['monedaCuenta'] ?? null,
+            $datos['idPaisCuenta'] ?? null,
+            $datos['ciudadCuenta'] ?? null,
             null,
             null
         );
@@ -33,14 +33,14 @@ class OperacionesInternacionalesController {
         }
 
         $operacion->transaccionesMonedaExtranjera = $datos['transaccionesMonedaExtranjera'];
-        $operacion->transMonedaExtranjera = $datos['transMonedaExtranjera'];
-        $operacion->otrasOperaciones = $datos['otrasOperaciones'];
+        $operacion->transMonedaExtranjera = $datos['transMonedaExtranjera'] ?? null;
+        $operacion->otrasOperaciones = $datos['otrasOperaciones'] ?? null;
         $operacion->cuentasMonedaExtranjera = $datos['cuentasMonedaExtranjera'];
-        $operacion->bancoCuentaExtranjera = $datos['bancoCuentaExtranjera'];
-        $operacion->cuentaMonedaExtranjera = $datos['cuentaMonedaExtranjera'];
-        $operacion->monedaCuenta = $datos['monedaCuenta'];
-        $operacion->idPaisCuenta = $datos['idPaisCuenta'];
-        $operacion->ciudadCuenta = $datos['ciudadCuenta'];
+        $operacion->bancoCuentaExtranjera = $datos['bancoCuentaExtranjera'] ?? null;
+        $operacion->cuentaMonedaExtranjera = $datos['cuentaMonedaExtranjera'] ?? null;
+        $operacion->monedaCuenta = $datos['monedaCuenta'] ?? null;
+        $operacion->idPaisCuenta = $datos['idPaisCuenta'] ?? null;
+        $operacion->ciudadCuenta = $datos['ciudadCuenta'] ?? null;
 
         $operacion->guardar();
 

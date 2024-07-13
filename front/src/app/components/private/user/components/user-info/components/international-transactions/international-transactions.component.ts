@@ -18,7 +18,6 @@ import { Country, CountriesService } from '../../../../../../../services/countri
 })
 export class InternationalTransactionsComponent implements OnInit {
   intTransForm: FormGroup;
-  intTrans!: InternationalTransaction;
   userId: number | null = null;
 
   countries: Country[] = [];
@@ -32,6 +31,7 @@ export class InternationalTransactionsComponent implements OnInit {
   ) {
     this.intTransForm = this.fb.group({
       id: [''],
+      idUsuario: [''],
       transaccionesMonedaExtranjera: ['', Validators.required],
       transMonedaExtranjera: [{ value: '', disabled: true }],
       otrasOperaciones: [{ value: '', disabled: true }],
@@ -41,6 +41,14 @@ export class InternationalTransactionsComponent implements OnInit {
       monedaCuenta: [{ value: '', disabled: true }],
       idPaisCuenta: [{ value: '', disabled: true }],
       ciudadCuenta: [{ value: '', disabled: true }]
+    });
+
+    this.intTransForm.get('transaccionesMonedaExtranjera')?.valueChanges.subscribe(value => {
+      this.toggleFieldsTrans(value);
+    });
+
+    this.intTransForm.get('cuentasMonedaExtranjera')?.valueChanges.subscribe(value => {
+      this.toggleFieldsAccounts(value);
     });
   }
 
@@ -54,15 +62,19 @@ export class InternationalTransactionsComponent implements OnInit {
     const token = this.loginService.getTokenClaims();
     if (token) {
       this.userId = token.userId;
+
+      this.intTransForm.patchValue({
+        idUsuario: this.userId
+      });
     }
   }
 
   loadInternatTrans(): void {
     if(this.userId) {
       this.interTransService.getByUserId(this.userId).subscribe(data => {
-        this.intTrans = data;
         this.intTransForm.patchValue(data);
-        this.updateFormState(data);
+        this.toggleFieldsTrans(this.intTransForm.get('transaccionesMonedaExtranjera')?.value);
+        this.toggleFieldsAccounts(this.intTransForm.get('cuentasMonedaExtranjera')?.value);
       });
     }
   }
@@ -73,73 +85,52 @@ export class InternationalTransactionsComponent implements OnInit {
     });
   }
 
-  onTransaccionesChange(event: any): void {
-    const value = event.target.value;
+  toggleFieldsTrans(value: string): void {
+    const transMonedaExtranjeraControl = this.intTransForm.get('transMonedaExtranjera');
+    const otrasOperacionesControl = this.intTransForm.get('otrasOperaciones');
+
     if (value === 'NO' || value === '') {
-      this.intTransForm.get('transMonedaExtranjera')!.disable();
-      this.intTransForm.get('transMonedaExtranjera')!.setValue('');
-      this.intTransForm.get('otrasOperaciones')!.disable();
-      this.intTransForm.get('otrasOperaciones')!.setValue('');
+      transMonedaExtranjeraControl?.setValue('');
+      transMonedaExtranjeraControl?.disable();
+      otrasOperacionesControl?.setValue('');
+      otrasOperacionesControl?.disable();
     } else {
-      this.intTransForm.get('transMonedaExtranjera')!.enable();
-      this.intTransForm.get('otrasOperaciones')!.enable(); 
+      transMonedaExtranjeraControl?.enable();
+      otrasOperacionesControl?.enable();
     }
   }
 
-  onCuentasChange(event: any): void {
-    const value = event.target.value;
+  toggleFieldsAccounts(value: string): void {
+    const bancoCuentaExtranjeraControl = this.intTransForm.get('bancoCuentaExtranjera');
+    const cuentaMonedaExtranjeraControl = this.intTransForm.get('cuentaMonedaExtranjera');
+    const monedaCuentaControl = this.intTransForm.get('monedaCuenta');
+    const idPaisCuentaControl = this.intTransForm.get('idPaisCuenta');
+    const ciudadCuentaControl = this.intTransForm.get('ciudadCuenta');
+
     if (value === 'NO' || value === '') {
-      this.intTransForm.get('bancoCuentaExtranjera')!.disable();
-      this.intTransForm.get('bancoCuentaExtranjera')!.setValue('');
-      this.intTransForm.get('cuentaMonedaExtranjera')!.disable();
-      this.intTransForm.get('cuentaMonedaExtranjera')!.setValue('');
-      this.intTransForm.get('monedaCuenta')!.disable();
-      this.intTransForm.get('monedaCuenta')!.setValue('');
-      this.intTransForm.get('idPaisCuenta')!.disable();
-      this.intTransForm.get('idPaisCuenta')!.setValue('');
-      this.intTransForm.get('ciudadCuenta')!.disable();
-      this.intTransForm.get('ciudadCuenta')!.setValue('');
+      bancoCuentaExtranjeraControl?.setValue('');
+      bancoCuentaExtranjeraControl?.disable();
+      cuentaMonedaExtranjeraControl?.setValue('');
+      cuentaMonedaExtranjeraControl?.disable();
+      monedaCuentaControl?.setValue('');
+      monedaCuentaControl?.disable();
+      idPaisCuentaControl?.setValue('');
+      idPaisCuentaControl?.disable();
+      ciudadCuentaControl?.setValue('');
+      ciudadCuentaControl?.disable();
     } else {
-      this.intTransForm.get('bancoCuentaExtranjera')!.enable();
-      this.intTransForm.get('cuentaMonedaExtranjera')!.enable();
-      this.intTransForm.get('monedaCuenta')!.enable();
-      this.intTransForm.get('idPaisCuenta')!.enable();
-      this.intTransForm.get('ciudadCuenta')!.enable();
-    }
-  }
-
-  updateFormState(data: any): void {
-    const transaccionesMonedaExtranjera = data.transaccionesMonedaExtranjera || '';
-    const cuentasMonedaExtranjera = data.cuentasMonedaExtranjera || '';
-
-    if (transaccionesMonedaExtranjera === 'NO' || transaccionesMonedaExtranjera === '') {
-      this.intTransForm.get('transMonedaExtranjera')!.disable();
-      this.intTransForm.get('otrasOperaciones')!.disable();
-    } else {
-      this.intTransForm.get('transMonedaExtranjera')!.enable();
-      this.intTransForm.get('otrasOperaciones')!.enable();
-    }
-
-    if (cuentasMonedaExtranjera === 'NO' || cuentasMonedaExtranjera === '') {
-      this.intTransForm.get('bancoCuentaExtranjera')!.disable();
-      this.intTransForm.get('cuentaMonedaExtranjera')!.disable();
-      this.intTransForm.get('monedaCuenta')!.disable();
-      this.intTransForm.get('idPaisCuenta')!.disable();
-      this.intTransForm.get('ciudadCuenta')!.disable();
-    } else {
-      this.intTransForm.get('bancoCuentaExtranjera')!.enable();
-      this.intTransForm.get('cuentaMonedaExtranjera')!.enable();
-      this.intTransForm.get('monedaCuenta')!.enable();
-      this.intTransForm.get('idPaisCuenta')!.enable();
-      this.intTransForm.get('ciudadCuenta')!.enable();
+      bancoCuentaExtranjeraControl?.enable();
+      cuentaMonedaExtranjeraControl?.enable();
+      monedaCuentaControl?.enable();
+      idPaisCuentaControl?.enable();
+      ciudadCuentaControl?.enable();
     }
   }
 
   submit(): void {
-    console.log(this.intTrans);
-    console.log(this.intTransForm);
+    console.log(this.intTransForm.value);
     if (this.intTransForm.valid) {
-      const data = { ...this.intTrans, ...this.intTransForm.value };
+      const data: InternationalTransaction = this.intTransForm.value;
       if (data.id) {
         this.interTransService.update(data).subscribe({
           next: () => {

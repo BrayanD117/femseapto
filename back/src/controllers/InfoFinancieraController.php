@@ -14,7 +14,7 @@ class InfoFinancieraController {
             $datos['ingresosMensuales'],
             $datos['primaProductividad'],
             $datos['otrosIngresosMensuales'],
-            $datos['conceptoOtrosIngresosMens'],
+            $datos['conceptoOtrosIngresosMens'] ?? null,
             $datos['totalIngresosMensuales'],
             $datos['egresosMensuales'],
             $datos['obligacionFinanciera'],
@@ -44,7 +44,7 @@ class InfoFinancieraController {
         $infoFinanciera->ingresosMensuales = $datos['ingresosMensuales'];
         $infoFinanciera->primaProductividad = $datos['primaProductividad'];
         $infoFinanciera->otrosIngresosMensuales = $datos['otrosIngresosMensuales'];
-        $infoFinanciera->conceptoOtrosIngresosMens = $datos['conceptoOtrosIngresosMens'];
+        $infoFinanciera->conceptoOtrosIngresosMens = $datos['conceptoOtrosIngresosMens'] ?? null;
         $infoFinanciera->totalIngresosMensuales = $datos['totalIngresosMensuales'];
         $infoFinanciera->egresosMensuales = $datos['egresosMensuales'];
         $infoFinanciera->obligacionFinanciera = $datos['obligacionFinanciera'];

@@ -17,7 +17,6 @@ import { LoginService } from '../../../../../../../services/login.service';
 })
 export class PublicPersonComponent {
   publicPersonForm: FormGroup;
-  publicPerson!: PublicPerson;
   userId: number | null = null;
 
   constructor(
@@ -28,6 +27,7 @@ export class PublicPersonComponent {
   ) {
     this.publicPersonForm = this.fb.group({
       id: [''],
+      idUsuario: [''],
       poderPublico: ['', Validators.required],
       manejaRecPublicos: ['', Validators.required],
       reconocimientoPublico: ['', Validators.required],
@@ -36,6 +36,10 @@ export class PublicPersonComponent {
       funcionarioPublicoExtranjero: ['', Validators.required],
       famFuncionarioPublico: ['', Validators.required],
       socioFuncionarioPublico: ['', Validators.required]
+    });
+
+    this.publicPersonForm.get('funcionesPublicas')?.valueChanges.subscribe(value => {
+      this.toggleFieldsPubFunc(value);
     });
   }
 
@@ -48,44 +52,37 @@ export class PublicPersonComponent {
     const token = this.loginService.getTokenClaims();
     if (token) {
       this.userId = token.userId;
+
+      this.publicPersonForm.patchValue({
+        idUsuario: this.userId
+      });
     }
   }
 
   loadInfo(): void {
     if(this.userId) {
       this.publicPersonService.getByUserId(this.userId).subscribe(data => {
-        this.publicPerson = data;
         this.publicPersonForm.patchValue(data);
-        this.updateFormState(data);
+        this.toggleFieldsPubFunc(this.publicPersonForm.get('funcionesPublicas')?.value);
       });
     }
   }
 
-  onPublicFunctionsChange(): void {
-    const value = this.publicPersonForm.get('funcionesPublicas')!.value;
+  toggleFieldsPubFunc(value: string): void {
+    const actividadPublicaControl = this.publicPersonForm.get('actividadPublica');
+
     if (value === 'NO' || value === '') {
-      this.publicPersonForm.get('actividadPublica')!.disable();
-      this.publicPersonForm.get('actividadPublica')!.setValue('');
+      actividadPublicaControl?.setValue('');
+      actividadPublicaControl?.disable();
     } else {
-      this.publicPersonForm.get('actividadPublica')!.enable();
-    }
-  }
-
-  updateFormState(data: any): void {
-    const publicFunctions = data.funcionesPublicas || '';
-
-    if (publicFunctions === 'NO' || publicFunctions === '') {
-      this.publicPersonForm.get('actividadPublica')!.disable();
-    } else {
-      this.publicPersonForm.get('actividadPublica')!.enable();
+      actividadPublicaControl?.enable();
     }
   }
 
   submit(): void {
-    console.log(this.publicPerson);
-    console.log(this.publicPersonForm);
+    console.log(this.publicPersonForm.value);
     if (this.publicPersonForm.valid) {
-      const data = { ...this.publicPerson, ...this.publicPersonForm.value };
+      const data: PublicPerson = this.publicPersonForm.value;
       if (data.id) {
         this.publicPersonService.update(data).subscribe({
           next: () => {
