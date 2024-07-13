@@ -16,6 +16,7 @@ import { MaritalStatus, MaritalStatusService } from '../../../../../../../servic
 import { EducationLevel, EducationLevelService } from '../../../../../../../services/education-level.service';
 import { Company, CompanyService } from '../../../../../../../services/company.service';
 import { ContractType, ContractTypeService } from '../../../../../../../services/contract-type.service';
+import { CountriesService, Country } from '../../../../../../../services/countries.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -50,6 +51,7 @@ export class NaturalPersonComponent implements OnInit {
   educationLevels: EducationLevel[] = [];
   companies: Company[] = [];
   contractTypes: ContractType[] = [];
+  countries: Country[] = [];
 
   departments: Department[] = [];
   selectedDepartment: Department | undefined;
@@ -71,7 +73,8 @@ export class NaturalPersonComponent implements OnInit {
     private maritalStatusService: MaritalStatusService,
     private educationLevelService: EducationLevelService,
     private companyService: CompanyService,
-    private contractTypeService: ContractTypeService
+    private contractTypeService: ContractTypeService,
+    private countriesService: CountriesService
   ) {
     this.natPersonForm = this.fb.group({
       id: [''],
@@ -158,6 +161,10 @@ export class NaturalPersonComponent implements OnInit {
     this.contractTypeService.getAll().subscribe(types => {
       this.contractTypes = types;
     });
+
+    this.countriesService.getAll().subscribe(types => {
+      this.countries = types;
+    });
   }
 
   loadDepartmentsAndCities() {
@@ -227,6 +234,21 @@ export class NaturalPersonComponent implements OnInit {
         this.filteredCities = [];
         this.natPersonForm.get(cityField)?.setValue('');
       });
+    }
+  }
+
+  onCountrySelect() {
+    const selectedCountryId = this.natPersonForm.get('paisNacimiento')?.value;
+    const selectedCountry = this.countries.find(country => country.id === selectedCountryId);
+
+    if (selectedCountry?.nombre !== 'COLOMBIA') {
+      this.natPersonForm.get('departamentoNacimiento')?.disable();
+      this.natPersonForm.get('mpioNacimiento')?.disable();
+      this.natPersonForm.get('otroLugarNacimiento')?.enable();
+    } else {
+      this.natPersonForm.get('departamentoNacimiento')?.enable();
+      this.natPersonForm.get('mpioNacimiento')?.enable();
+      this.natPersonForm.get('otroLugarNacimiento')?.disable();
     }
   }
 }

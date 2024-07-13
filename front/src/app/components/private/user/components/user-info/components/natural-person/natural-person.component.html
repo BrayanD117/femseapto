@@ -60,7 +60,11 @@
         </div>
         <div class="col-md-6">
           <label for="paisNacimiento" class="form-label">País de nacimiento</label>
-          <input formControlName="paisNacimiento" type="text" class="form-control" />
+          <select class="form-select" formControlName="paisNacimiento" (change)="onCountrySelect()">
+            <option *ngFor="let type of countries" [value]="type.id">
+              {{ type.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="departamentoNacimiento" class="form-label">Departamento de nacimiento</label>
