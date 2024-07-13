@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../src/controllers/PersonaExpuestaPublicamenteController.php';
 require_once '../auth/verifyToken.php';
+require_once '../config/cors.php';
 
 $key = $_ENV['JWT_SECRET_KEY'];
 $token = $_COOKIE['auth_token'] ?? '';
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode($operacion);
         } else {
             http_response_code(404);
-            echo json_encode(array("message" => "Operación internacional no encontrada."));
+            echo json_encode(array("message" => "Información no encontrada."));
         }
     } elseif(isset($_GET['idUsuario'])) {
         $id = $_GET['idUsuario'];
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode($operacion);
         } else {
             http_response_code(404);
-            echo json_encode(array("message" => "Operación internacional no encontrada."));
+            echo json_encode(array("message" => "Información no encontrada."));
         }
     } else {
         $operaciones = $controlador->obtenerTodos();

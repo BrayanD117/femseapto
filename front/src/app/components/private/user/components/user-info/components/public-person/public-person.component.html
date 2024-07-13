@@ -1,0 +1,151 @@
+<p-toast></p-toast>
+<form [formGroup]="publicPersonForm" (ngSubmit)="submit()">
+  <div class="row g-3">
+    <input type="hidden" formControlName="id" />
+    <div class="col-md-6">
+      <label for="poderPublico" class="form-label"
+        >¿Ejerce algún grado de poder público?</label
+      >
+      <br>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="poderPublico" id="poderPublicoSi" value="SI">
+        <label class="form-check-label" for="poderPublicoSi">
+          Sí
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="poderPublico" id="poderPublicoNo" value="NO" checked>
+        <label class="form-check-label" for="poderPublicoNo">
+          No
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+        <label for="manejaRecPublicos" class="form-label"
+          >¿Maneja recursos públicos?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="manejaRecPublicos" id="manejaRecPublicosSi" value="SI">
+          <label class="form-check-label" for="manejaRecPublicosSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="manejaRecPublicos" id="manejaRecPublicosNo" value="NO" checked>
+          <label class="form-check-label" for="manejaRecPublicosNo">
+            No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="reconocimientoPublico" class="form-label"
+          >¿Goza usted de reconocimiento público?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="reconocimientoPublico" id="reconocimientoPublicoSi" value="SI">
+          <label class="form-check-label" for="reconocimientoPublicoSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="reconocimientoPublico" id="reconocimientoPublicoNo" value="NO" checked>
+          <label class="form-check-label" for="reconocimientoPublicoNo">
+            No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="funcionesPublicas" class="form-label"
+          >¿Ejerce alguna actividad o desarrolla funciones públicas?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="funcionesPublicas" id="funcionesPublicasSi" value="SI" (change)="onPublicFunctionsChange()">
+          <label class="form-check-label" for="funcionesPublicasSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="funcionesPublicas" id="funcionesPublicasNo" value="NO" checked (change)="onPublicFunctionsChange()">
+          <label class="form-check-label" for="funcionesPublicasNo">
+            No
+          </label>
+        </div>
+      </div>
+    <div class="col-md-6">
+      <label for="actividadPublica" class="form-label"
+        >¿Cuál actividad o función desarrolla?</label
+      >
+      <input
+        formControlName="actividadPublica"
+        type="text"
+        class="form-control"
+      />
+    </div>
+    <div class="col-md-6">
+        <label for="funcionarioPublicoExtranjero" class="form-label"
+          >¿Es usted un funcionario público extranjero?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="funcionarioPublicoExtranjero" id="funcionarioPublicoExtranjeroSi" value="SI">
+          <label class="form-check-label" for="funcionarioPublicoExtranjeroSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="funcionarioPublicoExtranjero" id="funcionarioPublicoExtranjeroNo" value="NO" checked>
+          <label class="form-check-label" for="funcionarioPublicoExtranjeroNo">
+            No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="famFuncionarioPublico" class="form-label"
+          >¿Es usted familiar de un funcionario público?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="famFuncionarioPublico" id="famFuncionarioPublicoSi" value="SI">
+          <label class="form-check-label" for="famFuncionarioPublicoSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="famFuncionarioPublico" id="famFuncionarioPublicoNo" value="NO" checked>
+          <label class="form-check-label" for="famFuncionarioPublicoNo">
+            No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="socioFuncionarioPublico" class="form-label"
+          >¿Es usted socio de un funcionario público?</label
+        >
+        <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="socioFuncionarioPublico" id="socioFuncionarioPublicoSi" value="SI">
+          <label class="form-check-label" for="socioFuncionarioPublicoSi">
+            Sí
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" formControlName="socioFuncionarioPublico" id="socioFuncionarioPublicoNo" value="NO" checked>
+          <label class="form-check-label" for="socioFuncionarioPublicoNo">
+            No
+          </label>
+        </div>
+      </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button
+        class="btn btn-primary me-md-2"
+        [disabled]="publicPersonForm.invalid"
+        type="submit"
+      >
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>

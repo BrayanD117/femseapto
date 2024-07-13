@@ -1,0 +1,189 @@
+<div class="container">
+  <p-toast></p-toast>
+  <!-- Button trigger modal -->
+  <button
+    type="button"
+    class="btn btn-primary m-2"
+    data-bs-toggle="modal"
+    data-bs-target="#recommendationModal"
+  >
+    Agregar Referencia
+  </button>
+  <p-table
+    [value]="recommendations"
+    styleClass="p-datatable-striped"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombreRazonSocial" style="width: 20%">
+          Nombre Completo <p-sortIcon field="nombreRazonSocial" />
+        </th>
+        <th pSortableColumn="parentesco" style="width: 10%">
+          Parentesco <p-sortIcon field="parentesco" />
+        </th>
+        <th pSortableColumn="idTipoReferencia" style="width: 20%">
+          Tipo Ref. <p-sortIcon field="idTipoReferencia" />
+        </th>
+        <th pSortableColumn="idMunicipio" style="width: 20%">
+          Mpio. <p-sortIcon field="idMunicipio" />
+        </th>
+        <th pSortableColumn="direccion" style="width: 20%">
+          Dirección <p-sortIcon field="direccion" />
+        </th>
+        <th pSortableColumn="telefono" style="width: 20%">
+          Teléfono <p-sortIcon field="telefono" />
+        </th>
+        <th pSortableColumn="correoElectronico" style="width: 20%">
+          Correo Elect. <p-sortIcon field="correoElectronico" />
+        </th>
+        <th style="width: 15%">Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-recommendation>
+      <tr>
+        <td>{{ recommendation.nombreRazonSocial }}</td>
+        <td>{{ recommendation.parentesco }}</td>
+        <td>{{ recommendation.idTipoReferencia }}</td>
+        <td>{{ recommendation.idMunicipio }}</td>
+        <td>{{ recommendation.direccion }}</td>
+        <td>{{ recommendation.telefono }}</td>
+        <td>{{ recommendation.correoElectronico }}</td>
+        <td>
+          <button
+            class="btn btn-warning me-1 mb-1"
+            (click)="editRecommendation(recommendation)"
+            data-bs-toggle="modal"
+            data-bs-target="#recommendationModal"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="deleteRecommendation(recommendation.id)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="recommendationModal"
+    tabindex="-1"
+    aria-labelledby="recommendationModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="recommendationModalLabel">Referencia</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="formReset()"
+          ></button>
+        </div>
+        <form [formGroup]="recommendationForm" (ngSubmit)="submit()">
+          <div class="modal-body">
+            <div class="row g-3">
+              <input type="hidden" formControlName="id" />
+              <div class="col-md-12">
+                <label for="nombreRazonSocial" class="form-label"
+                  >Nombre completo</label
+                >
+                <input
+                  formControlName="nombreRazonSocial"
+                  placeholder="Escribe el nombre completo"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="parentesco" class="form-label"
+                  >Parentesco</label
+                >
+                <input
+                  formControlName="parentesco"
+                  placeholder="Escribe el parentesco"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="idTipoReferencia" class="form-label"
+                  >Tipo de referencia</label
+                >
+                <select class="form-select" formControlName="idTipoReferencia">
+                  <option value="" disabled selected>Seleccione...</option>
+                  <option *ngFor="let type of recommendationTypes" [value]="type.id">
+                    {{ type.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="idMunicipio" class="form-label"
+                  >Municipio</label
+                >
+                <input
+                  formControlName="idMunicipio"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="direccion" class="form-label"
+                  >Dirección de residencia u oficina</label
+                >
+                <input
+                  formControlName="direccion"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="telefono" class="form-label"
+                  >Teléfono</label
+                >
+                <input
+                  formControlName="telefono"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="correoElectronico" class="form-label"
+                  >Correo electrónico</label
+                >
+                <input
+                  formControlName="correoElectronico"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              (click)="cancelEdit()"
+              *ngIf="editMode"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="submit" [disabled]="recommendationForm.invalid" data-bs-dismiss="modal">
+              {{ editMode ? "Actualizar" : "Agregar" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

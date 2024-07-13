@@ -180,21 +180,22 @@ export class RequestSavingComponent implements OnInit {
           lineas: selectedLines
         };
 
-        this.savingsService.createSavingsRequest(savingsData).subscribe(
-          (response: any) => {
+        this.savingsService.createSavingsRequest(savingsData).subscribe({
+          next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de ahorro creada exitosamente.' });
             this.resetForm();
             setTimeout(() => {
               this.router.navigate(['/auth/user']);
             }, 3000);
           },
-          (error: any) => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear la solicitud de ahorro.' });
-            console.error('Error creating savings request', error);
+          error: (err) => {
+            console.error('Error creando la solicitud de ahorro', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear la solicitud de ahorro. Vuelve a intentarlo.' });
           }
-        );
+        });
       } else {
         console.error('User ID not found');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Vuelve a iniciar sesión e intentalo de nuevo.' });
       }
     }
   }

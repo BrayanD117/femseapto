@@ -3,7 +3,9 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 
 import { Family, FamilyService } from '../../../../../../../services/family.service';
 import { LoginService } from '../../../../../../../services/login.service';
@@ -15,7 +17,8 @@ import { EducationLevel, EducationLevelService } from '../../../../../../../serv
 @Component({
   selector: 'app-family-information',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TableModule],
+  imports: [CommonModule, ReactiveFormsModule, TableModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './family-information.component.html',
   styleUrl: './family-information.component.css'
 })
@@ -34,7 +37,7 @@ export class FamilyInformationComponent implements OnInit{
   constructor(private fb: FormBuilder, private familyService: FamilyService,
     private loginService: LoginService, private docTypeService: DocumentTypeService,
     private relationshipService: RelationshipService, private genderService: GenderService,
-    private educationLevelService: EducationLevelService
+    private educationLevelService: EducationLevelService, private messageService: MessageService,
   ) {
     this.familiarForm = this.fb.group({
       id: [''],
@@ -147,15 +150,29 @@ export class FamilyInformationComponent implements OnInit{
 
     if (this.editMode) {
       if (this.selectedFamiliar && this.selectedFamiliar.id) {
-        this.familyService.update(familiar).subscribe(() => {
-          this.cargarFamilia();
-          this.cancelarEdicion();
+        this.familyService.update(familiar).subscribe({
+          next: () => {
+            this.cargarFamilia();
+            this.cancelarEdicion();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Info. familiar actualizada exitosamente.' });
+          },
+          error: (err) => {
+            console.error('Error actualizando la info. familiar', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al actualizar la info. familiar. Vuelve a intentarlo.' });
+          }
         });
       }
     } else {
-      this.familyService.create(familiar).subscribe(() => {
-        this.cargarFamilia();
-        this.familiarForm.reset();
+      this.familyService.create(familiar).subscribe({
+        next: () => {
+          this.cargarFamilia();
+          this.familiarForm.reset();
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Info. familiar creada exitosamente.' });
+        },
+        error: (err) => {
+          console.error('Error creando la info. familiar', err);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear la info. familiar. Vuelve a intentarlo.' });
+        }
       });
     }
   }
@@ -167,8 +184,14 @@ export class FamilyInformationComponent implements OnInit{
   }
 
   eliminarFamiliar(id: number): void {
-    this.familyService.delete(id).subscribe(() => {
-      this.cargarFamilia();
+    this.familyService.delete(id).subscribe({
+      next: () => {
+        this.cargarFamilia();
+      },
+      error: (err) => {
+        console.error('Error eliminando la info. familiar', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al eliminar la info. familiar. Vuelve a intentarlo.' });
+      }
     });
     this.familiarForm.reset();
   }
