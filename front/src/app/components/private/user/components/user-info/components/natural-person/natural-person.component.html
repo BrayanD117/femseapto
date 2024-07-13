@@ -64,11 +64,26 @@
         </div>
         <div class="col-md-6">
           <label for="departamentoNacimiento" class="form-label">Departamento de nacimiento</label>
-          <input formControlName="departamentoNacimiento" type="text" class="form-control" />
+          <p-autoComplete
+            [suggestions]="filteredDepartments"
+            (completeMethod)="filterDepartment($event)"
+            field="nombre"
+            placeholder="Seleccione departamento"
+            formControlName="departamentoNacimiento"
+            (onSelect)="onDepartmentSelect('departamentoNacimiento', 'mpioNacimiento')"
+            [dropdown]="true"
+          ></p-autoComplete>
         </div>
         <div class="col-md-6">
           <label for="mpioNacimiento" class="form-label">Municipio de nacimiento</label>
-          <input formControlName="mpioNacimiento" type="text" class="form-control" />
+          <p-autoComplete
+            [suggestions]="filteredCities"
+            (completeMethod)="filterCity($event)"
+            field="nombre"
+            placeholder="Seleccione municipio"
+            formControlName="mpioNacimiento"
+            [dropdown]="true"
+          ></p-autoComplete>
         </div>
         <div class="col-md-6">
           <label for="otroLugarNacimiento" class="form-label">Lugar de nacimiento</label>
@@ -83,11 +98,26 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label for="departamentoResidencia" class="form-label">Departamento de residencia</label>
-          <input formControlName="departamentoResidencia" type="text" class="form-control" />
+          <p-autoComplete
+            [suggestions]="filteredDepartments"
+            (completeMethod)="filterDepartment($event)"
+            field="nombre"
+            placeholder="Seleccione departamento"
+            formControlName="departamentoResidencia"
+            (onSelect)="onDepartmentSelect('departamentoResidencia', 'mpioResidencia')"
+            [dropdown]="true"
+          ></p-autoComplete>
         </div>
         <div class="col-md-6">
           <label for="mpioResidencia" class="form-label">Municipio de residencia</label>
-          <input formControlName="mpioResidencia" type="text" class="form-control" />
+          <p-autoComplete
+            [suggestions]="filteredCities"
+            (completeMethod)="filterCity($event)"
+            field="nombre"
+            placeholder="Seleccione municipio"
+            formControlName="mpioResidencia"
+            [dropdown]="true"
+          ></p-autoComplete>
         </div>
         <div class="col-md-6">
           <label for="idZonaResidencia" class="form-label">Zona de residencia</label>

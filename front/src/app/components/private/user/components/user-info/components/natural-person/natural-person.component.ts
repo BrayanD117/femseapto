@@ -161,15 +161,20 @@ export class NaturalPersonComponent implements OnInit {
   }
 
   loadDepartmentsAndCities() {
-    const cityId = this.natPerson.mpioExpDoc;
+    this.loadDepartmentAndCity('departamentoExpDoc', 'mpioExpDoc', this.natPerson.mpioExpDoc);
+    this.loadDepartmentAndCity('departamentoNacimiento', 'mpioNacimiento', this.natPerson.mpioNacimiento);
+    this.loadDepartmentAndCity('departamentoResidencia', 'mpioResidencia', this.natPerson.mpioResidencia);
+  }
+
+  loadDepartmentAndCity(departmentField: string, cityField: string, cityId: string) {
     if (cityId) {
       this.citiesService.getCityById(cityId).subscribe(city => {
         this.selectedCity = city;
         if (this.selectedCity) {
           this.selectedDepartment = this.departments.find(dept => dept.id === this.selectedCity?.id_departamento);
           this.natPersonForm.patchValue({
-            departamentoExpDoc: this.selectedDepartment ? this.selectedDepartment.id : '',
-            mpioExpDoc: this.selectedCity ? this.selectedCity.id : ''
+            [departmentField]: this.selectedDepartment ? this.selectedDepartment.nombre : '',
+            [cityField]: this.selectedCity ? this.selectedCity.nombre : ''
           });
         }
       });
