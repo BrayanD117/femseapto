@@ -99,6 +99,17 @@ class SolicitudCreditoController {
     }
 
     /**
+     * Obtiene las solicitudes de crédito con paginación.
+     * @param int $page Número de página.
+     * @param int $size Tamaño de la página.
+     * @param string $search Término de búsqueda.
+     * @return array|array[] Las solicitudes de crédito encontradas o un array con un mensaje de error si no se encuentran.
+     */
+    public function obtenerConPaginacion($page, $size, $search) {
+        return SolicitudCredito::obtenerConPaginacion($page, $size, $search);
+    }
+
+    /**
      * Elimina una solicitud de crédito por su ID.
      * @param int $id ID de la solicitud de crédito a eliminar.
      * @return bool True si la eliminación fue exitosa, false si falló o no se encontró la solicitud de crédito.

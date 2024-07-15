@@ -1,0 +1,42 @@
+<div class="container mt-5">
+    <div class="row mb-3">
+      <div class="col">
+        <input type="text" pInputText placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control">
+      </div>
+    </div>
+    <p-table [value]="creditRequests" [lazy]="true" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" (onLazyLoad)="onPageChange($event)" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Usuario Id</th>
+          <th>Monto Solicitado</th>
+          <th>Plazo Quincenal</th>
+          <th>Valor Cuota Quincenal</th>
+          <th>Linea de Crédito</th>
+          <th>Reestructurado</th>
+          <th>Periocidad de Pago</th>
+          <th>Tasa de Interés</th>
+          <th>Fecha de Solicitud</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-request>
+        <tr>
+          <td>{{ request.id }}</td>
+          <td>{{ request.idUsuario }}</td>
+          <td>{{ request.montoSolicitado }}</td>
+          <td>{{ request.plazoQuincenal }}</td>
+          <td>{{ request.valorCuotaQuincenal }}</td>
+          <td>{{ request.idLineaCredito }}</td>
+          <td>{{ request.reestructurado }}</td>
+          <td>{{ request.periocidadPago }}</td>
+          <td>{{ request.tasaInteres }}</td>
+          <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm">Ver</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  

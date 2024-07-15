@@ -18,6 +18,7 @@ import { RequestSavingComponent } from './components/private/user/request/reques
 
 // Admin components
 import { AdminComponent } from './components/private/admin/admin.component';
+import { CreditRequestsComponent } from './components/private/admin/components/credit-requests/credit-requests.component';
 
 // Guards
 import { LoginGuard } from './guards/login.guard';
@@ -70,7 +71,9 @@ export const routes: Routes = [
             { path: 'admin', component: AdminComponent, canActivate: [AdminGuard],
                 children: [
                     { path: '', component: AdminWelcomeComponent },
-                ]
+                    { path: 'credits', component: CreditRequestsComponent }
+                ],
+                
             }
         ]
     }

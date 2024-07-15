@@ -89,6 +89,31 @@ class SolicitudCredito {
         return $solicitudes;
     }
 
+    public static function obtenerConPaginacion($page, $size, $search) {
+        $db = getDB();
+        $offset = ($page - 1) * $size;
+        $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
+        $query = "SELECT * FROM solicitudes_credito $searchQuery LIMIT ? OFFSET ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("ii", $size, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $solicitudes = [];
+        while ($row = $result->fetch_assoc()) {
+            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['fecha_solicitud']);
+        }
+        
+        $countQuery = "SELECT COUNT(*) as total FROM solicitudes_credito $searchQuery";
+        $countResult = $db->query($countQuery);
+        $total = $countResult->fetch_assoc()['total'];
+
+        $db->close();
+        return [
+            'data' => $solicitudes,
+            'total' => $total
+        ];
+    }
+
     public function eliminar() {
         $db = getDB();
         if ($this->id !== null) {
