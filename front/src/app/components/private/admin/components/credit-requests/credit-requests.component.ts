@@ -36,7 +36,10 @@ export class CreditRequestsComponent implements OnInit {
     this.loading = true;
     this.requestCreditService.getAll({ page, size, search: this.searchQuery }).subscribe({
       next: response => {
-        this.creditRequests = response.data;
+        this.creditRequests = response.data.map((request: any) => ({
+          ...request,
+          nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
+        }));
         this.totalRecords = parseInt(response.total, 10);
         this.loading = false;
         console.log('CreditRequestsComponent initialized', this.creditRequests);

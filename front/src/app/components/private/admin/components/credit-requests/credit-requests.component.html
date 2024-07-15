@@ -33,7 +33,17 @@
         <td>{{ request.tasaInteres }}</td>
         <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
         <td>
-          <app-generate-credit-request [montoSolicitado]="request.montoSolicitado"></app-generate-credit-request>
+          <app-generate-credit-request 
+            [montoSolicitado]="request.montoSolicitado"
+            [plazoQuincenal]="request.plazoQuincenal"
+            [valorCuotaQuincenal]="request.valorCuotaQuincenal"
+            [fechaSolicitud]="request.fechaSolicitud"
+            [lineaCredito]="request.idLineaCredito"
+            [reestructurado]="request.reestructurado"
+            [periocidadPago]="request.periocidadPago"
+            [tasaInteres]="request.tasaInteres"
+            [nombreAsociado]="request.nombreAsociado"
+          ></app-generate-credit-request>
         </td>
       </tr>
     </ng-template>
