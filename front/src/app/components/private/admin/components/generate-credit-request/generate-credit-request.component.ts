@@ -28,12 +28,12 @@ export class GenerateCreditRequestComponent implements OnInit {
 
   lineaCreditoNombre: string = '';
   nombreAsociado: string = '';
-  numeroDocumento: string = '';
+  numeroDocumento: number = 0;
   ciudadExpedicionDocumento: string = '';
   fechaExpedicionDocumento: string = '';
   ciudadNacimiento: string = '';
   fechaNacimiento: string = '';
-  genero: string = '';
+  genero: number = 0;
   personasACargo: number | string = 0;
   estadoCivil: string = '';
   direccionResidencia: string = '';
@@ -65,7 +65,7 @@ export class GenerateCreditRequestComponent implements OnInit {
       this.userService.getById(this.userId).subscribe({
         next: user => {
           this.nombreAsociado = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
-          this.numeroDocumento = user.numeroDocumento;
+          this.numeroDocumento = Number(user.numeroDocumento);
         },
         error: err => {
           console.error('Error al obtener el nombre del usuario', err);
@@ -78,12 +78,12 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.fechaExpedicionDocumento = person.fechaExpDoc;
           this.ciudadNacimiento = person.mpioNacimiento;
           this.fechaNacimiento = person.fechaNacimiento;
-          this.genero = person.genero;
+          this.genero = person.idGenero;
           this.personasACargo = person.personasACargo;
           this.estadoCivil = person.estadoCivil;
           this.direccionResidencia = person.direccionResidencia;
           this.municipioResidencia = person.mpioResidencia;
-          const departamentoId = this.municipioResidencia.slice(0, 2); // Get the first two digits for the department ID
+          const departamentoId = this.municipioResidencia.slice(0, 2);
           forkJoin([
             this.citiesService.getById(this.ciudadExpedicionDocumento),
             this.citiesService.getById(this.ciudadNacimiento),
@@ -136,10 +136,10 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('F13').value = this.ciudadExpedicionDocumento;
         worksheet.getCell('H13').value = this.fechaExpedicionDocumento ? new Date(this.fechaExpedicionDocumento) : '';
         worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${this.fechaNacimiento ? new Date(this.fechaNacimiento).toLocaleDateString() : ''}`;
-        
-        if (this.genero && this.genero.toLowerCase() === 'masculino') {
+        console.log(this.genero);
+        if (this.genero === 1) {
           worksheet.getCell('H15').value = 'X';
-        } else if (this.genero && this.genero.toLowerCase() === 'femenino') {
+        } else if (this.genero === 2) {
           worksheet.getCell('I15').value = 'X';
         }
         
