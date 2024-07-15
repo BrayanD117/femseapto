@@ -8,6 +8,9 @@ import { UserService } from '../../../../../services/user.service';
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 import { CitiesService } from '../../../../../services/cities.service';
 import { DepartmentsService } from '../../../../../services/departments.service';
+import { FamilyService } from '../../../../../services/family.service';
+import { ContractTypeService } from '../../../../../services/contract-type.service';
+import { EducationLevelService } from '../../../../../services/education-level.service';
 
 @Component({
   selector: 'app-generate-credit-request',
@@ -24,7 +27,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   @Input() reestructurado: string = '';
   @Input() periocidadPago: string = '';
   @Input() tasaInteres: number | string = 0;
-  @Input() userId: number | null = null;
+  @Input() userId: number = 0;
 
   lineaCreditoNombre: string = '';
   nombreAsociado: string = '';
@@ -39,6 +42,12 @@ export class GenerateCreditRequestComponent implements OnInit {
   direccionResidencia: string = '';
   municipioResidencia: string = '';
   departamentoResidencia: string = '';
+  email: string = '';
+  tipoContrato: number = 0;
+  nivelEducativo: number = 0;
+  nombreConyuge: string = '';
+  cedulaLugarExpConyuge: string = '';
+  telefonoConyuge: string = '';
 
   constructor(
     private http: HttpClient,
@@ -46,7 +55,10 @@ export class GenerateCreditRequestComponent implements OnInit {
     private userService: UserService,
     private naturalPersonService: NaturalpersonService,
     private citiesService: CitiesService,
-    private departmentsService: DepartmentsService
+    private departmentsService: DepartmentsService,
+    private familyService: FamilyService,
+    private contractTypeService: ContractTypeService,
+    private educationLevelService: EducationLevelService
   ) {}
 
   ngOnInit() {
@@ -61,7 +73,7 @@ export class GenerateCreditRequestComponent implements OnInit {
       });
     }
 
-    if (this.userId) {
+    if (this.userId !== null) {
       this.userService.getById(this.userId).subscribe({
         next: user => {
           this.nombreAsociado = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
@@ -80,22 +92,32 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.fechaNacimiento = person.fechaNacimiento;
           this.genero = person.idGenero;
           this.personasACargo = person.personasACargo;
-          this.estadoCivil = person.estadoCivil;
+          this.estadoCivil = person.estadoCivil || '';
           this.direccionResidencia = person.direccionResidencia;
           this.municipioResidencia = person.mpioResidencia;
+          this.email = person.correoElectronico;
+          this.tipoContrato = person.idTipoContrato;
+          this.nivelEducativo = person.idNivelEducativo;
           const departamentoId = this.municipioResidencia.slice(0, 2);
           forkJoin([
             this.citiesService.getById(this.ciudadExpedicionDocumento),
             this.citiesService.getById(this.ciudadNacimiento),
             this.citiesService.getById(this.municipioResidencia),
-            this.departmentsService.getAll()
+            this.departmentsService.getAll(),
+            this.familyService.getByUserId(this.userId)
           ]).subscribe({
-            next: ([expCity, birthCity, residenceCity, departments]) => {
+            next: ([expCity, birthCity, residenceCity, departments, familyMembers]) => {
               this.ciudadExpedicionDocumento = expCity.nombre;
               this.ciudadNacimiento = birthCity.nombre;
               this.municipioResidencia = residenceCity.nombre;
               const departamento = departments.find(d => d.id === departamentoId);
               this.departamentoResidencia = departamento ? departamento.nombre : '';
+              const conyuge = familyMembers.find(f => f.idParentesco === 5 || f.idParentesco === 6);
+              if (conyuge) {
+                this.nombreConyuge = conyuge.nombreCompleto;
+                this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${conyuge.idMpioExpDoc}`;
+                this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
+              }
             },
             error: err => {
               console.error('Error al obtener las ciudades y departamentos', err);
@@ -136,7 +158,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('F13').value = this.ciudadExpedicionDocumento;
         worksheet.getCell('H13').value = this.fechaExpedicionDocumento ? new Date(this.fechaExpedicionDocumento) : '';
         worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${this.fechaNacimiento ? new Date(this.fechaNacimiento).toLocaleDateString() : ''}`;
-        console.log(this.genero);
+        
         if (this.genero === 1) {
           worksheet.getCell('H15').value = 'X';
         } else if (this.genero === 2) {
@@ -145,7 +167,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         
         worksheet.getCell('N14').value = Number(this.personasACargo);
         
-        switch (this.estadoCivil && this.estadoCivil.toLowerCase()) {
+        switch (this.estadoCivil.toLowerCase()) {
           case 'casado':
             worksheet.getCell('S14').value = 'X';
             break;
@@ -163,6 +185,35 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('E16').value = this.direccionResidencia;
         worksheet.getCell('M16').value = this.municipioResidencia;
         worksheet.getCell('T16').value = this.departamentoResidencia;
+
+        if (this.tipoContrato === 1) {
+          worksheet.getCell('Q17').value = 'X';
+        } else if (this.tipoContrato === 2) {
+          worksheet.getCell('Q18').value = 'X';
+        }
+
+        switch (this.nivelEducativo) {
+          case 1:
+            worksheet.getCell('E19').value = 'X';
+            break;
+          case 2:
+            worksheet.getCell('G19').value = 'X';
+            break
+          case 3:
+            worksheet.getCell('I19').value = 'X';
+            break;
+          case 4:
+            worksheet.getCell('L19').value = 'X';
+            break;
+          case 5:
+            worksheet.getCell('P19').value = 'X';
+            break;
+        }
+
+        worksheet.getCell('C20').value = this.email;
+        worksheet.getCell('F21').value = this.nombreConyuge;
+        worksheet.getCell('O21').value = this.cedulaLugarExpConyuge;
+        worksheet.getCell('R21').value = this.telefonoConyuge;
       }
 
       const buffer = await workbook.xlsx.writeBuffer();
