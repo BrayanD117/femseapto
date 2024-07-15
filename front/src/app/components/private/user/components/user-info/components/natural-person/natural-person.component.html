@@ -26,26 +26,21 @@
         </div>
         <div class="col-md-6">
           <label for="departamentoExpDoc" class="form-label">Departamento de expedición del documento</label>
-          <p-autoComplete
-            [suggestions]="filteredDepartmentsExp"
-            (completeMethod)="filterDepartmentExp($event)"
-            field="nombre"
-            placeholder="Seleccione departamento"
-            formControlName="departamentoExpDoc"
-            (onSelect)="onDepartmentExpSelect('departamentoExpDoc', 'mpioExpDoc')"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select id="departamentoExpDoc" formControlName="departamentoExpDoc" (change)="onDepartamentoChange('departamentoExpDoc')">
+            <option value="">Seleccione un departamento</option>
+            <option *ngFor="let department of departments" [value]="department.id">
+              {{ department.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="mpioExpDoc" class="form-label">Municipio de expedición del documento</label>
-          <p-autoComplete
-            [suggestions]="filteredCitiesExp"
-            (completeMethod)="filterCityExp($event)"
-            field="nombre"
-            placeholder="Seleccione municipio"
-            formControlName="mpioExpDoc"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select id="mpioExpDoc" formControlName="mpioExpDoc">
+            <option value="">Seleccione un municipio</option>
+            <option *ngFor="let city of citiesExpDoc" [value]="city.id">
+              {{ city.nombre }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -60,7 +55,7 @@
         </div>
         <div class="col-md-6">
           <label for="paisNacimiento" class="form-label">País de nacimiento</label>
-          <select class="form-select" formControlName="paisNacimiento" (change)="onCountrySelect()">
+          <select class="form-select" formControlName="paisNacimiento">
             <option *ngFor="let type of countries" [value]="type.id">
               {{ type.nombre }}
             </option>
@@ -68,26 +63,19 @@
         </div>
         <div class="col-md-6">
           <label for="departamentoNacimiento" class="form-label">Departamento de nacimiento</label>
-          <p-autoComplete
-            [suggestions]="filteredDepartmentsNac"
-            (completeMethod)="filterDepartmentNac($event)"
-            field="nombre"
-            placeholder="Seleccione departamento"
-            formControlName="departamentoNacimiento"
-            (onSelect)="onDepartmentNacSelect('departamentoNacimiento', 'mpioNacimiento')"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select class="form-select" formControlName="departamentoNacimiento" (change)="onDepartamentoChange('departamentoNacimiento')">
+            <option *ngFor="let dpto of departments" [value]="dpto.id">
+              {{ dpto.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="mpioNacimiento" class="form-label">Municipio de nacimiento</label>
-          <p-autoComplete
-            [suggestions]="filteredCitiesNac"
-            (completeMethod)="filterCityNac($event)"
-            field="nombre"
-            placeholder="Seleccione municipio"
-            formControlName="mpioNacimiento"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select class="form-select" formControlName="mpioNacimiento">
+            <option *ngFor="let city of citiesNac" [value]="city.id">
+              {{ city.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="otroLugarNacimiento" class="form-label">Lugar de nacimiento</label>
@@ -102,26 +90,19 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label for="departamentoResidencia" class="form-label">Departamento de residencia</label>
-          <p-autoComplete
-            [suggestions]="filteredDepartmentsRes"
-            (completeMethod)="filterDepartmentRes($event)"
-            field="nombre"
-            placeholder="Seleccione departamento"
-            formControlName="departamentoResidencia"
-            (onSelect)="onDepartmentResSelect('departamentoResidencia', 'mpioResidencia')"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select class="form-select" formControlName="departamentoResidencia" (change)="onDepartamentoChange('departamentoResidencia')">
+            <option *ngFor="let dpto of departments" [value]="dpto.id">
+              {{ dpto.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="mpioResidencia" class="form-label">Municipio de residencia</label>
-          <p-autoComplete
-            [suggestions]="filteredCitiesRes"
-            (completeMethod)="filterCityRes($event)"
-            field="nombre"
-            placeholder="Seleccione municipio"
-            formControlName="mpioResidencia"
-            [dropdown]="true"
-          ></p-autoComplete>
+          <select class="form-select" formControlName="mpioResidencia">
+            <option *ngFor="let city of citiesRes" [value]="city.id">
+              {{ city.nombre }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="idZonaResidencia" class="form-label">Zona de residencia</label>

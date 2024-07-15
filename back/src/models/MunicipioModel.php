@@ -3,12 +3,12 @@ require_once __DIR__ . '/../../config/config.php';
 
 class Municipio {
     public $id;
-    public $id_departamento;
+    public $idDepartamento;
     public $nombre;
 
-    public function __construct($id = null, $id_departamento = null, $nombre = '') {
+    public function __construct($id = null, $idDepartamento = null, $nombre = '') {
         $this->id = $id;
-        $this->id_departamento = $id_departamento;
+        $this->idDepartamento = $idDepartamento;
         $this->nombre = $nombre;
     }
 
@@ -16,10 +16,10 @@ class Municipio {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO municipios (id, id_departamento, nombre) VALUES (?, ?, ?)");
-            $query->bind_param("sss", $this->id, $this->id_departamento, $this->nombre);
+            $query->bind_param("sss", $this->id, $this->idDepartamento, $this->nombre);
         } else {
             $query = $db->prepare("UPDATE municipios SET id_departamento = ?, nombre = ? WHERE id = ?");
-            $query->bind_param("sss", $this->id_departamento, $this->nombre, $this->id);
+            $query->bind_param("sss", $this->idDepartamento, $this->nombre, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -34,10 +34,10 @@ class Municipio {
         $query = $db->prepare("SELECT id, id_departamento, nombre FROM municipios WHERE id = ?");
         $query->bind_param("s", $id);
         $query->execute();
-        $query->bind_result($id, $id_departamento, $nombre);
+        $query->bind_result($id, $idDepartamento, $nombre);
         $municipio = null;
         if ($query->fetch()) {
-            $municipio = new Municipio($id, $id_departamento, $nombre);
+            $municipio = new Municipio($id, $idDepartamento, $nombre);
         }
         $query->close();
         $db->close();

@@ -5,12 +5,6 @@ import { Observable } from 'rxjs';
 // Environment component
 import { environment } from '../../environments/environment';
 
-interface City {
-  id: string;
-  nombre: string;
-  id_departamento: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,11 +14,17 @@ export class CitiesService {
 
   constructor(private http: HttpClient) { }
 
-  getCityById(id: string): Observable<City> {
+  getById(id: string): Observable<City> {
     return this.http.get<City>(`${this.apiUrl}/municipios.php?id=${id}`);
   }
 
-  getCitiesByDepartment(dptmId: string): Observable<City[]> {
+  getByDepartmentId(dptmId: string): Observable<City[]> {
     return this.http.get<City[]>(`${this.apiUrl}/municipios.php?idDpto=${dptmId}`);
   }
+}
+
+export interface City {
+  id: string;
+  nombre: string;
+  idDepartamento: string;
 }

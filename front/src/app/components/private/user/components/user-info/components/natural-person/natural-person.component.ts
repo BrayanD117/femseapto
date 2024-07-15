@@ -8,8 +8,8 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { LoginService } from '../../../../../../../services/login.service';
 import { NaturalPerson, NaturalpersonService } from '../../../../../../../services/naturalperson.service';
 import { Gender, GenderService } from '../../../../../../../services/gender.service';
-import { DepartmentsService } from '../../../../../../../services/departments.service';
-import { CitiesService } from '../../../../../../../services/cities.service';
+import { Department, DepartmentsService } from '../../../../../../../services/departments.service';
+import { City, CitiesService } from '../../../../../../../services/cities.service';
 import { Zone, ZoneService } from '../../../../../../../services/zone.service';
 import { HouseType, HouseTypeService } from '../../../../../../../services/house-type.service';
 import { MaritalStatus, MaritalStatusService } from '../../../../../../../services/marital-status.service';
@@ -17,22 +17,6 @@ import { EducationLevel, EducationLevelService } from '../../../../../../../serv
 import { Company, CompanyService } from '../../../../../../../services/company.service';
 import { ContractType, ContractTypeService } from '../../../../../../../services/contract-type.service';
 import { CountriesService, Country } from '../../../../../../../services/countries.service';
-
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
-}
-
-interface Department {
-  id: string;
-  nombre: string;
-}
-
-interface City {
-  id: string;
-  nombre: string;
-  id_departamento: string;
-}
 
 @Component({
   selector: 'app-natural-person',
@@ -43,7 +27,8 @@ interface City {
 })
 export class NaturalPersonComponent implements OnInit {
   natPersonForm: FormGroup;
-  natPerson!: NaturalPerson;
+  userId: number | null = null;
+
   genders: Gender[] = [];
   zones: Zone[] = [];
   houseTypes: HouseType[] = [];
@@ -52,30 +37,11 @@ export class NaturalPersonComponent implements OnInit {
   companies: Company[] = [];
   contractTypes: ContractType[] = [];
   countries: Country[] = [];
-
-  departmentsExp: Department[] = [];
-  selectedDepartmentExp: Department | undefined;
-  filteredDepartmentsExp: Department[] = [];
-
-  departmentsNac: Department[] = [];
-  selectedDepartmentNac: Department | undefined;
-  filteredDepartmentsNac: Department[] = [];
-
-  departmentsRes: Department[] = [];
-  selectedDepartmentRes: Department | undefined;
-  filteredDepartmentsRes: Department[] = [];
-
-  citiesExp: City[] = [];
-  selectedCityExp: City | undefined;
-  filteredCitiesExp: City[] = [];
-
+  departments: Department[] = [];
+  citiesExpDoc: City[] = [];
   citiesNac: City[] = [];
-  selectedCityNac: City | undefined;
-  filteredCitiesNac: City[] = [];
-
   citiesRes: City[] = [];
-  selectedCityRes: City | undefined;
-  filteredCitiesRes: City[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -136,24 +102,15 @@ export class NaturalPersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const token = this.loginService.getTokenClaims();
-
-    if (token) {
-      this.naturalPersonService.getByUserId(token.userId).subscribe(natPerson => {
-        this.natPerson = natPerson;
-        this.natPersonForm.patchValue(natPerson);
-        this.loadDepartmentsAndCities();
-      });
-    }
+    this.getUserIdFromToken();
+    this.loadInitialData();
 
     this.genderService.getAll().subscribe(types => {
       this.genders = types;
     });
 
-    this.departmentsService.getDepartments().subscribe((departments) => {
-      this.departmentsExp = departments;
-      this.departmentsNac = departments;
-      this.departmentsRes = departments;
+    this.departmentsService.getAll().subscribe((departments) => {
+      this.departments = departments;
     });
 
     this.zoneService.getAll().subscribe(types => {
@@ -185,195 +142,69 @@ export class NaturalPersonComponent implements OnInit {
     });
   }
 
-  loadDepartmentsAndCities() {
-    this.loadDepartmentAndCity('departamentoExpDoc', 'mpioExpDoc', this.natPerson.mpioExpDoc, this.departmentsExp, this.citiesExp, this.selectedCityExp, this.selectedDepartmentExp);
-    this.loadDepartmentAndCity('departamentoNacimiento', 'mpioNacimiento', this.natPerson.mpioNacimiento, this.departmentsNac, this.citiesNac, this.selectedCityNac, this.selectedDepartmentNac);
-    this.loadDepartmentAndCity('departamentoResidencia', 'mpioResidencia', this.natPerson.mpioResidencia, this.departmentsRes, this.citiesRes, this.selectedCityRes, this.selectedDepartmentRes);
+  getUserIdFromToken(): void {
+    const token = this.loginService.getTokenClaims();
+    if (token) {
+      this.userId = token.userId;
+    }
   }
 
-  /*loadDepartmentAndCity(departmentField: string, cityField: string, cityId: string, departments: Department[], selectedCity: any, selectedDepartment: any) {
-    if (cityId) {
-      this.citiesService.getCityById(cityId).subscribe(city => {
-        selectedCity = city;
-        if (selectedCity) {
-          selectedDepartment = departments.find(dept => dept.id === selectedCity?.id_departamento);
-          this.natPersonForm.patchValue({
-            [departmentField]: selectedDepartment ? selectedDepartment.nombre : '',
-            [cityField]: selectedCity ? selectedCity.nombre : ''
-          });
-        }
-      });
-    }
-  }*/
-  
-  loadDepartmentAndCity(departmentField: string, cityField: string, cityId: string, departments: Department[], cities: City[], selectedCity: any, selectedDepartment: any) {
-    if (cityId) {
-      // Obtener la ciudad por su ID
-      this.citiesService.getCityById(cityId).subscribe(city => {
-        selectedCity = city;
-        if (selectedCity) {
-          // Encontrar el departamento correspondiente
-          selectedDepartment = departments.find(dept => dept.id === selectedCity.id_departamento);
-          if (selectedDepartment) {
-            // Cargar todas las ciudades del departamento
-            this.citiesService.getCitiesByDepartment(selectedDepartment.id).subscribe(data => {
-              cities = data; // Guardar las ciudades en una variable (por ejemplo, this.cities)
-              // Parchar los valores en el formulario
-              this.natPersonForm.patchValue({
-                [departmentField]: selectedDepartment.nombre,
-                [cityField]: selectedCity.nombre
-              });
-            });
-          }
+  onDepartamentoChange(departmentType: string): void {
+    const departamentoId = this.natPersonForm.get(departmentType)?.value;
+    if (departamentoId) {
+      this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
+        switch (departmentType) {
+          case 'departamentoExpDoc':
+            this.citiesExpDoc = data;
+            break;
+          case 'departamentoNacimiento':
+            this.citiesNac = data;
+            break;
+          case 'departamentoResidencia':
+            this.citiesRes = data;
+            break;
         }
       });
     }
   }
+
+  loadInitialData(): void {
+    if(this.userId) {
+      this.naturalPersonService.getByUserId(this.userId).subscribe(natPerson => {
+        this.natPersonForm.patchValue(natPerson);
   
+        // Cargar municipios según los departamentos iniciales
+        this.loadMunicipios('departamentoExpDoc', natPerson.departamentoExpDoc, 'mpioExpDoc');
+        this.loadMunicipios('departamentoNacimiento', natPerson.departamentoNacimiento, 'mpioNacimiento');
+        this.loadMunicipios('departamentoResidencia', natPerson.departamentoResidencia, 'mpioResidencia');
+      });
+    }    
+  }
+
+  loadMunicipios(departmentControlName: string, departamentoId: string, municipioControlName: string): void {
+    this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
+      switch (departmentControlName) {
+        case 'departamentoExpDoc':
+          this.citiesExpDoc = data;
+          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
+          break;
+        case 'departamentoNacimiento':
+          this.citiesNac = data;
+          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
+          break;
+        case 'departamentoResidencia':
+          this.citiesRes = data;
+          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
+          break;
+      }
+    });
+  }
 
   onSubmit(): void {
     if (this.natPersonForm.valid) {
       console.log(this.natPersonForm.value);
     } else {
       console.log('Formulario inválido');
-    }
-  }
-
-  filterDepartmentExp(event: AutoCompleteCompleteEvent) {
-    let filtered: Department[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.departmentsExp.length; i++) {
-      let dptm = this.departmentsExp[i];
-      if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(dptm);
-      }
-    }
-
-    this.filteredDepartmentsExp = filtered;
-  }
-
-  filterDepartmentNac(event: AutoCompleteCompleteEvent) {
-    let filtered: Department[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.departmentsNac.length; i++) {
-      let dptm = this.departmentsNac[i];
-      if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(dptm);
-      }
-    }
-
-    this.filteredDepartmentsNac = filtered;
-  }
-
-  filterDepartmentRes(event: AutoCompleteCompleteEvent) {
-    let filtered: Department[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.departmentsRes.length; i++) {
-      let dptm = this.departmentsRes[i];
-      if (dptm.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(dptm);
-      }
-    }
-
-    this.filteredDepartmentsRes = filtered;
-  }
-
-  filterCityExp(event: AutoCompleteCompleteEvent) {
-    let filtered: City[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.citiesExp.length; i++) {
-      let city = this.citiesExp[i];
-      if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(city);
-      }
-    }
-
-    this.filteredCitiesExp = filtered;
-  }
-  
-  filterCityNac(event: AutoCompleteCompleteEvent) {
-    let filtered: City[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.citiesNac.length; i++) {
-      let city = this.citiesNac[i];
-      if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(city);
-      }
-    }
-
-    this.filteredCitiesNac = filtered;
-  }
-
-  filterCityRes(event: AutoCompleteCompleteEvent) {
-    let filtered: City[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < this.citiesRes.length; i++) {
-      let city = this.citiesRes[i];
-      if (city.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-        filtered.push(city);
-      }
-    }
-
-    this.filteredCitiesRes = filtered;
-  }
-
-  onDepartmentExpSelect(departmentField: string, cityField: string) {
-    const selectedDepartmentId = this.natPersonForm.get(departmentField)?.value;
-    this.selectedDepartmentExp = this.departmentsExp.find(dept => dept.id === selectedDepartmentId.id);
-
-    if (this.selectedDepartmentExp) {
-      this.citiesService.getCitiesByDepartment(this.selectedDepartmentExp.id).subscribe((cities) => {
-        this.citiesExp = cities;
-        this.filteredCitiesExp = [];
-        this.natPersonForm.get(cityField)?.setValue('');
-      });
-    }
-  }
-
-  onDepartmentNacSelect(departmentField: string, cityField: string) {
-    const selectedDepartmentId = this.natPersonForm.get(departmentField)?.value;
-    this.selectedDepartmentNac = this.departmentsNac.find(dept => dept.id === selectedDepartmentId.id);
-
-    if (this.selectedDepartmentNac) {
-      this.citiesService.getCitiesByDepartment(this.selectedDepartmentNac.id).subscribe((cities) => {
-        this.citiesNac = cities;
-        this.filteredCitiesNac = [];
-        this.natPersonForm.get(cityField)?.setValue('');
-      });
-    }
-  }
-
-  onDepartmentResSelect(departmentField: string, cityField: string) {
-    const selectedDepartmentId = this.natPersonForm.get(departmentField)?.value;
-    this.selectedDepartmentRes = this.departmentsRes.find(dept => dept.id === selectedDepartmentId.id);
-
-    if (this.selectedDepartmentRes) {
-      this.citiesService.getCitiesByDepartment(this.selectedDepartmentRes.id).subscribe((cities) => {
-        this.citiesRes = cities;
-        this.filteredCitiesRes = [];
-        this.natPersonForm.get(cityField)?.setValue('');
-      });
-    }
-  }
-
-  onCountrySelect() {
-    const selectedCountryId = this.natPersonForm.get('paisNacimiento')?.value;
-    const selectedCountry = this.countries.find(country => country.id === selectedCountryId);
-
-    if (selectedCountry?.nombre !== 'COLOMBIA') {
-      this.natPersonForm.get('departamentoNacimiento')?.disable();
-      this.natPersonForm.get('mpioNacimiento')?.disable();
-      this.natPersonForm.get('otroLugarNacimiento')?.enable();
-    } else {
-      this.natPersonForm.get('departamentoNacimiento')?.enable();
-      this.natPersonForm.get('mpioNacimiento')?.enable();
-      this.natPersonForm.get('otroLugarNacimiento')?.disable();
     }
   }
 }

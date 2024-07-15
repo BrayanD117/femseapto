@@ -5,11 +5,6 @@ import { Observable } from 'rxjs';
 // Environment component
 import { environment } from '../../environments/environment';
 
-interface Department {
-  id: string;
-  nombre: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +14,12 @@ export class DepartmentsService {
 
   constructor(private http: HttpClient) { }
 
-  getDepartments(): Observable<Department[]> {
+  getAll(): Observable<Department[]> {
     return this.http.get<Department[]>(`${this.apiUrl}/departamentos.php`);
   }
+}
+
+export interface Department {
+  id: string;
+  nombre: string;
 }

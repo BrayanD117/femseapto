@@ -7,7 +7,7 @@ class MunicipioController {
     public function crear($datos) {
         $mpio = new Municipio(
             $datos['id'],
-            $datos['id_departamento'],
+            $datos['idDepartamento'],
             $datos['nombre'],
         );
 
@@ -24,7 +24,7 @@ class MunicipioController {
         }
 
         $mpio->id = $datos['id'];
-        $mpio->id_departamento = $datos['id_departamento'];
+        $mpio->idDepartamento = $datos['idDepartamento'];
         $mpio->nombre = $datos['nombre'];
 
         $mpio->guardar();
