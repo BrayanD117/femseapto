@@ -14,11 +14,44 @@ export class FinancialInfoService {
 
   constructor(private http: HttpClient) { }
 
-  getFinancialInfo(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/informacionfinanciera.php?idUsuario=${userId}`, { withCredentials: true });
+  getById(id: number): Observable<any> {
+    return this.http.get<FinancialInformation>(`${this.apiUrl}/informacionfinanciera.php?id=${id}`, { withCredentials: true });
   }
 
-  updateFinancialInfo(userId: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/informacionfinanciera.php`, { idUsuario: userId, ...data }, { withCredentials: true });
+  getByUserId(userId: number): Observable<any> {
+    return this.http.get<FinancialInformation>(`${this.apiUrl}/informacionfinanciera.php?idUsuario=${userId}`, { withCredentials: true });
   }
+
+  create(user: FinancialInformation): Observable<FinancialInformation> {
+    const url = `${this.apiUrl}/informacionfinanciera.php`;
+    return this.http.post<FinancialInformation>(url, user, { withCredentials: true });
+  }
+
+  update(user: FinancialInformation): Observable<FinancialInformation> {
+    const url = `${this.apiUrl}/informacionfinanciera.php`;
+    return this.http.put<FinancialInformation>(url, user, { withCredentials: true });
+  }
+}
+
+export interface FinancialInformation {
+  id: number;
+  idUsuario: number;
+  nombreBanco: string;
+  idTipoCuentaBanc: number;
+  numeroCuentaBanc: string;
+  ingresosMensuales: number;
+  primaProductividad: number;
+  otrosIngresosMensuales: number;
+  conceptoOtrosIngresosMens: string;
+  totalIngresosMensuales: number;
+  egresosMensuales: number;
+  obligacionFinanciera: number;
+  otrosEgresosMensuales: number;
+  totalEgresosMensuales: number;
+  totalActivos: number;
+  totalPasivos: number;
+  totalPatrimonio: number;
+  montoMaxAhorro: number;
+  creadoEl: Date;
+  actualizadoEl: Date;
 }

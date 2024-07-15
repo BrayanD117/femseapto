@@ -22,8 +22,7 @@ class InfoFinancieraController {
             $datos['totalEgresosMensuales'],
             $datos['totalActivos'],
             $datos['totalPasivos'],
-            $datos['totalPatrimonio'],
-            $datos['montoMaxAhorro']
+            $datos['totalPatrimonio']
         );
 
         $infoFinanciera->guardar();
@@ -53,7 +52,6 @@ class InfoFinancieraController {
         $infoFinanciera->totalActivos = $datos['totalActivos'];
         $infoFinanciera->totalPasivos = $datos['totalPasivos'];
         $infoFinanciera->totalPatrimonio = $datos['totalPatrimonio'];
-        $infoFinanciera->montoMaxAhorro = $datos['montoMaxAhorro'];
 
         $infoFinanciera->guardar();
 
