@@ -45,9 +45,9 @@ export interface NaturalPerson {
   direccionResidencia: string;
   aniosAntigVivienda: number;
   idEstadoCivil: number;
-  cabezaFamilia: boolean;
+  cabezaFamilia: string;
   personasACargo: number;
-  tieneHijos: boolean;
+  tieneHijos: string;
   numeroHijos: number;
   correoElectronico: string;
   telefono: string;
@@ -66,4 +66,6 @@ export interface NaturalPerson {
   nombreEmergencia: string;
   numeroCedulaEmergencia: string;
   numeroCelularEmergencia: string;
+  creadoEl: string;
+  actualizadoEl: string;
 }

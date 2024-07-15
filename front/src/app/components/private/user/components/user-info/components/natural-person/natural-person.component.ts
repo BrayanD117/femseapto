@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 // Services
 import { LoginService } from '../../../../../../../services/login.service';
@@ -21,7 +23,8 @@ import { CountriesService, Country } from '../../../../../../../services/countri
 @Component({
   selector: 'app-natural-person',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule, InputMaskModule],
+  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule, InputMaskModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './natural-person.component.html',
   styleUrls: ['./natural-person.component.css']
 })
@@ -56,18 +59,20 @@ export class NaturalPersonComponent implements OnInit {
     private educationLevelService: EducationLevelService,
     private companyService: CompanyService,
     private contractTypeService: ContractTypeService,
-    private countriesService: CountriesService
+    private countriesService: CountriesService,
+    private messageService: MessageService
   ) {
     this.natPersonForm = this.fb.group({
       id: [''],
+      idUsuario: ['', Validators.required],
       idGenero: ['', Validators.required],
       fechaExpDoc: ['', Validators.required],
       departamentoExpDoc: ['', Validators.required],
       mpioExpDoc: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       paisNacimiento: ['', Validators.required],
-      departamentoNacimiento: ['', Validators.required],
-      mpioNacimiento: ['', Validators.required],
+      departamentoNacimiento: [''],
+      mpioNacimiento: [''],
       otroLugarNacimiento: [''],
       departamentoResidencia: ['', Validators.required],
       mpioResidencia: ['', Validators.required],
@@ -78,11 +83,11 @@ export class NaturalPersonComponent implements OnInit {
       aniosAntigVivienda: ['', Validators.required],
       idEstadoCivil: ['', Validators.required],
       cabezaFamilia: ['', Validators.required],
-      personasACargo: ['', Validators.required],
+      personasACargo: [{ value: '', disabled: true }],
       tieneHijos: ['', Validators.required],
-      numeroHijos: [''],
+      numeroHijos: [{ value: '', disabled: true }],
       correoElectronico: ['', [Validators.required, Validators.email]],
-      telefono: [''],
+      telefono: ['', Validators.required],
       celular: ['', Validators.required],
       telefonoOficina: ['', Validators.required],
       idNivelEducativo: ['', Validators.required],
@@ -99,11 +104,23 @@ export class NaturalPersonComponent implements OnInit {
       numeroCedulaEmergencia: ['', Validators.required],
       numeroCelularEmergencia: ['', Validators.required],
     });
+
+    this.natPersonForm.get('tieneHijos')?.valueChanges.subscribe(value => {
+      this.toggleFieldsHasChildren(value);
+    });
+
+    this.natPersonForm.get('cabezaFamilia')?.valueChanges.subscribe(value => {
+      this.toggleFieldsPeople(value);
+    });
   }
 
   ngOnInit(): void {
     this.getUserIdFromToken();
     this.loadInitialData();
+
+    this.natPersonForm.patchValue({
+      idUsuario: this.userId
+    });
 
     this.genderService.getAll().subscribe(types => {
       this.genders = types;
@@ -168,20 +185,41 @@ export class NaturalPersonComponent implements OnInit {
     }
   }
 
+  onSelectChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    console.log('Valor seleccionado:', selectedValue);
+  }
+  
+
   loadInitialData(): void {
     if(this.userId) {
       this.naturalPersonService.getByUserId(this.userId).subscribe(natPerson => {
         this.natPersonForm.patchValue(natPerson);
-  
-        // Cargar municipios según los departamentos iniciales
-        this.loadMunicipios('departamentoExpDoc', natPerson.departamentoExpDoc, 'mpioExpDoc');
-        this.loadMunicipios('departamentoNacimiento', natPerson.departamentoNacimiento, 'mpioNacimiento');
-        this.loadMunicipios('departamentoResidencia', natPerson.departamentoResidencia, 'mpioResidencia');
+        this.toggleFieldsHasChildren(this.natPersonForm.get('tieneHijos')?.value);
+        this.toggleFieldsPeople(this.natPersonForm.get('cabezaFamilia')?.value);
+        
+        this.citiesService.getById(natPerson.mpioExpDoc).subscribe(city => {
+          this.loadMunicipios('departamentoExpDoc', city.idDepartamento, 'mpioExpDoc');
+          this.natPersonForm.get('departamentoExpDoc')?.setValue(city.idDepartamento);
+        });
+
+        this.citiesService.getById(natPerson.mpioNacimiento).subscribe(city => {
+          this.loadMunicipios('departamentoNacimiento', city.idDepartamento, 'mpioNacimiento');
+          this.natPersonForm.get('departamentoNacimiento')?.setValue(city.idDepartamento);
+        });
+
+        this.citiesService.getById(natPerson.mpioResidencia).subscribe(city => {
+          this.loadMunicipios('departamentoResidencia', city.idDepartamento, 'mpioResidencia');
+          this.natPersonForm.get('departamentoResidencia')?.setValue(city.idDepartamento);
+        });
+        
+        console.log("form ", this.natPersonForm.value);
       });
     }    
   }
 
   loadMunicipios(departmentControlName: string, departamentoId: string, municipioControlName: string): void {
+    console.log("hola ", departmentControlName, departamentoId, municipioControlName);
     this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
       switch (departmentControlName) {
         case 'departamentoExpDoc':
@@ -190,6 +228,7 @@ export class NaturalPersonComponent implements OnInit {
           break;
         case 'departamentoNacimiento':
           this.citiesNac = data;
+          console.log("city ", this.natPersonForm.get(municipioControlName)?.value);
           this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
           break;
         case 'departamentoResidencia':
@@ -200,11 +239,101 @@ export class NaturalPersonComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    if (this.natPersonForm.valid) {
-      console.log(this.natPersonForm.value);
+  onPaisNacimientoChange(): void {
+    const paisSeleccionado = this.natPersonForm.get('paisNacimiento')?.value;
+    if (paisSeleccionado === '170') {
+      this.natPersonForm.get('departamentoNacimiento')?.enable();
+      this.natPersonForm.get('mpioNacimiento')?.enable();
+      this.natPersonForm.get('otroLugarNacimiento')?.disable();
+      this.natPersonForm.get('otroLugarNacimiento')?.setValue('');
     } else {
-      console.log('Formulario inválido');
+      this.natPersonForm.get('departamentoNacimiento')?.disable();
+      this.natPersonForm.get('mpioNacimiento')?.disable();
+      this.natPersonForm.get('departamentoNacimiento')?.setValue('');
+      this.natPersonForm.get('mpioNacimiento')?.setValue('');
+      this.natPersonForm.get('otroLugarNacimiento')?.enable();
     }
+  }
+
+  /*onChildrenChange(): void {
+    const hasChildren = this.natPersonForm.get('tieneHijos')?.value;
+    if (hasChildren === 'SI') {
+      this.natPersonForm.get('numeroHijos')?.enable();
+    } else {
+      this.natPersonForm.get('numeroHijos')?.disable();
+      this.natPersonForm.get('numeroHijos')?.setValue('0');
+    }
+  }*/
+
+  toggleFieldsHasChildren(value: string): void {
+    const numChildrenControl = this.natPersonForm.get('numeroHijos');
+
+    if (value === 'NO' || value === '') {
+      numChildrenControl?.setValue(0);
+      numChildrenControl?.disable();
+    } else {
+      numChildrenControl?.enable();
+    }
+  }
+
+  toggleFieldsPeople(value: string): void {
+    const numPeopleControl = this.natPersonForm.get('personasACargo');
+
+    if (value === 'NO' || value === '') {
+      numPeopleControl?.setValue(0);
+      numPeopleControl?.disable();
+    } else {
+      numPeopleControl?.enable();
+    }
+  }
+
+  onSubmit(): void {
+    console.log(this.natPersonForm.value);
+    if (this.natPersonForm.valid) {
+      if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
+        this.natPersonForm.get('numeroHijos')?.enable();
+        this.natPersonForm.get('numeroHijos')?.setValue(0);
+      }
+
+      if (this.natPersonForm.get('cabezaFamilia')?.value === 'NO') {
+        this.natPersonForm.get('personasACargo')?.enable();
+        this.natPersonForm.get('personasACargo')?.setValue(0);
+      }
+      const data : NaturalPerson = this.natPersonForm.value;
+
+      console.log("ENTRA", data);
+
+      if(data.id) {
+        this.naturalPersonService.update(data).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
+          },
+          error: (err) => {
+            console.error('Error al actualizar la información', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo.' });
+          }
+        });
+      } else {
+        this.naturalPersonService.create(data).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
+          },
+          error: (err) => {
+            console.error('Error al actualizar la información', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información. Vuelve a intentarlo.' });
+          }
+        });
+      }     
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Algún dato te falta por registrar.' });
+    }
+
+    if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
+      this.natPersonForm.get('numeroHijos')?.disable();
+    }
+
+    if (this.natPersonForm.get('cabezaFamilia')?.value === 'NO') {
+      this.natPersonForm.get('personasACargo')?.disable();
+    }  
   }
 }
