@@ -4,7 +4,7 @@
         <input type="text" pInputText placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control">
       </div>
     </div>
-    <p-table [value]="creditRequests" [lazy]="true" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" (onLazyLoad)="onPageChange($event)" [loading]="loading">
+    <p-table [value]="creditRequests" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" (onPage)="onPageChange($event)" [loading]="loading">
       <ng-template pTemplate="header">
         <tr>
           <th>Id</th>
@@ -33,7 +33,7 @@
           <td>{{ request.tasaInteres }}</td>
           <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
           <td>
-            <button class="btn btn-primary btn-sm">Ver</button>
+            <button class="btn btn-primary btn-sm" (click)="generateData(request)">Generar</button>
           </td>
         </tr>
       </ng-template>
