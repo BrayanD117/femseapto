@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +11,8 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./generate-credit-request.component.css']
 })
 export class GenerateCreditRequestComponent {
+  @Input() montoSolicitado: number | string = 0;
+
   constructor(private http: HttpClient) {}
 
   async generateExcel() {
@@ -21,7 +23,7 @@ export class GenerateCreditRequestComponent {
   
       // Agregar datos dinámicos
       if (worksheet) {
-        // worksheet.getCell('B2').value = 'Datos de ejemplo';
+        worksheet.getCell('G5').value = Number(this.montoSolicitado);
       }
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

@@ -7,11 +7,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
 
 @Component({
   selector: 'app-credit-requests',
   standalone: true,
-  imports: [CommonModule, TableModule, PaginatorModule, InputTextModule, FormsModule],
+  imports: [CommonModule, TableModule, PaginatorModule, InputTextModule, FormsModule, GenerateCreditRequestComponent],
   templateUrl: './credit-requests.component.html',
   styleUrls: ['./credit-requests.component.css']
 })
