@@ -2,6 +2,7 @@
 // Incluir el controlador de PersonaNatural
 require_once '../src/controllers/PersonaNaturalController.php';
 require_once '../auth/verifyToken.php';
+require_once '../config/cors.php';
 
 
 

@@ -12,8 +12,8 @@ class PersonaNaturalController {
             $datos['mpioExpDoc'],
             $datos['fechaNacimiento'],
             $datos['paisNacimiento'],
-            $datos['mpioNacimiento'],
-            $datos['otroLugarNacimiento'],
+            $datos['mpioNacimiento'] ?? null,
+            $datos['otroLugarNacimiento'] ?? null,
             $datos['mpioResidencia'],
             $datos['idZonaResidencia'],
             $datos['idTipoVivienda'],
@@ -24,7 +24,7 @@ class PersonaNaturalController {
             $datos['cabezaFamilia'],
             $datos['personasACargo'],
             $datos['tieneHijos'],
-            $datos['numeroHijos'],
+            $datos['numeroHijos'] ?? null,
             $datos['correoElectronico'],
             $datos['telefono'],
             $datos['celular'],
@@ -61,8 +61,8 @@ class PersonaNaturalController {
         $personaNatural->mpioExpDoc = $datos['mpioExpDoc'];
         $personaNatural->fechaNacimiento = $datos['fechaNacimiento'];
         $personaNatural->paisNacimiento = $datos['paisNacimiento'];
-        $personaNatural->mpioNacimiento = $datos['mpioNacimiento'];
-        $personaNatural->otroLugarNacimiento = $datos['otroLugarNacimiento'];
+        $personaNatural->mpioNacimiento = $datos['mpioNacimiento'] ?? null;
+        $personaNatural->otroLugarNacimiento = $datos['otroLugarNacimiento'] ?? null;
         $personaNatural->mpioResidencia = $datos['mpioResidencia'];
         $personaNatural->idZonaResidencia = $datos['idZonaResidencia'];
         $personaNatural->idTipoVivienda = $datos['idTipoVivienda'];
@@ -73,7 +73,7 @@ class PersonaNaturalController {
         $personaNatural->cabezaFamilia = $datos['cabezaFamilia'];
         $personaNatural->personasACargo = $datos['personasACargo'];
         $personaNatural->tieneHijos = $datos['tieneHijos'];
-        $personaNatural->numeroHijos = $datos['numeroHijos'];
+        $personaNatural->numeroHijos = $datos['numeroHijos'] ?? null;
         $personaNatural->correoElectronico = $datos['correoElectronico'];
         $personaNatural->telefono = $datos['telefono'];
         $personaNatural->celular = $datos['celular'];
