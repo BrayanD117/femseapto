@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
+import { UserService } from '../../../../../services/user.service';
 
 @Component({
   selector: 'app-generate-credit-request',
@@ -20,11 +21,16 @@ export class GenerateCreditRequestComponent implements OnInit {
   @Input() reestructurado: string = '';
   @Input() periocidadPago: string = '';
   @Input() tasaInteres: number | string = 0;
-  @Input() nombreAsociado: string = '';
+  @Input() userId: number | null = null;
 
   lineaCreditoNombre: string = '';
+  nombreAsociado: string = '';
 
-  constructor(private http: HttpClient, private lineasCreditoService: LineasCreditoService) {}
+  constructor(
+    private http: HttpClient,
+    private lineasCreditoService: LineasCreditoService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     if (this.lineaCredito) {
@@ -34,6 +40,17 @@ export class GenerateCreditRequestComponent implements OnInit {
         },
         error: err => {
           console.error('Error al obtener el nombre de la línea de crédito', err);
+        }
+      });
+    }
+
+    if (this.userId) {
+      this.userService.getById(this.userId).subscribe({
+        next: user => {
+          this.nombreAsociado = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
+        },
+        error: err => {
+          console.error('Error al obtener el nombre del usuario', err);
         }
       });
     }
