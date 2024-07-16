@@ -8,7 +8,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Id</th>
-        <th>Usuario Id</th>
+        <th>Número de Documento</th>
         <th>Monto Solicitado</th>
         <th>Plazo Quincenal</th>
         <th>Valor Cuota Quincenal</th>
@@ -23,7 +23,7 @@
     <ng-template pTemplate="body" let-request>
       <tr>
         <td>{{ request.id }}</td>
-        <td>{{ request.idUsuario }}</td>
+        <td>{{ request.numeroDocumento }}</td>
         <td>{{ request.montoSolicitado }}</td>
         <td>{{ request.plazoQuincenal }}</td>
         <td>{{ request.valorCuotaQuincenal }}</td>
@@ -46,6 +46,9 @@
           ></app-generate-credit-request>
         </td>
       </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft" let-state>
+      <p-paginator [rows]="state.rows" [totalRecords]="totalRecords" (onPageChange)="onPageChange($event)"></p-paginator>
     </ng-template>
   </p-table>
 </div>

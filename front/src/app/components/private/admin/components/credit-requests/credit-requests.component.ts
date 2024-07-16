@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestCreditService } from '../../../../../services/request-credit.service';
+import { UserService, User } from '../../../../../services/user.service';
 import { AllCreditRequestDataService } from '../../../../../services/allCreditRequestData.service';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -8,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-credit-requests',
@@ -24,6 +26,7 @@ export class CreditRequestsComponent implements OnInit {
 
   constructor(
     private requestCreditService: RequestCreditService,
+    private userService: UserService,
     private allCreditRequestDataService: AllCreditRequestDataService,
     private router: Router
   ) {}
@@ -36,13 +39,23 @@ export class CreditRequestsComponent implements OnInit {
     this.loading = true;
     this.requestCreditService.getAll({ page, size, search: this.searchQuery }).subscribe({
       next: response => {
-        this.creditRequests = response.data.map((request: any) => ({
-          ...request,
-          nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
-        }));
-        this.totalRecords = parseInt(response.total, 10);
-        this.loading = false;
-        console.log('CreditRequestsComponent initialized', this.creditRequests);
+        const requests = response.data;
+        const userObservables = requests.map((request: any) => this.userService.getById(request.idUsuario));
+
+        forkJoin(userObservables).subscribe((users) => {
+          const userArray = users as User[];
+          this.creditRequests = requests.map((request: any, index: number) => {
+            const user = userArray[index];
+            return {
+              ...request,
+              numeroDocumento: user?.numeroDocumento || '',
+              nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
+            };
+          });
+
+          this.totalRecords = response.total;
+          this.loading = false;
+        });
       },
       error: err => {
         console.error('Error al cargar solicitudes de crédito', err);
