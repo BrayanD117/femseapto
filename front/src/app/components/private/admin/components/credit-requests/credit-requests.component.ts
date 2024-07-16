@@ -3,9 +3,6 @@ import { RequestCreditService } from '../../../../../services/request-credit.ser
 import { UserService, User } from '../../../../../services/user.service';
 import { AllCreditRequestDataService } from '../../../../../services/allCreditRequestData.service';
 import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { PaginatorModule } from 'primeng/paginator';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
@@ -14,7 +11,7 @@ import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-credit-requests',
   standalone: true,
-  imports: [CommonModule, TableModule, PaginatorModule, InputTextModule, FormsModule, GenerateCreditRequestComponent],
+  imports: [CommonModule, FormsModule, GenerateCreditRequestComponent],
   templateUrl: './credit-requests.component.html',
   styleUrls: ['./credit-requests.component.css']
 })
@@ -23,6 +20,10 @@ export class CreditRequestsComponent implements OnInit {
   totalRecords: number = 0;
   loading: boolean = true;
   searchQuery: string = '';
+  rows: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  pages: number[] = [];
 
   constructor(
     private requestCreditService: RequestCreditService,
@@ -54,6 +55,8 @@ export class CreditRequestsComponent implements OnInit {
           });
 
           this.totalRecords = response.total;
+          this.totalPages = Math.ceil(this.totalRecords / this.rows);
+          this.pages = Array(this.totalPages).fill(0).map((x, i) => i + 1);
           this.loading = false;
         });
       },
@@ -68,8 +71,9 @@ export class CreditRequestsComponent implements OnInit {
     this.loadCreditRequests();
   }
 
-  onPageChange(event: any): void {
-    this.loadCreditRequests(event.page + 1, event.rows);
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadCreditRequests(this.currentPage, this.rows);
   }
 
   generateData(request: any): void {
