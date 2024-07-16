@@ -13,6 +13,7 @@ import { ContractTypeService } from '../../../../../services/contract-type.servi
 import { EducationLevelService } from '../../../../../services/education-level.service';
 import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { BankAccountTypeService } from '../../../../../services/bank-account-type.service';
+import { RecommendationService } from '../../../../../services/recommendation.service';
 
 @Component({
   selector: 'app-generate-credit-request',
@@ -70,6 +71,22 @@ export class GenerateCreditRequestComponent implements OnInit {
   totalActivos: number | string = 0;
   totalPasivos: number | string = 0;
 
+  // Familiar Recommendations
+  nombreFamReferencia: string = '';
+  parentescoFamReferencia: string = '';
+  correoFamReferencia: string = '';
+  direccionFamReferencia: string = '';
+  telFamReferencia: string = '';
+  ciudadFamReferencia: string = '';
+
+  // Personal Recommendations
+  nombrePersReferencia: string = '';
+  parentescoPersReferencia: string = '';
+  correoPersReferencia: string = '';
+  direccionPersReferencia: string = '';
+  telPersReferencia: string = '';
+  ciudadPersReferencia: string = '';
+
   constructor(
     private http: HttpClient,
     private lineasCreditoService: LineasCreditoService,
@@ -81,7 +98,7 @@ export class GenerateCreditRequestComponent implements OnInit {
     private contractTypeService: ContractTypeService,
     private educationLevelService: EducationLevelService,
     private financialInfoService: FinancialInfoService,
-    private bankAccountTypeService: BankAccountTypeService
+    private recommendationService: RecommendationService
   ) {}
 
   ngOnInit() {
@@ -146,15 +163,13 @@ export class GenerateCreditRequestComponent implements OnInit {
             this.citiesService.getById(this.ciudadExpedicionDocumento),
             this.citiesService.getById(this.ciudadNacimiento),
             this.citiesService.getById(this.municipioResidencia),
-            this.departmentsService.getAll(),
-            this.familyService.getByUserId(this.userId),
+            this.departmentsService.getAll()
           ]).subscribe({
             next: ([
               expCity,
               birthCity,
               residenceCity,
-              departments,
-              familyMembers,
+              departments
             ]) => {
               console.log(residenceCity);
               this.ciudadExpedicionDocumento = expCity.nombre;
@@ -166,14 +181,6 @@ export class GenerateCreditRequestComponent implements OnInit {
               this.departamentoResidencia = departamento
                 ? departamento.nombre
                 : '';
-              const conyuge = familyMembers.find(
-                (f) => f.idParentesco === 5 || f.idParentesco === 6
-              );
-              if (conyuge) {
-                this.nombreConyuge = conyuge.nombreCompleto;
-                this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${conyuge.idMpioExpDoc}`;
-                this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
-              }
             },
             error: (err) => {
               console.error(
@@ -198,33 +205,17 @@ export class GenerateCreditRequestComponent implements OnInit {
           );
           if (conyuge) {
             this.nombreConyuge = conyuge.nombreCompleto;
+            this.cedulaLugarExpConyuge = conyuge.numeroDocumento;
             this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
 
-            /*forkJoin([
+            forkJoin([
               this.citiesService.getById(conyuge.idMpioExpDoc),
             ]).subscribe({
               next: ([
                 expCity
               ]) => {
                 console.log("expcity", expCity);
-                this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${expCity.nombre}`;
-                this.ciudadExpedicionDocumento = expCity.nombre;
-                this.ciudadNacimiento = birthCity.nombre;
-                this.municipioResidencia = residenceCity.nombre;
-                const departamento = departments.find(
-                  (d) => d.id === departamentoId
-                );
-                this.departamentoResidencia = departamento
-                  ? departamento.nombre
-                  : '';
-                const conyuge = familyMembers.find(
-                  (f) => f.idParentesco === 5 || f.idParentesco === 6
-                );
-                if (conyuge) {
-                  this.nombreConyuge = conyuge.nombreCompleto;
-                  this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${conyuge.idMpioExpDoc}`;
-                  this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
-                }
+                this.cedulaLugarExpConyuge = this.cedulaLugarExpConyuge + " " + expCity.nombre;
               },
               error: (err) => {
                 console.error(
@@ -232,12 +223,12 @@ export class GenerateCreditRequestComponent implements OnInit {
                   err
                 );
               },
-            });*/
+            });
           }    
         },
         error: (err) => {
           console.error(
-            'Error al obtener los datos de la persona natural',
+            'Error al obtener los datos del cónyuge',
             err
           );
         },
@@ -260,6 +251,73 @@ export class GenerateCreditRequestComponent implements OnInit {
         error: (err) => {
           console.error(
             'Error al obtener los datos de información financiera',
+            err
+          );
+        },
+      });
+
+      this.recommendationService.getByUserId(this.userId).subscribe({
+        next: (recommendations) => {
+          const famRecommendation = recommendations.find(
+            (f) => f.idTipoReferencia === 4
+          );
+          if (famRecommendation) {
+            console.log("fam", famRecommendation);
+            this.nombreFamReferencia = famRecommendation.nombreRazonSocial;
+            this.parentescoFamReferencia = famRecommendation.parentesco;
+            this.correoFamReferencia = famRecommendation.correoElectronico;
+            this.direccionFamReferencia = famRecommendation.direccion;
+            this.telFamReferencia = famRecommendation.telefono;
+
+            forkJoin([
+              this.citiesService.getById(famRecommendation.idMunicipio),
+            ]).subscribe({
+              next: ([
+                famCity
+              ]) => {
+                this.ciudadFamReferencia = famCity.nombre;
+              },
+              error: (err) => {
+                console.error(
+                  'Error al obtener las ciudades y departamentos',
+                  err
+                );
+              },
+            });
+          }
+          
+          // Personal recommendation
+          const persRecommendation = recommendations.find(
+            (f) => f.idTipoReferencia === 3
+          );
+          if (persRecommendation) {
+            console.log("pers", persRecommendation);
+            this.nombrePersReferencia = persRecommendation.nombreRazonSocial;
+            this.parentescoPersReferencia = persRecommendation.parentesco;
+            this.correoPersReferencia = persRecommendation.correoElectronico;
+            this.direccionPersReferencia = persRecommendation.direccion;
+            this.telPersReferencia = persRecommendation.telefono;
+
+            forkJoin([
+              this.citiesService.getById(persRecommendation.idMunicipio),
+            ]).subscribe({
+              next: ([
+                persCity
+              ]) => {
+                this.ciudadPersReferencia = persCity.nombre;
+              },
+              error: (err) => {
+                console.error(
+                  'Error al obtener las ciudades y departamentos',
+                  err
+                );
+              },
+            });
+          }
+        },
+        error: (err) => {
+          console.error(
+            'Error al obtener los datos de la referencia personal',
             err
           );
         },
@@ -382,7 +440,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         }
         worksheet.getCell('R25').value = this.numCuentaBanco;
 
-        // Información Financiera
+        // Financial Info
         worksheet.getCell('C28').value = Number(this.salarioMensual);
         worksheet.getCell('C29').value = Number(this.primaProductividad);
         worksheet.getCell('C30').value = Number(this.otrosIngresos);
@@ -391,6 +449,23 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('O30').value = Number(this.otrosEgresos);
         worksheet.getCell('O32').value = Number(this.totalActivos);
         worksheet.getCell('O33').value = Number(this.totalPasivos);
+
+
+        // Familiar Recommendation
+        worksheet.getCell('C36').value = this.nombreFamReferencia;
+        worksheet.getCell('L36').value = this.parentescoFamReferencia;
+        worksheet.getCell('P36').value = this.correoFamReferencia;
+        worksheet.getCell('C37').value = this.direccionFamReferencia;
+        worksheet.getCell('L37').value = this.telFamReferencia;
+        worksheet.getCell('P37').value = this.ciudadFamReferencia;
+
+        // Personal Recommendation
+        worksheet.getCell('C39').value = this.nombrePersReferencia;
+        worksheet.getCell('L39').value = this.parentescoPersReferencia;
+        worksheet.getCell('P39').value = this.correoPersReferencia;
+        worksheet.getCell('C40').value = this.direccionPersReferencia;
+        worksheet.getCell('L40').value = this.telPersReferencia;
+        worksheet.getCell('P40').value = this.ciudadPersReferencia;
       }
 
       const buffer = await workbook.xlsx.writeBuffer();

@@ -45,7 +45,7 @@ export interface Recommendation {
   nombreRazonSocial: string;
   parentesco: string;
   idTipoReferencia: number;
-  idMpio: string;
+  idMunicipio: string;
   direccion: string;
   telefono: string;
   correoElectronico: string;
