@@ -87,6 +87,9 @@ export class GenerateCreditRequestComponent implements OnInit {
   telPersReferencia: string = '';
   ciudadPersReferencia: string = '';
 
+  // New property for head of family
+  headOfFamily: string = '';
+
   constructor(
     private http: HttpClient,
     private lineasCreditoService: LineasCreditoService,
@@ -157,6 +160,7 @@ export class GenerateCreditRequestComponent implements OnInit {
             person.aniosAntigEmpresa || ''
           } AÑOS`.trim();
           this.salidaVacaciones = person.mesSaleVacaciones;
+          this.headOfFamily = person.cabezaFamilia || '';
 
           const departamentoId = this.municipioResidencia.slice(0, 2);
           forkJoin([
@@ -450,7 +454,6 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('O32').value = Number(this.totalActivos);
         worksheet.getCell('O33').value = Number(this.totalPasivos);
 
-
         // Familiar Recommendation
         worksheet.getCell('C36').value = this.nombreFamReferencia;
         worksheet.getCell('L36').value = this.parentescoFamReferencia;
@@ -466,6 +469,10 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('C40').value = this.direccionPersReferencia;
         worksheet.getCell('L40').value = this.telPersReferencia;
         worksheet.getCell('P40').value = this.ciudadPersReferencia;
+
+        // Marcando celdas según el estrato
+        this.markStratumCell(worksheet, this.genero);
+        this.markHeadOfFamilyCell(worksheet, this.headOfFamily);
       }
 
       const buffer = await workbook.xlsx.writeBuffer();
@@ -476,6 +483,59 @@ export class GenerateCreditRequestComponent implements OnInit {
     } catch (error) {
       console.error('Error loading template', error);
     }
+  }
+
+  markStratumCell(worksheet: ExcelJS.Worksheet, stratum: number) {
+    let cellAddress = '';
+    switch (stratum) {
+      case 1:
+        cellAddress = 'U17';
+        break;
+      case 2:
+        cellAddress = 'V17';
+        break;
+      case 3:
+        cellAddress = 'W17';
+        break;
+      case 4:
+        cellAddress = 'U18';
+        break;
+      case 5:
+        cellAddress = 'V18';
+        break;
+      case 6:
+        cellAddress = 'W18';
+        break;
+    }
+    if (cellAddress) {
+      this.addCrossMark(worksheet, cellAddress);
+    }
+  }
+
+  markHeadOfFamilyCell(worksheet: ExcelJS.Worksheet, headOfFamily: string) {
+    let cellAddress = '';
+    switch (headOfFamily.toUpperCase()) {
+      case 'SI':
+        cellAddress = 'W12';
+        break;
+      case 'NO':
+        cellAddress = 'W13';
+        break;
+    }
+    if (cellAddress) {
+      this.addCrossMark(worksheet, cellAddress);
+    }
+  }
+
+  addCrossMark(worksheet: ExcelJS.Worksheet, cellAddress: string) {
+    const cell = worksheet.getCell(cellAddress);
+    const originalValue = cell.value ?? '';
+    cell.value = {
+      richText: [
+        { text: originalValue.toString(), font: { bold: true } },
+        { text: ' X', font: { bold: true, color: { argb: 'FF0000' } } }
+      ]
+    };
   }
 
   async loadTemplate(workbook: ExcelJS.Workbook) {
