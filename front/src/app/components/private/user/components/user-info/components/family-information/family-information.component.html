@@ -19,8 +19,8 @@
         <th pSortableColumn="nombreCompleto" style="width: 20%">
           Nombre Completo <p-sortIcon field="nombreCompleto" />
         </th>
-        <th pSortableColumn="idTipoDocumento" style="width: 10%">
-          Tipo Doc. <p-sortIcon field="idTipoDocumento" />
+        <th pSortableColumn="tipoDoc" style="width: 10%">
+          Tipo Doc. <p-sortIcon field="tipoDoc" />
         </th>
         <th pSortableColumn="numeroDocumento" style="width: 20%">
           No. Doc. <p-sortIcon field="numeroDocumento" />
@@ -28,8 +28,8 @@
         <th pSortableColumn="idMpioExpDoc" style="width: 20%">
           Mpio. Exp. <p-sortIcon field="idMpioExpDoc" />
         </th>
-        <th pSortableColumn="idParentesco" style="width: 20%">
-          Parentesco <p-sortIcon field="idParentesco" />
+        <th pSortableColumn="parentesco" style="width: 20%">
+          Parentesco <p-sortIcon field="parentesco" />
         </th>
         <th pSortableColumn="idGenero" style="width: 20%">
           Género <p-sortIcon field="idGenero" />
@@ -52,10 +52,10 @@
     <ng-template pTemplate="body" let-familiar>
       <tr>
         <td>{{ familiar.nombreCompleto }}</td>
-        <td>{{ familiar.idTipoDocumento }}</td>
+        <td>{{ familiar.tipoDoc }}</td>
         <td>{{ familiar.numeroDocumento }}</td>
         <td>{{ familiar.idMpioExpDoc }}</td>
-        <td>{{ familiar.idParentesco }}</td>
+        <td>{{ familiar.parentesco }}</td>
         <td>{{ familiar.idGenero }}</td>
         <td>{{ familiar.fechaNacimiento }}</td>
         <td>{{ familiar.idNivelEducativo }}</td>
@@ -142,14 +142,22 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="idMpioExpDoc" class="form-label"
-                  >Municipio de Expedición del documento</label
-                >
-                <input
-                  formControlName="idMpioExpDoc"
-                  type="text"
-                  class="form-control"
-                />
+                <label for="deptoExpDoc" class="form-label">Departamento de expedición del documento</label>
+                <select class="form-select" id="deptoExpDoc" formControlName="deptoExpDoc" (change)="onDepartmentChange()">
+                  <option value="" selected>Seleccione...</option>
+                  <option *ngFor="let department of departments" [value]="department.id">
+                    {{ department.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="idMpioExpDoc" class="form-label">Municipio de expedición del documento</label>
+                <select class="form-select" id="idMpioExpDoc" formControlName="idMpioExpDoc">
+                  <option value="" selected>Seleccione...</option>
+                  <option *ngFor="let city of citiesExpDoc" [value]="city.id">
+                    {{ city.nombre }}
+                  </option>
+                </select>
               </div>
               <div class="col-md-6">
                 <label for="idParentesco" class="form-label">Parentesco</label>
@@ -209,6 +217,8 @@
                   formControlName="celular"
                   type="text"
                   class="form-control"
+                  minlength="7"
+                  maxlength="10"
                 />
               </div>
             </div>

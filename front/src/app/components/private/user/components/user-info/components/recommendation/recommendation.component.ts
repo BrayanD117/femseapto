@@ -8,6 +8,14 @@ import { ToastModule } from 'primeng/toast';
 import { Recommendation, RecommendationService } from '../../../../../../../services/recommendation.service';
 import { LoginService } from '../../../../../../../services/login.service';
 import { RecommendationType, RecommendationTypeService } from '../../../../../../../services/recommendation-type.service';
+import {
+  Department,
+  DepartmentsService,
+} from '../../../../../../../services/departments.service';
+import {
+  City,
+  CitiesService,
+} from '../../../../../../../services/cities.service';
 
 @Component({
   selector: 'app-recommendation',
@@ -25,10 +33,13 @@ export class RecommendationComponent {
   userId: number | null = null;
 
   recommendationTypes: RecommendationType[] = [];
+  departments: Department[] = [];
+  cities: City[] = [];
 
   constructor(private fb: FormBuilder, private recommendationService: RecommendationService,
     private loginService: LoginService, private recommendationTypeService: RecommendationTypeService,
-    private messageService: MessageService
+    private messageService: MessageService, private departmentsService: DepartmentsService,
+    private citiesService: CitiesService
   ) {
     this.recommendationForm = this.fb.group({
       id: [''],
@@ -36,10 +47,11 @@ export class RecommendationComponent {
       nombreRazonSocial: ['', Validators.required],
       parentesco: ['', Validators.required],
       idTipoReferencia: ['', Validators.required],
+      departamento: ['', Validators.required],
       idMunicipio: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
-      correoElectronico: ['', Validators.required]
+      correoElectronico: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -47,6 +59,7 @@ export class RecommendationComponent {
     this.getUserIdFromToken();
     this.loadRecommendations();
     this.getAllRecommendationTypes();
+    this.getAllDepartments();
   }
 
   getUserIdFromToken(): void {
@@ -67,6 +80,12 @@ export class RecommendationComponent {
   getAllRecommendationTypes(): void {
     this.recommendationTypeService.getAll().subscribe(types => {
       this.recommendationTypes = types;
+    });
+  }
+
+  getAllDepartments(): void {
+    this.departmentsService.getAll().subscribe((types) => {
+      this.departments = types;
     });
   }
 
@@ -110,9 +129,37 @@ export class RecommendationComponent {
     }
   }
 
+  onDepartmentChange(): void {
+    const departmentId = this.recommendationForm.get('departamento')?.value;
+    if (departmentId) {
+      this.citiesService.getByDepartmentId(departmentId).subscribe((data) => {
+        this.cities = data;
+      });
+    }
+  }
+
   editRecommendation(recommendation: Recommendation): void {
     this.editMode = true;
     this.selectedRecommendation = recommendation;
+
+    // Limpiar las ciudades del select para evitar problemas de re-renderizado
+    this.cities = [];
+
+    this.citiesService.getById(recommendation.idMunicipio).subscribe((city) => {
+
+      this.recommendationForm.get('departamento')?.setValue(city.idDepartamento);
+
+      this.citiesService
+        .getByDepartmentId(city.idDepartamento)
+        .subscribe((data) => {
+          this.cities = data;
+
+          this.recommendationForm
+            .get('idMunicipio')
+            ?.setValue(recommendation.idMunicipio);
+        });
+    });
+
     this.recommendationForm.patchValue(recommendation);
   }
 

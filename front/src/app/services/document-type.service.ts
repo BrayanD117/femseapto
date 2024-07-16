@@ -12,11 +12,11 @@ export class DocumentTypeService {
 
   constructor(private http: HttpClient) { }
 
-  getById(id: number): Observable<any> {
+  getById(id: number): Observable<DocumentType> {
     return this.http.get<DocumentType>(`${this.apiUrl}/tiposdocumento.php?id=${id}`, { withCredentials: true });
   }
 
-  getAll(): Observable<any> {
+  getAll(): Observable<DocumentType[]> {
     return this.http.get<DocumentType[]>(`${this.apiUrl}/tiposdocumento.php`, { withCredentials: true });
   }
 }

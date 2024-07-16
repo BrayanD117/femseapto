@@ -112,7 +112,7 @@
                   class="form-control"
                 />
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <label for="parentesco" class="form-label">Parentesco</label>
                 <input
                   formControlName="parentesco"
@@ -136,14 +136,24 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idMunicipio" class="form-label">Municipio</label>
-                <input
-                  formControlName="idMunicipio"
-                  type="text"
-                  class="form-control"
-                />
+                <label for="departamento" class="form-label">Departamento de residencia</label>
+                <select class="form-select" id="departamento" formControlName="departamento" (change)="onDepartmentChange()">
+                  <option value="" selected>Seleccione...</option>
+                  <option *ngFor="let department of departments" [value]="department.id">
+                    {{ department.nombre }}
+                  </option>
+                </select>
               </div>
               <div class="col-md-6">
+                <label for="idMunicipio" class="form-label">Municipio de residencia</label>
+                <select class="form-select" id="idMunicipio" formControlName="idMunicipio">
+                  <option value="" selected>Seleccione...</option>
+                  <option *ngFor="let city of cities" [value]="city.id">
+                    {{ city.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-12">
                 <label for="direccion" class="form-label"
                   >Dirección de residencia u oficina</label
                 >
@@ -159,6 +169,8 @@
                   formControlName="telefono"
                   type="text"
                   class="form-control"
+                  minlength="7"
+                  maxlength="10"
                 />
               </div>
               <div class="col-md-6">
@@ -167,7 +179,7 @@
                 >
                 <input
                   formControlName="correoElectronico"
-                  type="text"
+                  type="email"
                   class="form-control"
                 />
               </div>
