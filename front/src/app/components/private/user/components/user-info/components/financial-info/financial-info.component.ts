@@ -66,20 +66,7 @@ export class FinancialInfoComponent implements OnInit {
         this.financialInfo = financialInfo;
 
         if(financialInfo) {
-          this.financialForm.patchValue({
-            ...financialInfo,
-            ingresosMensuales: financialInfo.ingresosMensuales || 0,
-            primaProductividad: financialInfo.primaProductividad || 0,
-            otrosIngresosMensuales: financialInfo.otrosIngresosMensuales || 0,
-            egresosMensuales: financialInfo.egresosMensuales || 0,
-            obligacionFinanciera: financialInfo.obligacionFinanciera || 0,
-            otrosEgresosMensuales: financialInfo.otrosEgresosMensuales || 0
-          });
-
-          // Calcular los totales iniciales si hay datos de la base de datos
-          this.updateTotalIncome();
-          this.updateTotalExpense();
-          this.updateTotals();
+          this.financialForm.patchValue(financialInfo);
         }    
       });
       
@@ -107,28 +94,22 @@ export class FinancialInfoComponent implements OnInit {
   }
 
   updateTotalIncome(): void {
-    if(this.financialInfo) {
       const income = this.financialForm.get('ingresosMensuales')?.value || 0;
       const otherIncome = this.financialForm.get('otrosIngresosMensuales')?.value || 0;
       const prod = this.financialForm.get('primaProductividad')?.value || 0;
       const totalIncome = income + otherIncome + prod;
-      this.financialForm.get('totalIngresosMensuales')?.setValue(totalIncome, { emitEvent: true });
-    }
-    
+      this.financialForm.get('totalIngresosMensuales')?.setValue(totalIncome, { emitEvent: true }); 
   }
 
   updateTotalExpense(): void {
-    if(this.financialInfo) {
       const expense = this.financialForm.get('egresosMensuales')?.value || 0;
       const oblig = this.financialForm.get('obligacionFinanciera')?.value || 0;
       const otherExpense = this.financialForm.get('otrosEgresosMensuales')?.value || 0;
       const totalExpense = expense + oblig + otherExpense;
-      this.financialForm.get('totalEgresosMensuales')?.setValue(totalExpense, { emitEvent: true });
-    }  
+      this.financialForm.get('totalEgresosMensuales')?.setValue(totalExpense, { emitEvent: true }); 
   }
 
   updateTotals(): void {
-    if(this.financialInfo) {
       const income = this.financialForm.get('totalIngresosMensuales')?.value || 0;
       const expense = this.financialForm.get('totalEgresosMensuales')?.value || 0;
   
@@ -137,7 +118,6 @@ export class FinancialInfoComponent implements OnInit {
       this.financialForm.get('totalActivos')?.setValue(income, { emitEvent: true });
       this.financialForm.get('totalPasivos')?.setValue(expense, { emitEvent: true });
       this.financialForm.get('totalPatrimonio')?.setValue(totalAssets, { emitEvent: true });
-    } 
   }
 
   onSubmit(): void {
