@@ -11,6 +11,8 @@ import { DepartmentsService } from '../../../../../services/departments.service'
 import { FamilyService } from '../../../../../services/family.service';
 import { ContractTypeService } from '../../../../../services/contract-type.service';
 import { EducationLevelService } from '../../../../../services/education-level.service';
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
+import { BankAccountTypeService } from '../../../../../services/bank-account-type.service';
 
 @Component({
   selector: 'app-generate-credit-request',
@@ -48,6 +50,25 @@ export class GenerateCreditRequestComponent implements OnInit {
   nombreConyuge: string = '';
   cedulaLugarExpConyuge: string = '';
   telefonoConyuge: string = '';
+  jefeInmediato: string = '';
+  tipoVivienda: number = 0;
+  telefono: string = '';
+  celular: string = '';
+  telefonoOficina: string = '';
+  permanenciaVivienda: string = '';
+  antiguedadEmpresa: string = '';
+  salidaVacaciones: string = '';
+  nombreBanco: string = '';
+  idTipoCuentaBanco: number = 0;
+  numCuentaBanco: string = '';
+  salarioMensual: number | string = 0;
+  primaProductividad: number | string = 0;
+  otrosIngresos: number | string = 0;
+  egresosMensuales: number | string = 0;
+  obligFinancieras: number | string = 0;
+  otrosEgresos: number | string = 0;
+  totalActivos: number | string = 0;
+  totalPasivos: number | string = 0;
 
   constructor(
     private http: HttpClient,
@@ -58,7 +79,9 @@ export class GenerateCreditRequestComponent implements OnInit {
     private departmentsService: DepartmentsService,
     private familyService: FamilyService,
     private contractTypeService: ContractTypeService,
-    private educationLevelService: EducationLevelService
+    private educationLevelService: EducationLevelService,
+    private financialInfoService: FinancialInfoService,
+    private bankAccountTypeService: BankAccountTypeService
   ) {}
 
   ngOnInit() {
@@ -96,8 +119,17 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.direccionResidencia = person.direccionResidencia;
           this.municipioResidencia = person.mpioResidencia;
           this.email = person.correoElectronico;
+          this.jefeInmediato = person.jefeInmediato;
           this.tipoContrato = person.idTipoContrato;
           this.nivelEducativo = person.idNivelEducativo;
+          this.tipoVivienda = person.idTipoVivienda;
+          this.telefono = person.telefono;
+          this.celular = person.celular;
+          this.telefonoOficina = person.telefonoOficina;
+          this.permanenciaVivienda = `${person.aniosAntigVivienda || ''} AÑOS`.trim();
+          this.antiguedadEmpresa = `${person.aniosAntigEmpresa || ''} AÑOS`.trim();
+          this.salidaVacaciones = person.mesSaleVacaciones;
+          
           const departamentoId = this.municipioResidencia.slice(0, 2);
           forkJoin([
             this.citiesService.getById(this.ciudadExpedicionDocumento),
@@ -107,6 +139,7 @@ export class GenerateCreditRequestComponent implements OnInit {
             this.familyService.getByUserId(this.userId)
           ]).subscribe({
             next: ([expCity, birthCity, residenceCity, departments, familyMembers]) => {
+              console.log(residenceCity);
               this.ciudadExpedicionDocumento = expCity.nombre;
               this.ciudadNacimiento = birthCity.nombre;
               this.municipioResidencia = residenceCity.nombre;
@@ -126,6 +159,25 @@ export class GenerateCreditRequestComponent implements OnInit {
         },
         error: err => {
           console.error('Error al obtener los datos de la persona natural', err);
+        }
+      });
+
+      this.financialInfoService.getByUserId(this.userId).subscribe({
+        next: financialInfo => {
+          this.nombreBanco = financialInfo.nombreBanco;
+          this.idTipoCuentaBanco = financialInfo.idTipoCuentaBanc;
+          this.numCuentaBanco = financialInfo.numeroCuentaBanc;
+          this.salarioMensual = financialInfo.ingresosMensuales;
+          this.primaProductividad = financialInfo.primaProductividad;
+          this.otrosIngresos = financialInfo.otrosIngresosMensuales;
+          this.egresosMensuales = financialInfo.egresosMensuales;
+          this.obligFinancieras = financialInfo.obligacionFinanciera;
+          this.otrosEgresos = financialInfo.otrosEgresosMensuales;
+          this.totalActivos = financialInfo.totalActivos;
+          this.totalPasivos = financialInfo.totalPasivos;
+        },
+        error: err => {
+          console.error('Error al obtener los datos de información financiera', err);
         }
       });
     }
@@ -211,9 +263,44 @@ export class GenerateCreditRequestComponent implements OnInit {
         }
 
         worksheet.getCell('C20').value = this.email;
+        worksheet.getCell('N20').value = this.jefeInmediato;
         worksheet.getCell('F21').value = this.nombreConyuge;
         worksheet.getCell('O21').value = this.cedulaLugarExpConyuge;
         worksheet.getCell('R21').value = this.telefonoConyuge;
+
+        if (this.tipoVivienda === 1) {
+          worksheet.getCell('D22').value = 'X';
+        } else if (this.tipoContrato === 2) {
+          worksheet.getCell('D23').value = 'X';
+        } else if (this.tipoContrato === 3) {
+          worksheet.getCell('D24').value = 'X';
+        }
+
+        worksheet.getCell('H22').value = this.telefono;
+        worksheet.getCell('H23').value = this.celular;
+        worksheet.getCell('H24').value = this.telefonoOficina;
+
+        worksheet.getCell('P22').value = this.permanenciaVivienda;
+        worksheet.getCell('P23').value = this.antiguedadEmpresa;
+        worksheet.getCell('O24').value = this.salidaVacaciones;
+
+        worksheet.getCell('E25').value = this.nombreBanco;
+        if (this.idTipoCuentaBanco === 1) {
+          worksheet.getCell('P25').value = 'X';
+        } else if (this.idTipoCuentaBanco === 2) {
+          worksheet.getCell('P26').value = 'X';
+        }
+        worksheet.getCell('R25').value = this.numCuentaBanco;
+
+        // Información Financiera
+        worksheet.getCell('C28').value = Number(this.salarioMensual);
+        worksheet.getCell('C29').value = Number(this.primaProductividad);
+        worksheet.getCell('C30').value = Number(this.otrosIngresos);
+        worksheet.getCell('O28').value = Number(this.egresosMensuales);
+        worksheet.getCell('O29').value = Number(this.obligFinancieras);
+        worksheet.getCell('O30').value = Number(this.otrosEgresos);
+        worksheet.getCell('O32').value = Number(this.totalActivos);
+        worksheet.getCell('O33').value = Number(this.totalPasivos);
       }
 
       const buffer = await workbook.xlsx.writeBuffer();
