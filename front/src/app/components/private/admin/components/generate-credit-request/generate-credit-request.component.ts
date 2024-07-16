@@ -18,7 +18,7 @@ import { BankAccountTypeService } from '../../../../../services/bank-account-typ
   selector: 'app-generate-credit-request',
   standalone: true,
   templateUrl: './generate-credit-request.component.html',
-  styleUrls: ['./generate-credit-request.component.css']
+  styleUrls: ['./generate-credit-request.component.css'],
 })
 export class GenerateCreditRequestComponent implements OnInit {
   @Input() montoSolicitado: number | string = 0;
@@ -86,29 +86,36 @@ export class GenerateCreditRequestComponent implements OnInit {
 
   ngOnInit() {
     if (this.lineaCredito) {
-      this.lineasCreditoService.getNameById(Number(this.lineaCredito)).subscribe({
-        next: nombre => {
-          this.lineaCreditoNombre = nombre;
-        },
-        error: err => {
-          console.error('Error al obtener el nombre de la línea de crédito', err);
-        }
-      });
+      this.lineasCreditoService
+        .getNameById(Number(this.lineaCredito))
+        .subscribe({
+          next: (nombre) => {
+            this.lineaCreditoNombre = nombre;
+          },
+          error: (err) => {
+            console.error(
+              'Error al obtener el nombre de la línea de crédito',
+              err
+            );
+          },
+        });
     }
 
     if (this.userId !== null) {
       this.userService.getById(this.userId).subscribe({
-        next: user => {
-          this.nombreAsociado = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
+        next: (user) => {
+          this.nombreAsociado = `${user.primerNombre || ''} ${
+            user.segundoNombre || ''
+          } ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
           this.numeroDocumento = Number(user.numeroDocumento);
         },
-        error: err => {
+        error: (err) => {
           console.error('Error al obtener el nombre del usuario', err);
-        }
+        },
       });
 
       this.naturalPersonService.getByUserId(this.userId).subscribe({
-        next: person => {
+        next: (person) => {
           this.ciudadExpedicionDocumento = person.mpioExpDoc;
           this.fechaExpedicionDocumento = person.fechaExpDoc;
           this.ciudadNacimiento = person.mpioNacimiento;
@@ -126,44 +133,118 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.telefono = person.telefono;
           this.celular = person.celular;
           this.telefonoOficina = person.telefonoOficina;
-          this.permanenciaVivienda = `${person.aniosAntigVivienda || ''} AÑOS`.trim();
-          this.antiguedadEmpresa = `${person.aniosAntigEmpresa || ''} AÑOS`.trim();
+          this.permanenciaVivienda = `${
+            person.aniosAntigVivienda || ''
+          } AÑOS`.trim();
+          this.antiguedadEmpresa = `${
+            person.aniosAntigEmpresa || ''
+          } AÑOS`.trim();
           this.salidaVacaciones = person.mesSaleVacaciones;
-          
+
           const departamentoId = this.municipioResidencia.slice(0, 2);
           forkJoin([
             this.citiesService.getById(this.ciudadExpedicionDocumento),
             this.citiesService.getById(this.ciudadNacimiento),
             this.citiesService.getById(this.municipioResidencia),
             this.departmentsService.getAll(),
-            this.familyService.getByUserId(this.userId)
+            this.familyService.getByUserId(this.userId),
           ]).subscribe({
-            next: ([expCity, birthCity, residenceCity, departments, familyMembers]) => {
+            next: ([
+              expCity,
+              birthCity,
+              residenceCity,
+              departments,
+              familyMembers,
+            ]) => {
               console.log(residenceCity);
               this.ciudadExpedicionDocumento = expCity.nombre;
               this.ciudadNacimiento = birthCity.nombre;
               this.municipioResidencia = residenceCity.nombre;
-              const departamento = departments.find(d => d.id === departamentoId);
-              this.departamentoResidencia = departamento ? departamento.nombre : '';
-              const conyuge = familyMembers.find(f => f.idParentesco === 5 || f.idParentesco === 6);
+              const departamento = departments.find(
+                (d) => d.id === departamentoId
+              );
+              this.departamentoResidencia = departamento
+                ? departamento.nombre
+                : '';
+              const conyuge = familyMembers.find(
+                (f) => f.idParentesco === 5 || f.idParentesco === 6
+              );
               if (conyuge) {
                 this.nombreConyuge = conyuge.nombreCompleto;
                 this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${conyuge.idMpioExpDoc}`;
                 this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
               }
             },
-            error: err => {
-              console.error('Error al obtener las ciudades y departamentos', err);
-            }
+            error: (err) => {
+              console.error(
+                'Error al obtener las ciudades y departamentos',
+                err
+              );
+            },
           });
         },
-        error: err => {
-          console.error('Error al obtener los datos de la persona natural', err);
-        }
+        error: (err) => {
+          console.error(
+            'Error al obtener los datos de la persona natural',
+            err
+          );
+        },
+      });
+
+      this.familyService.getByUserId(this.userId).subscribe({
+        next: (family) => {
+          const conyuge = family.find(
+            (f) => f.idParentesco === 5 || f.idParentesco === 6
+          );
+          if (conyuge) {
+            this.nombreConyuge = conyuge.nombreCompleto;
+            this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
+
+            /*forkJoin([
+              this.citiesService.getById(conyuge.idMpioExpDoc),
+            ]).subscribe({
+              next: ([
+                expCity
+              ]) => {
+                console.log("expcity", expCity);
+                this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${expCity.nombre}`;
+                this.ciudadExpedicionDocumento = expCity.nombre;
+                this.ciudadNacimiento = birthCity.nombre;
+                this.municipioResidencia = residenceCity.nombre;
+                const departamento = departments.find(
+                  (d) => d.id === departamentoId
+                );
+                this.departamentoResidencia = departamento
+                  ? departamento.nombre
+                  : '';
+                const conyuge = familyMembers.find(
+                  (f) => f.idParentesco === 5 || f.idParentesco === 6
+                );
+                if (conyuge) {
+                  this.nombreConyuge = conyuge.nombreCompleto;
+                  this.cedulaLugarExpConyuge = `${conyuge.numeroDocumento} ${conyuge.idMpioExpDoc}`;
+                  this.telefonoConyuge = `Telefono Conyuge: ${conyuge.celular}`;
+                }
+              },
+              error: (err) => {
+                console.error(
+                  'Error al obtener las ciudades y departamentos',
+                  err
+                );
+              },
+            });*/
+          }    
+        },
+        error: (err) => {
+          console.error(
+            'Error al obtener los datos de la persona natural',
+            err
+          );
+        },
       });
 
       this.financialInfoService.getByUserId(this.userId).subscribe({
-        next: financialInfo => {
+        next: (financialInfo) => {
           this.nombreBanco = financialInfo.nombreBanco;
           this.idTipoCuentaBanco = financialInfo.idTipoCuentaBanc;
           this.numCuentaBanco = financialInfo.numeroCuentaBanc;
@@ -176,9 +257,12 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.totalActivos = financialInfo.totalActivos;
           this.totalPasivos = financialInfo.totalPasivos;
         },
-        error: err => {
-          console.error('Error al obtener los datos de información financiera', err);
-        }
+        error: (err) => {
+          console.error(
+            'Error al obtener los datos de información financiera',
+            err
+          );
+        },
       });
     }
   }
@@ -194,12 +278,12 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('G5').value = Number(this.montoSolicitado);
         worksheet.getCell('O5').value = Number(this.plazoQuincenal);
         worksheet.getCell('U5').value = Number(this.valorCuotaQuincenal);
-        
+
         const fecha = new Date(this.fechaSolicitud);
         worksheet.getCell('R7').value = fecha.getDate();
         worksheet.getCell('T7').value = fecha.getMonth() + 1;
         worksheet.getCell('V7').value = fecha.getFullYear();
-        
+
         worksheet.getCell('A9').value = this.lineaCreditoNombre;
         worksheet.getCell('G9').value = this.reestructurado;
         worksheet.getCell('L9').value = this.periocidadPago;
@@ -208,17 +292,23 @@ export class GenerateCreditRequestComponent implements OnInit {
 
         worksheet.getCell('A13').value = this.numeroDocumento;
         worksheet.getCell('F13').value = this.ciudadExpedicionDocumento;
-        worksheet.getCell('H13').value = this.fechaExpedicionDocumento ? new Date(this.fechaExpedicionDocumento) : '';
-        worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${this.fechaNacimiento ? new Date(this.fechaNacimiento).toLocaleDateString() : ''}`;
-        
+        worksheet.getCell('H13').value = this.fechaExpedicionDocumento
+          ? new Date(this.fechaExpedicionDocumento)
+          : '';
+        worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${
+          this.fechaNacimiento
+            ? new Date(this.fechaNacimiento).toLocaleDateString()
+            : ''
+        }`;
+
         if (this.genero === 1) {
           worksheet.getCell('H15').value = 'X';
         } else if (this.genero === 2) {
           worksheet.getCell('I15').value = 'X';
         }
-        
+
         worksheet.getCell('N14').value = Number(this.personasACargo);
-        
+
         switch (this.estadoCivil.toLowerCase()) {
           case 'casado':
             worksheet.getCell('S14').value = 'X';
@@ -250,7 +340,7 @@ export class GenerateCreditRequestComponent implements OnInit {
             break;
           case 2:
             worksheet.getCell('G19').value = 'X';
-            break
+            break;
           case 3:
             worksheet.getCell('I19').value = 'X';
             break;
@@ -304,7 +394,9 @@ export class GenerateCreditRequestComponent implements OnInit {
       }
 
       const buffer = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
       saveAs(blob, 'Solicitud_Credito.xlsx');
     } catch (error) {
       console.error('Error loading template', error);
@@ -313,7 +405,11 @@ export class GenerateCreditRequestComponent implements OnInit {
 
   async loadTemplate(workbook: ExcelJS.Workbook) {
     try {
-      const data: ArrayBuffer = await firstValueFrom(this.http.get('/assets/SOLICITAR_CREDITO.xlsx', { responseType: 'arraybuffer' }));
+      const data: ArrayBuffer = await firstValueFrom(
+        this.http.get('/assets/SOLICITAR_CREDITO.xlsx', {
+          responseType: 'arraybuffer',
+        })
+      );
       await workbook.xlsx.load(data);
     } catch (error) {
       console.error('Error reading the template file:', error);

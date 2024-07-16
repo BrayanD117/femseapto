@@ -46,8 +46,8 @@ export class FinancialInfoComponent implements OnInit {
       obligacionFinanciera: [0, Validators.required],
       otrosEgresosMensuales: [0, Validators.required],
       totalEgresosMensuales: [{ value: 0, disabled: true }],
-      totalActivos: [{ value: 0, disabled: true }],
-      totalPasivos: [{ value: 0, disabled: true }],
+      totalActivos: [0, Validators.required],
+      totalPasivos: [0, Validators.required],
       totalPatrimonio: [{ value: 0, disabled: true }]
     });
   }
@@ -66,7 +66,21 @@ export class FinancialInfoComponent implements OnInit {
         this.financialInfo = financialInfo;
 
         if(financialInfo) {
-          this.financialForm.patchValue(financialInfo);
+          this.financialForm.patchValue({
+            ...financialInfo,
+            ingresosMensuales: parseFloat(financialInfo.ingresosMensuales) || 0,
+            primaProductividad: parseFloat(financialInfo.primaProductividad) || 0,
+            otrosIngresosMensuales: parseFloat(financialInfo.otrosIngresosMensuales) || 0,
+            totalIngresosMensuales: parseFloat(financialInfo.totalIngresosMensuales) || 0,
+            egresosMensuales: parseFloat(financialInfo.egresosMensuales) || 0,
+            obligacionFinanciera: parseFloat(financialInfo.obligacionFinanciera) || 0,
+            otrosEgresosMensuales: parseFloat(financialInfo.otrosEgresosMensuales) || 0,
+            totalEgresosMensuales: parseFloat(financialInfo.totalEgresosMensuales) || 0,
+            totalActivos: parseFloat(financialInfo.totalActivos) || 0,
+            totalPasivos: parseFloat(financialInfo.totalPasivos) || 0,
+            totalPatrimonio: parseFloat(financialInfo.totalPatrimonio) || 0
+          });
+          console.log(this.financialForm.value);
         }    
       });
       
@@ -81,8 +95,8 @@ export class FinancialInfoComponent implements OnInit {
     this.financialForm.get('obligacionFinanciera')?.valueChanges.subscribe(() => this.updateTotalExpense());
     this.financialForm.get('otrosEgresosMensuales')?.valueChanges.subscribe(() => this.updateTotalExpense());
 
-    this.financialForm.get('totalIngresosMensuales')?.valueChanges.subscribe(() => this.updateTotals());
-    this.financialForm.get('totalEgresosMensuales')?.valueChanges.subscribe(() => this.updateTotals());
+    this.financialForm.get('totalActivos')?.valueChanges.subscribe(() => this.updateTotals());
+    this.financialForm.get('totalPasivos')?.valueChanges.subscribe(() => this.updateTotals());
 
     this.loadBankAccountTypes();
   }
@@ -110,21 +124,17 @@ export class FinancialInfoComponent implements OnInit {
   }
 
   updateTotals(): void {
-      const income = this.financialForm.get('totalIngresosMensuales')?.value || 0;
-      const expense = this.financialForm.get('totalEgresosMensuales')?.value || 0;
+      const income = this.financialForm.get('totalActivos')?.value || 0;
+      const expense = this.financialForm.get('totalPasivos')?.value || 0;
   
       const totalAssets = income - expense;
   
-      this.financialForm.get('totalActivos')?.setValue(income, { emitEvent: true });
-      this.financialForm.get('totalPasivos')?.setValue(expense, { emitEvent: true });
       this.financialForm.get('totalPatrimonio')?.setValue(totalAssets, { emitEvent: true });
   }
 
   onSubmit(): void {
     this.financialForm.get('totalIngresosMensuales')?.enable();
     this.financialForm.get('totalEgresosMensuales')?.enable();
-    this.financialForm.get('totalActivos')?.enable();
-    this.financialForm.get('totalPasivos')?.enable();
     this.financialForm.get('totalPatrimonio')?.enable();
     console.log(this.financialForm.value);
     if (this.financialForm.valid) {
@@ -160,8 +170,6 @@ export class FinancialInfoComponent implements OnInit {
 
     this.financialForm.get('totalIngresosMensuales')?.disable();
     this.financialForm.get('totalEgresosMensuales')?.disable();
-    this.financialForm.get('totalActivos')?.disable();
-    this.financialForm.get('totalPasivos')?.disable();
     this.financialForm.get('totalPatrimonio')?.disable();
   }
 }
