@@ -36,6 +36,7 @@ class PersonaNaturalController {
             $datos['idTipoContrato'],
             $datos['dependenciaEmpresa'],
             $datos['cargoOcupa'],
+            $datos['jefeInmediato'],
             $datos['aniosAntigEmpresa'],
             $datos['mesesAntigEmpresa'],
             $datos['mesSaleVacaciones'],
@@ -85,6 +86,7 @@ class PersonaNaturalController {
         $personaNatural->idTipoContrato = $datos['idTipoContrato'];
         $personaNatural->dependenciaEmpresa = $datos['dependenciaEmpresa'];
         $personaNatural->cargoOcupa = $datos['cargoOcupa'];
+        $personaNatural->jefeInmediato = $datos['jefeInmediato'];
         $personaNatural->aniosAntigEmpresa = $datos['aniosAntigEmpresa'];
         $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'];
         $personaNatural->mesSaleVacaciones = $datos['mesSaleVacaciones'];

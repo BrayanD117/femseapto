@@ -20,6 +20,7 @@ import { BankAccountType, BankAccountTypeService } from '../../../../../../../se
 export class FinancialInfoComponent implements OnInit {
   financialForm: FormGroup;
   userId: number | null = null;
+  financialInfo: FinancialInformation | null = null;
 
   bankAccountTypes: BankAccountType[] = [];
   
@@ -36,18 +37,18 @@ export class FinancialInfoComponent implements OnInit {
       nombreBanco: ['', Validators.required],
       idTipoCuentaBanc: ['', Validators.required],
       numeroCuentaBanc: ['', Validators.required],
-      ingresosMensuales: ['', Validators.required],
-      primaProductividad: ['', Validators.required],
-      otrosIngresosMensuales: ['', Validators.required],
+      ingresosMensuales: [0, Validators.required],
+      primaProductividad: [0, Validators.required],
+      otrosIngresosMensuales: [0, Validators.required],
       conceptoOtrosIngresosMens: [''],
-      totalIngresosMensuales: [{ value: '', disabled: true }, Validators.required],
-      egresosMensuales: ['', Validators.required],
-      obligacionFinanciera: ['', Validators.required],
-      otrosEgresosMensuales: ['', Validators.required],
-      totalEgresosMensuales: [{ value: '', disabled: true }, Validators.required],
-      totalActivos: [{ value: '', disabled: true }, Validators.required],
-      totalPasivos: [{ value: '', disabled: true }, Validators.required],
-      totalPatrimonio: [{ value: '', disabled: true }, Validators.required]
+      totalIngresosMensuales: [{ value: 0, disabled: true }],
+      egresosMensuales: [0, Validators.required],
+      obligacionFinanciera: [0, Validators.required],
+      otrosEgresosMensuales: [0, Validators.required],
+      totalEgresosMensuales: [{ value: 0, disabled: true }],
+      totalActivos: [{ value: 0, disabled: true }],
+      totalPasivos: [{ value: 0, disabled: true }],
+      totalPatrimonio: [{ value: 0, disabled: true }]
     });
   }
 
@@ -62,19 +63,41 @@ export class FinancialInfoComponent implements OnInit {
       });
 
       this.financialInfoService.getByUserId(token.userId).subscribe(financialInfo => {
-        this.financialForm.patchValue(financialInfo);
+        this.financialInfo = financialInfo;
+
+        if(financialInfo) {
+          this.financialForm.patchValue({
+            ...financialInfo,
+            ingresosMensuales: financialInfo.ingresosMensuales || 0,
+            primaProductividad: financialInfo.primaProductividad || 0,
+            otrosIngresosMensuales: financialInfo.otrosIngresosMensuales || 0,
+            egresosMensuales: financialInfo.egresosMensuales || 0,
+            obligacionFinanciera: financialInfo.obligacionFinanciera || 0,
+            otrosEgresosMensuales: financialInfo.otrosEgresosMensuales || 0
+          });
+
+          // Calcular los totales iniciales si hay datos de la base de datos
+          this.updateTotalIncome();
+          this.updateTotalExpense();
+          this.updateTotals();
+        }    
       });
       
     }
 
-    this.loadBankAccountTypes();
+    // Subscribe to value changes of value1 and value2
+    this.financialForm.get('ingresosMensuales')?.valueChanges.subscribe(() => this.updateTotalIncome());
+    this.financialForm.get('otrosIngresosMensuales')?.valueChanges.subscribe(() => this.updateTotalIncome());
+    this.financialForm.get('primaProductividad')?.valueChanges.subscribe(() => this.updateTotalIncome());
 
-    // Escuchar cambios en los campos relevantes para recalcular totales
-    this.financialForm.get('ingresosMensuales')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.financialForm.get('otrosIngresosMensuales')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.financialForm.get('egresosMensuales')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.financialForm.get('obligacionFinanciera')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.financialForm.get('otrosEgresosMensuales')?.valueChanges.subscribe(() => this.calculateTotals());
+    this.financialForm.get('egresosMensuales')?.valueChanges.subscribe(() => this.updateTotalExpense());
+    this.financialForm.get('obligacionFinanciera')?.valueChanges.subscribe(() => this.updateTotalExpense());
+    this.financialForm.get('otrosEgresosMensuales')?.valueChanges.subscribe(() => this.updateTotalExpense());
+
+    this.financialForm.get('totalIngresosMensuales')?.valueChanges.subscribe(() => this.updateTotals());
+    this.financialForm.get('totalEgresosMensuales')?.valueChanges.subscribe(() => this.updateTotals());
+
+    this.loadBankAccountTypes();
   }
 
   loadBankAccountTypes(): void {
@@ -83,33 +106,49 @@ export class FinancialInfoComponent implements OnInit {
     });
   }
 
-  calculateTotals(): void {
-    const formValues = this.financialForm.value;
+  updateTotalIncome(): void {
+    if(this.financialInfo) {
+      const income = this.financialForm.get('ingresosMensuales')?.value || 0;
+      const otherIncome = this.financialForm.get('otrosIngresosMensuales')?.value || 0;
+      const prod = this.financialForm.get('primaProductividad')?.value || 0;
+      const totalIncome = income + otherIncome + prod;
+      this.financialForm.get('totalIngresosMensuales')?.setValue(totalIncome, { emitEvent: true });
+    }
+    
+  }
 
-    const ingresos = parseFloat(formValues.ingresosMensuales) || 0;
-    const otrosIngresos = parseFloat(formValues.otrosIngresosMensuales) || 0;
-    const egresos = parseFloat(formValues.egresosMensuales) || 0;
-    const obligacionFinanciera = parseFloat(formValues.obligacionFinanciera) || 0;
-    const otrosEgresos = parseFloat(formValues.otrosEgresosMensuales) || 0;
+  updateTotalExpense(): void {
+    if(this.financialInfo) {
+      const expense = this.financialForm.get('egresosMensuales')?.value || 0;
+      const oblig = this.financialForm.get('obligacionFinanciera')?.value || 0;
+      const otherExpense = this.financialForm.get('otrosEgresosMensuales')?.value || 0;
+      const totalExpense = expense + oblig + otherExpense;
+      this.financialForm.get('totalEgresosMensuales')?.setValue(totalExpense, { emitEvent: true });
+    }  
+  }
 
-    const totalIngresos = ingresos + otrosIngresos;
-    const totalEgresos = egresos + obligacionFinanciera + otrosEgresos;
-    const totalActivos = totalIngresos;
-    const totalPasivos = totalEgresos;
-    const totalPatrimonio = totalActivos - totalPasivos;
-
-    this.financialForm.patchValue({
-      totalIngresosMensuales: totalIngresos.toFixed(2),
-      totalEgresosMensuales: totalEgresos.toFixed(2),
-      totalActivos: totalActivos.toFixed(2),
-      totalPasivos: totalPasivos.toFixed(2),
-      totalPatrimonio: totalPatrimonio.toFixed(2)
-    });
+  updateTotals(): void {
+    if(this.financialInfo) {
+      const income = this.financialForm.get('totalIngresosMensuales')?.value || 0;
+      const expense = this.financialForm.get('totalEgresosMensuales')?.value || 0;
+  
+      const totalAssets = income - expense;
+  
+      this.financialForm.get('totalActivos')?.setValue(income, { emitEvent: true });
+      this.financialForm.get('totalPasivos')?.setValue(expense, { emitEvent: true });
+      this.financialForm.get('totalPatrimonio')?.setValue(totalAssets, { emitEvent: true });
+    } 
   }
 
   onSubmit(): void {
+    this.financialForm.get('totalIngresosMensuales')?.enable();
+    this.financialForm.get('totalEgresosMensuales')?.enable();
+    this.financialForm.get('totalActivos')?.enable();
+    this.financialForm.get('totalPasivos')?.enable();
+    this.financialForm.get('totalPatrimonio')?.enable();
     console.log(this.financialForm.value);
     if (this.financialForm.valid) {
+
       const parsedData = { ...this.financialForm.value };
 
       console.log("ENTRA", parsedData);
@@ -138,5 +177,11 @@ export class FinancialInfoComponent implements OnInit {
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Vuelve a iniciar sesión e inténtalo de nuevo.' });
     }
+
+    this.financialForm.get('totalIngresosMensuales')?.disable();
+    this.financialForm.get('totalEgresosMensuales')?.disable();
+    this.financialForm.get('totalActivos')?.disable();
+    this.financialForm.get('totalPasivos')?.disable();
+    this.financialForm.get('totalPatrimonio')?.disable();
   }
 }

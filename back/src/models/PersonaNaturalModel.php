@@ -33,6 +33,7 @@ class PersonaNatural {
     public $idTipoContrato;
     public $dependenciaEmpresa;
     public $cargoOcupa;
+    public $jefeInmediato;
     public $aniosAntigEmpresa;
     public $mesesAntigEmpresa;
     public $mesSaleVacaciones;
@@ -72,6 +73,7 @@ class PersonaNatural {
         $idTipoContrato = '',
         $dependenciaEmpresa = '',
         $cargoOcupa = '',
+        $jefeInmediato = '',
         $aniosAntigEmpresa = '',
         $mesesAntigEmpresa = '',
         $mesSaleVacaciones = '',
@@ -111,6 +113,7 @@ class PersonaNatural {
         $this->idTipoContrato = $idTipoContrato;
         $this->dependenciaEmpresa = $dependenciaEmpresa;
         $this->cargoOcupa = $cargoOcupa;
+        $this->jefeInmediato = $jefeInmediato;
         $this->aniosAntigEmpresa = $aniosAntigEmpresa;
         $this->mesesAntigEmpresa = $mesesAntigEmpresa;
         $this->mesSaleVacaciones = $mesSaleVacaciones;
@@ -124,19 +127,19 @@ class PersonaNatural {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, anios_antiguedad_empresa, meses_antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("iisssssssiiisiisisissssissiissiissss", $this->idUsuario, $this->idGenero,
+            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, jefe_inmediato, anios_antiguedad_empresa, meses_antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+            $query->bind_param("iisssssssiiisiisisissssissiisssiissss", $this->idUsuario, $this->idGenero,
                 $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
                 $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
-                $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
+                $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
                 $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia
             );
         } else {
-            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, anios_antiguedad_empresa = ?, meses_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
-            $query->bind_param("isssssssiiisiisisissssissiissiissssi", $this->idGenero,
+            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, jefe_inmediato = ?, anios_antiguedad_empresa = ?, meses_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
+            $query->bind_param("isssssssiiisiisisissssissiisssiissssi", $this->idGenero,
             $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
             $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
-            $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
+            $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesesAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
             $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia, $this->id
             );
         }
@@ -184,6 +187,7 @@ class PersonaNatural {
         $idTipoContrato,
         $dependenciaEmpresa,
         $cargoOcupa,
+        $jefeInmediato,
         $aniosAntigEmpresa,
         $mesesAntigEmpresa,
         $mesSaleVacaciones,
@@ -225,6 +229,7 @@ class PersonaNatural {
             $idTipoContrato,
             $dependenciaEmpresa,
             $cargoOcupa,
+            $jefeInmediato,
             $aniosAntigEmpresa,
             $mesesAntigEmpresa,
             $mesSaleVacaciones,
@@ -275,6 +280,7 @@ class PersonaNatural {
         $idTipoContrato,
         $dependenciaEmpresa,
         $cargoOcupa,
+        $jefeInmediato,
         $aniosAntigEmpresa,
         $mesesAntigEmpresa,
         $mesSaleVacaciones,
@@ -316,6 +322,7 @@ class PersonaNatural {
             $idTipoContrato,
             $dependenciaEmpresa,
             $cargoOcupa,
+            $jefeInmediato,
             $aniosAntigEmpresa,
             $mesesAntigEmpresa,
             $mesSaleVacaciones,
@@ -367,6 +374,7 @@ class PersonaNatural {
             $row['id_tipo_contrato'],
             $row['dependencia_empresa'],
             $row['cargo_ocupa'],
+            $row['jefe_inmediato'],
             $row['anios_antiguedad_empresa'],
             $row['meses_antiguedad_empresa'],
             $row['mes_sale_vacaciones'],

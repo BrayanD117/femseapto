@@ -97,6 +97,7 @@ export class NaturalPersonComponent implements OnInit {
       idTipoContrato: ['', Validators.required],
       dependenciaEmpresa: ['', Validators.required],
       cargoOcupa: ['', Validators.required],
+      jefeInmediato: ['', Validators.required],
       aniosAntigEmpresa: ['', Validators.required],
       mesesAntigEmpresa: ['', Validators.required],
       mesSaleVacaciones: ['', Validators.required],

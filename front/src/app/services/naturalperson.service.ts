@@ -60,6 +60,7 @@ export interface NaturalPerson {
   idTipoContrato: number;
   dependenciaEmpresa: string;
   cargoOcupa: string;
+  jefeInmediato: string;
   aniosAntigEmpresa: number;
   mesesAntigEmpresa: number;
   mesSaleVacaciones: string;
