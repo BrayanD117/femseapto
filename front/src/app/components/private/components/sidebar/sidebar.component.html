@@ -15,14 +15,17 @@
           <span class="fs-5 fw-semibold text-center">{{ userRole === 1 ? 'Panel de administrador' : 'Panel de usuario' }}</span>
         </a>
         <ul class="list-unstyled ps-0">
+          <!-- SIDEBAR DE ADMINISTRADOR -->
           <li class="mb-1" *ngIf="userRole === 1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#admin-collapse" aria-expanded="false">
               Admin Menu
             </button>
             <div class="collapse" id="admin-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a routerLink="/auth/admin/welcome" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Dashboard</a></li>
-                <!-- Más enlaces de administrador -->
+                <li><a routerLink="/auth/admin" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Dashboard</a></li>
+              </ul>
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a routerLink="/auth/admin/credits" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Credits</a></li>
               </ul>
             </div>
           </li>
