@@ -47,7 +47,7 @@ export class RecommendationComponent {
       nombreRazonSocial: ['', Validators.required],
       parentesco: ['', Validators.required],
       idTipoReferencia: ['', Validators.required],
-      departamento: ['', Validators.required],
+      idDpto: ['', Validators.required],
       idMunicipio: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
@@ -60,6 +60,11 @@ export class RecommendationComponent {
     this.loadRecommendations();
     this.getAllRecommendationTypes();
     this.getAllDepartments();
+
+    const idMpio = this.recommendationForm.get('idMunicipio')?.value;
+    if (idMpio) {
+      this.onDepartmentChange();
+    }
   }
 
   getUserIdFromToken(): void {
@@ -130,7 +135,7 @@ export class RecommendationComponent {
   }
 
   onDepartmentChange(): void {
-    const departmentId = this.recommendationForm.get('departamento')?.value;
+    const departmentId = this.recommendationForm.get('idDpto')?.value;
     if (departmentId) {
       this.citiesService.getByDepartmentId(departmentId).subscribe((data) => {
         this.cities = data;
@@ -147,7 +152,7 @@ export class RecommendationComponent {
 
     this.citiesService.getById(recommendation.idMunicipio).subscribe((city) => {
 
-      this.recommendationForm.get('departamento')?.setValue(city.idDepartamento);
+      this.recommendationForm.get('idDpto')?.setValue(city.idDepartamento);
 
       this.citiesService
         .getByDepartmentId(city.idDepartamento)

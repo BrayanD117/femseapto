@@ -103,9 +103,9 @@ export class FamilyInformationComponent implements OnInit {
     this.cargarFamilia();
 
     const idMpioExpDoc = this.familiarForm.get('idMpioExpDoc')?.value;
-  if (idMpioExpDoc) {
-    this.onDepartmentChange();
-  }
+    if (idMpioExpDoc) {
+      this.onDepartmentChange();
+    }
   }
 
   getAllDepartments(): void {
@@ -128,8 +128,8 @@ export class FamilyInformationComponent implements OnInit {
     this.relationshipService.getAll().subscribe((types: Relationship[]) => {
       this.relationships = types.map((type: Relationship) => ({
         ...type,
-        id: +type.id
-      }))
+        id: +type.id,
+      }));
     });
   }
 
@@ -181,13 +181,11 @@ export class FamilyInformationComponent implements OnInit {
             const relationshipName = this.getRelationshipName(
               familiar.idParentesco
             );
-            const docTypeName = this.getDocTypeName(
-              familiar.idTipoDocumento
-            );
+            const docTypeName = this.getDocTypeName(familiar.idTipoDocumento);
             return of({
               ...familiar,
               parentesco: relationshipName,
-              tipoDoc: docTypeName
+              tipoDoc: docTypeName,
             });
           });
 
