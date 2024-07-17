@@ -35,7 +35,7 @@ export class UserComponent implements OnInit {
       segundoNombre: [''],
       primerApellido: ['', Validators.required],
       segundoApellido: [''],
-      idTipoDocumento: ['', Validators.required],
+      idTipoDocumento: [{ value: '', disabled: true }, Validators.required],
       numeroDocumento: ['', Validators.required],
     });
   }

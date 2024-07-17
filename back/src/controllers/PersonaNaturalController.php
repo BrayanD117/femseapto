@@ -38,7 +38,7 @@ class PersonaNaturalController {
             $datos['cargoOcupa'],
             $datos['jefeInmediato'],
             $datos['aniosAntigEmpresa'],
-            $datos['mesesAntigEmpresa'],
+            $datos['mesesAntigEmpresa']  ?? null,
             $datos['mesSaleVacaciones'],
             $datos['nombreEmergencia'],
             $datos['numeroCedulaEmergencia'],
@@ -88,7 +88,7 @@ class PersonaNaturalController {
         $personaNatural->cargoOcupa = $datos['cargoOcupa'];
         $personaNatural->jefeInmediato = $datos['jefeInmediato'];
         $personaNatural->aniosAntigEmpresa = $datos['aniosAntigEmpresa'];
-        $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'];
+        $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'] ?? null;
         $personaNatural->mesSaleVacaciones = $datos['mesSaleVacaciones'];
         $personaNatural->nombreEmergencia = $datos['nombreEmergencia'];
         $personaNatural->numeroCedulaEmergencia = $datos['numeroCedulaEmergencia'];

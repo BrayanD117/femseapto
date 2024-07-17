@@ -4,11 +4,11 @@
     <input type="hidden" formControlName="id" />
     <div class="col-md-6">
       <label for="primerNombre" class="form-label">Primer Nombre</label>
-      <input formControlName="primerNombre" type="text" class="form-control" />
+      <input formControlName="primerNombre" type="text" class="form-control" readonly />
     </div>
     <div class="col-md-6">
       <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-      <input formControlName="segundoNombre" type="text" class="form-control" />
+      <input formControlName="segundoNombre" type="text" class="form-control" readonly />
     </div>
     <div class="col-md-6">
       <label for="primerApellido" class="form-label">Primer Apellido</label>
@@ -16,6 +16,7 @@
         formControlName="primerApellido"
         type="text"
         class="form-control"
+        readonly
       />
     </div>
     <div class="col-md-6">
@@ -24,6 +25,7 @@
         formControlName="segundoApellido"
         type="text"
         class="form-control"
+        readonly
       />
     </div>
     <div class="col-md-6">
@@ -42,10 +44,11 @@
         formControlName="numeroDocumento"
         type="text"
         class="form-control"
+        readonly
       />
     </div>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <!--<div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button class="btn btn-primary me-md-2" type="submit">Guardar</button>
-    </div>
+    </div>-->
   </div>
 </form>
