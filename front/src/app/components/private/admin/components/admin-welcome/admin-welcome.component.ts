@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-welcome',
   standalone: true,
-  imports: [GenerateCreditRequestComponent],
+  imports: [RouterLink],
   templateUrl: './admin-welcome.component.html',
   styleUrl: './admin-welcome.component.css'
 })
