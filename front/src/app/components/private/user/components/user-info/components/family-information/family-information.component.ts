@@ -82,7 +82,7 @@ export class FamilyInformationComponent implements OnInit {
       nombreCompleto: ['', Validators.required],
       idTipoDocumento: [0, Validators.required],
       numeroDocumento: ['', Validators.required],
-      deptoExpDoc: ['', Validators.required],
+      idDptoExpDoc: ['', Validators.required],
       idMpioExpDoc: ['', Validators.required],
       idParentesco: [0, Validators.required],
       idGenero: ['', Validators.required],
@@ -101,6 +101,11 @@ export class FamilyInformationComponent implements OnInit {
     this.getAllGenders();
     this.getAllEducationLevels();
     this.cargarFamilia();
+
+    const idMpioExpDoc = this.familiarForm.get('idMpioExpDoc')?.value;
+  if (idMpioExpDoc) {
+    this.onDepartmentChange();
+  }
   }
 
   getAllDepartments(): void {
@@ -115,9 +120,7 @@ export class FamilyInformationComponent implements OnInit {
         ...type,
         id: +type.id
       }))*/
-      console.log("antes", types);
       this.documentTypes = types;
-      console.log("después", this.documentTypes);
     });
   }
 
@@ -150,10 +153,7 @@ export class FamilyInformationComponent implements OnInit {
   }
 
   getDocTypeName(id: number): string {
-    console.log('ID docType:', id);
-    console.log("docTypes", this.documentTypes);
     const tipo = this.documentTypes.find((type) => type.id === id);
-    console.log('docType encontrado:', tipo);
     return tipo ? tipo.nombre : '';
   }
 
@@ -257,7 +257,7 @@ export class FamilyInformationComponent implements OnInit {
   }
 
   onDepartmentChange(): void {
-    const departmentId = this.familiarForm.get('deptoExpDoc')?.value;
+    const departmentId = this.familiarForm.get('idDptoExpDoc')?.value;
     if (departmentId) {
       this.citiesService.getByDepartmentId(departmentId).subscribe((data) => {
         this.citiesExpDoc = data;
@@ -274,7 +274,7 @@ export class FamilyInformationComponent implements OnInit {
 
     this.citiesService.getById(familiar.idMpioExpDoc).subscribe((city) => {
       // Establecer el valor del departamento primero
-      this.familiarForm.get('deptoExpDoc')?.setValue(city.idDepartamento);
+      this.familiarForm.get('idDptoExpDoc')?.setValue(city.idDepartamento);
 
       // Cargar las ciudades correspondientes al departamento
       this.citiesService

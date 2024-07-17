@@ -142,8 +142,8 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="deptoExpDoc" class="form-label">Departamento de expedición del documento</label>
-                <select class="form-select" id="deptoExpDoc" formControlName="deptoExpDoc" (change)="onDepartmentChange()">
+                <label for="idDptoExpDoc" class="form-label">Departamento de expedición del documento</label>
+                <select class="form-select" id="idDptoExpDoc" formControlName="idDptoExpDoc" (change)="onDepartmentChange()">
                   <option value="" selected>Seleccione...</option>
                   <option *ngFor="let department of departments" [value]="department.id">
                     {{ department.nombre }}

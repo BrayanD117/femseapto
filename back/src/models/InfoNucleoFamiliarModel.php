@@ -40,7 +40,7 @@ class InformacionNucleoFamiliar {
         $db = getDB();
         if ($this->id === null) {
             $query = $db->prepare("INSERT INTO informacion_nucleo_familiar (id_usuario, nombre_completo, id_tipo_documento, numero_documento, id_dpto_exp_doc, id_mpio_exp_doc, id_parentesco, id_genero, fecha_nacimiento, id_nivel_educativo, trabaja, celular) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isisssiisiss", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular);
+            $query->bind_param("isisssiisiss", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idDptoExpDoc, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular);
         } else {
             $query = $db->prepare("UPDATE informacion_nucleo_familiar SET nombre_completo = ?, id_tipo_documento = ?, numero_documento = ?, id_dpto_exp_doc = ?, id_mpio_exp_doc = ?, id_parentesco = ?, id_genero = ?, fecha_nacimiento = ?, id_nivel_educativo = ?, trabaja = ?, celular = ? WHERE id = ?");
             $query->bind_param("sisssiisissi", $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idDptoExpDoc, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular, $this->id);
