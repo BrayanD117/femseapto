@@ -46,6 +46,30 @@ class ReferenciaPersonalComercialBancaria {
         $db->close();
     }
 
+    public static function validarReferenciasFamiliares($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarReferenciasFamiliaresUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
+    public static function validarReferenciasPersonales($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarReferenciasPersonalesUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM referencias_personales_comerciales_bancarias WHERE id = ?");

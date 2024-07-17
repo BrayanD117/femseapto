@@ -53,6 +53,16 @@ class PersonaExpuestaPublicamenteController {
         }
     }
 
+    public function validarPersonaPublica($idUsuario) {
+        $persona = PersonaExpuestaPublicamente::validarPersonaPublica($idUsuario);
+        if ($persona) {
+            return $persona;
+        } else {
+            http_response_code(404);
+            return array("message" => "Persona no encontrada.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $persona = PersonaExpuestaPublicamente::obtenerPorIdUsuario($idUsuario);
         if ($persona) {

@@ -49,6 +49,18 @@ class OperacionesInternacionales {
         $db->close();
     }
 
+    public static function validarOperacionesInternacionales($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarOperacionesInternacionalesUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id = ?");

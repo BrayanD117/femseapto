@@ -52,6 +52,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(404);
             echo json_encode(array("message" => "Información no encontrada."));
         }
+    } elseif (isset($_GET['valpers'])) {
+        $id = $_GET['valpers'];
+        $infoFinanc = $controlador->validarReferenciasPersonales($id);
+        if ($infoFinanc) {
+            header('Content-Type: application/json');
+            echo json_encode($infoFinanc);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Información no encontrada."));
+        }
+    } elseif (isset($_GET['valfam'])) {
+        $id = $_GET['valfam'];
+        $infoFinanc = $controlador->validarReferenciasFamiliares($id);
+        if ($infoFinanc) {
+            header('Content-Type: application/json');
+            echo json_encode($infoFinanc);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Información no encontrada."));
+        }
     } else {
         http_response_code(400);
         echo json_encode(array("message" => "ID no proporcionado."));

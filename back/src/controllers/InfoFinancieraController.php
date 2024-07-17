@@ -58,6 +58,16 @@ class InfoFinancieraController {
         return true;
     }
 
+    public function validarInformacionFinanciera($idUsuario) {
+        $infoFinanciera = InformacionFinanciera::validarInformacionFinanciera($idUsuario);
+        if ($infoFinanciera) {
+            return $infoFinanciera;
+        } else {
+            http_response_code(404);
+            return array("message" => "Información financiera no encontrada.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($idUsuario);
         if ($infoFinanciera) {

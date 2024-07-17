@@ -81,6 +81,18 @@ class InformacionFinanciera {
         $db->close();
     }
 
+    public static function validarInformacionFinanciera($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarInformacionFinancieraUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM informacion_financiera WHERE id_usuario = ?");

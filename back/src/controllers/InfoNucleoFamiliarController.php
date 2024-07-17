@@ -58,6 +58,16 @@ class InformacionNucleoFamiliarController {
         }
     }
 
+    public function validarInformacionNucleoFamiliar($idUsuario) {
+        $infoFamiliar = InformacionNucleoFamiliar::validarInformacionNucleoFamiliar($idUsuario);
+        if ($infoFamiliar) {
+            return $infoFamiliar;
+        } else {
+            http_response_code(404);
+            return array("message" => "Información del núcleo familiar no encontrada para el usuario especificado.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $infoFamiliar = InformacionNucleoFamiliar::obtenerPorIdUsuario($idUsuario);
         if ($infoFamiliar) {

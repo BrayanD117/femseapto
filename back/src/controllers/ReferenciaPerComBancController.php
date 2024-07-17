@@ -51,6 +51,26 @@ class ReferenciaPersonalComercialBancariaController {
         }
     }
 
+    public function validarReferenciasFamiliares($idUsuario) {
+        $referencia = ReferenciaPersonalComercialBancaria::validarReferenciasFamiliares($idUsuario);
+        if ($referencia) {
+            return $referencia;
+        } else {
+            http_response_code(404);
+            return array("message" => "Referencia no encontrada.");
+        }
+    }
+
+    public function validarReferenciasPersonales($idUsuario) {
+        $referencia = ReferenciaPersonalComercialBancaria::validarReferenciasPersonales($idUsuario);
+        if ($referencia) {
+            return $referencia;
+        } else {
+            http_response_code(404);
+            return array("message" => "Referencia no encontrada.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $referencia = ReferenciaPersonalComercialBancaria::obtenerPorIdUsuario($idUsuario);
         if ($referencia) {

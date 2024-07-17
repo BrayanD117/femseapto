@@ -20,6 +20,10 @@ export class PublicPersonService {
     return this.http.get<PublicPerson>(`${this.apiUrl}/personaspublicas.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validate(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/personaspublicas.php?val=${userId}`, { withCredentials: true });
+  }
+
   getAll(): Observable<any> {
     return this.http.get<PublicPerson[]>(`${this.apiUrl}/personaspublicas.php`, { withCredentials: true });
   }

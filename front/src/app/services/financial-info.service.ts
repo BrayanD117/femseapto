@@ -22,6 +22,10 @@ export class FinancialInfoService {
     return this.http.get<FinancialInformation>(`${this.apiUrl}/informacionfinanciera.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validate(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/informacionfinanciera.php?val=${userId}`, { withCredentials: true });
+  }
+
   create(user: FinancialInformation): Observable<FinancialInformation> {
     const url = `${this.apiUrl}/informacionfinanciera.php`;
     return this.http.post<FinancialInformation>(url, user, { withCredentials: true });

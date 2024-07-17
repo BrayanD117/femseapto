@@ -20,6 +20,14 @@ export class RecommendationService {
     return this.http.get<Recommendation[]>(`${this.apiUrl}/referencias.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validatePersonal(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/referencias.php?valpers=${userId}`, { withCredentials: true });
+  }
+
+  validateFamiliar(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/referencias.php?valfam=${userId}`, { withCredentials: true });
+  }
+
   getAll(): Observable<Recommendation[]> {
     return this.http.get<Recommendation[]>(`${this.apiUrl}/referencias.php`, { withCredentials: true });
   }

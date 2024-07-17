@@ -57,6 +57,18 @@ class PersonaExpuestaPublicamente {
         $db->close();
     }
 
+    public static function validarPersonaPublica($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarPersonaPublicaUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM personas_expuestas_publicamente WHERE id = ?");

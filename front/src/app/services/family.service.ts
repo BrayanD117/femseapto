@@ -20,6 +20,10 @@ export class FamilyService {
     return this.http.get<Family[]>(`${this.apiUrl}/informacionfamiliares.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validate(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/informacionfamiliares.php?val=${userId}`, { withCredentials: true });
+  }
+
   getAll(): Observable<Family[]> {
     return this.http.get<Family[]>(`${this.apiUrl}/informacionfamiliares.php`, { withCredentials: true });
   }

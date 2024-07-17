@@ -48,6 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(404);
             echo json_encode(array("message" => "Información no encontrada."));
         }
+    } elseif (isset($_GET['val'])) {
+        $id = $_GET['val'];
+        $infoFinanc = $controlador->validarPersonaPublica($id);
+        if ($infoFinanc) {
+            header('Content-Type: application/json');
+            echo json_encode($infoFinanc);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Información no encontrada."));
+        }
     } else {
         $operaciones = $controlador->obtenerTodos();
         header('Content-Type: application/json');

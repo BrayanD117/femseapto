@@ -20,6 +20,10 @@ export class InternationalTransactionsService {
     return this.http.get<InternationalTransaction>(`${this.apiUrl}/operacionesinternacionales.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validate(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/operacionesinternacionales.php?val=${userId}`, { withCredentials: true });
+  }
+
   getAll(): Observable<any> {
     return this.http.get<InternationalTransaction[]>(`${this.apiUrl}/operacionesinternacionales.php`, { withCredentials: true });
   }

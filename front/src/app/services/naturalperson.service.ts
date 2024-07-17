@@ -17,6 +17,10 @@ export class NaturalpersonService {
     return this.http.get<NaturalPerson>(`${this.apiUrl}/personasnaturales.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
+  validate(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/personasnaturales.php?val=${userId}`, { withCredentials: true });
+  }
+
   create(natPerson: NaturalPerson): Observable<NaturalPerson> {
     const url = `${this.apiUrl}/personasnaturales.php`;
     return this.http.post<NaturalPerson>(url, natPerson, { withCredentials: true });

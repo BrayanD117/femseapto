@@ -57,6 +57,16 @@ class OperacionesInternacionalesController {
         }
     }
 
+    public function validarOperacionesInternacionales($idUsuario) {
+        $operacion = OperacionesInternacionales::validarOperacionesInternacionales($idUsuario);
+        if ($operacion) {
+            return $operacion;
+        } else {
+            http_response_code(404);
+            return array("message" => "Operación internacional no encontrada.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $operacion = OperacionesInternacionales::obtenerPorIdUsuario($idUsuario);
         if ($operacion) {

@@ -109,6 +109,16 @@ class PersonaNaturalController {
         }
     }
 
+    public function validarPersonaNatural($idUsuario) {
+        $persona = PersonaNatural::validarPersonaNatural($idUsuario);
+        if ($persona) {
+            return $persona;
+        } else {
+            http_response_code(404);
+            return array("message" => "Persona no encontrada.");
+        }
+    }
+
     public function obtenerPorIdUsuario($idUsuario) {
         $persona = PersonaNatural::obtenerPorIdUsuario($idUsuario);
         if ($persona) {

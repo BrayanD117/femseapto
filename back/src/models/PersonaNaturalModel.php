@@ -151,6 +151,18 @@ class PersonaNatural {
         $db->close();
     }
 
+    public static function validarPersonaNatural($id) {
+        $db = getDB();
+        $query = $db->prepare("SELECT validarPersonaNaturalUsuario(?) AS isValid");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $query->bind_result($isValid);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return (bool)$isValid;
+    }
+
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM personas_naturales WHERE id = ?");

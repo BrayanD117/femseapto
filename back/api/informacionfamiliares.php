@@ -52,6 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(404);
             echo json_encode(array("message" => "Información no encontrada."));
         }
+    } elseif (isset($_GET['val'])) {
+        $id = $_GET['val'];
+        $infoFinanc = $controlador->validarInformacionNucleoFamiliar($id);
+        if ($infoFinanc) {
+            header('Content-Type: application/json');
+            echo json_encode($infoFinanc);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Información familiar no encontrada."));
+        }
     } else {
         http_response_code(400);
         echo json_encode(array("message" => "ID no proporcionado."));
