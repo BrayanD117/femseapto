@@ -9,11 +9,14 @@ class PersonaNaturalController {
             $datos['idUsuario'],
             $datos['idGenero'],
             $datos['fechaExpDoc'],
+            $datos['idDeptoExpDoc'],
             $datos['mpioExpDoc'],
             $datos['fechaNacimiento'],
             $datos['paisNacimiento'],
+            $datos['idDeptoNacimiento'] ?? null,
             $datos['mpioNacimiento'] ?? null,
             $datos['otroLugarNacimiento'] ?? null,
+            $datos['idDeptoResidencia'],
             $datos['mpioResidencia'],
             $datos['idZonaResidencia'],
             $datos['idTipoVivienda'],
@@ -59,11 +62,14 @@ class PersonaNaturalController {
 
         $personaNatural->idGenero = $datos['idGenero'];
         $personaNatural->fechaExpDoc = $datos['fechaExpDoc'];
+        $personaNatural->idDeptoExpDoc = $datos['idDeptoExpDoc'];
         $personaNatural->mpioExpDoc = $datos['mpioExpDoc'];
         $personaNatural->fechaNacimiento = $datos['fechaNacimiento'];
         $personaNatural->paisNacimiento = $datos['paisNacimiento'];
+        $personaNatural->idDeptoNacimiento = $datos['idDeptoNacimiento'] ?? null;
         $personaNatural->mpioNacimiento = $datos['mpioNacimiento'] ?? null;
         $personaNatural->otroLugarNacimiento = $datos['otroLugarNacimiento'] ?? null;
+        $personaNatural->idDeptoResidencia = $datos['idDeptoResidencia'];
         $personaNatural->mpioResidencia = $datos['mpioResidencia'];
         $personaNatural->idZonaResidencia = $datos['idZonaResidencia'];
         $personaNatural->idTipoVivienda = $datos['idTipoVivienda'];

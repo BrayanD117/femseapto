@@ -6,11 +6,14 @@ class PersonaNatural {
     public $idUsuario;
     public $idGenero;
     public $fechaExpDoc;
+    public $idDeptoExpDoc;
     public $mpioExpDoc;
     public $fechaNacimiento;
     public $paisNacimiento;
+    public $idDeptoNacimiento;
     public $mpioNacimiento;
     public $otroLugarNacimiento;
+    public $idDeptoResidencia;
     public $mpioResidencia;
     public $idZonaResidencia;
     public $idTipoVivienda;
@@ -46,11 +49,14 @@ class PersonaNatural {
     public function __construct($id = null, $idUsuario = '',
         $idGenero = '',
         $fechaExpDoc = '',
+        $idDeptoExpDoc = null,
         $mpioExpDoc = '',
         $fechaNacimiento = '',
         $paisNacimiento = '',
+        $idDeptoNacimiento = null,
         $mpioNacimiento = null,
         $otroLugarNacimiento = null, 
+        $idDeptoResidencia = null,
         $mpioResidencia = '',
         $idZonaResidencia = '', 
         $idTipoVivienda = '',
@@ -86,11 +92,14 @@ class PersonaNatural {
         $this->idUsuario = $idUsuario;
         $this->idGenero = $idGenero;
         $this->fechaExpDoc = $fechaExpDoc;
+        $this->idDeptoExpDoc = $idDeptoExpDoc;
         $this->mpioExpDoc = $mpioExpDoc;
         $this->fechaNacimiento = $fechaNacimiento;
         $this->paisNacimiento = $paisNacimiento;
+        $this->idDeptoNacimiento = $idDeptoNacimiento;
         $this->mpioNacimiento = $mpioNacimiento;
         $this->otroLugarNacimiento = $otroLugarNacimiento;
+        $this->idDeptoResidencia = $idDeptoResidencia;
         $this->mpioResidencia = $mpioResidencia;
         $this->idZonaResidencia = $idZonaResidencia;
         $this->idTipoVivienda = $idTipoVivienda;
@@ -127,18 +136,18 @@ class PersonaNatural {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, mpio_nacimiento, otro_lugar_nacimiento, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, jefe_inmediato, anios_antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("iisssssssiiisiisisissssissiisssissss", $this->idUsuario, $this->idGenero,
-                $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
-                $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
+            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, id_dpto_exp_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, id_dpto_nac, mpio_nacimiento, otro_lugar_nacimiento, id_dpto_residencia, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, jefe_inmediato, anios_antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("iisisssissisiiisiisisissssissiisssissss", $this->idUsuario, $this->idGenero,
+                $this->fechaExpDoc, $this->idDeptoExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
+                $this->paisNacimiento, $this->idDeptoNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->idDeptoResidencia, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
                 $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
                 $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia
             );
         } else {
-            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, jefe_inmediato = ?, anios_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
-            $query->bind_param("isssssssiiisiisisissssissiisssissssi", $this->idGenero,
-            $this->fechaExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
-            $this->paisNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
+            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, id_dpto_exp_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, id_dpto_nac = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, id_dpto_residencia = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, jefe_inmediato = ?, anios_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
+            $query->bind_param("isisssissisiiisiisisissssissiisssissssi", $this->idGenero,
+            $this->fechaExpDoc, $this->idDeptoExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
+            $this->paisNacimiento, $this->idDeptoNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->idDeptoResidencia, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
             $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
             $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia, $this->id
             );
@@ -172,11 +181,14 @@ class PersonaNatural {
         $idUsuario,
         $idGenero,
         $fechaExpDoc,
+        $idDeptoExpDoc,
         $mpioExpDoc,
         $fechaNacimiento,
         $paisNacimiento,
+        $idDeptoNacimiento,
         $mpioNacimiento,
         $otroLugarNacimiento,
+        $idDeptoResidencia,
         $mpioResidencia,
         $idZonaResidencia,
         $idTipoVivienda,
@@ -214,11 +226,14 @@ class PersonaNatural {
             $idUsuario,
             $idGenero,
             $fechaExpDoc,
+            $idDeptoExpDoc,
             $mpioExpDoc,
             $fechaNacimiento,
             $paisNacimiento,
+            $idDeptoNacimiento,
             $mpioNacimiento,
             $otroLugarNacimiento,
+            $idDeptoResidencia,
             $mpioResidencia,
             $idZonaResidencia,
             $idTipoVivienda,
@@ -265,11 +280,14 @@ class PersonaNatural {
         $idUsuario,
         $idGenero,
         $fechaExpDoc,
+        $idDeptoExpDoc,
         $mpioExpDoc,
         $fechaNacimiento,
         $paisNacimiento,
+        $idDeptoNacimiento,
         $mpioNacimiento,
         $otroLugarNacimiento,
+        $idDeptoResidencia,
         $mpioResidencia,
         $idZonaResidencia,
         $idTipoVivienda,
@@ -307,11 +325,14 @@ class PersonaNatural {
             $idUsuario,
             $idGenero,
             $fechaExpDoc,
+            $idDeptoExpDoc,
             $mpioExpDoc,
             $fechaNacimiento,
             $paisNacimiento,
+            $idDeptoNacimiento,
             $mpioNacimiento,
             $otroLugarNacimiento,
+            $idDeptoResidencia,
             $mpioResidencia,
             $idZonaResidencia,
             $idTipoVivienda,
@@ -359,11 +380,14 @@ class PersonaNatural {
             $row['id_usuario'],
             $row['id_genero'],
             $row['fecha_expedicion_doc'],
+            $row['id_dpto_exp_doc'],
             $row['mpio_expedicion_doc'],
             $row['fecha_nacimiento'],
             $row['pais_nacimiento'],
+            $row['id_dpto_nac'],
             $row['mpio_nacimiento'],
             $row['otro_lugar_nacimiento'],
+            $row['id_dpto_residencia'],
             $row['mpio_residencia'],
             $row['id_zona_residencia'],
             $row['id_tipo_vivienda'],
