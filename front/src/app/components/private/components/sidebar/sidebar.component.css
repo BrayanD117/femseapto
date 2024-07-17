@@ -3,19 +3,25 @@
 }
 
 #sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh; 
-  overflow-y: auto;
   background-color: rgba(250, 182, 0, 0.5);
 }
 
-main {
-  margin-left: 20%;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+@media (min-width: 1200px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; 
+    overflow-y: auto;
+    width: 15%;
+  }
+
+  main {
+    margin-left: 15%;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 .offcanvas-body {
@@ -34,6 +40,7 @@ main {
   color: var(--bs-emphasis-color);
   background-color: transparent;
 }
+
 .btn-home:hover {
   color: rgba(var(--bs-emphasis-color-rgb), .85);
   background-color: var(--bs-warning);
@@ -45,6 +52,7 @@ main {
   color: var(--bs-emphasis-color);
   background-color: transparent;
 }
+
 .btn-toggle:hover,
 .btn-toggle:focus {
   color: rgba(var(--bs-emphasis-color-rgb), .85);
@@ -66,6 +74,7 @@ main {
 .btn-toggle[aria-expanded="true"] {
   color: rgba(var(--bs-emphasis-color-rgb), .85);
 }
+
 .btn-toggle[aria-expanded="true"]::before {
   transform: rotate(90deg);
 }
@@ -75,6 +84,7 @@ main {
   margin-top: .125rem;
   margin-left: 1.25rem;
 }
+
 .btn-toggle-nav a:hover,
 .btn-toggle-nav a:focus {
   background-color: var(--bs-warning);
@@ -134,39 +144,4 @@ main {
   --bd-violet-bg: #712cf9;
   --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
 
-  --bs-btn-font-weight: 600;
-  --bs-btn-color: var(--bs-white);
-  --bs-btn-bg: var(--bd-violet-bg);
-  --bs-btn-border-color: var(--bd-violet-bg);
-  --bs-btn-hover-color: var(--bs-white);
-  --bs-btn-hover-bg: #6528e0;
-  --bs-btn-hover-border-color: #6528e0;
-  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-  --bs-btn-active-color: var(--bs-btn-hover-color);
-  --bs-btn-active-bg: #5a23c8;
-  --bs-btn-active-border-color: #5a23c8;
-}
-
-.bd-mode-toggle {
-  z-index: 1500;
-}
-
-.bd-mode-toggle .dropdown-menu .active .bi {
-  display: block !important;
-}
-
-@media (max-width: 1199.98px) {
-  .b-example-divider {
-    display: none;
-  }
-
-  .b-example-vr {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .offcanvas-body {
-    overflow-y: auto;
-  }
-}
+  --bs-btn
