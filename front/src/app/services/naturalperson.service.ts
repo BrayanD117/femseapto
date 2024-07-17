@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,10 @@ export class NaturalpersonService {
     return this.http.get<NaturalPerson>(`${this.apiUrl}/personasnaturales.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
-  validate(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/personasnaturales.php?val=${userId}`, { withCredentials: true });
+  validate(userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/personasnaturales.php?val=${userId}`, { withCredentials: true }).pipe(
+      catchError(() => of(false))
+    );
   }
 
   create(natPerson: NaturalPerson): Observable<NaturalPerson> {

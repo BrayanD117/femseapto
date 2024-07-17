@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 // Environment component
 import { environment } from '../../environments/environment';
 
@@ -22,8 +22,10 @@ export class FinancialInfoService {
     return this.http.get<FinancialInformation>(`${this.apiUrl}/informacionfinanciera.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
-  validate(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/informacionfinanciera.php?val=${userId}`, { withCredentials: true });
+  validate(userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/informacionfinanciera.php?val=${userId}`, { withCredentials: true }).pipe(
+      catchError(() => of(false))
+    );
   }
 
   create(user: FinancialInformation): Observable<FinancialInformation> {

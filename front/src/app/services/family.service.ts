@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,10 @@ export class FamilyService {
     return this.http.get<Family[]>(`${this.apiUrl}/informacionfamiliares.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
-  validate(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/informacionfamiliares.php?val=${userId}`, { withCredentials: true });
+  validate(userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/informacionfamiliares.php?val=${userId}`, { withCredentials: true }).pipe(
+      catchError(() => of(false))
+    );;
   }
 
   getAll(): Observable<Family[]> {

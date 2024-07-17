@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,16 @@ export class RecommendationService {
     return this.http.get<Recommendation[]>(`${this.apiUrl}/referencias.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
-  validatePersonal(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/referencias.php?valpers=${userId}`, { withCredentials: true });
+  validatePersonal(userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/referencias.php?valpers=${userId}`, { withCredentials: true }).pipe(
+      catchError(() => of(false))
+    );
   }
 
-  validateFamiliar(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/referencias.php?valfam=${userId}`, { withCredentials: true });
+  validateFamiliar(userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/referencias.php?valfam=${userId}`, { withCredentials: true }).pipe(
+      catchError(() => of(false))
+    );
   }
 
   getAll(): Observable<Recommendation[]> {

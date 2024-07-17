@@ -9,6 +9,13 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
 
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
+import { FamilyService } from '../../../../../services/family.service';
+import { InternationalTransactionsService } from '../../../../../services/international-transactions.service';
+import { NaturalpersonService } from '../../../../../services/naturalperson.service';
+import { PublicPersonService } from '../../../../../services/public-person.service';
+import { RecommendationService } from '../../../../../services/recommendation.service';
+
 @Component({
   selector: 'app-request-credit',
   standalone: true,
@@ -30,7 +37,13 @@ export class RequestCreditComponent implements OnInit {
     private loginService: LoginService,
     private messageService: MessageService,
     private router: Router,
-    private lineasCreditoService: LineasCreditoService
+    private lineasCreditoService: LineasCreditoService,
+    private financialInfoService: FinancialInfoService,
+    private familyService: FamilyService,
+    private internationalTransactionsService: InternationalTransactionsService,
+    private naturalpersonService: NaturalpersonService,
+    private publicPersonService: PublicPersonService,
+    private recommendationService: RecommendationService
   ) {
     this.creditForm = this.fb.group({
       montoSolicitado: [0, [Validators.required, Validators.min(1), this.maxLimitValidator.bind(this)]],
@@ -43,6 +56,8 @@ export class RequestCreditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validateUserRecords();
+
     this.lineasCreditoService.obtenerLineasCredito().subscribe(
       data => {
         this.creditLines = data;
@@ -51,6 +66,82 @@ export class RequestCreditComponent implements OnInit {
         console.error('Error al obtener líneas de crédito:', error);
       }
     );
+  }
+
+  validateUserRecords(): void {
+    const token = this.loginService.getTokenClaims();
+
+    if(token) {
+      this.financialInfoService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información financiera' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.familyService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información familiar' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.internationalTransactionsService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información de operaciones internacionales' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.naturalpersonService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información general' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.publicPersonService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información de personas públicamente expuestas' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.recommendationService.validatePersonal(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre al menos una referencia personal' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+
+      this.recommendationService.validateFamiliar(token.userId).subscribe(response => {
+        if (!response) {
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre al menos una referencia familiar' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user/information']);
+          }, 5000);
+          return;
+        }
+      });
+    }   
   }
 
   onLoanAmountInput(event: Event): void {
@@ -179,7 +270,7 @@ export class RequestCreditComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de crédito creada correctamente' });
             setTimeout(() => {
               this.router.navigate(['/auth/user']);
-            }, 3000);
+            }, 2000);
           },
           error: (err) => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la solicitud de crédito. Por favor, intente otra vez' });
