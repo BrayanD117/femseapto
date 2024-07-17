@@ -6,12 +6,15 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginService } from '../../../services/login.service';
-import { CookieService } from 'ngx-cookie-service'; 
+import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LottieComponent, FormsModule, RouterLink],
+  imports: [LottieComponent, FormsModule, RouterLink, ToastModule],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -20,7 +23,9 @@ export class LoginComponent {
   usuario: string = '';
   contrasenia: string = '';
 
-  constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router, private jwtHelper: JwtHelperService) {}
+  constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router, private jwtHelper: JwtHelperService,
+    private messageService: MessageService,
+  ) {}
 
   onLogin(): void {
     this.loginService.login(this.usuario, this.contrasenia).subscribe({
@@ -44,10 +49,22 @@ export class LoginComponent {
             //window.location.href = 'auth/user'
           } else {
             console.error('Token ha expirado');
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'La sesíon ha terminado. Por favor, vuelve a iniciar sesión.',
+            });
             this.router.navigate(['/login']);
           }
         } else {
           console.error('Error en login:', response.message);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'Usuario o contraseña incorrecta. Vuelve a intentarlo.',
+          });
         }
       },
       error: (error) => {
