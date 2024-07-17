@@ -299,6 +299,8 @@ export class NaturalPersonComponent implements OnInit {
 
   onSubmit(): void {
 
+    console.log("ANTES", this.natPersonForm.value);
+
     if (this.natPersonForm.valid) {
       if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
         this.natPersonForm.get('numeroHijos')?.enable();
@@ -310,6 +312,8 @@ export class NaturalPersonComponent implements OnInit {
         this.natPersonForm.get('personasACargo')?.setValue(0);
       }
       const data: NaturalPerson = this.natPersonForm.value;
+
+      console.log("ENTRA", this.natPersonForm.value);
 
       if (data.id) {
         this.naturalPersonService.update(data).subscribe({
