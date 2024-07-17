@@ -67,14 +67,14 @@ export class NaturalPersonComponent implements OnInit {
       idUsuario: ['', Validators.required],
       idGenero: ['', Validators.required],
       fechaExpDoc: ['', Validators.required],
-      departamentoExpDoc: ['', Validators.required],
+      idDeptoExpDoc: ['', Validators.required],
       mpioExpDoc: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       paisNacimiento: ['', Validators.required],
-      departamentoNacimiento: [''],
+      idDeptoNacimiento: [''],
       mpioNacimiento: [''],
       otroLugarNacimiento: [''],
-      departamentoResidencia: ['', Validators.required],
+      idDeptoResidencia: ['', Validators.required],
       mpioResidencia: ['', Validators.required],
       idZonaResidencia: ['', Validators.required],
       idTipoVivienda: ['', Validators.required],
@@ -172,14 +172,17 @@ export class NaturalPersonComponent implements OnInit {
     if (departamentoId) {
       this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
         switch (departmentType) {
-          case 'departamentoExpDoc':
+          case 'idDeptoExpDoc':
             this.citiesExpDoc = data;
+            this.natPersonForm.get('mpioExpDoc')?.setValue(this.natPersonForm.get('mpioExpDoc')?.value);
             break;
-          case 'departamentoNacimiento':
+          case 'idDeptoNacimiento':
             this.citiesNac = data;
+            this.natPersonForm.get('mpioNacimiento')?.setValue(this.natPersonForm.get('mpioNacimiento')?.value);
             break;
-          case 'departamentoResidencia':
+          case 'idDeptoResidencia':
             this.citiesRes = data;
+            this.natPersonForm.get('mpioResidencia')?.setValue(this.natPersonForm.get('mpioResidencia')?.value);
             break;
         }
       });
@@ -199,7 +202,7 @@ export class NaturalPersonComponent implements OnInit {
         this.toggleFieldsHasChildren(this.natPersonForm.get('tieneHijos')?.value);
         this.toggleFieldsPeople(this.natPersonForm.get('cabezaFamilia')?.value);
         
-        this.citiesService.getById(natPerson.mpioExpDoc).subscribe(city => {
+        /*this.citiesService.getById(natPerson.mpioExpDoc).subscribe(city => {
           this.loadMunicipios('departamentoExpDoc', city.idDepartamento, 'mpioExpDoc');
           this.natPersonForm.get('departamentoExpDoc')?.setValue(city.idDepartamento);
         });
@@ -212,15 +215,19 @@ export class NaturalPersonComponent implements OnInit {
         this.citiesService.getById(natPerson.mpioResidencia).subscribe(city => {
           this.loadMunicipios('departamentoResidencia', city.idDepartamento, 'mpioResidencia');
           this.natPersonForm.get('departamentoResidencia')?.setValue(city.idDepartamento);
-        });
+        });*/
+        this.onDepartamentoChange('idDeptoExpDoc');
+    this.onDepartamentoChange('idDeptoNacimiento');
+    this.onDepartamentoChange('idDeptoResidencia');
         
         console.log("form ", this.natPersonForm.value);
       });
     }    
   }
 
-  loadMunicipios(departmentControlName: string, departamentoId: string, municipioControlName: string): void {
-    console.log("hola ", departmentControlName, departamentoId, municipioControlName);
+  /*loadMunicipios(departmentControlName: string): void {
+    const departamentoId = this.natPersonForm.get(departmentControlName)?.value;
+
     this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
       switch (departmentControlName) {
         case 'departamentoExpDoc':
@@ -238,7 +245,7 @@ export class NaturalPersonComponent implements OnInit {
           break;
       }
     });
-  }
+  }*/
 
   onPaisNacimientoChange(): void {
     const paisSeleccionado = this.natPersonForm.get('paisNacimiento')?.value;

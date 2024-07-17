@@ -7,6 +7,7 @@ class InformacionNucleoFamiliar {
     public $nombreCompleto;
     public $idTipoDocumento;
     public $numeroDocumento;
+    public $idDptoExpDoc;
     public $idMpioExpDoc;
     public $idParentesco;
     public $idGenero;
@@ -17,12 +18,13 @@ class InformacionNucleoFamiliar {
     public $creadoEl;
     public $actualizadoEl;
 
-    public function __construct($id = null, $idUsuario = null, $nombreCompleto = '', $idTipoDocumento = null, $numeroDocumento = '', $idMpioExpDoc = null, $idParentesco = null, $idGenero = null, $fechaNacimiento = null, $idNivelEducativo = null, $trabaja = '', $celular = '', $creadoEl = '', $actualizadoEl = '') {
+    public function __construct($id = null, $idUsuario = null, $nombreCompleto = '', $idTipoDocumento = null, $numeroDocumento = '', $idDptoExpDoc = null, $idMpioExpDoc = null, $idParentesco = null, $idGenero = null, $fechaNacimiento = null, $idNivelEducativo = null, $trabaja = '', $celular = '', $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->nombreCompleto = $nombreCompleto;
         $this->idTipoDocumento = $idTipoDocumento;
         $this->numeroDocumento = $numeroDocumento;
+        $this->idDptoExpDoc = $idDptoExpDoc;
         $this->idMpioExpDoc = $idMpioExpDoc;
         $this->idParentesco = $idParentesco;
         $this->idGenero = $idGenero;
@@ -37,11 +39,11 @@ class InformacionNucleoFamiliar {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO informacion_nucleo_familiar (id_usuario, nombre_completo, id_tipo_documento, numero_documento, id_mpio_exp_doc, id_parentesco, id_genero, fecha_nacimiento, id_nivel_educativo, trabaja, celular) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("isissiisiss", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular);
+            $query = $db->prepare("INSERT INTO informacion_nucleo_familiar (id_usuario, nombre_completo, id_tipo_documento, numero_documento, id_dpto_exp_doc, id_mpio_exp_doc, id_parentesco, id_genero, fecha_nacimiento, id_nivel_educativo, trabaja, celular) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("isisssiisiss", $this->idUsuario, $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular);
         } else {
-            $query = $db->prepare("UPDATE informacion_nucleo_familiar SET nombre_completo = ?, id_tipo_documento = ?, numero_documento = ?, id_mpio_exp_doc = ?, id_parentesco = ?, id_genero = ?, fecha_nacimiento = ?, id_nivel_educativo = ?, trabaja = ?, celular = ? WHERE id = ?");
-            $query->bind_param("sissiisissi", $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular, $this->id);
+            $query = $db->prepare("UPDATE informacion_nucleo_familiar SET nombre_completo = ?, id_tipo_documento = ?, numero_documento = ?, id_dpto_exp_doc = ?, id_mpio_exp_doc = ?, id_parentesco = ?, id_genero = ?, fecha_nacimiento = ?, id_nivel_educativo = ?, trabaja = ?, celular = ? WHERE id = ?");
+            $query->bind_param("sisssiisissi", $this->nombreCompleto, $this->idTipoDocumento, $this->numeroDocumento, $this->idDptoExpDoc, $this->idMpioExpDoc, $this->idParentesco, $this->idGenero, $this->fechaNacimiento, $this->idNivelEducativo, $this->trabaja, $this->celular, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -68,10 +70,10 @@ class InformacionNucleoFamiliar {
         $query = $db->prepare("SELECT * FROM informacion_nucleo_familiar WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
         $infoFamiliar = null;
         if ($query->fetch()) {
-            $infoFamiliar = new InformacionNucleoFamiliar($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
+            $infoFamiliar = new InformacionNucleoFamiliar($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -83,12 +85,12 @@ class InformacionNucleoFamiliar {
         $query = $db->prepare("SELECT * FROM informacion_nucleo_familiar WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
         
         $infoFamiliar = [];
     
         while ($query->fetch()) {
-            $infoFamiliar[] = new InformacionNucleoFamiliar($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
+            $infoFamiliar[] = new InformacionNucleoFamiliar($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
         }
         
         $query->close();
@@ -104,7 +106,7 @@ class InformacionNucleoFamiliar {
         $result = $db->query($query);
         $infoFamiliarArray = [];
         while ($row = $result->fetch_assoc()) {
-            $infoFamiliarArray[] = new InformacionNucleoFamiliar($row['id'], $row['id_usuario'], $row['nombre_completo'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_mpio_exp_doc'], $row['id_parentesco'], $row['id_genero'], $row['fecha_nacimiento'], $row['id_nivel_educativo'], $row['trabaja'], $row['celular'], $row['creado_el'], $row['actualizado_el']);
+            $infoFamiliarArray[] = new InformacionNucleoFamiliar($row['id'], $row['id_usuario'], $row['nombre_completo'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_dpto_exp_doc'], $row['id_mpio_exp_doc'], $row['id_parentesco'], $row['id_genero'], $row['fecha_nacimiento'], $row['id_nivel_educativo'], $row['trabaja'], $row['celular'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $infoFamiliarArray;

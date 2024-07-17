@@ -10,6 +10,7 @@ class InformacionNucleoFamiliarController {
             $datos['nombreCompleto'],
             $datos['idTipoDocumento'],
             $datos['numeroDocumento'],
+            $datos['idDptoExpDoc'],
             $datos['idMpioExpDoc'],
             $datos['idParentesco'],
             $datos['idGenero'],
@@ -35,6 +36,7 @@ class InformacionNucleoFamiliarController {
         $infoFamiliar->nombreCompleto = $datos['nombreCompleto'];
         $infoFamiliar->idTipoDocumento = $datos['idTipoDocumento'];
         $infoFamiliar->numeroDocumento = $datos['numeroDocumento'];
+        $infoFamiliar->idDptoExpDoc = $datos['idDptoExpDoc'];
         $infoFamiliar->idMpioExpDoc = $datos['idMpioExpDoc'];
         $infoFamiliar->idParentesco = $datos['idParentesco'];
         $infoFamiliar->idGenero = $datos['idGenero'];

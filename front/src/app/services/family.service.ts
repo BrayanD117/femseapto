@@ -52,6 +52,7 @@ export interface Family {
   nombreCompleto: string;
   idTipoDocumento: number;
   numeroDocumento: string;
+  idDptoExpDoc: string;
   idMpioExpDoc: string;
   idParentesco: number;
   idGenero: number;

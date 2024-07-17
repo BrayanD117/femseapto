@@ -4,8 +4,16 @@ require_once '../src/controllers/PersonaNaturalController.php';
 require_once '../auth/verifyToken.php';
 require_once '../config/cors.php';
 
+$key = $_ENV['JWT_SECRET_KEY'];
+$token = $_COOKIE['auth_token'] ?? '';
 
+$decodedToken = verifyJWTToken($token, $key);
 
+if ($decodedToken === null) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Token no válido o no proporcionado."));
+    exit(); // Terminar la ejecución si el token no es válido
+}
 
 // Crear una instancia del controlador
 $controlador = new PersonaNaturalController();

@@ -11,6 +11,7 @@ class ReferenciaPersonalComercialBancariaController {
             $datos['nombreRazonSocial'],
             $datos['parentesco'],
             $datos['idTipoReferencia'],
+            $datos['idDpto'],
             $datos['idMunicipio'],
             $datos['direccion'],
             $datos['telefono'],
@@ -31,6 +32,7 @@ class ReferenciaPersonalComercialBancariaController {
         $referencia->nombreRazonSocial = $datos['nombreRazonSocial'];
         $referencia->parentesco = $datos['parentesco'];
         $referencia->idTipoReferencia = $datos['idTipoReferencia'];
+        $referencia->idDpto = $datos['idDpto'];
         $referencia->idMunicipio = $datos['idMunicipio'];
         $referencia->direccion = $datos['direccion'];
         $referencia->telefono = $datos['telefono'];

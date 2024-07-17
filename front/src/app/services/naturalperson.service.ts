@@ -40,11 +40,14 @@ export interface NaturalPerson {
   idUsuario: number;
   idGenero: number;
   fechaExpDoc: string;
+  idDeptoExpDoc: string;
   mpioExpDoc: string;
   fechaNacimiento: string;
   paisNacimiento: string;
+  idDeptoNacimiento: string;
   mpioNacimiento: string;
   otroLugarNacimiento?: string;
+  idDeptoResidencia: string;
   mpioResidencia: string;
   idZonaResidencia: number;
   idTipoVivienda: number;

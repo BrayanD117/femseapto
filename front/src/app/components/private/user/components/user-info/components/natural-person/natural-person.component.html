@@ -28,8 +28,8 @@
           <input formControlName="fechaExpDoc" type="date" class="form-control" />
         </div>
         <div class="col-md-6">
-          <label for="departamentoExpDoc" class="form-label">Departamento de expedición del documento</label>
-          <select class="form-select" id="departamentoExpDoc" formControlName="departamentoExpDoc" (change)="onDepartamentoChange('departamentoExpDoc')">
+          <label for="idDeptoExpDoc" class="form-label">Departamento de expedición del documento</label>
+          <select class="form-select" id="idDeptoExpDoc" formControlName="idDeptoExpDoc" (change)="onDepartamentoChange('idDeptoExpDoc')">
             <option value="" selected>Seleccione...</option>
             <option *ngFor="let department of departments" [value]="department.id">
               {{ department.nombre }}
@@ -66,8 +66,8 @@
           </select>
         </div>
         <div class="col-md-6">
-          <label for="departamentoNacimiento" class="form-label">Departamento de nacimiento</label>
-          <select class="form-select" formControlName="departamentoNacimiento" (change)="onDepartamentoChange('departamentoNacimiento')">
+          <label for="idDeptoNacimiento" class="form-label">Departamento de nacimiento</label>
+          <select class="form-select" formControlName="idDeptoNacimiento" (change)="onDepartamentoChange('idDeptoNacimiento')">
             <option value="" selected>Seleccione...</option>
             <option *ngFor="let dpto of departments" [value]="dpto.id">
               {{ dpto.nombre }}
@@ -95,8 +95,8 @@
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-6">
-          <label for="departamentoResidencia" class="form-label">Departamento de residencia</label>
-          <select class="form-select" formControlName="departamentoResidencia" (change)="onDepartamentoChange('departamentoResidencia')">
+          <label for="idDeptoResidencia" class="form-label">Departamento de residencia</label>
+          <select class="form-select" formControlName="idDeptoResidencia" (change)="onDepartamentoChange('idDeptoResidencia')">
             <option value="" selected>Seleccione...</option>
             <option *ngFor="let dpto of departments" [value]="dpto.id">
               {{ dpto.nombre }}
