@@ -175,7 +175,6 @@ export class GenerateCreditRequestComponent implements OnInit {
               residenceCity,
               departments
             ]) => {
-              // console.log(residenceCity);
               this.ciudadExpedicionDocumento = expCity.nombre;
               this.ciudadNacimiento = birthCity.nombre;
               this.municipioResidencia = residenceCity.nombre;
@@ -218,7 +217,6 @@ export class GenerateCreditRequestComponent implements OnInit {
               next: ([
                 expCity
               ]) => {
-                // console.log("expcity", expCity);
                 this.cedulaLugarExpConyuge = this.cedulaLugarExpConyuge + " " + expCity.nombre;
               },
               error: (err) => {
@@ -266,7 +264,6 @@ export class GenerateCreditRequestComponent implements OnInit {
             (f) => f.idTipoReferencia === 4
           );
           if (famRecommendation) {
-            // console.log("fam", famRecommendation);
             this.nombreFamReferencia = famRecommendation.nombreRazonSocial;
             this.parentescoFamReferencia = famRecommendation.parentesco;
             this.correoFamReferencia = famRecommendation.correoElectronico;
@@ -295,7 +292,6 @@ export class GenerateCreditRequestComponent implements OnInit {
             (f) => f.idTipoReferencia === 3
           );
           if (persRecommendation) {
-            // console.log("pers", persRecommendation);
             this.nombrePersReferencia = persRecommendation.nombreRazonSocial;
             this.parentescoPersReferencia = persRecommendation.parentesco;
             this.correoPersReferencia = persRecommendation.correoElectronico;

@@ -128,7 +128,7 @@ export class InternationalTransactionsComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.intTransForm.value);
+    
     if (this.intTransForm.valid) {
       const data: InternationalTransaction = this.intTransForm.value;
       if (data.id) {

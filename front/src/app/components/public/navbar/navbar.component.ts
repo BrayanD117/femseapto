@@ -45,7 +45,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   openLogoutModal() {
-    console.log("Modal abierto");  // Agregar el console.log aquí
     this.showLogoutModal = true;
   }
 

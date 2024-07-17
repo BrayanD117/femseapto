@@ -80,7 +80,6 @@ export class FinancialInfoComponent implements OnInit {
             totalPasivos: parseFloat(financialInfo.totalPasivos) || 0,
             totalPatrimonio: parseFloat(financialInfo.totalPatrimonio) || 0
           });
-          console.log(this.financialForm.value);
         }    
       });
       
@@ -136,12 +135,10 @@ export class FinancialInfoComponent implements OnInit {
     this.financialForm.get('totalIngresosMensuales')?.enable();
     this.financialForm.get('totalEgresosMensuales')?.enable();
     this.financialForm.get('totalPatrimonio')?.enable();
-    console.log(this.financialForm.value);
+
     if (this.financialForm.valid) {
 
       const parsedData = { ...this.financialForm.value };
-
-      console.log("ENTRA", parsedData);
 
       if(parsedData.id) {
         this.financialInfoService.update(parsedData).subscribe({

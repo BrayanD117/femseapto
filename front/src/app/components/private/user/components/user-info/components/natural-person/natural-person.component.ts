@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -8,25 +13,61 @@ import { MessageService } from 'primeng/api';
 
 // Services
 import { LoginService } from '../../../../../../../services/login.service';
-import { NaturalPerson, NaturalpersonService } from '../../../../../../../services/naturalperson.service';
-import { Gender, GenderService } from '../../../../../../../services/gender.service';
-import { Department, DepartmentsService } from '../../../../../../../services/departments.service';
-import { City, CitiesService } from '../../../../../../../services/cities.service';
+import {
+  NaturalPerson,
+  NaturalpersonService,
+} from '../../../../../../../services/naturalperson.service';
+import {
+  Gender,
+  GenderService,
+} from '../../../../../../../services/gender.service';
+import {
+  Department,
+  DepartmentsService,
+} from '../../../../../../../services/departments.service';
+import {
+  City,
+  CitiesService,
+} from '../../../../../../../services/cities.service';
 import { Zone, ZoneService } from '../../../../../../../services/zone.service';
-import { HouseType, HouseTypeService } from '../../../../../../../services/house-type.service';
-import { MaritalStatus, MaritalStatusService } from '../../../../../../../services/marital-status.service';
-import { EducationLevel, EducationLevelService } from '../../../../../../../services/education-level.service';
-import { Company, CompanyService } from '../../../../../../../services/company.service';
-import { ContractType, ContractTypeService } from '../../../../../../../services/contract-type.service';
-import { CountriesService, Country } from '../../../../../../../services/countries.service';
+import {
+  HouseType,
+  HouseTypeService,
+} from '../../../../../../../services/house-type.service';
+import {
+  MaritalStatus,
+  MaritalStatusService,
+} from '../../../../../../../services/marital-status.service';
+import {
+  EducationLevel,
+  EducationLevelService,
+} from '../../../../../../../services/education-level.service';
+import {
+  Company,
+  CompanyService,
+} from '../../../../../../../services/company.service';
+import {
+  ContractType,
+  ContractTypeService,
+} from '../../../../../../../services/contract-type.service';
+import {
+  CountriesService,
+  Country,
+} from '../../../../../../../services/countries.service';
 
 @Component({
   selector: 'app-natural-person',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AutoCompleteModule, InputMaskModule, ToastModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    AutoCompleteModule,
+    InputMaskModule,
+    ToastModule,
+  ],
   providers: [MessageService],
   templateUrl: './natural-person.component.html',
-  styleUrls: ['./natural-person.component.css']
+  styleUrls: ['./natural-person.component.css'],
 })
 export class NaturalPersonComponent implements OnInit {
   natPersonForm: FormGroup;
@@ -44,7 +85,6 @@ export class NaturalPersonComponent implements OnInit {
   citiesExpDoc: City[] = [];
   citiesNac: City[] = [];
   citiesRes: City[] = [];
-
 
   constructor(
     private fb: FormBuilder,
@@ -106,11 +146,11 @@ export class NaturalPersonComponent implements OnInit {
       numeroCelularEmergencia: ['', Validators.required],
     });
 
-    this.natPersonForm.get('tieneHijos')?.valueChanges.subscribe(value => {
+    this.natPersonForm.get('tieneHijos')?.valueChanges.subscribe((value) => {
       this.toggleFieldsHasChildren(value);
     });
 
-    this.natPersonForm.get('cabezaFamilia')?.valueChanges.subscribe(value => {
+    this.natPersonForm.get('cabezaFamilia')?.valueChanges.subscribe((value) => {
       this.toggleFieldsPeople(value);
     });
   }
@@ -120,10 +160,10 @@ export class NaturalPersonComponent implements OnInit {
     this.loadInitialData();
 
     this.natPersonForm.patchValue({
-      idUsuario: this.userId
+      idUsuario: this.userId,
     });
 
-    this.genderService.getAll().subscribe(types => {
+    this.genderService.getAll().subscribe((types) => {
       this.genders = types;
     });
 
@@ -131,31 +171,31 @@ export class NaturalPersonComponent implements OnInit {
       this.departments = departments;
     });
 
-    this.zoneService.getAll().subscribe(types => {
+    this.zoneService.getAll().subscribe((types) => {
       this.zones = types;
     });
 
-    this.houseTypeService.getAll().subscribe(types => {
+    this.houseTypeService.getAll().subscribe((types) => {
       this.houseTypes = types;
     });
 
-    this.maritalStatusService.getAll().subscribe(types => {
+    this.maritalStatusService.getAll().subscribe((types) => {
       this.maritalStatus = types;
     });
 
-    this.educationLevelService.getAll().subscribe(types => {
+    this.educationLevelService.getAll().subscribe((types) => {
       this.educationLevels = types;
     });
 
-    this.companyService.getAll().subscribe(types => {
+    this.companyService.getAll().subscribe((types) => {
       this.companies = types;
     });
 
-    this.contractTypeService.getAll().subscribe(types => {
+    this.contractTypeService.getAll().subscribe((types) => {
       this.contractTypes = types;
     });
 
-    this.countriesService.getAll().subscribe(types => {
+    this.countriesService.getAll().subscribe((types) => {
       this.countries = types;
     });
   }
@@ -170,19 +210,25 @@ export class NaturalPersonComponent implements OnInit {
   onDepartamentoChange(departmentType: string): void {
     const departamentoId = this.natPersonForm.get(departmentType)?.value;
     if (departamentoId) {
-      this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
+      this.citiesService.getByDepartmentId(departamentoId).subscribe((data) => {
         switch (departmentType) {
           case 'idDeptoExpDoc':
             this.citiesExpDoc = data;
-            this.natPersonForm.get('mpioExpDoc')?.setValue(this.natPersonForm.get('mpioExpDoc')?.value);
+            this.natPersonForm
+              .get('mpioExpDoc')
+              ?.setValue(this.natPersonForm.get('mpioExpDoc')?.value);
             break;
           case 'idDeptoNacimiento':
             this.citiesNac = data;
-            this.natPersonForm.get('mpioNacimiento')?.setValue(this.natPersonForm.get('mpioNacimiento')?.value);
+            this.natPersonForm
+              .get('mpioNacimiento')
+              ?.setValue(this.natPersonForm.get('mpioNacimiento')?.value);
             break;
           case 'idDeptoResidencia':
             this.citiesRes = data;
-            this.natPersonForm.get('mpioResidencia')?.setValue(this.natPersonForm.get('mpioResidencia')?.value);
+            this.natPersonForm
+              .get('mpioResidencia')
+              ?.setValue(this.natPersonForm.get('mpioResidencia')?.value);
             break;
         }
       });
@@ -191,61 +237,27 @@ export class NaturalPersonComponent implements OnInit {
 
   onSelectChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    console.log('Valor seleccionado:', selectedValue);
   }
-  
 
   loadInitialData(): void {
-    if(this.userId) {
-      this.naturalPersonService.getByUserId(this.userId).subscribe(natPerson => {
-        this.natPersonForm.patchValue(natPerson);
-        this.toggleFieldsHasChildren(this.natPersonForm.get('tieneHijos')?.value);
-        this.toggleFieldsPeople(this.natPersonForm.get('cabezaFamilia')?.value);
-        
-        /*this.citiesService.getById(natPerson.mpioExpDoc).subscribe(city => {
-          this.loadMunicipios('departamentoExpDoc', city.idDepartamento, 'mpioExpDoc');
-          this.natPersonForm.get('departamentoExpDoc')?.setValue(city.idDepartamento);
-        });
+    if (this.userId) {
+      this.naturalPersonService
+        .getByUserId(this.userId)
+        .subscribe((natPerson) => {
+          this.natPersonForm.patchValue(natPerson);
+          this.toggleFieldsHasChildren(
+            this.natPersonForm.get('tieneHijos')?.value
+          );
+          this.toggleFieldsPeople(
+            this.natPersonForm.get('cabezaFamilia')?.value
+          );
 
-        this.citiesService.getById(natPerson.mpioNacimiento).subscribe(city => {
-          this.loadMunicipios('departamentoNacimiento', city.idDepartamento, 'mpioNacimiento');
-          this.natPersonForm.get('departamentoNacimiento')?.setValue(city.idDepartamento);
+          this.onDepartamentoChange('idDeptoExpDoc');
+          this.onDepartamentoChange('idDeptoNacimiento');
+          this.onDepartamentoChange('idDeptoResidencia');
         });
-
-        this.citiesService.getById(natPerson.mpioResidencia).subscribe(city => {
-          this.loadMunicipios('departamentoResidencia', city.idDepartamento, 'mpioResidencia');
-          this.natPersonForm.get('departamentoResidencia')?.setValue(city.idDepartamento);
-        });*/
-        this.onDepartamentoChange('idDeptoExpDoc');
-    this.onDepartamentoChange('idDeptoNacimiento');
-    this.onDepartamentoChange('idDeptoResidencia');
-        
-        console.log("form ", this.natPersonForm.value);
-      });
-    }    
+    }
   }
-
-  /*loadMunicipios(departmentControlName: string): void {
-    const departamentoId = this.natPersonForm.get(departmentControlName)?.value;
-
-    this.citiesService.getByDepartmentId(departamentoId).subscribe(data => {
-      switch (departmentControlName) {
-        case 'departamentoExpDoc':
-          this.citiesExpDoc = data;
-          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
-          break;
-        case 'departamentoNacimiento':
-          this.citiesNac = data;
-          console.log("city ", this.natPersonForm.get(municipioControlName)?.value);
-          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
-          break;
-        case 'departamentoResidencia':
-          this.citiesRes = data;
-          this.natPersonForm.get(municipioControlName)?.setValue(this.natPersonForm.get(municipioControlName)?.value);
-          break;
-      }
-    });
-  }*/
 
   onPaisNacimientoChange(): void {
     const paisSeleccionado = this.natPersonForm.get('paisNacimiento')?.value;
@@ -262,16 +274,6 @@ export class NaturalPersonComponent implements OnInit {
       this.natPersonForm.get('otroLugarNacimiento')?.enable();
     }
   }
-
-  /*onChildrenChange(): void {
-    const hasChildren = this.natPersonForm.get('tieneHijos')?.value;
-    if (hasChildren === 'SI') {
-      this.natPersonForm.get('numeroHijos')?.enable();
-    } else {
-      this.natPersonForm.get('numeroHijos')?.disable();
-      this.natPersonForm.get('numeroHijos')?.setValue('0');
-    }
-  }*/
 
   toggleFieldsHasChildren(value: string): void {
     const numChildrenControl = this.natPersonForm.get('numeroHijos');
@@ -296,7 +298,7 @@ export class NaturalPersonComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.natPersonForm.value);
+
     if (this.natPersonForm.valid) {
       if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
         this.natPersonForm.get('numeroHijos')?.enable();
@@ -307,33 +309,52 @@ export class NaturalPersonComponent implements OnInit {
         this.natPersonForm.get('personasACargo')?.enable();
         this.natPersonForm.get('personasACargo')?.setValue(0);
       }
-      const data : NaturalPerson = this.natPersonForm.value;
+      const data: NaturalPerson = this.natPersonForm.value;
 
-      console.log("ENTRA", data);
-
-      if(data.id) {
+      if (data.id) {
         this.naturalPersonService.update(data).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Información actualizada correctamente',
+            });
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo.' });
-          }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'No se pudo actualizar la información. Vuelve a intentarlo.',
+            });
+          },
         });
       } else {
         this.naturalPersonService.create(data).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Información creada correctamente',
+            });
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información. Vuelve a intentarlo.' });
-          }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo crear la información. Vuelve a intentarlo.',
+            });
+          },
         });
-      }     
+      }
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Algún dato te falta por registrar.' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Algún dato te falta por registrar.',
+      });
     }
 
     if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
@@ -342,6 +363,6 @@ export class NaturalPersonComponent implements OnInit {
 
     if (this.natPersonForm.get('cabezaFamilia')?.value === 'NO') {
       this.natPersonForm.get('personasACargo')?.disable();
-    }  
+    }
   }
 }

@@ -26,7 +26,6 @@ export class LoginComponent {
     this.loginService.login(this.usuario, this.contrasenia).subscribe({
       next: (response) => {
         if (response.success) {
-          console.log('Login exitoso:', response);
           localStorage.setItem('auth_token', response.token);
           this.cookieService.set('auth_token', response.token, {
             expires: 1,
@@ -35,7 +34,6 @@ export class LoginComponent {
 
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;
-          console.log('ROOOOL:', rol);
 
           if (!this.loginService.isTokenExpired()) {
             if (rol === 1) { // Suponiendo que 1 es el rol de administrador

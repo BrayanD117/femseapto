@@ -95,7 +95,6 @@ export class RecommendationComponent {
   }
 
   submit(): void {
-    console.log(this.recommendationForm.value);
 
     if (this.recommendationForm.invalid  || !this.userId) {
       return;
@@ -103,7 +102,6 @@ export class RecommendationComponent {
 
     const recommendation: Recommendation = this.recommendationForm.getRawValue();
     recommendation.idUsuario = this.userId;
-    console.log("Info. con Id usuario", recommendation);
 
     if (this.editMode) {
       if (this.selectedRecommendation && this.selectedRecommendation.id) {

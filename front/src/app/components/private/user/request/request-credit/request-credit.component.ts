@@ -193,7 +193,6 @@ export class RequestCreditComponent implements OnInit {
       }
 
       this.creditForm.get('tasaInteres')?.setValue(tasaInteres);
-      // console.log('Tasa de Interés:', tasaInteres);  // Verificar la tasa de interés
     }
   }
 
@@ -211,7 +210,6 @@ export class RequestCreditComponent implements OnInit {
 
       this.creditForm.get('valorCuotaQuincenal')?.setValue(formattedCuota);
       this.calculateValorMensual(roundedCuota);
-      // console.log('Valor Cuota Quincenal:', formattedCuota);  // Verificar el valor de la cuota
     }
   }
 
@@ -219,7 +217,6 @@ export class RequestCreditComponent implements OnInit {
     const valorMensual = valorCuotaQuincenal * 2;
     let formattedMensual = `$ ${valorMensual.toLocaleString('es-CO')}`;
     this.creditForm.get('valorMensual')?.setValue(formattedMensual);
-    // console.log('Valor Mensual:', formattedMensual);  // Verificar el valor mensual
   }
 
   maxLimitValidator(control: AbstractControl): ValidationErrors | null {
@@ -263,8 +260,6 @@ export class RequestCreditComponent implements OnInit {
           idLineaCredito: parseFloat(this.creditForm.value.idLineaCredito),
           tasaInteres: parseFloat(this.creditForm.value.tasaInteres)
         };
-        console.log('Cuota:', numeroFloat);
-        console.log('Formulario enviado:', creditData);
         this.creditsService.create(creditData).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de crédito creada correctamente' });
@@ -277,8 +272,6 @@ export class RequestCreditComponent implements OnInit {
           }
         });
       }
-    } else {
-      console.log('Formulario inválido');
     }
   }
 }

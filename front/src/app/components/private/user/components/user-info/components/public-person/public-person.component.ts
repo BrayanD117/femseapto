@@ -80,7 +80,7 @@ export class PublicPersonComponent {
   }
 
   submit(): void {
-    console.log(this.publicPersonForm.value);
+
     if (this.publicPersonForm.valid) {
       const data: PublicPerson = this.publicPersonForm.value;
       if (data.id) {

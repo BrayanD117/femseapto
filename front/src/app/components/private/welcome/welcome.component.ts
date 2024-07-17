@@ -30,14 +30,5 @@ export class WelcomeComponent implements OnInit {
         console.error('Error al obtener la información del usuario:', error);
       }
     });
-
-    this.userInfo.getUserInfo().subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        console.error('Error al obtener la información del usuario:', error);
-      }
-    });
   }
 }

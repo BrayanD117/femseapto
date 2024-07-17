@@ -197,7 +197,6 @@ export class FamilyInformationComponent implements OnInit {
   }
 
   guardarFamiliar(): void {
-    console.log(this.familiarForm.value);
 
     if (this.familiarForm.invalid || !this.userId) {
       return;
@@ -205,7 +204,6 @@ export class FamilyInformationComponent implements OnInit {
 
     const familiar: Family = this.familiarForm.getRawValue();
     familiar.idUsuario = this.userId;
-    console.log('Info. con Id usuario', familiar);
 
     if (this.editMode) {
       if (this.selectedFamiliar && this.selectedFamiliar.id) {

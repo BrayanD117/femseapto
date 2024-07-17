@@ -80,7 +80,7 @@ export class CreditRequestsComponent implements OnInit {
     const userId = request.idUsuario;
 
     this.allCreditRequestDataService.getAllData(userId).subscribe(data => {
-      console.log('Datos recolectados:', data);
+      //console.log('Datos recolectados:', data);
     });
   }
 }

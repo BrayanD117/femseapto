@@ -23,12 +23,10 @@ export class SidebarComponent {
 
   openLogoutModal() {
     this.showLogoutModal = true;
-    console.log("Modal abierto");
   }
 
   closeLogoutModal() {
     this.showLogoutModal = false;
-    console.log("Modal cerrado");
   }
 
   confirmLogout() {
