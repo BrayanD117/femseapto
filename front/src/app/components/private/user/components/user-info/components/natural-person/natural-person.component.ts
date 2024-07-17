@@ -262,14 +262,14 @@ export class NaturalPersonComponent implements OnInit {
   onPaisNacimientoChange(): void {
     const paisSeleccionado = this.natPersonForm.get('paisNacimiento')?.value;
     if (paisSeleccionado === '170') {
-      this.natPersonForm.get('departamentoNacimiento')?.enable();
+      this.natPersonForm.get('idDeptoNacimiento')?.enable();
       this.natPersonForm.get('mpioNacimiento')?.enable();
       this.natPersonForm.get('otroLugarNacimiento')?.disable();
       this.natPersonForm.get('otroLugarNacimiento')?.setValue('');
     } else {
-      this.natPersonForm.get('departamentoNacimiento')?.disable();
+      this.natPersonForm.get('idDeptoNacimiento')?.disable();
       this.natPersonForm.get('mpioNacimiento')?.disable();
-      this.natPersonForm.get('departamentoNacimiento')?.setValue('');
+      this.natPersonForm.get('idDeptoNacimiento')?.setValue('');
       this.natPersonForm.get('mpioNacimiento')?.setValue('');
       this.natPersonForm.get('otroLugarNacimiento')?.enable();
     }
@@ -299,7 +299,7 @@ export class NaturalPersonComponent implements OnInit {
 
   onSubmit(): void {
 
-    console.log("ANTES", this.natPersonForm.value);
+    //console.log("ANTES", this.natPersonForm.value);
 
     if (this.natPersonForm.valid) {
       if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
@@ -313,7 +313,7 @@ export class NaturalPersonComponent implements OnInit {
       }
       const data: NaturalPerson = this.natPersonForm.value;
 
-      console.log("ENTRA", this.natPersonForm.value);
+      //console.log("ENTRA", this.natPersonForm.value);
 
       if (data.id) {
         this.naturalPersonService.update(data).subscribe({
