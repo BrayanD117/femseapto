@@ -337,6 +337,8 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('O5').value = Number(this.plazoQuincenal);
         worksheet.getCell('U5').value = Number(this.valorCuotaQuincenal);
 
+        worksheet.getCell('K6').value = Number(this.numeroDocumento);
+
         const fecha = new Date(this.fechaSolicitud);
         worksheet.getCell('R7').value = fecha.getDate();
         worksheet.getCell('T7').value = fecha.getMonth() + 1;
