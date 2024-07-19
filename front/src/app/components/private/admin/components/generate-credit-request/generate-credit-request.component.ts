@@ -31,6 +31,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   @Input() periocidadPago: string = '';
   @Input() tasaInteres: number | string = 0;
   @Input() userId: number = 0;
+  @Input() idSolicitudCredito: number = 0;
 
   lineaCreditoNombre: string = '';
   nombreAsociado: string = '';
@@ -337,7 +338,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('O5').value = Number(this.plazoQuincenal);
         worksheet.getCell('U5').value = Number(this.valorCuotaQuincenal);
 
-        worksheet.getCell('K6').value = Number(this.numeroDocumento);
+        worksheet.getCell('K6').value = Number(this.idSolicitudCredito);
 
         const fecha = new Date(this.fechaSolicitud);
         worksheet.getCell('R7').value = fecha.getDate();
