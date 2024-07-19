@@ -41,7 +41,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   fechaNacimiento: string = '';
   genero: number = 0;
   personasACargo: number | string = 0;
-  estadoCivil: string = '';
+  estadoCivil: number = 0;
   direccionResidencia: string = '';
   municipioResidencia: string = '';
   departamentoResidencia: string = '';
@@ -142,7 +142,7 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.fechaNacimiento = person.fechaNacimiento;
           this.genero = person.idGenero;
           this.personasACargo = person.personasACargo;
-          this.estadoCivil = person.estadoCivil || '';
+          this.estadoCivil = person.idEstadoCivil;
           this.direccionResidencia = person.direccionResidencia;
           this.municipioResidencia = person.mpioResidencia;
           this.email = person.correoElectronico;
@@ -357,7 +357,7 @@ export class GenerateCreditRequestComponent implements OnInit {
           : '';
         worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${
           this.fechaNacimiento
-            ? new Date(this.fechaNacimiento).toLocaleDateString()
+            ? new Date(this.fechaNacimiento  + "T00:00:00").toLocaleDateString()
             : ''
         }`;
 
@@ -369,20 +369,20 @@ export class GenerateCreditRequestComponent implements OnInit {
 
         worksheet.getCell('N14').value = Number(this.personasACargo);
 
-        switch (this.estadoCivil.toLowerCase()) {
-          case 'casado':
+        switch (this.estadoCivil) {
+          case 1: // Casado
             worksheet.getCell('S14').value = 'X';
             break;
-          case 'soltero':
+          case 2: // Soltero
             worksheet.getCell('S15').value = 'X';
             break;
-          case 'union libre':
+          case 3: // Unión libre
             worksheet.getCell('W14').value = 'X';
             break;
           default:
             worksheet.getCell('W15').value = 'X';
             break;
-        }
+        }        
 
         worksheet.getCell('E16').value = this.direccionResidencia;
         worksheet.getCell('M16').value = this.municipioResidencia;
