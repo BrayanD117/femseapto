@@ -1,0 +1,115 @@
+<p-toast></p-toast>
+<div class="container mt-5">
+  <h1 class="text-center">Solicitud de retiro de ahorro</h1>
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="savingWdRequestForm" (ngSubmit)="submit()">
+        <div class="row g-3">
+          <input type="hidden" formControlName="id" />
+          <div class="col-md-6">
+            <label for="idLineaAhorro" class="form-label"
+              >País en el que tiene la cuenta extranjera</label
+            >
+            <select class="form-select" formControlName="idLineaAhorro">
+              <option *ngFor="let country of countries" [value]="country.id">
+                {{ country.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="transMonedaExtranjera" class="form-label"
+              >¿En que moneda realiza transacciones extranjeras?</label
+            >
+            <input
+              formControlName="transMonedaExtranjera"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-12">
+            <label for="otrasOperaciones" class="form-label"
+              >¿Realiza otras operaciones extranjeras? ¿Cuáles?</label
+            >
+            <input
+              formControlName="otrasOperaciones"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="cuentasMonedaExtranjera" class="form-label"
+              >¿Tiene cuentas en moneda extranjera?</label
+            >
+            <select
+              class="form-select"
+              formControlName="cuentasMonedaExtranjera"
+            >
+              <option value="" selected disabled>Seleccione...</option>
+              <option value="SI">Sí</option>
+              <option value="NO">No</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="bancoCuentaExtranjera" class="form-label"
+              >Nombre del banco de cuenta en moneda extranjera</label
+            >
+            <input
+              formControlName="bancoCuentaExtranjera"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="cuentaMonedaExtranjera" class="form-label"
+              >Número de la cuenta en moneda extranjera</label
+            >
+            <input
+              formControlName="cuentaMonedaExtranjera"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="monedaCuenta" class="form-label"
+              >¿Cuál es la moneda de la cuenta extranjera?</label
+            >
+            <input
+              formControlName="monedaCuenta"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="idPaisCuenta" class="form-label"
+              >País en el que tiene la cuenta extranjera</label
+            >
+            <select class="form-select" formControlName="idPaisCuenta">
+              <option *ngFor="let country of countries" [value]="country.id">
+                {{ country.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="ciudadCuenta" class="form-label"
+              >Ciudad en la que tiene la cuenta extranjera</label
+            >
+            <input
+              formControlName="ciudadCuenta"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button
+              class="btn btn-primary me-md-2"
+              [disabled]="intTransForm.invalid"
+              type="submit"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

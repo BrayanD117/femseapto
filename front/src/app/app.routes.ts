@@ -12,12 +12,15 @@ import { WelcomeComponent } from './components/private/welcome/welcome.component
 import { UserInfoComponent } from './components/private/user/components/user-info/user-info.component';
 import { UserSavingComponent } from './components/private/user/components/user-saving/user-saving.component';
 import { UserCreditsComponent } from './components/private/user/components/user-credits/user-credits.component';
+import { CreditBalanceComponent } from './components/private/user/credit-balance/credit-balance.component';
 // Request Components
 import { RequestCreditComponent } from './components/private/user/request/request-credit/request-credit.component';
 import { RequestSavingComponent } from './components/private/user/request/request-saving/request-saving.component';
+import { RequestSavingWithdrawalComponent } from './components/private/user/request/request-saving-withdrawal/request-saving-withdrawal.component';
 
 // Admin components
 import { AdminComponent } from './components/private/admin/admin.component';
+import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
 import { CreditRequestsComponent } from './components/private/admin/components/credit-requests/credit-requests.component';
 
 // Guards
@@ -28,8 +31,9 @@ import { UserGuard } from './guards/user.guard';
 
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
-import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
-import { CreditBalanceComponent } from './components/private/user/credit-balance/credit-balance.component';
+
+
+
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -64,6 +68,7 @@ export const routes: Routes = [
                         children: [
                             { path: 'credit', component: RequestCreditComponent },
                             { path: 'saving', component: RequestSavingComponent },
+                            { path: 'withdrawal', component: RequestSavingWithdrawalComponent }
                         ], 
                     },    
                 ]
