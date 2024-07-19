@@ -3,29 +3,31 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-
 import { LoginService } from '../../../../../services/login.service';
 import { RequestSavingWithdrawal, RequestSavingWithdrawalService } from '../../../../../services/request-saving-withdrawal.service';
 import { SavingLine, SavingLinesService } from '../../../../../services/saving-lines.service';
-
+import { CountriesService, Country } from '../../../../../services/countries.service';
 
 @Component({
   selector: 'app-request-saving-withdrawal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule,],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule],
   providers: [MessageService],
   templateUrl: './request-saving-withdrawal.component.html',
-  styleUrl: './request-saving-withdrawal.component.css'
+  styleUrls: ['./request-saving-withdrawal.component.css']
 })
 export class RequestSavingWithdrawalComponent implements OnInit {
   savingWdRequestForm: FormGroup;
   userId: number | null = null;
   savingLines: SavingLine[] = [];
+  countries: Country[] = [];  // Añadir la propiedad countries
 
-  constructor(private fb: FormBuilder, private loginService: LoginService,
-    private savingWdRequestService: RequestSavingWithdrawalService, private savingLinesService: SavingLinesService,
-    private messageService: MessageService
-  ) {
+  constructor(private fb: FormBuilder,
+              private loginService: LoginService,
+              private savingWdRequestService: RequestSavingWithdrawalService,
+              private savingLinesService: SavingLinesService,
+              private countryService: CountriesService, 
+              private messageService: MessageService) {
     this.savingWdRequestForm = this.fb.group({
       id: [''],
       idUsuario: ['', Validators.required],
@@ -42,6 +44,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
   ngOnInit(): void {
     this.getUserIdFromToken();
     this.getAllSavingLines();
+    this.getCountries();
   }
 
   getUserIdFromToken(): void {
@@ -58,6 +61,13 @@ export class RequestSavingWithdrawalComponent implements OnInit {
   getAllSavingLines(): void {
     this.savingLinesService.getAll().subscribe((types: SavingLine[]) => {
       this.savingLines = types;
+    });
+  }
+
+  // Función para cargar los países
+  getCountries(): void {
+    this.countryService.getAll().subscribe((countries: Country[]) => {
+      this.countries = countries;
     });
   }
 
