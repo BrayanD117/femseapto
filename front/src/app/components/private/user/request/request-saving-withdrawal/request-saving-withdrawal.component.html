@@ -7,49 +7,76 @@
         <div class="row g-3">
           <input type="hidden" formControlName="id" />
           <div class="col-md-6">
-            <label for="idLineaAhorro" class="form-label">País en el que tiene la cuenta extranjera</label>
-            <select class="form-select" formControlName="idLineaAhorro">
-              <option *ngFor="let country of countries" [value]="country.id">{{ country.nombre }}</option>
-            </select>
+            <label for="montoRetirar" class="form-label">¿De las siguientes líneas de ahorro en las que usted tiene fondos, desea realizar un retiro de dinero?</label>
+            <div class="form-check" *ngFor="let line of savingLines">
+              <input class="form-check-input" type="radio" formControlName="idLineaAhorro" [value]="line.id">
+              <label class="form-check-label" for="idLineaAhorro">
+                {{ line.nombre }}
+              </label>
+            </div>
           </div>
           <div class="col-md-6">
-            <label for="transMonedaExtranjera" class="form-label">¿En que moneda realiza transacciones extranjeras?</label>
-            <input formControlName="transMonedaExtranjera" type="text" class="form-control" />
+            <label for="montoRetirar" class="form-label">¿Cuál es el monto que desea retirar de la línea seleccionada?</label>
+            <p-inputNumber
+              formControlName="montoRetirar" 
+              inputId="currency-co" 
+              mode="currency" 
+              currency="COP" 
+              locale="es-CO"
+              [ngClass]="'custom-input'"
+              [class.is-invalid]="savingWdRequestForm.get('montoRetirar')?.errors?.['insufficientFunds']" />
+            <div *ngIf="savingWdRequestForm.get('montoRetirar')?.errors?.['insufficientFunds']" class="invalid-feedback">
+              El monto a retirar no puede superar el saldo disponible.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="banco" class="form-label">Banco seleccionado para consignar el dinero</label>
+            <input formControlName="banco" type="text" class="form-control" readonly/>
+          </div>
+          <div class="col-md-6">
+            <label for="numeroCuenta" class="form-label">Número de cuenta para consignar el dinero</label>
+            <input formControlName="numeroCuenta" type="text" class="form-control" readonly/>
+          </div>
+          <div class="col-md-6">
+            <label for="devolucionCaja" class="form-label">Devolución por caja</label>
+            <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="devolucionCaja" value="SI">
+              <label class="form-check-label" for="devolucionCaja">
+                Sí
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="devolucionCaja" value="NO">
+              <label class="form-check-label" for="devolucionCaja">
+                No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="continuarAhorro" class="form-label">¿Desea continuar con el ahorro en esta línea?</label>
+            <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="continuarAhorro" value="SI">
+              <label class="form-check-label" for="continuarAhorro">
+                Sí
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="continuarAhorro" value="NO">
+              <label class="form-check-label" for="continuarAhorro">
+                No
+              </label>
+            </div>
           </div>
           <div class="col-md-12">
-            <label for="otrasOperaciones" class="form-label">¿Realiza otras operaciones extranjeras? ¿Cuáles?</label>
-            <input formControlName="otrasOperaciones" type="text" class="form-control" />
+            <label for="observaciones" class="form-label">Observaciones</label>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Observaciones" formControlName="observaciones" style="height: 150px"></textarea>
+              <label for="observaciones">Escriba si tiene alguna observación</label>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label for="cuentasMonedaExtranjera" class="form-label">¿Tiene cuentas en moneda extranjera?</label>
-            <select class="form-select" formControlName="cuentasMonedaExtranjera">
-              <option value="" selected disabled>Seleccione...</option>
-              <option value="SI">Sí</option>
-              <option value="NO">No</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="bancoCuentaExtranjera" class="form-label">Nombre del banco de cuenta en moneda extranjera</label>
-            <input formControlName="bancoCuentaExtranjera" type="text" class="form-control" />
-          </div>
-          <div class="col-md-6">
-            <label for="cuentaMonedaExtranjera" class="form-label">Número de la cuenta en moneda extranjera</label>
-            <input formControlName="cuentaMonedaExtranjera" type="text" class="form-control" />
-          </div>
-          <div class="col-md-6">
-            <label for="monedaCuenta" class="form-label">¿Cuál es la moneda de la cuenta extranjera?</label>
-            <input formControlName="monedaCuenta" type="text" class="form-control" />
-          </div>
-          <div class="col-md-6">
-            <label for="idPaisCuenta" class="form-label">País en el que tiene la cuenta extranjera</label>
-            <select class="form-select" formControlName="idPaisCuenta">
-              <option *ngFor="let country of countries" [value]="country.id">{{ country.nombre }}</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="ciudadCuenta" class="form-label">Ciudad en la que tiene la cuenta extranjera</label>
-            <input formControlName="ciudadCuenta" type="text" class="form-control" />
-          </div>
+          
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button class="btn btn-primary me-md-2" [disabled]="savingWdRequestForm.invalid" type="submit">Guardar</button>
           </div>

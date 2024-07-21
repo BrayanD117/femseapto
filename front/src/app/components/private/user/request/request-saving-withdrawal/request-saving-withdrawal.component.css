@@ -2,3 +2,9 @@ h1 {
     color: #00823d;
     font-weight: bold;
 }
+
+.custom-input {
+    width: 100%;
+    height: 38px; /* Altura estándar para inputs de Bootstrap */
+    box-sizing: border-box;
+}
