@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Lottie Animation Module
 import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    importProvidersFrom([BrowserAnimationsModule])
+    importProvidersFrom([BrowserAnimationsModule]),
+    MessageService
   ]
 };

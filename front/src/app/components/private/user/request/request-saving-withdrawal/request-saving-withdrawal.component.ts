@@ -11,6 +11,13 @@ import { SavingBalance, SavingBalanceService } from '../../../../../services/sav
 import { forkJoin } from 'rxjs';
 import { FinancialInformation, FinancialInfoService } from '../../../../../services/financial-info.service';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { Router } from '@angular/router';
+import { FamilyService } from '../../../../../services/family.service';
+import { InternationalTransactionsService } from '../../../../../services/international-transactions.service';
+import { NaturalpersonService } from '../../../../../services/naturalperson.service';
+import { PublicPersonService } from '../../../../../services/public-person.service';
+import { RecommendationService } from '../../../../../services/recommendation.service';
+import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
 
 @Component({
   selector: 'app-request-saving-withdrawal',
@@ -32,24 +39,29 @@ export class RequestSavingWithdrawalComponent implements OnInit {
               private savingLinesService: SavingLinesService,
               private savingBalanceService: SavingBalanceService,
               private financialInformationService: FinancialInfoService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private router: Router,
+            
+              private userInfoValidationService: UserInfoValidationService) {
     this.savingWdRequestForm = this.fb.group({
       id: [''],
       idUsuario: ['', Validators.required],
       idLineaAhorro: ['', Validators.required],
       montoRetirar: [, Validators.required],
-      banco: ['', Validators.required],
-      numeroCuenta: ['', Validators.required],
+      banco: [''],
+      numeroCuenta: [''],
       devolucionCaja: ['', Validators.required],
-      observaciones: ['', Validators.required],
+      observaciones: [''],
       continuarAhorro: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.getUserIdFromToken();
-    //this.getAllSavingLines();
-    //this.getCountries();
+
+    if(this.userId)
+      this.userInfoValidationService.validateUserRecords(this.userId, this.handleWarning.bind(this));
+    
     this.getSavingBalances();
     this.getFinancialInformation();
 
@@ -60,6 +72,20 @@ export class RequestSavingWithdrawalComponent implements OnInit {
 
     this.savingWdRequestForm.get('montoRetirar')?.valueChanges.subscribe(() => {
       this.checkWithdrawalAmount();
+    });
+
+    // Subscribe to devolucionCaja value changes
+    this.savingWdRequestForm.get('devolucionCaja')?.valueChanges.subscribe(value => {
+      this.handleDevolucionCajaChange(value);
+    });
+
+    // Subscribe to banco and numeroCuenta value changes
+    this.savingWdRequestForm.get('banco')?.valueChanges.subscribe(() => {
+      this.updateDevolucionCajaBasedOnInputs();
+    });
+
+    this.savingWdRequestForm.get('numeroCuenta')?.valueChanges.subscribe(() => {
+      this.updateDevolucionCajaBasedOnInputs();
     });
   }
 
@@ -90,7 +116,9 @@ export class RequestSavingWithdrawalComponent implements OnInit {
       this.savingBalanceService.getByUserId(this.userId).subscribe((balances: SavingBalance[]) => {
         this.savingBalances = balances;
 
-        const savingLineIds = Array.from(new Set(balances.map(balance => balance.idLineaAhorro)));
+        const validBalances = balances.filter(balance => balance.valorSaldo > 0);
+
+        const savingLineIds = Array.from(new Set(validBalances.map(balance => balance.idLineaAhorro)));
       
         const savingLineObservables = savingLineIds.map(id => this.savingLinesService.getById(id));
       
@@ -99,6 +127,13 @@ export class RequestSavingWithdrawalComponent implements OnInit {
         });
       });
     }
+  }
+
+  private handleWarning(detail: string): void {
+    this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
+    setTimeout(() => {
+      this.router.navigate(['/auth/user/information']);
+    }, 5000);
   }
 
   checkWithdrawalAmount(): void {
@@ -121,10 +156,43 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     }
   }
 
+  handleDevolucionCajaChange(value: string): void {
+    const bancoControl = this.savingWdRequestForm.get('banco');
+    const numeroCuentaControl = this.savingWdRequestForm.get('numeroCuenta');
+
+    if (value === 'SI') {
+      bancoControl?.reset();
+      numeroCuentaControl?.reset();
+    }
+  }
+
+  updateDevolucionCajaBasedOnInputs(): void {
+    const bancoValue = this.savingWdRequestForm.get('banco')?.value;
+    const numeroCuentaValue = this.savingWdRequestForm.get('numeroCuenta')?.value;
+    const devolucionCajaControl = this.savingWdRequestForm.get('devolucionCaja');
+
+    if (bancoValue && numeroCuentaValue) {
+      devolucionCajaControl?.setValue('NO');
+    }
+  }
+
   submit(): void {
     if (this.savingWdRequestForm.valid) {
       const data: RequestSavingWithdrawal = this.savingWdRequestForm.value;
       console.log(data);
+
+      this.savingWdRequestService.create(data).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de retiro de ahorro creada correctamente' });
+          setTimeout(() => {
+            this.router.navigate(['/auth/user']);
+          }, 2000);
+        },
+        error: (err) => {
+          console.error('Error', err);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la solicitud de retiro de ahorro. Por favor, intente otra vez' });
+        }
+      });
     }
   }
 }

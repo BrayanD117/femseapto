@@ -15,6 +15,7 @@ import { InternationalTransactionsService } from '../../../../../services/intern
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 import { PublicPersonService } from '../../../../../services/public-person.service';
 import { RecommendationService } from '../../../../../services/recommendation.service';
+import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
 
 @Component({
   selector: 'app-request-credit',
@@ -38,12 +39,7 @@ export class RequestCreditComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private lineasCreditoService: LineasCreditoService,
-    private financialInfoService: FinancialInfoService,
-    private familyService: FamilyService,
-    private internationalTransactionsService: InternationalTransactionsService,
-    private naturalpersonService: NaturalpersonService,
-    private publicPersonService: PublicPersonService,
-    private recommendationService: RecommendationService
+    private userInfoValidationService: UserInfoValidationService
   ) {
     this.creditForm = this.fb.group({
       montoSolicitado: [0, [Validators.required, Validators.min(1), this.maxLimitValidator.bind(this)]],
@@ -56,7 +52,10 @@ export class RequestCreditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.validateUserRecords();
+    const token = this.loginService.getTokenClaims();
+
+    if(token)
+      this.userInfoValidationService.validateUserRecords(token.userId, this.handleWarning.bind(this));
 
     this.lineasCreditoService.obtenerLineasCredito().subscribe(
       data => {
@@ -68,80 +67,11 @@ export class RequestCreditComponent implements OnInit {
     );
   }
 
-  validateUserRecords(): void {
-    const token = this.loginService.getTokenClaims();
-
-    if(token) {
-      this.financialInfoService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información financiera' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.familyService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información familiar' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.internationalTransactionsService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información de operaciones internacionales' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.naturalpersonService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información general' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.publicPersonService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre la información de personas públicamente expuestas' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.recommendationService.validatePersonal(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre al menos una referencia personal' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-
-      this.recommendationService.validateFamiliar(token.userId).subscribe(response => {
-        if (!response) {
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Por favor, registre al menos una referencia familiar' });
-          setTimeout(() => {
-            this.router.navigate(['/auth/user/information']);
-          }, 5000);
-          return;
-        }
-      });
-    }   
+  private handleWarning(detail: string): void {
+    this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
+    setTimeout(() => {
+      this.router.navigate(['/auth/user/information']);
+    }, 5000);
   }
 
   onLoanAmountInput(event: Event): void {

@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { CurrencyFormatPipe } from '../../../../pipes/currency-format.pipe';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
 
 @Component({
   selector: 'app-request-saving',
@@ -29,7 +30,8 @@ export class RequestSavingComponent implements OnInit {
     private savingsService: SolicitudAhorroService,
     private loginService: LoginService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private userInfoValidationService: UserInfoValidationService
   ) {
     this.savingsForm = this.fb.group({
       totalSavingsAmount: [0, [Validators.required, Validators.min(1)]],
@@ -44,6 +46,9 @@ export class RequestSavingComponent implements OnInit {
 
     if (token) {
       const userId = token.userId;
+
+      this.userInfoValidationService.validateUserRecords(userId, this.handleWarning.bind(this));
+
       this.savingsService.getFinancialInfo(userId).subscribe(
         (data: any) => {
           this.maxSavingsAmount = data.montoMaxAhorro;
@@ -66,6 +71,13 @@ export class RequestSavingComponent implements OnInit {
     } else {
       console.error('User ID not found');
     }
+  }
+
+  private handleWarning(detail: string): void {
+    this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
+    setTimeout(() => {
+      this.router.navigate(['/auth/user/information']);
+    }, 5000);
   }
 
   addSavingLinesControls(): void {
