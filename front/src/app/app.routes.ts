@@ -32,6 +32,7 @@ import { UserGuard } from './guards/user.guard';
 
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
+import { SavingWithdrawalRequestComponent } from './components/private/admin/components/saving-withdrawal-request/saving-withdrawal-request.component';
 
 
 
@@ -78,7 +79,8 @@ export const routes: Routes = [
                 children: [
                     { path: '', component: AdminWelcomeComponent },
                     { path: 'credits', component: CreditRequestsComponent },
-                    { path: 'savings', component: SavingRequestsComponent }
+                    { path: 'savings', component: SavingRequestsComponent },
+                    { path: 'retiros', component: SavingWithdrawalRequestComponent }
                 ],
                 
             }
