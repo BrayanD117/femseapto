@@ -4,6 +4,8 @@ import { UserService, User } from '../../../../../services/user.service';
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 import { CitiesService } from '../../../../../services/cities.service';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
+import { CompanyService } from '../../../../../services/company.service';
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { firstValueFrom } from 'rxjs';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
@@ -25,13 +27,17 @@ export class GenerateSavingRequestComponent implements OnInit {
   quincena: string = '';
   mes: string = '';
   celular: string = '';
+  nombreEmpresa: string = '';
+  salario: number = 0;
 
   constructor(
     private http: HttpClient,
     private userService: UserService,
     private naturalPersonService: NaturalpersonService,
     private citiesService: CitiesService,
-    private solicitudAhorroService: SolicitudAhorroService
+    private solicitudAhorroService: SolicitudAhorroService,
+    private companyService: CompanyService,
+    private financialInfoService: FinancialInfoService
   ) {}
 
   ngOnInit() {
@@ -50,15 +56,30 @@ export class GenerateSavingRequestComponent implements OnInit {
               this.citiesService.getById(person.mpioExpDoc).subscribe({
                 next: (city) => {
                   this.municipioExpedicionDocumento = city.nombre;
-                  this.solicitudAhorroService.getById(this.idSolicitudAhorro).subscribe({
-                    next: (solicitud) => {
-                      this.valorTotalAhorro = solicitud.montoTotalAhorrar;
-                      this.quincena = solicitud.quincena;
-                      this.mes = solicitud.mes;
-                      this.logData();
+                  this.companyService.getById(person.idEmpresaLabor).subscribe({
+                    next: (company) => {
+                      this.nombreEmpresa = company.nombre;
+                      this.solicitudAhorroService.getById(this.idSolicitudAhorro).subscribe({
+                        next: (solicitud) => {
+                          this.valorTotalAhorro = solicitud.montoTotalAhorrar;
+                          this.quincena = solicitud.quincena;
+                          this.mes = solicitud.mes;
+                          this.financialInfoService.getByUserId(this.userId).subscribe({
+                            next: (financialInfo) => {
+                              this.salario = financialInfo.ingresosMensuales;
+                            },
+                            error: (err) => {
+                              console.error('Error al obtener la información financiera', err);
+                            }
+                          });
+                        },
+                        error: (err) => {
+                          console.error('Error al obtener la solicitud de ahorro', err);
+                        }
+                      });
                     },
                     error: (err) => {
-                      console.error('Error al obtener la solicitud de ahorro', err);
+                      console.error('Error al obtener el nombre de la empresa', err);
                     }
                   });
                 },
@@ -87,6 +108,8 @@ export class GenerateSavingRequestComponent implements OnInit {
     console.log('Quincena:', this.quincena);
     console.log('Mes:', this.mes);
     console.log('Celular:', this.celular);
+    console.log('Nombre Empresa:', this.nombreEmpresa);
+    console.log('Salario:', this.salario);
   }
 
   async generateExcel() {
@@ -103,7 +126,9 @@ export class GenerateSavingRequestComponent implements OnInit {
           { text: this.numeroDocumento.toString(), font: { underline: true } },
           { text: " de ", font: { underline: false } },
           { text: this.municipioExpedicionDocumento, font: { underline: true } },
-          { text: ", autorizo a _____________ para descontar de mi salario el valor de $ ", font: { underline: false } },
+          { text: ", autorizo a ", font: { underline: false } },
+          { text: this.nombreEmpresa, font: { underline: true } },
+          { text: " para descontar de mi salario el valor de $ ", font: { underline: false } },
           { text: this.valorTotalAhorro.toString(), font: { underline: true } },
           { text: " quincenalmente, a partir de la ", font: { underline: false } },
           { text: this.quincena, font: { underline: true } },
@@ -113,6 +138,13 @@ export class GenerateSavingRequestComponent implements OnInit {
         ];
 
         worksheet.getCell('B5').value = { richText: texto };
+
+        const salarioTexto = [
+          { text: "Salario $ ", font: { underline: false } },
+          { text: this.salario.toString(), font: { underline: true } }
+        ];
+
+        worksheet.getCell('B6').value = { richText: salarioTexto };
 
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], {
