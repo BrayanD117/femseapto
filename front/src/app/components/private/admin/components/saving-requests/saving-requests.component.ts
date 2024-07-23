@@ -4,12 +4,13 @@ import { UserService, User } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GenerateSavingRequestComponent } from '../generate-saving-request/generate-saving-request.component';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-saving-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, GenerateSavingRequestComponent],
   templateUrl: './saving-requests.component.html',
   styleUrls: ['./saving-requests.component.css']
 })

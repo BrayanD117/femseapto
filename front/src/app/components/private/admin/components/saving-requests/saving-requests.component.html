@@ -26,7 +26,10 @@
           <td>{{ request.mes }}</td>
           <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
           <td>
-            <!-- Botones o acciones adicionales -->
+            <app-generate-saving-request
+              [userId]="request.idUsuario"
+              [idSolicitudAhorro]="request.id"
+            ></app-generate-saving-request>
           </td>
         </tr>
       </tbody>

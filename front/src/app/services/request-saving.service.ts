@@ -32,4 +32,8 @@ export class SolicitudAhorroService {
     });
     return this.http.get<any>(`${this.apiUrl}/solicitudesahorro.php`, { params: httpParams, withCredentials: true });
   }
+
+  getById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/solicitudesahorro.php?id=${id}`, { withCredentials: true });
+  }
 }
