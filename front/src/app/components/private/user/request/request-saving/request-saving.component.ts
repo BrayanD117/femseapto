@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } fr
 import { Router } from '@angular/router';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
 import { LoginService } from '../../../../../services/login.service';
+import { UserService } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CurrencyFormatPipe } from '../../../../pipes/currency-format.pipe';
@@ -24,11 +25,13 @@ export class RequestSavingComponent implements OnInit {
   savingLines: any[] = [];
   toastDisplayed = false;
   previousTotalLinesAmount = 0;
+  tipoAsociado: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private savingsService: SolicitudAhorroService,
     private loginService: LoginService,
+    private userService: UserService,
     private messageService: MessageService,
     private router: Router,
     private userInfoValidationService: UserInfoValidationService
@@ -46,6 +49,16 @@ export class RequestSavingComponent implements OnInit {
 
     if (token) {
       const userId = token.userId;
+
+      this.userService.getById(userId).subscribe(
+        (user: any) => {
+          this.tipoAsociado = user.id_tipo_asociado;
+          this.addSavingLinesControls();
+        },
+        (error: any) => {
+          console.error('Error fetching user information', error);
+        }
+      );
 
       this.userInfoValidationService.validateUserRecords(userId, this.handleWarning.bind(this));
 
@@ -82,9 +95,15 @@ export class RequestSavingComponent implements OnInit {
 
   addSavingLinesControls(): void {
     const linesArray = this.savingsForm.get('lines') as FormArray;
-    this.savingLines.forEach((line: any) => {
+
+    const filteredSavingLines = this.tipoAsociado === 2
+      ? this.savingLines.filter(line => line.nombre === 'Ahorro Extraordinario')
+      : this.savingLines;
+
+    filteredSavingLines.forEach((line: any) => {
       linesArray.push(this.fb.group({
         id: [line.id],
+        nombre: [line.nombre],
         selected: [false],
         montoAhorrar: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1)]]
       }));

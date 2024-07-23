@@ -60,7 +60,7 @@
           <div class="form-check flex-grow-1 w-50">
             <input class="form-check-input me-2" type="checkbox" formControlName="selected" (change)="onLineSelected(i)" style="transform: scale(1.5);">
             <label class="form-check-label">
-              {{ savingLines[i]?.nombre }}
+              {{ lines.at(i).get('nombre')?.value }}
             </label>
           </div>
           <input type="text" class="form-control w-50" formControlName="montoAhorrar" (input)="onMontoAhorrarInput($event, i)">
