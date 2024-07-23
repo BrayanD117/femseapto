@@ -108,5 +108,33 @@ class SolicitudAhorro {
         }
         $db->close();
     }
+
+    public static function obtenerConPaginacion($page, $size, $search) {
+        $db = getDB();
+        $offset = ($page - 1) * $size;
+        $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
+        $query = "SELECT * FROM solicitudes_ahorro $searchQuery LIMIT ? OFFSET ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("ii", $size, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $solicitudes = [];
+        while ($row = $result->fetch_assoc()) {
+            $id = $row['id'];
+            $lineas = SolicitudAhorroLinea::obtenerPorSolicitudId($id);
+            $solicitudes[] = new SolicitudAhorro($row['id'], $row['id_usuario'], $row['monto_total_ahorrar'], $row['quincena'], $row['mes'], $row['fecha_solicitud'], $lineas);
+        }
+    
+        $countQuery = "SELECT COUNT(*) as total FROM solicitudes_ahorro $searchQuery";
+        $countResult = $db->query($countQuery);
+        $total = $countResult->fetch_assoc()['total'];
+    
+        $db->close();
+        return [
+            'data' => $solicitudes,
+            'total' => $total
+        ];
+    }
+    
 }
 ?>

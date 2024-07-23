@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -21,5 +21,15 @@ export class SolicitudAhorroService {
 
   getSavingLines(): Observable<any> {
     return this.http.get(`${this.apiUrl}/lineasAhorro.php`, { withCredentials: true });
+  }
+
+  getAll(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      if (params[key] !== undefined && params[key] !== null) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(`${this.apiUrl}/solicitudesahorro.php`, { params: httpParams, withCredentials: true });
   }
 }

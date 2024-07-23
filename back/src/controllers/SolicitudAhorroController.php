@@ -123,6 +123,10 @@ class SolicitudAhorroController {
         }
     }
 
+    public function obtenerConPaginacion($page, $size, $search) {
+        return SolicitudAhorro::obtenerConPaginacion($page, $size, $search);
+    }    
+
     /**
      * Elimina una solicitud de ahorro por su ID.
      * @param int $id ID de la solicitud de ahorro a eliminar.

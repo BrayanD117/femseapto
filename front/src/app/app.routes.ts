@@ -22,6 +22,7 @@ import { RequestSavingWithdrawalComponent } from './components/private/user/requ
 import { AdminComponent } from './components/private/admin/admin.component';
 import { AdminWelcomeComponent } from './components/private/admin/components/admin-welcome/admin-welcome.component';
 import { CreditRequestsComponent } from './components/private/admin/components/credit-requests/credit-requests.component';
+import { SavingRequestsComponent } from './components/private/admin/components/saving-requests/saving-requests.component';
 
 // Guards
 import { LoginGuard } from './guards/login.guard';
@@ -76,7 +77,8 @@ export const routes: Routes = [
             { path: 'admin', component: AdminComponent, canActivate: [AdminGuard],
                 children: [
                     { path: '', component: AdminWelcomeComponent },
-                    { path: 'credits', component: CreditRequestsComponent }
+                    { path: 'credits', component: CreditRequestsComponent },
+                    { path: 'savings', component: SavingRequestsComponent }
                 ],
                 
             }
