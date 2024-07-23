@@ -12,18 +12,22 @@ export class RequestSavingWithdrawalService {
 
   constructor(private http: HttpClient) { }
 
+  getById(id: number): Observable<RequestSavingWithdrawal> {
+    return this.http.get<RequestSavingWithdrawal>(`${this.apiUrl}/solicitudesretiroahorro.php?id=${id}` , { withCredentials: true });
+  }
+
   getByUserId(userId: number): Observable<RequestSavingWithdrawal> {
     return this.http.get<RequestSavingWithdrawal>(`${this.apiUrl}/solicitudesretiroahorro.php?idUsuario=${userId}` , { withCredentials: true });
   }
 
-  getAll(params: any): Observable<RequestSavingWithdrawal> {
+  getAll(params: any): Observable<any> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== null) {
         httpParams = httpParams.append(key, params[key]);
       }
     });
-    return this.http.get<RequestSavingWithdrawal>(`${this.apiUrl}/solicitudesretiroahorro.php`, { params: httpParams, withCredentials: true });
+    return this.http.get<any>(`${this.apiUrl}/solicitudesretiroahorro.php`, { params: httpParams, withCredentials: true });
   }
 
   create(data: RequestSavingWithdrawal): Observable<RequestSavingWithdrawal> {
@@ -36,8 +40,8 @@ export interface RequestSavingWithdrawal {
   idUsuario: number;
   idLineaAhorro: number;
   montoRetirar: number;
-  banco?: string;
-  numeroCuenta?: string;
+  banco: string;
+  numeroCuenta: string;
   devolucionCaja: string;
   observaciones: string;
   continuarAhorro: string;
