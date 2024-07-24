@@ -1,38 +1,37 @@
 <div class="container mt-5">
-  <div class="row mb-3">
-    <div class="col">
-      <h2 class="text-center">Solicitudes de credito</h2>
-      <!-- <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control"> -->
-    </div>
+  <h1 class="mb-3">Solicitudes de Retiro de Ahorro</h1>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Número Documento</th>
+          <th scope="col">Nombre Completo</th>
+          <th scope="col">Línea Ahorro</th>
+          <th scope="col">Monto a Retirar</th>
+          <th scope="col">Fecha Solicitud</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of savingWdRequests">
+          <td>{{ request.id }}</td>
+          <td>{{ request.numeroDocumento }}</td>
+          <td>{{ request.nombreAsociado }}</td>
+          <td>{{ request.nombreLineaAhorro }}</td>
+          <td>{{ request.montoRetirar }}</td>
+          <td>{{ request.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
+          <td>
+            <app-generate-saving-withdrawal-request
+              [userId]="request.idUsuario"
+              [savingWdRequestId]="request.id"
+            ></app-generate-saving-withdrawal-request>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Número de Documento</th>
-        <th>Id línea ahorro</th>
-        <th>Monto a retirar</th>
-        <th>Fecha de Solicitud</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of savingWdRequests">
-        <td>{{ request.id }}</td>
-        <td>{{ request.numeroDocumento }}</td>
-        <td>{{ request.idLineaAhorro }}</td>
-        <td>{{ request.montoRetirar }}</td>
-        <td>{{ request.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
-        <td>
-          <app-generate-saving-withdrawal-request
-            [userId]="request.idUsuario"
-            [savingWdRequestId]="request.id"
-          ></app-generate-saving-withdrawal-request>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+  
   <nav aria-label="Page navigation example" *ngIf="totalRecords > rows">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="currentPage === 1">

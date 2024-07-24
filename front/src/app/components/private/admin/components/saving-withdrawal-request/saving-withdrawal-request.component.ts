@@ -4,6 +4,7 @@ import { User, UserService } from '../../../../../services/user.service';
 import { forkJoin } from 'rxjs';
 import { GenerateSavingWithdrawalRequestComponent } from '../generate-saving-withdrawal-request/generate-saving-withdrawal-request.component';
 import { CommonModule } from '@angular/common';
+import { SavingLine, SavingLinesService } from '../../../../../services/saving-lines.service';
 
 @Component({
   selector: 'app-saving-withdrawal-request',
@@ -24,7 +25,8 @@ export class SavingWithdrawalRequestComponent {
 
   constructor(
     private savingWdRequestService: RequestSavingWithdrawalService,
-    private userService: UserService
+    private userService: UserService,
+    private savingLineService: SavingLinesService
   ) {}
 
   ngOnInit(): void {
@@ -37,15 +39,22 @@ export class SavingWithdrawalRequestComponent {
       next: response => {
         const requests = response.data;
         const userObservables = requests.map((request: any) => this.userService.getById(request.idUsuario));
+        const savingLineObservables = requests.map((request: any) => this.savingLineService.getById(request.idLineaAhorro));
+        const observables = [...userObservables, ...savingLineObservables];
 
-        forkJoin(userObservables).subscribe((users) => {
-          const userArray = users as User[];
+        forkJoin(observables).subscribe((responses: any[]) => {
+          const users = responses.slice(0, requests.length) as User[];
+          const savingLines = responses.slice(requests.length) as SavingLine[];
+
           this.savingWdRequests = requests.map((request: any, index: number) => {
-            const user = userArray[index];
+            const user = users[index];
+            const savingLine = savingLines[index];
             return {
               ...request,
               numeroDocumento: user?.numeroDocumento || '',
-              nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
+              nombreAsociado: `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim(),
+              nombreLineaAhorro: savingLine?.nombre || '',
+              montoRetirar: this.formatNumber(request.montoRetirar)
             };
           });
 
@@ -69,5 +78,14 @@ export class SavingWithdrawalRequestComponent {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadSavingWdRequests(this.currentPage, this.rows);
+  }
+
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
   }
 }

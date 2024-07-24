@@ -56,7 +56,6 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
           
           this.naturalPersonService.getByUserId(this.userId).subscribe({
             next: (person: NaturalPerson) => {
-              console.log('PERSON ',person);
               this.phoneNumber = person.celular;
 
               this.citiesService.getById(person.mpioResidencia).subscribe({
