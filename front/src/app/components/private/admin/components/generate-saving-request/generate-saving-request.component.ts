@@ -30,6 +30,7 @@ export class GenerateSavingRequestComponent implements OnInit {
   nombreEmpresa: string = '';
   salario: number = 0;
   lineasAhorro: any[] = [];
+  tipoAsociado: number = 0;
 
   constructor(
     private http: HttpClient,
@@ -51,6 +52,7 @@ export class GenerateSavingRequestComponent implements OnInit {
         next: (user: User) => {
           this.nombreCompleto = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
           this.numeroDocumento = Number(user.numeroDocumento);
+          this.tipoAsociado = user.id_tipo_asociado;
           this.naturalPersonService.getByUserId(this.userId).subscribe({
             next: (person) => {
               this.celular = person.celular;
@@ -66,7 +68,6 @@ export class GenerateSavingRequestComponent implements OnInit {
                           this.quincena = solicitud.quincena;
                           this.mes = solicitud.mes;
                           this.lineasAhorro = solicitud.lineas || [];
-                          console.log(this.lineasAhorro);
                           this.financialInfoService.getByUserId(this.userId).subscribe({
                             next: (financialInfo) => {
                               this.salario = financialInfo.ingresosMensuales;
@@ -106,7 +107,8 @@ export class GenerateSavingRequestComponent implements OnInit {
   async generateExcel() {
     const workbook = new ExcelJS.Workbook();
     try {
-      await this.loadTemplate(workbook);
+      const templateUrl = this.tipoAsociado === 1 ? '/assets/SOLICITAR_AHORRO_NOMINA.xlsx' : '/assets/SOLICITAR_AHORRO_COMISION.xlsx';
+      await this.loadTemplate(workbook, templateUrl);
       const worksheet = workbook.getWorksheet(1);
 
       if (worksheet) {
@@ -130,64 +132,94 @@ export class GenerateSavingRequestComponent implements OnInit {
 
         worksheet.getCell('B5').value = { richText: texto };
 
-        const salarioTexto = [
-          { text: "Salario $ ", font: { underline: false } },
-          { text: this.salario.toString(), font: { underline: true } }
-        ];
+        if (this.tipoAsociado === 1) {
+          const salarioTexto = [
+            { text: "Salario $ ", font: { underline: false } },
+            { text: this.salario.toString(), font: { underline: true } }
+          ];
+          worksheet.getCell('B6').value = { richText: salarioTexto };
 
-        worksheet.getCell('B6').value = { richText: salarioTexto };
+          const nombreTexto = [
+            { text: "NOMBRE: ", font: { underline: false } },
+            { text: this.nombreCompleto, font: { underline: true } }
+          ];
+          worksheet.getCell('B13').value = { richText: nombreTexto };
 
-        const nombreTexto = [
-          { text: "NOMBRE: ", font: { underline: false } },
-          { text: this.nombreCompleto, font: { underline: true } }
-        ];
-        worksheet.getCell('B13').value = { richText: nombreTexto };
+          const cedulaTexto = [
+            { text: "CEDULA: ", font: { underline: false } },
+            { text: this.numeroDocumento.toString(), font: { underline: true } }
+          ];
+          worksheet.getCell('B14').value = { richText: cedulaTexto };
 
-        const cedulaTexto = [
-          { text: "CEDULA: ", font: { underline: false } },
-          { text: this.numeroDocumento.toString(), font: { underline: true } }
-        ];
-        worksheet.getCell('B14').value = { richText: cedulaTexto };
+          const celularTexto = [
+            { text: "CELULAR: ", font: { underline: false } },
+            { text: this.celular, font: { underline: true } }
+          ];
+          worksheet.getCell('B15').value = { richText: celularTexto };
 
-        const celularTexto = [
-          { text: "CELULAR: ", font: { underline: false } },
-          { text: this.celular, font: { underline: true } }
-        ];
-        worksheet.getCell('B15').value = { richText: celularTexto };
+          this.lineasAhorro.forEach(linea => {
+            let cellAddress = '';
+            let label = '';
+            switch (linea.idLineaAhorro) {
+              case 1:
+                cellAddress = 'D11';
+                label = 'Vivienda: $ ';
+                break;
+              case 2:
+                cellAddress = 'D9';
+                label = 'Navideño: $ ';
+                break;
+              case 3:
+                cellAddress = 'D10';
+                label = 'Vacacional: $ ';
+                break;
+              case 4:
+                cellAddress = 'D8';
+                label = 'Extraordinario: $ ';
+                break;
+            }
+            if (cellAddress) {
+              worksheet.getCell(cellAddress).value = 'X';
+            }
+            if (label && linea.montoAhorrar !== undefined) {
+              worksheet.getCell(`E${cellAddress.slice(1)}`).value = {
+                richText: [
+                  { text: label, font: { underline: false } },
+                  { text: linea.montoAhorrar.toString(), font: { underline: true } }
+                ]
+              };
+            }
+          });
+        } else if (this.tipoAsociado === 2) {
+          const nombreTexto = [
+            { text: "NOMBRE: ", font: { underline: false } },
+            { text: this.nombreCompleto, font: { underline: true } }
+          ];
+          worksheet.getCell('B10').value = { richText: nombreTexto };
 
-        this.lineasAhorro.forEach(linea => {
-          let cellAddress = '';
-          let label = '';
-          switch (linea.idLineaAhorro) {
-            case 1:
-              cellAddress = 'D11';
-              label = 'Vivienda: $ ';
-              break;
-            case 2:
-              cellAddress = 'D9';
-              label = 'Navideño: $ ';
-              break;
-            case 3:
-              cellAddress = 'D10';
-              label = 'Vacacional: $ ';
-              break;
-            case 4:
-              cellAddress = 'D8';
-              label = 'Extraordinario: $ ';
-              break;
-          }
-          if (cellAddress) {
-            worksheet.getCell(cellAddress).value = 'X';
-          }
-          if (label && linea.montoAhorrar !== undefined) {
-            worksheet.getCell(`E${cellAddress.slice(1)}`).value = {
+          const cedulaTexto = [
+            { text: "CEDULA: ", font: { underline: false } },
+            { text: this.numeroDocumento.toString(), font: { underline: true } }
+          ];
+          worksheet.getCell('B11').value = { richText: cedulaTexto };
+
+          const celularTexto = [
+            { text: "CELULAR: ", font: { underline: false } },
+            { text: this.celular, font: { underline: true } }
+          ];
+          worksheet.getCell('B12').value = { richText: celularTexto };
+
+          const linea = this.lineasAhorro.find(linea => linea.idLineaAhorro === 4);
+          if (linea) {
+            worksheet.getCell('D8').value = 'X';
+            worksheet.getCell('E8').value = {
               richText: [
-                { text: label, font: { underline: false } },
+                { text: 'Extraordinario: $ ', font: { underline: false } },
                 { text: linea.montoAhorrar.toString(), font: { underline: true } }
               ]
             };
           }
-        });
+        }
 
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], {
@@ -202,10 +234,10 @@ export class GenerateSavingRequestComponent implements OnInit {
     }
   }
 
-  async loadTemplate(workbook: ExcelJS.Workbook) {
+  async loadTemplate(workbook: ExcelJS.Workbook, templateUrl: string) {
     try {
       const data: ArrayBuffer = await firstValueFrom(
-        this.http.get('/assets/SOLICITAR_AHORRO_NOMINA.xlsx', {
+        this.http.get(templateUrl, {
           responseType: 'arraybuffer',
         })
       );
