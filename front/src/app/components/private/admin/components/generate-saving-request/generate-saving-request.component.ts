@@ -29,6 +29,7 @@ export class GenerateSavingRequestComponent implements OnInit {
   celular: string = '';
   nombreEmpresa: string = '';
   salario: number = 0;
+  lineasAhorro: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -64,6 +65,8 @@ export class GenerateSavingRequestComponent implements OnInit {
                           this.valorTotalAhorro = solicitud.montoTotalAhorrar;
                           this.quincena = solicitud.quincena;
                           this.mes = solicitud.mes;
+                          this.lineasAhorro = solicitud.lineas || [];
+                          console.log(this.lineasAhorro);
                           this.financialInfoService.getByUserId(this.userId).subscribe({
                             next: (financialInfo) => {
                               this.salario = financialInfo.ingresosMensuales;
@@ -100,24 +103,12 @@ export class GenerateSavingRequestComponent implements OnInit {
     }
   }
 
-  logData() {
-    console.log('Nombre Completo:', this.nombreCompleto);
-    console.log('Número de Documento:', this.numeroDocumento);
-    console.log('Municipio de Expedición del Documento:', this.municipioExpedicionDocumento);
-    console.log('Valor Total del Ahorro:', this.valorTotalAhorro);
-    console.log('Quincena:', this.quincena);
-    console.log('Mes:', this.mes);
-    console.log('Celular:', this.celular);
-    console.log('Nombre Empresa:', this.nombreEmpresa);
-    console.log('Salario:', this.salario);
-  }
-
   async generateExcel() {
     const workbook = new ExcelJS.Workbook();
     try {
       await this.loadTemplate(workbook);
       const worksheet = workbook.getWorksheet(1);
-      
+
       if (worksheet) {
         const texto = [
           { text: "Yo ", font: { underline: false } },
@@ -145,6 +136,58 @@ export class GenerateSavingRequestComponent implements OnInit {
         ];
 
         worksheet.getCell('B6').value = { richText: salarioTexto };
+
+        const nombreTexto = [
+          { text: "NOMBRE: ", font: { underline: false } },
+          { text: this.nombreCompleto, font: { underline: true } }
+        ];
+        worksheet.getCell('B13').value = { richText: nombreTexto };
+
+        const cedulaTexto = [
+          { text: "CEDULA: ", font: { underline: false } },
+          { text: this.numeroDocumento.toString(), font: { underline: true } }
+        ];
+        worksheet.getCell('B14').value = { richText: cedulaTexto };
+
+        const celularTexto = [
+          { text: "CELULAR: ", font: { underline: false } },
+          { text: this.celular, font: { underline: true } }
+        ];
+        worksheet.getCell('B15').value = { richText: celularTexto };
+
+        this.lineasAhorro.forEach(linea => {
+          let cellAddress = '';
+          let label = '';
+          switch (linea.idLineaAhorro) {
+            case 1:
+              cellAddress = 'D11';
+              label = 'Vivienda: $ ';
+              break;
+            case 2:
+              cellAddress = 'D9';
+              label = 'Navideño: $ ';
+              break;
+            case 3:
+              cellAddress = 'D10';
+              label = 'Vacacional: $ ';
+              break;
+            case 4:
+              cellAddress = 'D8';
+              label = 'Extraordinario: $ ';
+              break;
+          }
+          if (cellAddress) {
+            worksheet.getCell(cellAddress).value = 'X';
+          }
+          if (label && linea.montoAhorrar !== undefined) {
+            worksheet.getCell(`E${cellAddress.slice(1)}`).value = {
+              richText: [
+                { text: label, font: { underline: false } },
+                { text: linea.montoAhorrar.toString(), font: { underline: true } }
+              ]
+            };
+          }
+        });
 
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], {
