@@ -10,10 +10,13 @@ import { saveAs } from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-generate-saving-withdrawal-request',
   standalone: true,
   imports: [],
+  providers: [DatePipe],
   templateUrl: './generate-saving-withdrawal-request.component.html',
   styleUrl: './generate-saving-withdrawal-request.component.css'
 })
@@ -24,7 +27,7 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
 
   fullName: string = '';
   docNumber: number = 0;
-  date: string = '';
+  date: string | undefined;
   company: string = '';
   phoneNumber: string = '';
   city: string = '';
@@ -37,7 +40,8 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
 
   constructor(private userService: UserService, private naturalPersonService: NaturalpersonService,
     private citiesService: CitiesService, private companyService: CompanyService,
-    private savingWdRequestService: RequestSavingWithdrawalService, private http: HttpClient) { }
+    private savingWdRequestService: RequestSavingWithdrawalService, private http: HttpClient,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.loadData();
@@ -87,7 +91,9 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
 
     this.savingWdRequestService.getById(this.savingWdRequestId).subscribe({
       next: (request: RequestSavingWithdrawal) => {
-        this.date = new Date(request.fechaSolicitud  + "T00:00:00").toLocaleDateString();
+        const colTimeZone = new Date(request.fechaSolicitud).toLocaleString('en-US', { timeZone: 'America/Bogota' });
+        const dateInColombia = new Date(colTimeZone); 
+        this.date = this.datePipe.transform(dateInColombia, 'dd/MM/yyyy') || undefined;
         this.totalAmount = Number(request.montoRetirar);
         this.bank = request.banco;
         this.accountNumber = request.numeroCuenta;
@@ -113,11 +119,11 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
       if (worksheet) {
         worksheet.getCell('B8').value = this.fullName;
         worksheet.getCell('B9').value = this.docNumber;
-        worksheet.getCell('F9').value = `Fecha de Solicitud: ${this.date}`;
+        worksheet.getCell('I9').value = this.date;
         worksheet.getCell('B10').value = this.company;
-        worksheet.getCell('F10').value = `Teléfono Celular: ${this.phoneNumber}`;
+        worksheet.getCell('I10').value = this.phoneNumber;
         worksheet.getCell('B11').value = this.city;
-        worksheet.getCell('F11').value = `Monto a Retirar: ${this.totalAmount}`;
+        worksheet.getCell('I11').value = Number(this.totalAmount);
 
         switch (this.savingLineId) {
           case 1: // Ahorro Vivienda
@@ -156,7 +162,7 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
       const blob = new Blob([buffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Solicitud_Credito.xlsx');
+      saveAs(blob, `Solicitud_Retiro_Ahorro_${this.docNumber}.xlsx`);
     } catch (err) {
       console.error('Error loading template', err);
     }
