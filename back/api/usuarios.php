@@ -41,8 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(array("message" => "Persona no encontrada."));
         }
     } else {
-        http_response_code(400);
-        echo json_encode(array("message" => "ID de persona no proporcionado."));
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+        $resp = $controlador->obtenerConPaginacion($page, $size, $search);
+        header('Content-Type: application/json');
+        echo json_encode($resp);
     }
 } else {
     http_response_code(405);

@@ -70,6 +70,10 @@ class UsuarioController {
         }
     }
 
+    public function obtenerConPaginacion($page, $size, $search) {
+        return Usuario::obtenerConPaginacion($page, $size, $search);
+    }
+
     public function eliminar($id) {
         $usuario = Usuario::obtenerPorId($id);
         if (!$usuario) {

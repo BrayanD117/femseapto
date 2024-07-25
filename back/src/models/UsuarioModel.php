@@ -82,6 +82,31 @@ class Usuario {
         return $users;
     }
 
+    public static function obtenerConPaginacion($page, $size, $search) {
+        $db = getDB();
+        $offset = ($page - 1) * $size;
+        $searchQuery = !empty($search) ? "nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
+        $query = "SELECT * FROM usuarios WHERE id_rol = 1 OR $searchQuery LIMIT ? OFFSET ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("ii", $size, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $usuarios = [];
+        while ($row = $result->fetch_assoc()) {
+            $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
+        }
+        
+        $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = 1 OR $searchQuery";
+        $countResult = $db->query($countQuery);
+        $total = $countResult->fetch_assoc()['total'];
+
+        $db->close();
+        return [
+            'data' => $usuarios,
+            'total' => $total
+        ];
+    }
+
     public function eliminar() {
         $db = getDB();
         if ($this->id !== null) {
