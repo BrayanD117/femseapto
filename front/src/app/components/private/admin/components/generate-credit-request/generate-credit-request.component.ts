@@ -346,8 +346,6 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('V7').value = fecha.getFullYear();
 
         worksheet.getCell('A9').value = this.lineaCreditoNombre;
-        worksheet.getCell('G9').value = this.reestructurado;
-        worksheet.getCell('L9').value = this.periocidadPago;
         worksheet.getCell('Q9').value = Number(this.tasaInteres) / 100;
         worksheet.getCell('C11').value = this.nombreAsociado;
 
