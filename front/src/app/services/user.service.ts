@@ -37,7 +37,7 @@ export class UserService {
   }
 
   changeState(id: number): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/usuarios.php?id=${id}`, { withCredentials: true });
+    return this.http.patch(`${this.apiUrl}/usuarios.php?id=${id}`, null, { withCredentials: true });
   }
 }
 
