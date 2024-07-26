@@ -1,23 +1,32 @@
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header text-center">
-            Solicitudes de credito
-        </div>
-        <div class="card-body">
-            <h5 class="card-title text-center">Ver todas las solicitudes de credito</h5>
-            <div class="credit-button">
-                <a routerLink="/auth/admin/credits" class="btn btn-primary">Ver creditos</a>
+<div class="container text-center content-animate">
+    <h1 class="title-color mt-5">¡Bienvenido a FemSeapto!</h1>
+</div>
+
+<div class="container mt-2 content-animate">
+    <div class="row">
+
+        <!-- Card de Servicios de Crédito -->
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card shadow h-100">
+                <h4 class="card-header text-center">
+                    Servicios de Crédito
+                </h4>
+                <div class="card-body">
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/admin/credits">Ver solicitudes de crédito</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header text-center">
-            Solicitudes de Ahorro
-        </div>
-        <div class="card-body">
-            <h5 class="card-title text-center">Ver todas las solicitudes de ahorro</h5>
-            <div class="credit-button">
-                <a routerLink="/auth/admin/savings" class="btn btn-primary">Ver Ahorros</a>
+
+        <!-- Card de Servicios de Ahorro -->
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card shadow h-100">
+                <h4 class="card-header text-center">
+                    Servicios de Ahorro
+                </h4>
+                <div class="card-body ">
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/admin/savings">Ver solicitudes de ahorro</a>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/admin/savings-withdrawals">Ver solicitudes de retiro ahorro</a>
+                </div>
             </div>
         </div>
     </div>

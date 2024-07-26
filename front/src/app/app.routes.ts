@@ -84,7 +84,7 @@ export const routes: Routes = [
                     { path: '', component: AdminWelcomeComponent },
                     { path: 'credits', component: CreditRequestsComponent },
                     { path: 'savings', component: SavingRequestsComponent },
-                    { path: 'retiros', component: SavingWithdrawalRequestComponent },
+                    { path: 'savings-withdrawals', component: SavingWithdrawalRequestComponent },
                     { path: 'manage', component: ManageUsersComponent,
                         children: [
                             { path: 'administrator', component: ManageAdminComponent },
@@ -92,7 +92,6 @@ export const routes: Routes = [
                             { path: 'executive', component: ManageExecutiveComponent }
                         ]
                     },
-                    { path: 'user', component: ManageUserComponent },
                 ],
                 
             }

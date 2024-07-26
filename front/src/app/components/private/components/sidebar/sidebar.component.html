@@ -23,17 +23,29 @@
         <!-- SIDEBAR DE ADMINISTRADOR -->
         <li class="mb-1" *ngIf="userRole === 1">
           <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-            data-bs-toggle="collapse" data-bs-target="#admin-collapse" aria-expanded="false">
-            Admin Menu
+            data-bs-toggle="collapse" data-bs-target="#admin-credits-collapse" aria-expanded="false">
+            Servicios de Cŕedito
           </button>
-          <div class="collapse" id="admin-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-              <li><a routerLink="/auth/admin"
-                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Dashboard</a></li>
-            </ul>
+          <div class="collapse" id="admin-credits-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
               <li><a routerLink="/auth/admin/credits"
-                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Credits</a></li>
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1" *ngIf="userRole === 1">
+          <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+            data-bs-toggle="collapse" data-bs-target="#admin-savings-collapse" aria-expanded="false">
+            Servicios de Ahorro
+          </button>
+          <div class="collapse" id="admin-savings-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink="/auth/admin/savings"
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de ahorro</a></li>
+            </ul>
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink="/auth/admin/savings-withdrawals"
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de retiro de ahorro</a></li>
             </ul>
           </div>
         </li>
@@ -107,17 +119,29 @@
     <!-- SIDEBAR DE ADMINISTRADOR -->
     <li class="mb-1" *ngIf="userRole === 1">
       <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-        data-bs-toggle="collapse" data-bs-target="#admin-collapse" aria-expanded="false">
-        Admin Menu
+        data-bs-toggle="collapse" data-bs-target="#admin-credits-collapse" aria-expanded="false">
+        Servicios de Crédito
       </button>
-      <div class="collapse" id="admin-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a routerLink="/auth/admin"
-              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Dashboard</a></li>
-        </ul>
+      <div class="collapse" id="admin-credits-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li><a routerLink="/auth/admin/credits"
-              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Credits</a></li>
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1" *ngIf="userRole === 1">
+      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+        data-bs-toggle="collapse" data-bs-target="#admin-savings-collapse" aria-expanded="false">
+        Servicios de Ahorro
+      </button>
+      <div class="collapse" id="admin-savings-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/admin/savings"
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de ahorro</a></li>
+        </ul>
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/admin/savings-withdrawals"
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de retiro de ahorro</a></li>
         </ul>
       </div>
     </li>

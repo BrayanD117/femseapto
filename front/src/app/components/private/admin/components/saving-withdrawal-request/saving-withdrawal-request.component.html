@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <h1 class="mb-3">Solicitudes de Retiro de Ahorro</h1>
   <div class="table-responsive">
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered" *ngIf="savingWdRequests.length > 0; else noRequestsMessage">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -30,6 +30,11 @@
         </tr>
       </tbody>
     </table>
+    <ng-template #noRequestsMessage>
+      <div class="alert alert-info" role="alert">
+        No hay solicitudes de retiro de ahorro disponibles.
+      </div>
+    </ng-template>
   </div>
   
   <nav aria-label="Page navigation example" *ngIf="totalRecords > rows">
