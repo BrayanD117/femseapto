@@ -55,6 +55,41 @@ class Usuario {
         $db->close();
     }
 
+    public static function cambiarEstadoActivo($id) {
+        $db = getDB();
+        try {
+            // Obtener el estado actual del usuario
+            $query = $db->prepare("SELECT activo FROM usuarios WHERE id = ?");
+            $query->bind_param("i", $id);
+            $query->execute();
+            $query->bind_result($estadoActual);
+            $query->fetch();
+            $query->close();
+    
+            // Cambiar el estado activo
+            $nuevoEstado = ($estadoActual == 1) ? 0 : 1;
+    
+            // Actualizar el estado del usuario
+            $query = $db->prepare("UPDATE usuarios SET activo = ? WHERE id = ?");
+            $query->bind_param("ii", $nuevoEstado, $id);
+            $query->execute();
+    
+            if ($query->error) {
+                throw new Exception('Error en la consulta: ' . $query->error);
+            }
+    
+            $query->close();
+        } catch (Exception $e) {
+            // Manejo de errores
+            error_log($e->getMessage());
+            return false;
+        } finally {
+            $db->close();
+        }
+        return true;
+    }
+    
+
     public static function obtenerPorId($id) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
@@ -82,30 +117,60 @@ class Usuario {
         return $users;
     }
 
-    public static function obtenerConPaginacion($page, $size, $search) {
+    public static function obtenerConPaginacion($page, $size) {
         $db = getDB();
         $offset = ($page - 1) * $size;
-        $searchQuery = !empty($search) ? "nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT * FROM usuarios WHERE id_rol = 1 OR $searchQuery LIMIT ? OFFSET ?";
+        
+        // Consulta principal sin búsqueda
+        $query = "SELECT * FROM usuarios WHERE id_rol = 1 LIMIT ? OFFSET ?";
         $stmt = $db->prepare($query);
-        $stmt->bind_param("ii", $size, $offset);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $usuarios = [];
-        while ($row = $result->fetch_assoc()) {
-            $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
+        
+        // Verifica si la preparación de la consulta fue exitosa
+        if ($stmt === false) {
+            die('Error en la preparación de la consulta: ' . $db->error);
         }
         
-        $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = 1 OR $searchQuery";
-        $countResult = $db->query($countQuery);
+        // Asignación de parámetros
+        $stmt->bind_param('ii', $size, $offset);
+        $stmt->execute();
+        
+        // Verifica si la ejecución de la consulta fue exitosa
+        if ($stmt->errno) {
+            die('Error en la ejecución de la consulta: ' . $stmt->error);
+        }
+        
+        $result = $stmt->get_result();
+        $usuarios = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], null, $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
+        }
+        
+        // Consulta para contar los registros
+        $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = 1";
+        $countStmt = $db->prepare($countQuery);
+        
+        // Verifica si la preparación de la consulta de conteo fue exitosa
+        if ($countStmt === false) {
+            die('Error en la preparación de la consulta de conteo: ' . $db->error);
+        }
+        
+        $countStmt->execute();
+        
+        // Verifica si la ejecución de la consulta de conteo fue exitosa
+        if ($countStmt->errno) {
+            die('Error en la ejecución de la consulta de conteo: ' . $countStmt->error);
+        }
+        
+        $countResult = $countStmt->get_result();
         $total = $countResult->fetch_assoc()['total'];
-
+        
         $db->close();
         return [
             'data' => $usuarios,
             'total' => $total
         ];
-    }
+    }    
 
     public function eliminar() {
         $db = getDB();

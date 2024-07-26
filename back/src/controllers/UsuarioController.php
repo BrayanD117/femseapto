@@ -50,6 +50,18 @@ class UsuarioController {
         return true;
     }
 
+    // Función para cambiar el estado activo del usuario
+    public function cambiarEstadoActivo($id) {
+        $resultado = Usuario::cambiarEstadoActivo($id);
+        if ($resultado) {
+            http_response_code(200);
+            return array("message" => "Estado del usuario actualizado exitosamente.");
+        } else {
+            http_response_code(500);
+            return array("message" => "Error al actualizar el estado del usuario.");
+        }
+    }
+
     public function obtenerPorId($id) {
         $usuario = Usuario::obtenerPorId($id);
         if ($usuario) {
@@ -70,8 +82,8 @@ class UsuarioController {
         }
     }
 
-    public function obtenerConPaginacion($page, $size, $search) {
-        return Usuario::obtenerConPaginacion($page, $size, $search);
+    public function obtenerConPaginacion($page, $size) {
+        return Usuario::obtenerConPaginacion($page, $size);
     }
 
     public function eliminar($id) {

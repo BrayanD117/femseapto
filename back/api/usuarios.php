@@ -9,11 +9,6 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-if ($decodedToken === null) {
-    http_response_code(401);
-    echo json_encode(array("message" => "Token no válido o no proporcionado."));
-    exit(); // Terminar la ejecución si el token no es válido
-}
 
 // Crear una instancia del controlador
 $controlador = new UsuarioController();
@@ -43,11 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;
-        $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-        $resp = $controlador->obtenerConPaginacion($page, $size, $search);
+        $resp = $controlador->obtenerConPaginacion($page, $size);
         header('Content-Type: application/json');
         echo json_encode($resp);
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+    if ($id) {
+        $resultado = $controlador->cambiarEstadoActivo($id);
+        if ($resultado) {
+            echo json_encode(array("message" => "Estado del usuario actualizado exitosamente."));
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(array("message" => "ID del usuario no proporcionado."));
     }
 } else {
     http_response_code(405);

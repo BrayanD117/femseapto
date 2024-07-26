@@ -35,6 +35,10 @@ export class UserService {
     const url = `${this.apiUrl}/usuarios.php`;
     return this.http.put<User>(url, user, { withCredentials: true });
   }
+
+  changeState(id: number): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/usuarios.php?id=${id}`, { withCredentials: true });
+  }
 }
 
 export interface User {

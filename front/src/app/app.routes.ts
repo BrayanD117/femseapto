@@ -33,6 +33,10 @@ import { UserGuard } from './guards/user.guard';
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
 import { SavingWithdrawalRequestComponent } from './components/private/admin/components/saving-withdrawal-request/saving-withdrawal-request.component';
+import { ManageUsersComponent } from './components/private/admin/components/manage-users/manage-users.component';
+import { ManageUserComponent } from './components/private/admin/components/manage-users/components/manage-user/manage-user.component';
+import { ManageAdminComponent } from './components/private/admin/components/manage-users/components/manage-admin/manage-admin.component';
+import { ManageExecutiveComponent } from './components/private/admin/components/manage-users/components/manage-executive/manage-executive.component';
 
 
 
@@ -80,7 +84,15 @@ export const routes: Routes = [
                     { path: '', component: AdminWelcomeComponent },
                     { path: 'credits', component: CreditRequestsComponent },
                     { path: 'savings', component: SavingRequestsComponent },
-                    { path: 'retiros', component: SavingWithdrawalRequestComponent }
+                    { path: 'retiros', component: SavingWithdrawalRequestComponent },
+                    { path: 'manage', component: ManageUsersComponent,
+                        children: [
+                            { path: 'administrator', component: ManageAdminComponent },
+                            { path: 'user', component: ManageUserComponent },
+                            { path: 'executive', component: ManageExecutiveComponent }
+                        ]
+                    },
+                    { path: 'user', component: ManageUserComponent },
                 ],
                 
             }

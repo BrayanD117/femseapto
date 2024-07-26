@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row mb-3">
+    <div class="col">
+      <h2 class="text-center">Usuarios</h2>
+      <!-- <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control"> -->
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>No. Documento</th>
+        <th>Primer Apellido</th>
+        <th>Segundo Apellido</th>
+        <th>Primer Nombre</th>
+        <th>Segundo Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.numeroDocumento }}</td>
+        <td>{{ user.primerApellido }}</td>
+        <td>{{ user.segundoApellido }}</td>
+        <td>{{ user.primerNombre }}</td>
+        <td>{{ user.segundoNombre }}</td>
+        <td>
+            <button
+                class="btn btn-warning btn-sm me-2"
+                (click)="changeState(user.id)"
+            >
+                {{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
+            </button>
+            <button
+                class="btn btn-primary btn-sm"
+                (click)="editUser(user.id)"
+            >
+                Editar
+            </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation example" *ngIf="totalRecords > rows">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a
+          class="page-link"
+          (click)="onPageChange(currentPage - 1)"
+          aria-label="Previous"
+          style="cursor: pointer"
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let page of pages"
+        [class.active]="currentPage === page"
+      >
+        <a
+          class="page-link"
+          (click)="onPageChange(page)"
+          style="cursor: pointer"
+          >{{ page }}</a
+        >
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a
+          class="page-link"
+          (click)="onPageChange(currentPage + 1)"
+          aria-label="Next"
+          style="cursor: pointer"
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
