@@ -1,6 +1,9 @@
 .title-color {
   color: #00823d;
+  font-weight: bold;
 }
+
 .username {
+  font-size: x-large;
   font-weight: 400;
 }

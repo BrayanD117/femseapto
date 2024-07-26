@@ -20,7 +20,7 @@ export class SolicitudAhorroService {
   }
 
   getSavingLines(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/lineasAhorro.php`, { withCredentials: true });
+    return this.http.get(`${this.apiUrl}/lineasahorro.php`, { withCredentials: true });
   }
 
   getAll(params: any): Observable<any> {

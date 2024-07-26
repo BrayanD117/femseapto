@@ -1,42 +1,50 @@
 <div class="container text-center content-animate">
-    <h1 class="title-color mt-5">Bienvenido a FemSeapto</h1>
+    <h1 class="title-color mt-5">¡Bienvenido a FemSeapto!</h1>
     <p class="username lead">{{ primerNombre }} {{ primerApellido }}</p>
 </div>
 
 <div class="container mt-2 content-animate">
     <div class="row">
+
+        <!-- Card de Mi Perfil -->
         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
             <div class="card shadow text-center h-100">
                 <div class="card-header">
                     Mi Perfil
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Actualizar mis datos personales</h5>
-                    <a routerLink="/auth/user/information" class="btn btn-primary">Ver más</a>
+                    <h5 class="card-title">Datos Personales</h5>
+                    <a routerLink="/auth/user/information" class="btn btn-primary">Actualiza tus datos aquí</a>
                 </div>
             </div>
         </div>
-        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card shadow text-center h-100">
-                <div class="card-header">
-                    Servicios de ahorro
-                </div>
-                <div class="card-body ">
-                    <h5 class="card-title">Conoce los servicios de ahorro</h5>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving">Solicitalo aquí</a>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/savings">Mi historial</a>
-                </div>
-            </div>
-        </div> -->
+
+        <!-- Card de Servicios de Crédito -->
         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
             <div class="card shadow text-center h-100">
                 <div class="card-header">
-                    Servicios de credito
+                    Servicios de Crédito
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Conoce los servicios de credito</h5>
+                    <h5 class="card-title">Conoce los Servicios de Crédito</h5>
                     <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/credit">Solicitalo aquí</a>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/credits/balance">Validar saldos</a>
                     <!-- <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/credits">Mi historial</a> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Servicios de Ahorro -->
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="card shadow text-center h-100">
+                <div class="card-header">
+                    Servicios de Ahorro
+                </div>
+                <div class="card-body ">
+                    <h5 class="card-title">Conoce los Servicios de Ahorro</h5>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving">Solicita tu ahorro aquí</a>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving-withdrawal">Solicita tu retiro de ahorro aquí</a>
+                    <!--<a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/savings">Mi historial</a>-->
                 </div>
             </div>
         </div>

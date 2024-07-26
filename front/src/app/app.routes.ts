@@ -74,7 +74,7 @@ export const routes: Routes = [
                         children: [
                             { path: 'credit', component: RequestCreditComponent },
                             { path: 'saving', component: RequestSavingComponent },
-                            { path: 'withdrawal', component: RequestSavingWithdrawalComponent }
+                            { path: 'saving-withdrawal', component: RequestSavingWithdrawalComponent }
                         ], 
                     },    
                 ]
