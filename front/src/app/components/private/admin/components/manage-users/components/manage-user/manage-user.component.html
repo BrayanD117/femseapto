@@ -26,7 +26,7 @@
                   pInputText 
                   type="text" 
                   (input)="onFilterGlobal($event)" 
-                  placeholder="Search keyword" />
+                  placeholder="Buscar palabra clave" />
           </p-iconField>
       </div>
   </ng-template>
@@ -77,7 +77,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage">
       <tr>
-          <td colspan="5">No customers found.</td>
+          <td colspan="5">No se encontraron usuarios.</td>
       </tr>
   </ng-template>
   </p-table>
@@ -98,7 +98,7 @@
             <div class="col-md-7">
               <label for="idTipoDocumento" class="form-label">Tipo de Documento</label>
               <select id="idTipoDocumento" class="form-select" formControlName="idTipoDocumento">
-                <option value="" selected disabled>Seleccione un tipo de documento...</option>
+                <option value="" disabled selected>Seleccione un tipo de documento...</option>
                 <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
                   {{ documentType.nombre }}
                 </option>
@@ -131,7 +131,7 @@
             <div class="col-md-4">
               <label for="id_rol" class="form-label">Rol</label>
               <select id="id_rol" class="form-select" formControlName="id_rol">
-                <option value="" selected>Seleccione un rol...</option>
+                <option value="" disabled selected>Seleccione un rol...</option>
                 <option *ngFor="let role of roles" [value]="role.id">
                   {{ role.nombre }}
                 </option>
@@ -140,7 +140,7 @@
             <div class="col-md-8">
               <label for="id_tipo_asociado" class="form-label">Tipo de Asociado</label>
               <select id="id_tipo_asociado" class="form-select" formControlName="id_tipo_asociado">
-                <option value="" selected>Seleccione un tipo de asociado...</option>
+                <option value="" disabled selected>Seleccione un tipo de asociado...</option>
                 <option *ngFor="let associateType of associatesTypes" [value]="associateType.id">
                   {{ associateType.nombre }}
                 </option>
@@ -149,8 +149,8 @@
             <div class="col-md-4">
               <label for="activo" class="form-label">Activo</label>
               <select id="activo" class="form-select" formControlName="activo">
-                <option [value]="true">Sí</option>
-                <option [value]="false">No</option>
+                <option [value]="1">Sí</option>
+                <option [value]="0">No</option>
               </select>
             </div>
           </div>

@@ -133,7 +133,7 @@ export class ManageUserComponent {
       this.userService.changeState(id).subscribe({
         next: response => {
           // Actualiza el estado del usuario en la lista
-          user.activo = !user.activo;
+          user.activo = user.activo === 0 ? 1 : 0;
           console.log('Estado del usuario actualizado');
         },
         error: err => {
@@ -170,6 +170,7 @@ export class ManageUserComponent {
             if (index !== -1) {
               this.users[index] = userFormData;
             }
+            userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             console.log('Usuario actualizado');
             this.formReset();
           },

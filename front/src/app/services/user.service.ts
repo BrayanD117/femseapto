@@ -47,7 +47,7 @@ export interface User {
   idTipoDocumento: number;
   numeroDocumento: string;
   id_tipo_asociado: number;
-  activo: boolean;
+  activo: number;
   creadoEl: Date;
   actualizadoEl: Date;
 }
