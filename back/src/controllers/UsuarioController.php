@@ -6,9 +6,29 @@ class UsuarioController {
     
     public function crear($datos) {
 
-        $options = ['cost' => 12];
-        $hashedPassword = password_hash($datos['numeroDocumento'], PASSWORD_BCRYPT, $options);
+        if($datos['id_rol'] == 1) {
+            $randomDocumentNumber = rand(10000, 99999);
+            $datos['numeroDocumento'] = $randomDocumentNumber;
+            $datos['primerNombre'] = 'Admin';
+            $datos['primerApellido'] = 'Admin';
+            $datos['idTipoDocumento'] = 1;
+            $datos['id_tipo_asociado'] = 3;
+        } elseif ($datos['id_rol'] == 3) {
+            $datos['id_tipo_asociado'] = 3;
+        }
 
+        if ($this->existePorNumeroDocumentoYUsuario($datos['numeroDocumento'], $datos['usuario'])) {
+            http_response_code(409); // Código de estado HTTP 409 Conflict
+            return array("message" => "Usuario ya existe.");
+        }
+        
+        $options = ['cost' => 12];
+        if($datos['id_rol'] !== 1) {
+            $hashedPassword = password_hash($datos['numeroDocumento'], PASSWORD_BCRYPT, $options);
+        } else {
+            $hashedPassword = password_hash($datos['contrasenia'], PASSWORD_BCRYPT, $options);
+        }
+        
         $usuario = new Usuario(
             null,
             $datos['id_rol'],
@@ -74,6 +94,10 @@ class UsuarioController {
             http_response_code(404);
             return array("message" => "Usuario no encontrado.");
         }
+    }
+
+    public function existePorNumeroDocumentoYUsuario($numeroDocumento, $usuario) {
+        return Usuario::existePorNumeroDocumentoYUsuario($numeroDocumento, $usuario);
     }
 
     public function obtenerTodos() {

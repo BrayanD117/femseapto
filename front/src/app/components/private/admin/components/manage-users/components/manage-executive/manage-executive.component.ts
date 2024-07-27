@@ -60,8 +60,8 @@ export class ManageExecutiveComponent {
       primerNombre: ['', Validators.required],
       segundoNombre: [''],
       usuario: ['', Validators.required],
-      id_rol: [null, Validators.required],
-      id_tipo_asociado: [null, Validators.required],
+      id_rol: [3, Validators.required],
+      id_tipo_asociado: [3],
       activo: [true, Validators.required]
     });
   }
@@ -145,8 +145,10 @@ export class ManageExecutiveComponent {
 
   editUser(id: number): void {
     const user = this.users.find(user => user.id === id);
+    console.log(user);
     if (user) {
       this.isEditMode = true;
+      //this.editUserForm.patchValue({ id_tipo_asociado: 3 });
       this.editUserForm.patchValue(user);
     }
   }
@@ -154,7 +156,7 @@ export class ManageExecutiveComponent {
   createUser(): void {
     this.isEditMode = false;
     this.formReset()
-    this.editUserForm.patchValue({ activo: true }); // Establecer el estado activo como true por defecto
+    this.editUserForm.patchValue({ activo: true, id_rol: 3 }); // Establecer el estado activo como true por defecto
   }
 
   submit(): void {
@@ -170,7 +172,7 @@ export class ManageExecutiveComponent {
             if (index !== -1) {
               this.users[index] = userFormData;
             }
-            userFormData.activo = userFormData.activo === 0 ? 1 : 0;
+            //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             console.log('Usuario actualizado');
             this.formReset();
           },

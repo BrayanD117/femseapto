@@ -105,6 +105,18 @@ class Usuario {
         return $user;
     }
 
+    public static function existePorNumeroDocumentoYUsuario($numeroDocumento, $usuario) {
+        $db = getDB();
+        $query = $db->prepare("SELECT COUNT(*) FROM usuarios WHERE numero_documento = ? OR usuario = ?");
+        $query->bind_param("ss", $numeroDocumento, $usuario);
+        $query->execute();
+        $query->bind_result($count);
+        $query->fetch();
+        $query->close();
+        $db->close();
+        return $count > 0;
+    }
+    
     public static function obtenerTodos() {
         $db = getDB();
         $query = "SELECT * FROM usuarios";

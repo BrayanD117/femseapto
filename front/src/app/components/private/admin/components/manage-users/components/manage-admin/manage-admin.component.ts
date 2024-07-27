@@ -51,7 +51,7 @@ export class ManageAdminComponent {
   users: User[] = [];
   editUserForm: FormGroup;
   selectedUser: User | null = null;
-  isEditMode: boolean = true;
+  isEditMode: boolean = false;
 
   totalRecords: number = 0;
   loading: boolean = true;
@@ -74,16 +74,17 @@ export class ManageAdminComponent {
   ) {
     this.editUserForm = this.fb.group({
       id: [null],
-      idTipoDocumento: [null, Validators.required],
-      numeroDocumento: ['', Validators.required],
-      primerApellido: ['', Validators.required],
-      segundoApellido: [''],
-      primerNombre: ['', Validators.required],
-      segundoNombre: [''],
+      idTipoDocumento: [null],
+      numeroDocumento: [''],
+      primerApellido: [''],
+      //segundoApellido: [''],
+      primerNombre: [''],
+      //segundoNombre: [''],
       usuario: ['', Validators.required],
-      id_rol: [null, Validators.required],
-      id_tipo_asociado: [null, Validators.required],
-      activo: [true, Validators.required],
+      id_rol: [1],
+      id_tipo_asociado: [null],
+      contrasenia: ['', Validators.required],
+      activo: [1, Validators.required],
     });
   }
 
@@ -169,13 +170,15 @@ export class ManageAdminComponent {
     if (user) {
       this.isEditMode = true;
       this.editUserForm.patchValue(user);
+      this.editUserForm.get('contrasenia')?.disable();
     }
   }
 
   createUser(): void {
     this.isEditMode = false;
     this.formReset();
-    this.editUserForm.patchValue({ activo: true }); // Establecer el estado activo como true por defecto
+    this.editUserForm.get('contrasenia')?.enable();
+    this.editUserForm.patchValue({ activo: 1, id_rol: 1 }); // Establecer el estado activo como true por defecto
   }
 
   submit(): void {
@@ -193,7 +196,7 @@ export class ManageAdminComponent {
             if (index !== -1) {
               this.users[index] = userFormData;
             }
-            userFormData.activo = userFormData.activo === 0 ? 1 : 0;
+            //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             console.log('Usuario actualizado');
             this.formReset();
           },
@@ -204,13 +207,14 @@ export class ManageAdminComponent {
       } else {
         console.log(userFormData);
         this.userService.create(userFormData).subscribe({
-          next: (newUser) => {
-            this.users.push(newUser);
+          next: () => {
+            this.users.push(userFormData);
             console.log('Usuario creado');
             this.formReset();
           },
           error: (err) => {
             console.error('Error al crear el usuario', err);
+            console.log('Error al crear el usuario', err.error.id.message);
           },
         });
       }

@@ -60,9 +60,9 @@ export class ManageUserComponent {
       primerNombre: ['', Validators.required],
       segundoNombre: [''],
       usuario: ['', Validators.required],
-      id_rol: [null, Validators.required],
+      id_rol: [2, Validators.required],
       id_tipo_asociado: [null, Validators.required],
-      activo: [true, Validators.required]
+      activo: [1, Validators.required]
     });
   }
 
@@ -154,7 +154,7 @@ export class ManageUserComponent {
   createUser(): void {
     this.isEditMode = false;
     this.formReset()
-    this.editUserForm.patchValue({ activo: true }); // Establecer el estado activo como true por defecto
+    this.editUserForm.patchValue({ activo: 1, id_rol: 2 }); // Establecer el estado activo como true por defecto
   }
 
   submit(): void {
@@ -170,7 +170,7 @@ export class ManageUserComponent {
             if (index !== -1) {
               this.users[index] = userFormData;
             }
-            userFormData.activo = userFormData.activo === 0 ? 1 : 0;
+            //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             console.log('Usuario actualizado');
             this.formReset();
           },
@@ -181,8 +181,8 @@ export class ManageUserComponent {
       } else {
         console.log(userFormData);  
         this.userService.create(userFormData).subscribe({
-          next: (newUser) => {
-            this.users.push(newUser);
+          next: () => {
+            this.users.push(userFormData);
             console.log('Usuario creado');
             this.formReset();
           },
