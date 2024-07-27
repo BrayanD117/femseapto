@@ -5,11 +5,15 @@ require_once __DIR__ . '/../models/UsuarioModel.php';
 class UsuarioController {
     
     public function crear($datos) {
+
+        $options = ['cost' => 12];
+        $hashedPassword = password_hash($datos['numeroDocumento'], PASSWORD_BCRYPT, $options);
+
         $usuario = new Usuario(
             null,
             $datos['id_rol'],
             $datos['usuario'],
-            $datos['contrasenia'],
+            $hashedPassword,
             $datos['primerNombre'],
             $datos['segundoNombre'] ?? null,
             $datos['primerApellido'],
@@ -35,7 +39,7 @@ class UsuarioController {
 
         $usuario->id_rol = $datos['id_rol'];
         $usuario->usuario = $datos['usuario'];
-        $usuario->contrasenia = $datos['contrasenia'];
+        //$usuario->contrasenia = $datos['contrasenia'];
         $usuario->primerNombre = $datos['primerNombre'];
         $usuario->segundoNombre = $datos['segundoNombre'] ?? null;
         $usuario->primerApellido = $datos['primerApellido'];
@@ -82,8 +86,8 @@ class UsuarioController {
         }
     }
 
-    public function obtenerConPaginacion($page, $size) {
-        return Usuario::obtenerConPaginacion($page, $size);
+    public function obtenerConPaginacion($page, $size, $idRol) {
+        return Usuario::obtenerConPaginacion($page, $size, $idRol);
     }
 
     public function eliminar($id) {

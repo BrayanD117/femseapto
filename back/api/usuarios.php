@@ -9,11 +9,11 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-if ($decodedToken === null) {
+/*if ($decodedToken === null) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
     exit();
-}
+}*/
 
 // Crear una instancia del controlador
 $controlador = new UsuarioController();
@@ -43,8 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;
+        $idRol = isset($_GET['idRol']) ? (int)$_GET['idRol'] : null;
 
-        $resp = $controlador->obtenerConPaginacion($page, $size);
+        $resp = $controlador->obtenerConPaginacion($page, $size, $idRol);
         header('Content-Type: application/json');
         echo json_encode($resp);
     }

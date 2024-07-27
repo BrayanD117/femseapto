@@ -16,14 +16,8 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/usuarios.php?id=${id}`, { withCredentials: true });
   }
 
-  getAll(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach(key => {
-      if (params[key] !== undefined && params[key] !== null) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(`${this.apiUrl}/usuarios.php`, { params: httpParams, withCredentials: true });
+  getAll(params: { page: number; size: number; idRol: number }): Observable<{ data: User[], total: number }> {
+    return this.http.get<{ data: User[], total: number }>(`${this.apiUrl}/usuarios.php`, { params , withCredentials: true });
   }
 
   create(user: User): Observable<User> {

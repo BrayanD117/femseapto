@@ -41,8 +41,8 @@ class Usuario {
             $query = $db->prepare("INSERT INTO usuarios (id_rol, usuario, contrasenia, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_tipo_documento, numero_documento, id_tipo_asociado, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $query->bind_param("issssssisii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo);
         } else {
-            $query = $db->prepare("UPDATE usuarios SET id_rol = ?, usuario = ?, contrasenia = ?, primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, id_tipo_documento = ?, numero_documento = ?, id_tipo_asociado = ?, activo = ? WHERE id = ?");
-            $query->bind_param("issssssisiii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo, $this->id);
+            $query = $db->prepare("UPDATE usuarios SET id_rol = ?, usuario = ?, primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, id_tipo_documento = ?, numero_documento = ?, id_tipo_asociado = ?, activo = ? WHERE id = ?");
+            $query->bind_param("isssssisiii", $this->id_rol, $this->usuario, $this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo, $this->id);
         }
         $query->execute();
         if ($query->error) {
@@ -95,10 +95,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
         $user = null;
         if ($query->fetch()) {
-            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -111,18 +111,18 @@ class Usuario {
         $result = $db->query($query);
         $users = [];
         while ($row = $result->fetch_assoc()) {
-            $users[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
+            $users[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], $row['contrasenia'], $row['primer_apellido'], $row['segundo_apellido'], $row['primer_nombre'], $row['segundo_nombre'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
         }
         $db->close();
         return $users;
     }
 
-    public static function obtenerConPaginacion($page, $size) {
+    public static function obtenerConPaginacion($page, $size, $idRol) {
         $db = getDB();
         $offset = ($page - 1) * $size;
         
-        // Consulta principal sin búsqueda
-        $query = "SELECT * FROM usuarios WHERE id_rol = 1 LIMIT ? OFFSET ?";
+        // Consulta principal con el parámetro id_rol
+        $query = "SELECT * FROM usuarios WHERE id_rol = ? LIMIT ? OFFSET ?";
         $stmt = $db->prepare($query);
         
         // Verifica si la preparación de la consulta fue exitosa
@@ -131,7 +131,7 @@ class Usuario {
         }
         
         // Asignación de parámetros
-        $stmt->bind_param('ii', $size, $offset);
+        $stmt->bind_param('iii', $idRol, $size, $offset);
         $stmt->execute();
         
         // Verifica si la ejecución de la consulta fue exitosa
@@ -143,11 +143,11 @@ class Usuario {
         $usuarios = [];
         
         while ($row = $result->fetch_assoc()) {
-            $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], null, $row['primer_nombre'], $row['segundo_nombre'], $row['primer_apellido'], $row['segundo_apellido'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
+            $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], null, $row['primer_apellido'], $row['segundo_apellido'], $row['primer_nombre'], $row['segundo_nombre'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], $row['creado_el'], $row['actualizado_el']);
         }
         
-        // Consulta para contar los registros
-        $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = 1";
+        // Consulta para contar los registros con el parámetro id_rol
+        $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = ?";
         $countStmt = $db->prepare($countQuery);
         
         // Verifica si la preparación de la consulta de conteo fue exitosa
@@ -155,6 +155,7 @@ class Usuario {
             die('Error en la preparación de la consulta de conteo: ' . $db->error);
         }
         
+        $countStmt->bind_param('i', $idRol);
         $countStmt->execute();
         
         // Verifica si la ejecución de la consulta de conteo fue exitosa
@@ -170,7 +171,7 @@ class Usuario {
             'data' => $usuarios,
             'total' => $total
         ];
-    }    
+    }
 
     public function eliminar() {
         $db = getDB();
