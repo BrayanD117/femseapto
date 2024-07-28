@@ -43,6 +43,7 @@ import { FileUploadComponent } from './components/private/admin/components/file-
 import { FileListComponent } from './components/private/admin/components/file-list/file-list.component';
 import { ExecutiveWelcomeComponent } from './components/private/executive/executive-welcome/executive-welcome.component';
 import { ExecutiveReportsComponent } from './components/private/executive/components/executive-reports/executive-reports.component';
+import { NotFoundComponent } from './components/public/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -106,5 +107,6 @@ export const routes: Routes = [
                 ]
             }
         ]
-    }
+    },
+    { path: '**', component: NotFoundComponent },
 ];
