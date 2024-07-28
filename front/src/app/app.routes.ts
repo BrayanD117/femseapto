@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 
 // Components
@@ -39,6 +40,7 @@ import { ManageAdminComponent } from './components/private/admin/components/mana
 import { ManageExecutiveComponent } from './components/private/admin/components/manage-users/components/manage-executive/manage-executive.component';
 import { FileUploadComponent } from './components/private/admin/components/file-upload/file-upload.component';
 import { FileListComponent } from './components/private/admin/components/file-list/file-list.component';
+import { ExecutiveWelcomeComponent } from './components/private/executive/executive-welcome/executive-welcome.component';
 
 
 
@@ -97,6 +99,9 @@ export const routes: Routes = [
                     { path: 'subir', component: FileUploadComponent },
                     { path: 'bajar', component: FileListComponent },
                 ],
+                
+            },
+            { path: 'executive', component: ExecutiveWelcomeComponent,
                 
             }
         ]
