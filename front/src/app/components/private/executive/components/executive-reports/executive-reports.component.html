@@ -1,0 +1,22 @@
+<div class="container">
+    <h1 class="text-center mt-3 mb-3">Reportes</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre del Archivo</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let file of files">
+                    <td>{{ file }}</td>
+                    <td>
+                        <a [href]="getDownloadUrl(file)" download class="btn btn-primary">Descargar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

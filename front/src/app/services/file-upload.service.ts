@@ -19,4 +19,9 @@ export class FileUploadService {
     const url = `${this.apiUrl}/upload.php`;
     return this.http.post(url, formData);
   }
+
+  getFiles(): Observable<any> {
+    const url = `${this.apiUrl}/list-files.php`;
+    return this.http.get(url);
+  }
 }

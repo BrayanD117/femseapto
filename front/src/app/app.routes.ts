@@ -30,6 +30,7 @@ import { LoginGuard } from './guards/login.guard';
 import { LoginRedirectGuard } from './guards/login-redirect.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/user.guard';
+import { ExecutiveGuard } from './guards/executive.guard';
 
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
@@ -41,9 +42,7 @@ import { ManageExecutiveComponent } from './components/private/admin/components/
 import { FileUploadComponent } from './components/private/admin/components/file-upload/file-upload.component';
 import { FileListComponent } from './components/private/admin/components/file-list/file-list.component';
 import { ExecutiveWelcomeComponent } from './components/private/executive/executive-welcome/executive-welcome.component';
-
-
-
+import { ExecutiveReportsComponent } from './components/private/executive/components/executive-reports/executive-reports.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -101,8 +100,11 @@ export const routes: Routes = [
                 ],
                 
             },
-            { path: 'executive', component: ExecutiveWelcomeComponent,
-                
+            { path: 'executive',  // canActivate: [ExecutiveGuard],
+                children: [
+                    { path: '', component: ExecutiveWelcomeComponent},
+                    { path: 'reports', component:  ExecutiveReportsComponent}
+                ]
             }
         ]
     }
