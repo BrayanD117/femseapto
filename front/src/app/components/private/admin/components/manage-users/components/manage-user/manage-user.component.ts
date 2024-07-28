@@ -154,7 +154,7 @@ export class ManageUserComponent {
   createUser(): void {
     this.isEditMode = false;
     this.formReset()
-    this.editUserForm.patchValue({ activo: 1, id_rol: 2 }); // Establecer el estado activo como true por defecto
+    this.editUserForm.patchValue({ activo: 1, id_rol: 2, idTipoDocumento: '', id_tipo_asociado: '' }); // Establecer el estado activo como true por defecto
   }
 
   submit(): void {

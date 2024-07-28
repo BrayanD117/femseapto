@@ -53,7 +53,7 @@ export class ManageExecutiveComponent {
   ) {
     this.editUserForm = this.fb.group({
       id: [null],
-      idTipoDocumento: [null, Validators.required],
+      idTipoDocumento: ['', Validators.required],
       numeroDocumento: ['', Validators.required],
       primerApellido: ['', Validators.required],
       segundoApellido: [''],
@@ -156,7 +156,7 @@ export class ManageExecutiveComponent {
   createUser(): void {
     this.isEditMode = false;
     this.formReset()
-    this.editUserForm.patchValue({ activo: true, id_rol: 3 }); // Establecer el estado activo como true por defecto
+    this.editUserForm.patchValue({ activo: 1, id_rol: 3, idTipoDocumento: '' }); // Establecer el estado activo como true por defecto
   }
 
   submit(): void {

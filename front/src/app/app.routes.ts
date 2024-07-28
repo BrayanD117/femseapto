@@ -95,12 +95,11 @@ export const routes: Routes = [
                             { path: 'executive', component: ManageExecutiveComponent }
                         ]
                     },
-                    { path: 'subir', component: FileUploadComponent },
-                    { path: 'bajar', component: FileListComponent },
+                    { path: 'upload', component: FileUploadComponent },
+                    { path: 'download', component: FileListComponent },
                 ],
-                
             },
-            { path: 'executive',  // canActivate: [ExecutiveGuard],
+            { path: 'executive',  canActivate: [ExecutiveGuard],
                 children: [
                     { path: '', component: ExecutiveWelcomeComponent},
                     { path: 'reports', component:  ExecutiveReportsComponent}
