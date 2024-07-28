@@ -32,6 +32,6 @@ export class ExecutiveReportsComponent implements OnInit {
   }
 
   getDownloadUrl(fileName: string): string {
-    return `http://localhost/femseapto/uploads/${fileName}`;
+    return this.fileUploadService.downloadFile(fileName);
   }
 }

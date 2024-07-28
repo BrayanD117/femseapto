@@ -24,4 +24,8 @@ export class FileUploadService {
     const url = `${this.apiUrl}/list-files.php`;
     return this.http.get(url);
   }
+
+  downloadFile(fileName: string): string {
+    return `${this.apiUrl}/download.php?file=${fileName}`;
+  }
 }
