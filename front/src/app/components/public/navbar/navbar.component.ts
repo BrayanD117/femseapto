@@ -67,4 +67,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   closeMenu() {
     this.isMenuCollapsed = true;
   }
+
+  navigateToProfile() {
+    const role = this.loginService.getTokenClaims();
+    if (role === 1) {
+      this.router.navigate(['/auth/admin']);
+    } else if (role === 3) {
+      this.router.navigate(['/auth/executive']);
+    } else {
+      this.router.navigate(['/auth/user']);
+    }
+    this.closeMenu();
+  }
 }

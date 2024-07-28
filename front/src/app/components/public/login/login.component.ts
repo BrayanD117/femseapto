@@ -43,7 +43,9 @@ export class LoginComponent {
           if (!this.loginService.isTokenExpired()) {
             if (rol === 1) { // Suponiendo que 1 es el rol de administrador
               this.router.navigate(['/auth/admin']);
-            } else {
+            } else if(rol === 3){
+              this.router.navigate(['/auth/executive']);
+            }else {
               this.router.navigate(['/auth/user']);
             }
             //window.location.href = 'auth/user'

@@ -26,7 +26,7 @@
                     <a class="nav-link btn btn-outline-warning" (click)="closeMenu()" routerLink="/about">Sobre Nosotros</a>
                 </li>
                 <li class="nav-item" *ngIf="isAuthenticated">
-                    <a class="nav-link btn btn-outline-warning" (click)="closeMenu()" routerLink="/auth/user">Mi perfil</a>
+                    <a class="nav-link btn btn-outline-warning" (click)="navigateToProfile()">Mi perfil</a>
                 </li>
             </div>
             <div class="navbar-nav">
