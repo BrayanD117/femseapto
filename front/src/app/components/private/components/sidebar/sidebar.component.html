@@ -190,6 +190,19 @@
         </ul>
       </div>
     </li>
+    <!-- SIDEBAR DE EJECUTIVOS -->
+    <li class="mb-1" *ngIf="userRole === 3">
+      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+        data-bs-toggle="collapse" data-bs-target="#report-collapse" aria-expanded="false">
+        Reportes
+      </button>
+      <div class="collapse" id="report-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/executive/reports"
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Ver informes</a></li>
+        </ul>
+      </div>
+    </li>
   </ul>
   <div class="mt-auto">
     <button class="btn btn-danger w-100 mt-3" data-bs-toggle="modal" data-bs-target="#logoutModal">Cerrar
