@@ -23,7 +23,6 @@ export class ExecutiveReportsComponent implements OnInit {
     this.fileUploadService.getFiles().subscribe(
       (data: string[]) => {
         this.files = data;
-        console.log('Files:', this.files || []);
       },
       (error: any) => {
         console.error('Error getting files:', error);
