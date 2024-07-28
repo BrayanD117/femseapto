@@ -1,0 +1,6 @@
+<div class="file-upload-container">
+  <h2>Subir Archivo</h2>
+  <input type="file" (change)="onFileChange($event)" />
+  <button (click)="onUpload()">Subir</button>
+  <p *ngIf="responseMessage">{{ responseMessage }}</p>
+</div>

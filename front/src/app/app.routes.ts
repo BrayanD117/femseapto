@@ -37,6 +37,8 @@ import { ManageUsersComponent } from './components/private/admin/components/mana
 import { ManageUserComponent } from './components/private/admin/components/manage-users/components/manage-user/manage-user.component';
 import { ManageAdminComponent } from './components/private/admin/components/manage-users/components/manage-admin/manage-admin.component';
 import { ManageExecutiveComponent } from './components/private/admin/components/manage-users/components/manage-executive/manage-executive.component';
+import { FileUploadComponent } from './components/private/admin/components/file-upload/file-upload.component';
+import { FileListComponent } from './components/private/admin/components/file-list/file-list.component';
 
 
 
@@ -92,6 +94,8 @@ export const routes: Routes = [
                             { path: 'executive', component: ManageExecutiveComponent }
                         ]
                     },
+                    { path: 'subir', component: FileUploadComponent },
+                    { path: 'bajar', component: FileListComponent },
                 ],
                 
             }
