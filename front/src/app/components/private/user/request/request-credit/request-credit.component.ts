@@ -8,19 +8,14 @@ import { LoginService } from '../../../../../services/login.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
+import { InfoRequestCreditComponent } from './info-request-credit/info-request-credit.component';
 
-import { FinancialInfoService } from '../../../../../services/financial-info.service';
-import { FamilyService } from '../../../../../services/family.service';
-import { InternationalTransactionsService } from '../../../../../services/international-transactions.service';
-import { NaturalpersonService } from '../../../../../services/naturalperson.service';
-import { PublicPersonService } from '../../../../../services/public-person.service';
-import { RecommendationService } from '../../../../../services/recommendation.service';
-import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
+//import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
 
 @Component({
   selector: 'app-request-credit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, CurrencyFormatPipe],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, CurrencyFormatPipe, InfoRequestCreditComponent],
   providers: [MessageService],
   templateUrl: './request-credit.component.html',
   styleUrls: ['./request-credit.component.css']
@@ -39,7 +34,7 @@ export class RequestCreditComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private lineasCreditoService: LineasCreditoService,
-    private userInfoValidationService: UserInfoValidationService
+    //private userInfoValidationService: UserInfoValidationService
   ) {
     this.creditForm = this.fb.group({
       montoSolicitado: [0, [Validators.required, Validators.min(1), this.maxLimitValidator.bind(this)]],
@@ -52,11 +47,6 @@ export class RequestCreditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const token = this.loginService.getTokenClaims();
-
-    if(token)
-      this.userInfoValidationService.validateUserRecords(token.userId, this.handleWarning.bind(this));
-
     this.lineasCreditoService.obtenerLineasCredito().subscribe(
       data => {
         this.creditLines = data;
@@ -67,12 +57,12 @@ export class RequestCreditComponent implements OnInit {
     );
   }
 
-  private handleWarning(detail: string): void {
+  /*private handleWarning(detail: string): void {
     this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
     setTimeout(() => {
       this.router.navigate(['/auth/user/information']);
     }, 5000);
-  }
+  }*/
 
   onLoanAmountInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;

@@ -1,0 +1,484 @@
+<p-toast></p-toast>
+<div class="card mb-3">
+  <div class="card-body">
+    <form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
+      <input type="hidden" formControlName="id" />
+      <h5>Información Personal</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="idGenero" class="form-label">Género</label>
+              <select class="form-select" formControlName="idGenero">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of genders" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="idEstadoCivil" class="form-label">Estado Civil</label>
+              <select class="form-select" formControlName="idEstadoCivil">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of maritalStatus" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="fechaExpDoc" class="form-label"
+                >Fecha de expedición de documento</label
+              >
+              <input
+                formControlName="fechaExpDoc"
+                type="date"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="idDeptoExpDoc" class="form-label"
+                >Departamento de expedición del documento</label
+              >
+              <select
+                class="form-select"
+                id="idDeptoExpDoc"
+                formControlName="idDeptoExpDoc"
+                (change)="onDepartamentoChange('idDeptoExpDoc')"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option
+                  *ngFor="let department of departments"
+                  [value]="department.id"
+                >
+                  {{ department.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="mpioExpDoc" class="form-label"
+                >Municipio de expedición del documento</label
+              >
+              <select
+                class="form-select"
+                id="mpioExpDoc"
+                formControlName="mpioExpDoc"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let city of citiesExpDoc" [value]="city.id">
+                  {{ city.nombre }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="mt-3">Información de Nacimiento</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="fechaNacimiento" class="form-label"
+                >Fecha de nacimiento</label
+              >
+              <input
+                formControlName="fechaNacimiento"
+                type="date"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="paisNacimiento" class="form-label"
+                >País de nacimiento</label
+              >
+              <select
+                class="form-select"
+                formControlName="paisNacimiento"
+                (change)="onPaisNacimientoChange()"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of countries" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="idDeptoNacimiento" class="form-label"
+                >Departamento de nacimiento</label
+              >
+              <select
+                class="form-select"
+                formControlName="idDeptoNacimiento"
+                (change)="onDepartamentoChange('idDeptoNacimiento')"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let dpto of departments" [value]="dpto.id">
+                  {{ dpto.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="mpioNacimiento" class="form-label"
+                >Municipio de nacimiento</label
+              >
+              <select
+                class="form-select"
+                formControlName="mpioNacimiento"
+                (change)="onSelectChange($event)"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let city of citiesNac" [value]="city.id">
+                  {{ city.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="otroLugarNacimiento" class="form-label"
+                >Lugar de nacimiento</label
+              >
+              <input
+                formControlName="otroLugarNacimiento"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="mt-3">Información de Residencia</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="idDeptoResidencia" class="form-label"
+                >Departamento de residencia</label
+              >
+              <select
+                class="form-select"
+                formControlName="idDeptoResidencia"
+                (change)="onDepartamentoChange('idDeptoResidencia')"
+              >
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let dpto of departments" [value]="dpto.id">
+                  {{ dpto.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="mpioResidencia" class="form-label"
+                >Municipio de residencia</label
+              >
+              <select class="form-select" formControlName="mpioResidencia">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let city of citiesRes" [value]="city.id">
+                  {{ city.nombre }}
+                </option>
+              </select>
+            </div>
+            <!--<div class="col-md-6">
+                    <label for="idZonaResidencia" class="form-label"
+                      >Zona de residencia</label
+                    >
+                    <select class="form-select" formControlName="idZonaResidencia">
+                      <option value="" selected>Seleccione...</option>
+                      <option *ngFor="let type of zones" [value]="type.id">
+                        {{ type.nombre }}
+                      </option>
+                    </select>
+                  </div>-->
+            <div class="col-md-6">
+              <label for="idTipoVivienda" class="form-label"
+                >Tipo de vivienda de residencia</label
+              >
+              <select class="form-select" formControlName="idTipoVivienda">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of houseTypes" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="estrato" class="form-label">Estrato</label>
+              <select class="form-select" formControlName="estrato">
+                <option value="" selected>Seleccione...</option>
+                <option value="1">Estrato 1</option>
+                <option value="2">Estrato 2</option>
+                <option value="3">Estrato 3</option>
+                <option value="4">Estrato 4</option>
+                <option value="5">Estrato 5</option>
+                <option value="6">Estrato 6</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="direccionResidencia" class="form-label"
+                >Dirección de residencia</label
+              >
+              <input
+                formControlName="direccionResidencia"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="aniosAntigVivienda" class="form-label"
+                >Años de antigüedad en la vivienda de residencia</label
+              >
+              <input
+                formControlName="aniosAntigVivienda"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="mt-3">Información Familiar</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="cabezaFamilia" class="form-label"
+                >¿Es cabeza de familia?</label
+              >
+              <select class="form-select" formControlName="cabezaFamilia">
+                <option value="" selected>Seleccione...</option>
+                <option value="SI">Sí</option>
+                <option value="NO">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="personasACargo" class="form-label"
+                >Número de personas a cargo</label
+              >
+              <input
+                formControlName="personasACargo"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <!-- <div class="col-md-6">
+                    <label for="tieneHijos" class="form-label">¿Tiene hijos?</label>
+                    <select class="form-select" formControlName="tieneHijos">
+                      <option value="" selected>Seleccione...</option>
+                      <option value="SI">Sí</option>
+                      <option value="NO">No</option>
+                    </select>
+                  </div> -->
+            <!-- <div class="col-md-6">
+                    <label for="numeroHijos" class="form-label">Número de hijos</label>
+                    <input
+                      formControlName="numeroHijos"
+                      type="number"
+                      class="form-control"
+                    />
+                  </div> -->
+          </div>
+        </div>
+      </div>
+      <h5 class="mt-3">Contacto</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="correoElectronico" class="form-label"
+                >Correo electrónico</label
+              >
+              <input
+                formControlName="correoElectronico"
+                type="email"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="telefono" class="form-label"
+                >Número de teléfono</label
+              >
+              <input
+                formControlName="telefono"
+                type="text"
+                minlength="7"
+                maxlength="10"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="celular" class="form-label">Número de celular</label>
+              <input
+                formControlName="celular"
+                type="text"
+                minlength="7"
+                maxlength="10"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="telefonoOficina" class="form-label"
+                >Número de teléfono de oficina</label
+              >
+              <input
+                formControlName="telefonoOficina"
+                type="text"
+                minlength="7"
+                maxlength="10"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="mt-3">Información Educativa y Laboral</h5>
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="idNivelEducativo" class="form-label"
+                >Nivel de educación</label
+              >
+              <select class="form-select" formControlName="idNivelEducativo">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of educationLevels" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <!-- <div class="col-md-6">
+                    <label for="profesion" class="form-label">Profesión</label>
+                    <input formControlName="profesion" type="text" class="form-control" />
+                  </div> -->
+            <!-- <div class="col-md-6">
+                    <label for="ocupacionOficio" class="form-label"
+                      >Ocupación u oficio</label
+                    >
+                    <input
+                      formControlName="ocupacionOficio"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div> -->
+            <!-- <div class="col-md-6">
+                    <label for="idEmpresaLabor" class="form-label"
+                      >Empresa donde labora</label
+                    >
+                    <select class="form-select" formControlName="idEmpresaLabor">
+                      <option value="" selected>Seleccione...</option>
+                      <option *ngFor="let type of companies" [value]="type.id">
+                        {{ type.nombre }}
+                      </option>
+                    </select>
+                  </div> -->
+            <div class="col-md-6">
+              <label for="idTipoContrato" class="form-label"
+                >Tipo de contrato</label
+              >
+              <select class="form-select" formControlName="idTipoContrato">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let type of contractTypes" [value]="type.id">
+                  {{ type.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="dependenciaEmpresa" class="form-label"
+                >Dependencia a la que hace parte</label
+              >
+              <input
+                formControlName="dependenciaEmpresa"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <!-- <div class="col-md-6">
+                    <label for="cargoOcupa" class="form-label">Cargo que ocupa</label>
+                    <input
+                      formControlName="cargoOcupa"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div> -->
+            <div class="col-md-6">
+              <label for="jefeInmediato" class="form-label"
+                >Nombre del jefe inmediato</label
+              >
+              <input
+                formControlName="jefeInmediato"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="aniosAntigEmpresa" class="form-label"
+                >Años de antigüedad en la empresa</label
+              >
+              <input
+                formControlName="aniosAntigEmpresa"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <!--<div class="col-md-6">
+                    <label for="mesesAntigEmpresa" class="form-label">Meses de antigüedad en la empresa</label>
+                    <input formControlName="mesesAntigEmpresa" type="number" class="form-control" />
+                  </div>-->
+            <div class="col-md-6">
+              <label for="mesSaleVacaciones" class="form-label"
+                >Mes en el que sale a vacaciones</label
+              >
+              <input
+                formControlName="mesSaleVacaciones"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <h5 class="mt-3">Información de Emergencia</h5>
+            <div class="card">
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="nombreEmergencia" class="form-label"
+                      >Nombre completo</label
+                    >
+                    <input
+                      formControlName="nombreEmergencia"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="numeroCedulaEmergencia" class="form-label"
+                      >Número de documento</label
+                    >
+                    <input
+                      formControlName="numeroCedulaEmergencia"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="numeroCelularEmergencia" class="form-label"
+                      >Número de celular</label
+                    >
+                    <input
+                      formControlName="numeroCelularEmergencia"
+                      type="text"
+                      minlength="7"
+                      maxlength="10"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div> -->
+      <div class="d-grid gap-2 mt-3">
+        <button
+          class="btn btn-primary"
+          [disabled]="infoForm.invalid"
+          type="submit"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
