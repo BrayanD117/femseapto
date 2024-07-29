@@ -1,71 +1,89 @@
 <div class="container mt-5">
-  <div class="row mb-3">
-    <div class="col">
-      <h1>Solicitudes de Crédito</h1>
-      <!-- <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control"> -->
-    </div>
+  <h1>Solicitudes de Crédito</h1>
+  <div class="card">
+    <p-table
+      #dt2
+      [value]="creditRequests"
+      styleClass="p-datatable-striped"
+      [paginator]="true"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+      [lazy]="true"
+      (onLazyLoad)="
+        loadCreditRequests(
+          ($event.first ?? 0) / ($event.rows ?? 10) + 1,
+          $event.rows ?? 10
+        )
+      "
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [globalFilterFields]="[
+        'numeroDocumento',
+        'primerApellido',
+        'segundoNombre',
+        'primerNombre'
+      ]"
+      [tableStyle]="{ 'min-width': '75rem' }"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              pInputText
+              type="text"
+              (input)="onFilterGlobal($event)"
+              placeholder="Buscar palabra clave"
+            />
+          </p-iconField>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 10%">No.</th>
+          <th style="width: 15%">No. Documento</th>
+          <th style="width: 15%">Monto Solicitado</th>
+          <th style="width: 15%">Plazo Quincenal</th>
+          <th style="width: 15%">Valor Cuota Quincenal</th>
+          <th style="width: 20%">Linea de Crédito</th>
+          <th style="width: 20%">Tasa de Interés</th>
+          <th style="width: 20%">Fecha de Solicitud</th>
+          <th style="width: 20%">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-creditRequest>
+        <tr>
+          <td>{{ creditRequest.id }}</td>
+          <td>{{ creditRequest.numeroDocumento }}</td>
+          <td>{{ creditRequest.montoSolicitado }}</td>
+          <td>{{ creditRequest.plazoQuincenal }}</td>
+          <td>{{ creditRequest.valorCuotaQuincenal }}</td>
+          <td>{{ creditRequest.idLineaCredito }}</td>
+          <td>{{ creditRequest.tasaInteres }}</td>
+          <td>{{ creditRequest.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
+          <td>
+            <app-generate-credit-request
+              [montoSolicitado]="creditRequest.montoSolicitado"
+              [plazoQuincenal]="creditRequest.plazoQuincenal"
+              [valorCuotaQuincenal]="creditRequest.valorCuotaQuincenal"
+              [fechaSolicitud]="creditRequest.fechaSolicitud"
+              [lineaCredito]="creditRequest.idLineaCredito"
+              [reestructurado]="creditRequest.reestructurado"
+              [periocidadPago]="creditRequest.periocidadPago"
+              [tasaInteres]="creditRequest.tasaInteres"
+              [userId]="creditRequest.idUsuario"
+              [idSolicitudCredito]="creditRequest.id"
+            ></app-generate-credit-request>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">No se encontraron solicitudes de crédito.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Número de Documento</th>
-        <th>Monto Solicitado</th>
-        <th>Plazo Quincenal</th>
-        <th>Valor Cuota Quincenal</th>
-        <th>Linea de Crédito</th>
-        <th>Reestructurado</th>
-        <th>Periocidad de Pago</th>
-        <th>Tasa de Interés</th>
-        <th>Fecha de Solicitud</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of creditRequests">
-        <td>{{ request.id }}</td>
-        <td>{{ request.numeroDocumento }}</td>
-        <td>{{ request.montoSolicitado }}</td>
-        <td>{{ request.plazoQuincenal }}</td>
-        <td>{{ request.valorCuotaQuincenal }}</td>
-        <td>{{ request.idLineaCredito }}</td>
-        <td>{{ request.reestructurado }}</td>
-        <td>{{ request.periocidadPago }}</td>
-        <td>{{ request.tasaInteres }}</td>
-        <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
-        <td>
-          <app-generate-credit-request 
-            [montoSolicitado]="request.montoSolicitado"
-            [plazoQuincenal]="request.plazoQuincenal"
-            [valorCuotaQuincenal]="request.valorCuotaQuincenal"
-            [fechaSolicitud]="request.fechaSolicitud"
-            [lineaCredito]="request.idLineaCredito"
-            [reestructurado]="request.reestructurado"
-            [periocidadPago]="request.periocidadPago"
-            [tasaInteres]="request.tasaInteres"
-            [userId]="request.idUsuario"
-            [idSolicitudCredito]="request.id"
-          ></app-generate-credit-request>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <nav aria-label="Page navigation example" *ngIf="totalRecords > rows">
-    <ul class="pagination justify-content-center">
-      <li class="page-item" [class.disabled]="currentPage === 1">
-        <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous" style="cursor: pointer;">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
-        <a class="page-link" (click)="onPageChange(page)" style="cursor: pointer;">{{ page }}</a>
-      </li>
-      <li class="page-item" [class.disabled]="currentPage === totalPages">
-        <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next" style="cursor: pointer;">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
 </div>

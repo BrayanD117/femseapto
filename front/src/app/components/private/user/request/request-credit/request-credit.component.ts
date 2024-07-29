@@ -11,6 +11,11 @@ import { LineasCreditoService } from '../../../../../services/lineas-credito.ser
 import { InfoRequestCreditComponent } from './info-request-credit/info-request-credit.component';
 
 //import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
+import { RecommendationService } from '../../../../../services/recommendation.service';
+import { FamilyService } from '../../../../../services/family.service';
+import { NaturalpersonService } from '../../../../../services/naturalperson.service';
+
 
 @Component({
   selector: 'app-request-credit',
@@ -27,6 +32,9 @@ export class RequestCreditComponent implements OnInit {
   loanAmount = 0;
   creditConditions: string[] = [];
 
+  displayMessage: string = '';
+  isAdditionalDisabled: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private creditsService: RequestCreditService,
@@ -34,7 +42,11 @@ export class RequestCreditComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private lineasCreditoService: LineasCreditoService,
-    //private userInfoValidationService: UserInfoValidationService
+    //private userInfoValidationService: UserInfoValidationService,
+    private financialInfoService: FinancialInfoService,
+    private familyService: FamilyService,
+    private recommendationService: RecommendationService,
+    private naturalpersonService: NaturalpersonService  
   ) {
     this.creditForm = this.fb.group({
       montoSolicitado: [0, [Validators.required, Validators.min(1), this.maxLimitValidator.bind(this)]],
@@ -47,6 +59,8 @@ export class RequestCreditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validateUserRecords();
+
     this.lineasCreditoService.obtenerLineasCredito().subscribe(
       data => {
         this.creditLines = data;
@@ -55,6 +69,62 @@ export class RequestCreditComponent implements OnInit {
         console.error('Error al obtener líneas de crédito:', error);
       }
     );
+  }
+
+  validateUserRecords(): void {
+    const token = this.loginService.getTokenClaims();
+
+    if(token) {
+      this.financialInfoService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre la información financiera';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+
+      /*this.familyService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre la información familiar';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });*/
+
+      this.naturalpersonService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre la información general';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+
+      this.recommendationService.validatePersonal(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre al menos una referencia personal';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+
+      this.recommendationService.validateFamiliar(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre al menos una referencia familiar';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+    }   
   }
 
   /*private handleWarning(detail: string): void {
@@ -155,7 +225,6 @@ export class RequestCreditComponent implements OnInit {
   }
 
   procesarCondiciones(textoCondiciones: string): void {
-    // Reemplaza los puntos con saltos de línea
     this.creditConditions = textoCondiciones.split('.').map(sentence => sentence.trim()).filter(sentence => sentence.length > 0);
   }
 

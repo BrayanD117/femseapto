@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
 import { UserService, User } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
@@ -7,14 +7,25 @@ import { Router } from '@angular/router';
 import { GenerateSavingRequestComponent } from '../generate-saving-request/generate-saving-request.component';
 import { forkJoin } from 'rxjs';
 
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { HttpClientModule } from '@angular/common/http';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+
 @Component({
   selector: 'app-saving-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule, GenerateSavingRequestComponent],
+  imports: [CommonModule, FormsModule, GenerateSavingRequestComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
   templateUrl: './saving-requests.component.html',
   styleUrls: ['./saving-requests.component.css']
 })
 export class SavingRequestsComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
+  
   savingRequests: any[] = [];
   totalRecords: number = 0;
   loading: boolean = true;
@@ -26,12 +37,22 @@ export class SavingRequestsComponent implements OnInit {
 
   constructor(
     private solicitudAhorroService: SolicitudAhorroService,
-    private userService: UserService,
-    private router: Router
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.loadSavingRequests();
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
+
+  onFilterGlobal(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.dt2.filterGlobal(target.value, 'contains');
+    }
   }
 
   loadSavingRequests(page: number = 1, size: number = 10): void {
@@ -53,8 +74,6 @@ export class SavingRequestsComponent implements OnInit {
           });
 
           this.totalRecords = response.total;
-          this.totalPages = Math.ceil(this.totalRecords / this.rows);
-          this.pages = Array(this.totalPages).fill(0).map((x, i) => i + 1);
           this.loading = false;
         });
       },

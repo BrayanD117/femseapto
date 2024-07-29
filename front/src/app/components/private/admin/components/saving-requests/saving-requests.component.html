@@ -1,56 +1,79 @@
 <div class="container mt-5">
-    <div class="row mb-3">
-      <div class="col">
-        <h1>Solicitudes de Ahorro</h1>
-        <!-- <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control"> -->
-      </div>
-    </div>
-    <table class="table table-bordered">
-      <thead>
+  <h1>Solicitudes de Ahorro</h1>
+  <div class="card">
+    <p-table
+      #dt2
+      [value]="savingRequests"
+      styleClass="p-datatable-striped"
+      [paginator]="true"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+      [lazy]="true"
+      (onLazyLoad)="
+        loadSavingRequests(
+          ($event.first ?? 0) / ($event.rows ?? 10) + 1,
+          $event.rows ?? 10
+        )
+      "
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [globalFilterFields]="[
+        'id',
+        'numeroDocumento',
+        'montoTotalAhorrar',
+        'quincena',
+        'mes',
+        'fechaSolicitud'
+      ]"
+      [tableStyle]="{ 'min-width': '75rem' }"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              pInputText
+              type="text"
+              (input)="onFilterGlobal($event)"
+              placeholder="Buscar palabra clave"
+            />
+          </p-iconField>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
         <tr>
-          <th>Id</th>
-          <th>Número de Documento</th>
-          <th>Monto Total Ahorrar</th>
-          <th>Quincena</th>
-          <th>Mes</th>
-          <th>Fecha de Solicitud</th>
-          <th>Acciones</th>
+          <th style="width: 10%">No.</th>
+          <th style="width: 10%">No. Documento</th>
+          <th style="width: 15%">Monto Total Ahorrar</th>
+          <th style="width: 15%">Quincena</th>
+          <th style="width: 15%">Mes</th>
+          <th style="width: 15%">Fecha de Solicitud</th>
+          <th style="width: 20%">Acciones</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of savingRequests">
-          <td>{{ request.id }}</td>
-          <td>{{ request.numeroDocumento }}</td>
-          <td>{{ request.montoTotalAhorrar }}</td>
-          <td>{{ request.quincena }}</td>
-          <td>{{ request.mes }}</td>
-          <td>{{ request.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
+      </ng-template>
+      <ng-template pTemplate="body" let-savingRequest>
+        <tr>
+          <td>{{ savingRequest.id }}</td>
+          <td>{{ savingRequest.numeroDocumento }}</td>
+          <td>{{ savingRequest.montoTotalAhorrar }}</td>
+          <td>{{ savingRequest.quincena }}</td>
+          <td>{{ savingRequest.mes }}</td>
+          <td>{{ savingRequest.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
           <td>
             <app-generate-saving-request
-              [userId]="request.idUsuario"
-              [idSolicitudAhorro]="request.id"
+              [userId]="savingRequest.idUsuario"
+              [idSolicitudAhorro]="savingRequest.id"
             ></app-generate-saving-request>
           </td>
         </tr>
-      </tbody>
-    </table>
-  
-    <nav aria-label="Page navigation example" *ngIf="totalRecords > rows">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous" style="cursor: pointer;">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
-          <a class="page-link" (click)="onPageChange(page)" style="cursor: pointer;">{{ page }}</a>
-        </li>
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next" style="cursor: pointer;">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">No se encontraron usuarios.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-  
+</div>

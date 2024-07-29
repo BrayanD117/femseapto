@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RequestCreditService } from '../../../../../services/request-credit.service';
 import { UserService, User } from '../../../../../services/user.service';
 import { AllCreditRequestDataService } from '../../../../../services/allCreditRequestData.service';
@@ -8,14 +8,26 @@ import { Router } from '@angular/router';
 import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
 import { forkJoin } from 'rxjs';
 
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { HttpClientModule } from '@angular/common/http';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+
+
 @Component({
   selector: 'app-credit-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule, GenerateCreditRequestComponent],
+  imports: [CommonModule, FormsModule, GenerateCreditRequestComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
   templateUrl: './credit-requests.component.html',
   styleUrls: ['./credit-requests.component.css']
 })
 export class CreditRequestsComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
+
   creditRequests: any[] = [];
   totalRecords: number = 0;
   loading: boolean = true;
@@ -34,6 +46,13 @@ export class CreditRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCreditRequests();
+  }
+
+  onFilterGlobal(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.dt2.filterGlobal(target.value, 'contains');
+    }
   }
 
   loadCreditRequests(page: number = 1, size: number = 10): void {
@@ -55,8 +74,8 @@ export class CreditRequestsComponent implements OnInit {
           });
 
           this.totalRecords = response.total;
-          this.totalPages = Math.ceil(this.totalRecords / this.rows);
-          this.pages = Array(this.totalPages).fill(0).map((x, i) => i + 1);
+          //this.totalPages = Math.ceil(this.totalRecords / this.rows);
+          //this.pages = Array(this.totalPages).fill(0).map((x, i) => i + 1);
           this.loading = false;
         });
       },
@@ -76,11 +95,11 @@ export class CreditRequestsComponent implements OnInit {
     this.loadCreditRequests(this.currentPage, this.rows);
   }
 
-  generateData(request: any): void {
+  /*generateData(request: any): void {
     const userId = request.idUsuario;
 
     this.allCreditRequestDataService.getAllData(userId).subscribe(data => {
       //console.log('Datos recolectados:', data);
     });
-  }
+  }*/
 }

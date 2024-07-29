@@ -89,7 +89,7 @@ export class AllCreditRequestDataService {
           recommendations: this.recommendationService.getByUserId(userId),
           recommendationTypes: this.recommendationTypeService.getAll(),
           relationships: this.relationshipService.getAll(),
-          requestCredits: this.requestCreditService.getAll({ userId }),
+          //requestCredits: this.requestCreditService.getAll({ userId }),
           userInfo: this.userInfoService.getUserInfo(),
           user: this.userService.getById(userId),
           zones: this.zoneService.getAll()

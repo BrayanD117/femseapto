@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RequestSavingWithdrawal, RequestSavingWithdrawalService } from '../../../../../services/request-saving-withdrawal.service';
 import { User, UserService } from '../../../../../services/user.service';
 import { forkJoin } from 'rxjs';
@@ -6,14 +6,25 @@ import { GenerateSavingWithdrawalRequestComponent } from '../generate-saving-wit
 import { CommonModule } from '@angular/common';
 import { SavingLine, SavingLinesService } from '../../../../../services/saving-lines.service';
 
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { HttpClientModule } from '@angular/common/http';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+
 @Component({
   selector: 'app-saving-withdrawal-request',
   standalone: true,
-  imports: [CommonModule, GenerateSavingWithdrawalRequestComponent],
+  imports: [CommonModule, GenerateSavingWithdrawalRequestComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
   templateUrl: './saving-withdrawal-request.component.html',
   styleUrl: './saving-withdrawal-request.component.css'
 })
 export class SavingWithdrawalRequestComponent {
+  @ViewChild('dt2') dt2!: Table;
+  
   savingWdRequests: any[] = [];
   totalRecords: number = 0;
   loading: boolean = true;
@@ -31,6 +42,17 @@ export class SavingWithdrawalRequestComponent {
 
   ngOnInit(): void {
     this.loadSavingWdRequests();
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
+
+  onFilterGlobal(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.dt2.filterGlobal(target.value, 'contains');
+    }
   }
 
   loadSavingWdRequests(page: number = 1, size: number = 10): void {
@@ -59,8 +81,6 @@ export class SavingWithdrawalRequestComponent {
           });
 
           this.totalRecords = response.total;
-          this.totalPages = Math.ceil(this.totalRecords / this.rows);
-          this.pages = Array(this.totalPages).fill(0).map((x, i) => i + 1);
           this.loading = false;
         });
       },

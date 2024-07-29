@@ -19,7 +19,15 @@
     
     
     <!-- Section 2 -->
-    <div *ngIf="isSectionVisible(1)">
+    <div class="mb-5" *ngIf="isSectionVisible(1)">
+      <h5>Información Financiera</h5>
+      <div class="card mb-3">
+        <div class="card-body">
+          <app-financial-info></app-financial-info>
+        </div>
+      </div>
+      
+
       <input type="hidden" formControlName="id" />
       <h5>Información Personal</h5>
       <div class="card">

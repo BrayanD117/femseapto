@@ -16,13 +16,7 @@ export class RequestCreditService {
     return this.http.post(`${this.apiUrl}/solicitudescredito.php`, data, { withCredentials: true });
   }
 
-  getAll(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach(key => {
-      if (params[key] !== undefined && params[key] !== null) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php`, { params: httpParams, withCredentials: true });
+  getAll(params: { page: number; size: number; search: string }): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php`, { params , withCredentials: true });
   }
 }

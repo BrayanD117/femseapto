@@ -1,8 +1,14 @@
 <p-toast></p-toast>
   <h5 class="mt-3">Solicitud de Crédito</h5>
+  <div class="alert alert-warning" role="alert" *ngIf="displayMessage">
+    <strong>{{ displayMessage }}</strong>. De no hacerlo, no podrá completar la solicitud de crédito, ya que esta información es fundamental para el estudio de su solicitud.
+  </div>
+  
+
+  <p *ngIf="displayMessage">{{ displayMessage }}</p>
   <div class="card mb-5">
     <div class="card-body">
-      <form class="row g-3" [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+      <form class="row g-3" [formGroup]="creditForm" (ngSubmit)="onSubmit()" [attr.disabled]="isAdditionalDisabled ? true : null">
         <div class="col-md-12">
           <label for="idLineaCredito" class="form-label"
             >Línea de crédito a solicitar</label
@@ -91,7 +97,7 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="creditForm.invalid"
+            [disabled]="creditForm.invalid || isAdditionalDisabled"
           >
             Enviar Solicitud
           </button>

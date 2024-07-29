@@ -52,6 +52,7 @@ import { LoginService } from '../../../../../../services/login.service';
 import { RequestCreditComponent } from '../request-credit.component';
 import { FamilyInformationComponent } from '../../../components/user-info/components/family-information/family-information.component';
 import { RecommendationComponent } from '../../../components/user-info/components/recommendation/recommendation.component';
+import { FinancialInfoComponent } from '../../../components/user-info/components/financial-info/financial-info.component';
 
 @Component({
   selector: 'app-info-request-credit',
@@ -64,7 +65,8 @@ import { RecommendationComponent } from '../../../components/user-info/component
     ToastModule,
     RequestCreditComponent,
     FamilyInformationComponent,
-    RecommendationComponent
+    RecommendationComponent,
+    FinancialInfoComponent
   ],
   providers: [MessageService],
   templateUrl: './info-request-credit.component.html',
