@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RequestCreditService } from '../../../../../services/request-credit.service';
 import { UserService, User } from '../../../../../services/user.service';
-import { AllCreditRequestDataService } from '../../../../../services/allCreditRequestData.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
 import { forkJoin } from 'rxjs';
+import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
 
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -40,8 +39,8 @@ export class CreditRequestsComponent implements OnInit {
   constructor(
     private requestCreditService: RequestCreditService,
     private userService: UserService,
-    private allCreditRequestDataService: AllCreditRequestDataService,
-    private router: Router
+    private creditLineService: LineasCreditoService
+    
   ) {}
 
   ngOnInit(): void {
@@ -61,15 +60,23 @@ export class CreditRequestsComponent implements OnInit {
       next: response => {
         const requests = response.data;
         const userObservables = requests.map((request: any) => this.userService.getById(request.idUsuario));
+        const creditLineObservables = requests.map((request: any) => this.creditLineService.obtenerLineaCreditoPorId(request.idLineaCredito));
+        const observables = [...userObservables, ...creditLineObservables];
 
-        forkJoin(userObservables).subscribe((users) => {
-          const userArray = users as User[];
+        forkJoin(observables).subscribe((responses: any[]) => {
+          const userArray = responses.slice(0, requests.length) as User[];
+          const creditLineArray = responses.slice(requests.length) as any[];
+          
           this.creditRequests = requests.map((request: any, index: number) => {
             const user = userArray[index];
+            const creditLine = creditLineArray[index];
             return {
               ...request,
               numeroDocumento: user?.numeroDocumento || '',
-              nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
+              nombreAsociado: `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim(),
+              montoSolicitado: this.formatNumber(request.montoSolicitado),
+              valorCuotaQuincenal: this.formatNumber(request.valorCuotaQuincenal),
+              nombreLineaCredito: creditLine?.nombre || '',
             };
           });
 
@@ -95,11 +102,12 @@ export class CreditRequestsComponent implements OnInit {
     this.loadCreditRequests(this.currentPage, this.rows);
   }
 
-  /*generateData(request: any): void {
-    const userId = request.idUsuario;
-
-    this.allCreditRequestDataService.getAllData(userId).subscribe(data => {
-      //console.log('Datos recolectados:', data);
-    });
-  }*/
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
+  }
 }

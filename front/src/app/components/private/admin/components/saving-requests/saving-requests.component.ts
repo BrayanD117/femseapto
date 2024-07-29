@@ -3,7 +3,6 @@ import { SolicitudAhorroService } from '../../../../../services/request-saving.s
 import { UserService, User } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GenerateSavingRequestComponent } from '../generate-saving-request/generate-saving-request.component';
 import { forkJoin } from 'rxjs';
 
@@ -69,7 +68,8 @@ export class SavingRequestsComponent implements OnInit {
             return {
               ...request,
               numeroDocumento: user?.numeroDocumento || '',
-              nombreAsociado: `${request.primerNombre || ''} ${request.segundoNombre || ''} ${request.primerApellido || ''} ${request.segundoApellido || ''}`.trim()
+              nombreAsociado: `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim(),
+              montoTotalAhorrar: this.formatNumber(request.montoTotalAhorrar)
             };
           });
 
@@ -91,5 +91,14 @@ export class SavingRequestsComponent implements OnInit {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadSavingRequests(this.currentPage, this.rows);
+  }
+
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
   }
 }
