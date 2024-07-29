@@ -44,6 +44,7 @@ import { FileListComponent } from './components/private/admin/components/file-li
 import { ExecutiveWelcomeComponent } from './components/private/executive/executive-welcome/executive-welcome.component';
 import { ExecutiveReportsComponent } from './components/private/executive/components/executive-reports/executive-reports.component';
 import { NotFoundComponent } from './components/public/not-found/not-found.component';
+import { InfoRequestCreditComponent } from './components/private/user/request/request-credit/info-request-credit/info-request-credit.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -76,7 +77,7 @@ export const routes: Routes = [
                     },
                     { path: 'request', 
                         children: [
-                            { path: 'credit', component: RequestCreditComponent },
+                            { path: 'credit', component: InfoRequestCreditComponent },
                             { path: 'saving', component: RequestSavingComponent },
                             { path: 'saving-withdrawal', component: RequestSavingWithdrawalComponent }
                         ], 

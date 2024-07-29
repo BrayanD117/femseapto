@@ -18,7 +18,7 @@ class PersonaNaturalController {
             $datos['otroLugarNacimiento'] ?? null,
             $datos['idDeptoResidencia'],
             $datos['mpioResidencia'],
-            $datos['idZonaResidencia'],
+            $datos['idZonaResidencia']?? null,
             $datos['idTipoVivienda'],
             $datos['estrato'],
             $datos['direccionResidencia'],
@@ -26,26 +26,26 @@ class PersonaNaturalController {
             $datos['idEstadoCivil'],
             $datos['cabezaFamilia'],
             $datos['personasACargo'],
-            $datos['tieneHijos'],
+            $datos['tieneHijos'] ?? null,
             $datos['numeroHijos'] ?? null,
             $datos['correoElectronico'],
             $datos['telefono'],
             $datos['celular'],
             $datos['telefonoOficina'],
             $datos['idNivelEducativo'],
-            $datos['profesion'],
-            $datos['ocupacionOficio'],
-            $datos['idEmpresaLabor'],
+            $datos['profesion'] ?? null,
+            $datos['ocupacionOficio'] ?? null,
+            $datos['idEmpresaLabor'] ?? null,
             $datos['idTipoContrato'],
             $datos['dependenciaEmpresa'],
-            $datos['cargoOcupa'],
+            $datos['cargoOcupa'] ?? null,
             $datos['jefeInmediato'],
             $datos['aniosAntigEmpresa'],
             $datos['mesesAntigEmpresa']  ?? null,
             $datos['mesSaleVacaciones'],
-            $datos['nombreEmergencia'],
-            $datos['numeroCedulaEmergencia'],
-            $datos['numeroCelularEmergencia']
+            $datos['nombreEmergencia'] ?? null,
+            $datos['numeroCedulaEmergencia'] ?? null,
+            $datos['numeroCelularEmergencia'] ?? null
         );
 
         $personaNatural->guardar();
@@ -71,7 +71,7 @@ class PersonaNaturalController {
         $personaNatural->otroLugarNacimiento = $datos['otroLugarNacimiento'] ?? null;
         $personaNatural->idDeptoResidencia = $datos['idDeptoResidencia'];
         $personaNatural->mpioResidencia = $datos['mpioResidencia'];
-        $personaNatural->idZonaResidencia = $datos['idZonaResidencia'];
+        $personaNatural->idZonaResidencia = $datos['idZonaResidencia'] ?? null;
         $personaNatural->idTipoVivienda = $datos['idTipoVivienda'];
         $personaNatural->estrato = $datos['estrato'];
         $personaNatural->direccionResidencia = $datos['direccionResidencia'];
@@ -79,26 +79,26 @@ class PersonaNaturalController {
         $personaNatural->idEstadoCivil = $datos['idEstadoCivil'];
         $personaNatural->cabezaFamilia = $datos['cabezaFamilia'];
         $personaNatural->personasACargo = $datos['personasACargo'];
-        $personaNatural->tieneHijos = $datos['tieneHijos'];
+        $personaNatural->tieneHijos = $datos['tieneHijos'] ?? null;
         $personaNatural->numeroHijos = $datos['numeroHijos'] ?? null;
         $personaNatural->correoElectronico = $datos['correoElectronico'];
         $personaNatural->telefono = $datos['telefono'];
         $personaNatural->celular = $datos['celular'];
         $personaNatural->telefonoOficina = $datos['telefonoOficina'];
         $personaNatural->idNivelEducativo = $datos['idNivelEducativo'];
-        $personaNatural->profesion = $datos['profesion'];
-        $personaNatural->ocupacionOficio = $datos['ocupacionOficio'];
-        $personaNatural->idEmpresaLabor = $datos['idEmpresaLabor'];
+        $personaNatural->profesion = $datos['profesion'] ?? null;
+        $personaNatural->ocupacionOficio = $datos['ocupacionOficio'] ?? null;
+        $personaNatural->idEmpresaLabor = $datos['idEmpresaLabor'] ?? null;
         $personaNatural->idTipoContrato = $datos['idTipoContrato'];
         $personaNatural->dependenciaEmpresa = $datos['dependenciaEmpresa'];
-        $personaNatural->cargoOcupa = $datos['cargoOcupa'];
+        $personaNatural->cargoOcupa = $datos['cargoOcupa'] ?? null;
         $personaNatural->jefeInmediato = $datos['jefeInmediato'];
         $personaNatural->aniosAntigEmpresa = $datos['aniosAntigEmpresa'];
         $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'] ?? null;
         $personaNatural->mesSaleVacaciones = $datos['mesSaleVacaciones'];
-        $personaNatural->nombreEmergencia = $datos['nombreEmergencia'];
-        $personaNatural->numeroCedulaEmergencia = $datos['numeroCedulaEmergencia'];
-        $personaNatural->numeroCelularEmergencia = $datos['numeroCelularEmergencia'];
+        $personaNatural->nombreEmergencia = $datos['nombreEmergencia'] ?? null;
+        $personaNatural->numeroCedulaEmergencia = $datos['numeroCedulaEmergencia'] ?? null;
+        $personaNatural->numeroCelularEmergencia = $datos['numeroCelularEmergencia'] ?? null;
 
         $personaNatural->guardar();
 

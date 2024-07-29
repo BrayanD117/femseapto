@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -49,6 +49,9 @@ import {
   NaturalpersonService,
 } from '../../../../../../services/naturalperson.service';
 import { LoginService } from '../../../../../../services/login.service';
+import { RequestCreditComponent } from '../request-credit.component';
+import { FamilyInformationComponent } from '../../../components/user-info/components/family-information/family-information.component';
+import { RecommendationComponent } from '../../../components/user-info/components/recommendation/recommendation.component';
 
 @Component({
   selector: 'app-info-request-credit',
@@ -59,6 +62,9 @@ import { LoginService } from '../../../../../../services/login.service';
     AutoCompleteModule,
     InputMaskModule,
     ToastModule,
+    RequestCreditComponent,
+    FamilyInformationComponent,
+    RecommendationComponent
   ],
   providers: [MessageService],
   templateUrl: './info-request-credit.component.html',
@@ -80,6 +86,9 @@ export class InfoRequestCreditComponent implements OnInit {
   citiesExpDoc: City[] = [];
   citiesNac: City[] = [];
   citiesRes: City[] = [];
+
+  currentSection: number = 0;
+  totalSections: number = 4;
 
   constructor(
     private fb: FormBuilder,
@@ -201,6 +210,22 @@ export class InfoRequestCreditComponent implements OnInit {
       this.userId = token.userId;
     }
   }
+
+  nextSection() {
+    if (this.currentSection < this.totalSections - 1) {
+      this.currentSection++;
+    }
+  }
+
+  prevSection() {
+    if (this.currentSection > 0) {
+      this.currentSection--;
+    }
+  }
+
+  isSectionVisible(sectionIndex: number): boolean {
+    return this.currentSection === sectionIndex;
+  }  
 
   onDepartamentoChange(departmentType: string): void {
     const departamentoId = this.infoForm.get(departmentType)?.value;
@@ -344,7 +369,7 @@ export class InfoRequestCreditComponent implements OnInit {
             });
           },
         });
-      }
+      }     
     } else {
       this.messageService.add({
         severity: 'error',
