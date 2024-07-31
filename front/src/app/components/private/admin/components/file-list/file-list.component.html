@@ -1,9 +1,22 @@
-<div class="file-list-container">
-  <h2>Lista de Archivos</h2>
-  <ul>
-    <li *ngFor="let file of files">
-      {{ file }}
-      <button (click)="downloadFile(file)">Descargar</button>
-    </li>
-  </ul>
+<div class="container">
+  <h1 class="text-center mt-3 mb-3">Reportes</h1>
+
+  <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+          <thead class="thead-dark">
+              <tr>
+                  <th scope="col">Nombre del Archivo</th>
+                  <th scope="col">Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let file of files">
+                  <td>{{ file }}</td>
+                  <td>
+                      <button (click)="downloadFile(file)" class="btn btn-primary">Descargar</button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
 </div>
