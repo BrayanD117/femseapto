@@ -502,7 +502,7 @@ export class GenerateCreditRequestComponent implements OnInit {
       const blob = new Blob([buffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Solicitud_Credito.xlsx');
+      saveAs(blob, `Solicitud_Credito_${this.numeroDocumento}.xlsx`);
     } catch (error) {
       console.error('Error loading template', error);
     }
