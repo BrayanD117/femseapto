@@ -3,6 +3,7 @@
   <div class="card flex justify-content-center">
     <p-toast></p-toast>
     <p-fileUpload 
+        styleClass="p-buttons"
         name="files[]" 
         customUpload="true"
         (uploadHandler)="onFileSelect($event)" 

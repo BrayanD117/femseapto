@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FileUploadService } from '../../../../../services/file-upload.service';
 import { CommonModule } from '@angular/common';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -18,7 +18,8 @@ interface FileUploadHandlerEvent {
   imports: [CommonModule, FileUploadModule, MessagesModule, MessageModule, HttpClientModule, ToastModule],
   providers: [MessageService],
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  styleUrls: ['./file-upload.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FileUploadComponent {
   uploadedFiles: any[] = [];
