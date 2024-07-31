@@ -6,23 +6,19 @@ import { ToastModule } from 'primeng/toast';
 import { LoginService } from '../../../../../services/login.service';
 import { RequestSavingWithdrawal, RequestSavingWithdrawalService } from '../../../../../services/request-saving-withdrawal.service';
 import { SavingLine, SavingLinesService } from '../../../../../services/saving-lines.service';
-import { CountriesService, Country } from '../../../../../services/countries.service';
 import { SavingBalance, SavingBalanceService } from '../../../../../services/saving-balance.service';
 import { forkJoin } from 'rxjs';
-import { FinancialInformation, FinancialInfoService } from '../../../../../services/financial-info.service';
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Router } from '@angular/router';
-import { FamilyService } from '../../../../../services/family.service';
-import { InternationalTransactionsService } from '../../../../../services/international-transactions.service';
+
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
-import { PublicPersonService } from '../../../../../services/public-person.service';
-import { RecommendationService } from '../../../../../services/recommendation.service';
-import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
+import { InfoRequestSavingComponent } from '../request-saving/info-request-saving/info-request-saving.component';
 
 @Component({
   selector: 'app-request-saving-withdrawal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, InputNumberModule],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, InputNumberModule, InfoRequestSavingComponent],
   providers: [MessageService],
   templateUrl: './request-saving-withdrawal.component.html',
   styleUrls: ['./request-saving-withdrawal.component.css']
@@ -33,6 +29,9 @@ export class RequestSavingWithdrawalComponent implements OnInit {
   savingLines: SavingLine[] = [];
   savingBalances: SavingBalance[] = [];
 
+  displayMessage: string = '';
+  isAdditionalDisabled: boolean = false;
+
   constructor(private fb: FormBuilder,
               private loginService: LoginService,
               private savingWdRequestService: RequestSavingWithdrawalService,
@@ -41,8 +40,8 @@ export class RequestSavingWithdrawalComponent implements OnInit {
               private financialInformationService: FinancialInfoService,
               private messageService: MessageService,
               private router: Router,
-            
-              private userInfoValidationService: UserInfoValidationService) {
+              private naturalpersonService: NaturalpersonService,
+    ) {
     this.savingWdRequestForm = this.fb.group({
       id: [''],
       idUsuario: ['', Validators.required],
@@ -50,7 +49,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
       montoRetirar: [, Validators.required],
       banco: [''],
       numeroCuenta: [''],
-      devolucionCaja: ['', Validators.required],
+      devolucionCaja: ['NO'],
       observaciones: [''],
       continuarAhorro: ['', Validators.required]
     });
@@ -60,10 +59,10 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     this.getUserIdFromToken();
 
     if(this.userId)
-      this.userInfoValidationService.validateUserRecords(this.userId, this.handleWarning.bind(this));
+      this.validateUserRecords();
+      //this.userInfoValidationService.validateUserRecords(this.userId, this.handleWarning.bind(this));
     
     this.getSavingBalances();
-    this.getFinancialInformation();
 
     // Subscribe to form value changes
     this.savingWdRequestForm.get('idLineaAhorro')?.valueChanges.subscribe(() => {
@@ -100,15 +99,19 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     }
   }
 
-  getFinancialInformation(): void {
+  validateUserRecords(): void {
+
     if(this.userId) {
-      this.financialInformationService.getByUserId(this.userId).subscribe((info: FinancialInformation) => {
-        this.savingWdRequestForm.patchValue({
-          banco: info.nombreBanco,
-          numeroCuenta: info.numeroCuentaBanc
-        });
+      this.naturalpersonService.validate(this.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessage = 'Por favor, registre la información personal';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
       });
-    } 
+    }   
   }
 
   getSavingBalances(): void {
@@ -129,12 +132,12 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     }
   }
 
-  private handleWarning(detail: string): void {
+  /*private handleWarning(detail: string): void {
     this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
     setTimeout(() => {
       this.router.navigate(['/auth/user/information']);
     }, 5000);
-  }
+  }*/
 
   checkWithdrawalAmount(): void {
     const selectedLineId = this.savingWdRequestForm.get('idLineaAhorro')?.value;

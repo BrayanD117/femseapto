@@ -1,11 +1,19 @@
 <p-toast></p-toast>
 
 <div class="container mt-5 px-3 px-md-4 px-lg-5">
-  <h1 class="mb-4">Solicitud de Retiro de Ahorro</h1>
+  <h1>Solicitud de Retiro de Ahorros</h1>
+  <p>Este es el módulo de solicitud de retiro de ahorros. Primero, complete o actualice su información según sea necesario. Después de hacerlo, proceda a solicitar el ahorro.</p>
+  <p>Para solicitar un retiro de ahorros, primero asegúrese de presionar el botón de <strong>"Guardar"</strong> si ha realizado alguna edición o actualización en cualquier campo. Esto es importante porque la información actualizada será utilizada para la solicitud de retiro de ahorros. Luego, proceda a solicitar el retiro de ahorros.</p>
 
+  <app-info-request-saving></app-info-request-saving>
+
+  <h5 class="mt-3">Información de Solicitud de Retiro de Ahorros</h5>
+  <div class="alert alert-warning" role="alert" *ngIf="displayMessage">
+    <strong>{{ displayMessage }}</strong>. De no hacerlo, no podrá completar la solicitud de retiro de ahorros, ya que esta información es necesaria.
+  </div>
   <div class="card">
     <div class="card-body">
-      <form [formGroup]="savingWdRequestForm" (ngSubmit)="submit()">
+      <form [formGroup]="savingWdRequestForm" (ngSubmit)="submit()" [attr.disabled]="isAdditionalDisabled ? true : null">
         <input type="hidden" formControlName="id" />
 
         <div class="row mb-3">
@@ -16,6 +24,9 @@
               <label class="form-check-label" for="line-{{line.id}}">
                 {{ line.nombre }}
               </label>
+            </div>
+            <div class="alert alert-info" role="alert" *ngIf="!savingLines || savingLines.length === 0">
+              No tienes líneas de ahorros registradas o todas las líneas tienen saldos en cero.
             </div>
           </div>
         </div>
@@ -38,20 +49,20 @@
         </div>
 
         <div class="row mb-3">
-          <label for="banco" class="form-label">3. Banco seleccionado para la consignación del dinero, según la información financiera. Si desea utilizar otra cuenta, cámbiela.</label>
+          <label for="banco" class="form-label">3. Escriba el nombre del banco en el que tenga registrada una cuenta para la consignación del dinero.</label>
           <div class="col-md-12">
             <input formControlName="banco" type="text" class="form-control" id="banco"/>
           </div>
         </div>
 
         <div class="row mb-3">
-          <label for="numeroCuenta" class="form-label">4. Número de cuenta seleccionado para la consignación del dinero, según la información financiera. Si desea utilizar otra cuenta, cámbiela; recuerde que debe pertenecer al banco indicado.</label>
+          <label for="numeroCuenta" class="form-label">4. Escriba el número de cuenta para la consignación del dinero.</label>
           <div class="col-md-12">
             <input formControlName="numeroCuenta" type="text" class="form-control" id="numeroCuenta"/>
           </div>
         </div>
 
-        <div class="row mb-3">
+        <!--<div class="row mb-3">
           <label for="devolucionCaja" class="form-label">5. ¿Requiere la devolución en efectivo? Si selecciona 'Sí', el nombre del banco y el número de cuenta proporcionados no serán tenidos en cuenta.</label>
           <div class="col-md-12">
             <div class="form-check form-check-inline">
@@ -63,10 +74,10 @@
               <label class="form-check-label" for="devolucionCajaNO">No</label>
             </div>
           </div>
-        </div>
+        </div>-->
 
         <div class="row mb-3">
-          <label for="continuarAhorro" class="form-label">6. ¿Desea continuar con el ahorro en esta línea?</label>
+          <label for="continuarAhorro" class="form-label">5. ¿Desea continuar con el ahorro en esta línea?</label>
           <div class="col-md-12">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" formControlName="continuarAhorro" value="SI" id="continuarAhorroSI">
@@ -80,17 +91,17 @@
         </div>
 
         <div class="row mb-3">
-          <label for="observaciones" class="form-label">7. Observaciones</label>
+          <label for="observaciones" class="form-label">6. Observaciones</label>
           <div class="col-md-12">
             <div class="form-floating">
               <textarea class="form-control" placeholder="Observaciones" formControlName="observaciones" id="observaciones" style="height: 150px"></textarea>
-              <label for="observaciones">Escriba si tiene alguna observación</label>
+              <label for="observaciones">(Opcional) Escriba si tiene alguna observación</label>
             </div>
           </div>
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-primary" [disabled]="savingWdRequestForm.invalid" type="submit">Guardar</button>
+          <button class="btn btn-primary" [disabled]="savingWdRequestForm.invalid  || isAdditionalDisabled" type="submit">Guardar</button>
         </div>
       </form>
     </div>

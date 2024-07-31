@@ -1,0 +1,107 @@
+<p-toast></p-toast>
+<form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
+  <input type="hidden" formControlName="id" />
+  <h5>Información Personal</h5>
+  <div class="card">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="idDeptoExpDoc" class="form-label"
+            >Departamento de expedición del documento</label
+          >
+          <select
+            class="form-select"
+            id="idDeptoExpDoc"
+            formControlName="idDeptoExpDoc"
+            (change)="onDepartamentoChange('idDeptoExpDoc')"
+          >
+            <option value="" selected>Seleccione...</option>
+            <option
+              *ngFor="let department of departments"
+              [value]="department.id"
+            >
+              {{ department.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="mpioExpDoc" class="form-label"
+            >Municipio de expedición del documento</label
+          >
+          <select
+            class="form-select"
+            id="mpioExpDoc"
+            formControlName="mpioExpDoc"
+          >
+            <option value="" selected>Seleccione...</option>
+            <option *ngFor="let city of citiesExpDoc" [value]="city.id">
+              {{ city.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="idDeptoResidencia" class="form-label"
+            >Departamento de residencia</label
+          >
+          <select
+            class="form-select"
+            formControlName="idDeptoResidencia"
+            (change)="onDepartamentoChange('idDeptoResidencia')"
+          >
+            <option value="" selected>Seleccione...</option>
+            <option *ngFor="let dpto of departments" [value]="dpto.id">
+              {{ dpto.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="mpioResidencia" class="form-label"
+            >Municipio de residencia</label
+          >
+          <select class="form-select" formControlName="mpioResidencia">
+            <option value="" selected>Seleccione...</option>
+            <option *ngFor="let city of citiesRes" [value]="city.id">
+              {{ city.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="idEmpresaLabor" class="form-label"
+            >Empresa donde labora</label
+          >
+          <select class="form-select" formControlName="idEmpresaLabor">
+            <option value="" selected>Seleccione...</option>
+            <option *ngFor="let type of companies" [value]="type.id">
+              {{ type.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="telefono" class="form-label">Número de teléfono</label>
+          <input
+            formControlName="telefono"
+            type="text"
+            minlength="7"
+            maxlength="10"
+            class="form-control"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="celular" class="form-label">Número de celular</label>
+          <input
+            formControlName="celular"
+            type="text"
+            minlength="7"
+            maxlength="10"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-grid gap-2 mt-3">
+    <button class="btn btn-primary" [disabled]="infoForm.invalid" type="submit">
+      Guardar Información Personal
+    </button>
+  </div>
+</form>
