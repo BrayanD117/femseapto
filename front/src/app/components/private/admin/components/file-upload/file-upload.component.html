@@ -1,6 +1,25 @@
-<div class="file-upload-container">
-  <h2>Subir Archivo</h2>
-  <input type="file" (change)="onFileChange($event)" />
-  <button (click)="onUpload()">Subir</button>
-  <p *ngIf="responseMessage">{{ responseMessage }}</p>
+<div class="container mt-3">
+  <h2 class="text-center">Subida de informes</h2>
+  <div class="card flex justify-content-center">
+    <p-toast></p-toast>
+    <p-fileUpload 
+        styleClass="p-buttons"
+        name="files[]" 
+        customUpload="true"
+        (uploadHandler)="onFileSelect($event)" 
+        [multiple]="false" 
+        accept="application/pdf" 
+        maxFileSize="5242880" 
+        chooseLabel="Seleccionar PDF"
+        uploadLabel="Subir"
+        cancelLabel="Cancelar">
+        <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">
+                    {{ file.name }} - {{ file.size }} bytes
+                </li>
+            </ul>
+        </ng-template>
+    </p-fileUpload>
+  </div>
 </div>

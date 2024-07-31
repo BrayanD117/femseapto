@@ -49,6 +49,20 @@
             </ul>
           </div>
         </li>
+        <li class="mb-1" *ngIf="userRole === 1">
+          <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+            data-bs-toggle="collapse" data-bs-target="#admin-reports-collapse" aria-expanded="false">
+            Informes
+          </button>
+          <div class="collapse" id="admin-reports-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink="/auth/admin/upload"
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Subir informes</a></li>
+              <li><a routerLink="/auth/admin/download"
+                class="link-body-emphasis d-inline-flex text-decoration-none rounded">Descargar informes</a></li>
+            </ul>
+          </div>
+        </li>
         <!-- SIDEBAR DE USUARIO -->
         <li class="mb-1" *ngIf="userRole === 2">
           <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -155,6 +169,20 @@
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li><a routerLink="/auth/admin/savings-withdrawals"
               class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de retiro de ahorro</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1" *ngIf="userRole === 1">
+      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+        data-bs-toggle="collapse" data-bs-target="#admin-reports-collapse" aria-expanded="false">
+        Informes
+      </button>
+      <div class="collapse" id="admin-reports-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/admin/upload"
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Subir informes</a></li>
+          <li><a routerLink="/auth/admin/download"
+            class="link-body-emphasis d-inline-flex text-decoration-none rounded">Descargar informes</a></li>
         </ul>
       </div>
     </li>

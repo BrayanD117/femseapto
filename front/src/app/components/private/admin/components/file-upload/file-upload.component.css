@@ -1,0 +1,11 @@
+.p-fileupload .p-fileupload-buttonbar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+}
+
+.p-button{
+    border-radius: 6px;
+}
+
