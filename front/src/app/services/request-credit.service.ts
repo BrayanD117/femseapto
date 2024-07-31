@@ -19,4 +19,8 @@ export class RequestCreditService {
   getAll(params: { page: number; size: number; search: string }): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php`, { params , withCredentials: true });
   }
+
+  getById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php?id=${id}`, { withCredentials: true });
+  }
 }

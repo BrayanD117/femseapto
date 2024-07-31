@@ -14,6 +14,7 @@ import { EducationLevelService } from '../../../../../services/education-level.s
 import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { BankAccountTypeService } from '../../../../../services/bank-account-type.service';
 import { RecommendationService } from '../../../../../services/recommendation.service';
+import { RequestCreditService } from '../../../../../services/request-credit.service';
 
 @Component({
   selector: 'app-generate-credit-request',
@@ -22,16 +23,17 @@ import { RecommendationService } from '../../../../../services/recommendation.se
   styleUrls: ['./generate-credit-request.component.css'],
 })
 export class GenerateCreditRequestComponent implements OnInit {
-  @Input() montoSolicitado: number | string = 0;
-  @Input() plazoQuincenal: number | string = 0;
-  @Input() valorCuotaQuincenal: number | string = 0;
-  @Input() fechaSolicitud: string = '';
-  @Input() lineaCredito: string = '';
-  @Input() reestructurado: string = '';
-  @Input() periocidadPago: string = '';
-  @Input() tasaInteres: number | string = 0;
   @Input() userId: number = 0;
   @Input() idSolicitudCredito: number = 0;
+
+  montoSolicitado: number = 0;
+  plazoQuincenal: number = 0;
+  valorCuotaQuincenal: number = 0;
+  fechaSolicitud: string = '';
+  lineaCredito: string = '';
+  reestructurado: string = '';
+  periocidadPago: string = '';
+  tasaInteres: number = 0;
 
   lineaCreditoNombre: string = '';
   nombreAsociado: string = '';
@@ -102,10 +104,34 @@ export class GenerateCreditRequestComponent implements OnInit {
     private contractTypeService: ContractTypeService,
     private educationLevelService: EducationLevelService,
     private financialInfoService: FinancialInfoService,
-    private recommendationService: RecommendationService
+    private recommendationService: RecommendationService,
+    private creditRequestService: RequestCreditService
   ) {}
 
   ngOnInit() {
+    if(this.idSolicitudCredito) {
+      this.creditRequestService
+        .getById(this.idSolicitudCredito)
+        .subscribe({
+          next: (request) => {
+            this.montoSolicitado = request.montoSolicitado;
+            this.plazoQuincenal = request.plazoQuincenal;
+            this.valorCuotaQuincenal = request.valorCuotaQuincenal;
+            this.fechaSolicitud = request.fechaSolicitud;
+            this.lineaCredito = request.idLineaCredito;
+            this.reestructurado = request.reestructurado;
+            this.periocidadPago = request.periocidadPago;
+            this.tasaInteres = request.tasaInteres;
+          },
+          error: (err) => {
+            console.error(
+              'Error al obtener el nombre de la línea de crédito',
+              err
+            );
+          },
+        });
+    }
+
     if (this.lineaCredito) {
       this.lineasCreditoService
         .getNameById(Number(this.lineaCredito))

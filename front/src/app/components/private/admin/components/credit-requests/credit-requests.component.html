@@ -72,14 +72,6 @@
           <td>{{ creditRequest.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
           <td>
             <app-generate-credit-request
-              [montoSolicitado]="creditRequest.montoSolicitado"
-              [plazoQuincenal]="creditRequest.plazoQuincenal"
-              [valorCuotaQuincenal]="creditRequest.valorCuotaQuincenal"
-              [fechaSolicitud]="creditRequest.fechaSolicitud"
-              [lineaCredito]="creditRequest.idLineaCredito"
-              [reestructurado]="creditRequest.reestructurado"
-              [periocidadPago]="creditRequest.periocidadPago"
-              [tasaInteres]="creditRequest.tasaInteres"
               [userId]="creditRequest.idUsuario"
               [idSolicitudCredito]="creditRequest.id"
             ></app-generate-credit-request>
