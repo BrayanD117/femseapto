@@ -32,7 +32,10 @@ export class RequestCreditComponent implements OnInit {
   loanAmount = 0;
   creditConditions: string[] = [];
 
-  displayMessage: string = '';
+  displayMessageNatPerson: string = '';
+  displayMessageFinancialInfo: string = '';
+  displayMessagePersonalRecommend: string = '';
+  displayMessageFamRecommend: string = '';
   isAdditionalDisabled: boolean = false;
 
   constructor(
@@ -77,9 +80,9 @@ export class RequestCreditComponent implements OnInit {
     if(token) {
       this.financialInfoService.validate(token.userId).subscribe(response => {
         if (!response) {
-          this.displayMessage = 'Por favor, registre la información financiera';
+          this.displayMessageFinancialInfo = 'Por favor, registre la información financiera';
           this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageFinancialInfo });
         } else {
           this.isAdditionalDisabled = false;
         }
@@ -97,9 +100,9 @@ export class RequestCreditComponent implements OnInit {
 
       this.naturalpersonService.validate(token.userId).subscribe(response => {
         if (!response) {
-          this.displayMessage = 'Por favor, registre la información general';
+          this.displayMessageNatPerson = 'Por favor, registre la información general';
           this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageNatPerson });
         } else {
           this.isAdditionalDisabled = false;
         }
@@ -107,9 +110,9 @@ export class RequestCreditComponent implements OnInit {
 
       this.recommendationService.validatePersonal(token.userId).subscribe(response => {
         if (!response) {
-          this.displayMessage = 'Por favor, registre al menos una referencia personal';
+          this.displayMessagePersonalRecommend = 'Por favor, registre al menos una referencia personal';
           this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessagePersonalRecommend });
         } else {
           this.isAdditionalDisabled = false;
         }
@@ -117,9 +120,9 @@ export class RequestCreditComponent implements OnInit {
 
       this.recommendationService.validateFamiliar(token.userId).subscribe(response => {
         if (!response) {
-          this.displayMessage = 'Por favor, registre al menos una referencia familiar';
+          this.displayMessageFamRecommend = 'Por favor, registre al menos una referencia familiar';
           this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageFamRecommend });
         } else {
           this.isAdditionalDisabled = false;
         }

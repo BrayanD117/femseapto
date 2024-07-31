@@ -3,11 +3,6 @@
     margin: auto;
   }
   
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
   .form-control.ng-touched.ng-invalid {
     border-color: #dc3545;
   }
@@ -15,3 +10,8 @@
   .text-danger {
     font-size: 0.875em;
   }
+
+  h1, h5 {
+    color: #00823d;
+    font-weight: bold;
+}

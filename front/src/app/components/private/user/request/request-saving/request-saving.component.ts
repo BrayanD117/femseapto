@@ -10,11 +10,15 @@ import { CurrencyFormatPipe } from '../../../../pipes/currency-format.pipe';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { UserInfoValidationService } from '../../../../../services/user-info-validation.service';
+import { InfoRequestSavingComponent } from './info-request-saving/info-request-saving.component';
+import { FinancialInfoComponent } from '../../components/user-info/components/financial-info/financial-info.component';
+import { FinancialInfoService } from '../../../../../services/financial-info.service';
+import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 
 @Component({
   selector: 'app-request-saving',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, ButtonModule, CurrencyFormatPipe],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, ButtonModule, CurrencyFormatPipe, InfoRequestSavingComponent, FinancialInfoComponent],
   providers: [MessageService],
   templateUrl: './request-saving.component.html',
   styleUrls: ['./request-saving.component.css']
@@ -27,6 +31,10 @@ export class RequestSavingComponent implements OnInit {
   previousTotalLinesAmount = 0;
   tipoAsociado: number = 0;
 
+  displayMessageNatPerson: string = '';
+  displayMessageFinancialInfo: string = '';
+  isAdditionalDisabled: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private savingsService: SolicitudAhorroService,
@@ -34,7 +42,9 @@ export class RequestSavingComponent implements OnInit {
     private userService: UserService,
     private messageService: MessageService,
     private router: Router,
-    private userInfoValidationService: UserInfoValidationService
+    //private userInfoValidationService: UserInfoValidationService,
+    private financialInfoService: FinancialInfoService,
+    private naturalpersonService: NaturalpersonService
   ) {
     this.savingsForm = this.fb.group({
       totalSavingsAmount: [0, [Validators.required, Validators.min(1)]],
@@ -45,6 +55,8 @@ export class RequestSavingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validateUserRecords();
+
     const token = this.loginService.getTokenClaims();
 
     if (token) {
@@ -60,7 +72,7 @@ export class RequestSavingComponent implements OnInit {
         }
       );
 
-      this.userInfoValidationService.validateUserRecords(userId, this.handleWarning.bind(this));
+      //this.userInfoValidationService.validateUserRecords(userId, this.handleWarning.bind(this));
 
       this.savingsService.getFinancialInfo(userId).subscribe(
         (data: any) => {
@@ -86,12 +98,37 @@ export class RequestSavingComponent implements OnInit {
     }
   }
 
-  private handleWarning(detail: string): void {
+  validateUserRecords(): void {
+    const token = this.loginService.getTokenClaims();
+    if(token) {
+      this.financialInfoService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessageFinancialInfo = 'Por favor, registre la información financiera';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageFinancialInfo });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+
+      this.naturalpersonService.validate(token.userId).subscribe(response => {
+        if (!response) {
+          this.displayMessageNatPerson = 'Por favor, registre la información personal';
+          this.isAdditionalDisabled = true;
+          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageNatPerson });
+        } else {
+          this.isAdditionalDisabled = false;
+        }
+      });
+    }   
+  }
+
+  /*private handleWarning(detail: string): void {
     this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
     setTimeout(() => {
       this.router.navigate(['/auth/user/information']);
     }, 5000);
-  }
+  }*/
 
   addSavingLinesControls(): void {
     const linesArray = this.savingsForm.get('lines') as FormArray;
