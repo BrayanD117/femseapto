@@ -20,9 +20,7 @@ $controlador = new SaldoAhorroController();
 
 // Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $datos = json_decode(file_get_contents("php://input"), true);
-    $idNuevo = $controlador->crear($datos);
-    echo json_encode(['id' => $idNuevo]); // Devuelve el ID
+    $controlador->upload();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idExistente = $datos['id']; // Obtener el ID

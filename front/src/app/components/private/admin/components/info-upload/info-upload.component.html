@@ -1,6 +1,13 @@
 <div class="upload-container">
-    <h2>Upload Credit Balance File</h2>
-    <input type="file" (change)="onFileSelected($event)" />
-    <button (click)="onUpload()" [disabled]="!selectedFile">Upload</button>
-    <p *ngIf="message">{{ message }}</p>
+    <h2>Subir saldos créditos vigentes</h2>
+    <input type="file" (change)="onCreditFileSelected($event)" />
+    <button (click)="onCreditFileUpload()" [disabled]="!selectedCreditFile">Upload</button>
+    <p *ngIf="creditMessage">{{ creditMessage }}</p>
+</div>
+
+<div class="upload-container">
+    <h2>Subir saldos ahorros vigentes</h2>
+    <input type="file" (change)="onSavingFileSelected($event)" />
+    <button (click)="onSavingFileUpload()" [disabled]="!selectedSavingFile">Upload</button>
+    <p *ngIf="savingMessage">{{ savingMessage }}</p>
 </div>

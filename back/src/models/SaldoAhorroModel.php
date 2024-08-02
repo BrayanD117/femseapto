@@ -69,6 +69,21 @@ class SaldoAhorro {
         return $saldos;
     }
 
+    public static function obtenerPorIdUsuarioYLineaAhorro($idUsuario, $idLineaAhorro) {
+        $db = getDB();
+        $query = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, valor_saldo, creado_el, actualizado_el FROM saldo_ahorros WHERE id_usuario = ? AND id_linea_ahorro = ?");
+        $query->bind_param("ii", $idUsuario, $idLineaAhorro);
+        $query->execute();
+        $query->bind_result($id, $idUsuario, $idLineaAhorro, $valorSaldo, $creadoEl, $actualizadoEl);
+        $saldoAhorro = null;
+        if ($query->fetch()) {
+            $saldoAhorro = new SaldoAhorro($id, $idUsuario, $idLineaAhorro, $valorSaldo, $creadoEl, $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $saldoAhorro;
+    }
+
     public static function obtenerTodos() {
         $db = getDB();
         $query = "SELECT id, id_usuario, id_linea_ahorro, valor_saldo, creado_el, actualizado_el FROM saldo_ahorros";
