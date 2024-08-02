@@ -58,6 +58,47 @@ class InfoFinancieraController {
         return true;
     }
 
+    public function crearOActualizar($datos) {
+        foreach ($datos as $dato) {
+            $numeroDocumento = $dato['numeroDocumento'];
+            $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
+            
+            if ($usuario) {
+                $dato['idUsuario'] = $usuario->id;
+                unset($dato['numeroDocumento']);
+                
+                $idUsuario = $dato['idUsuario'];
+                $idLineaCredito = $dato['idLineaCredito'];
+                
+                $montonMaxAhorro = SaldoCredito::obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito);
+                
+                if ($montonMaxAhorro) {
+                    $this->actualizar($montonMaxAhorro->id, $dato);
+                } else {
+                    $this->crear($dato);
+                }
+            }
+        }
+    }
+
+    public function upload() {
+        header('Content-Type: application/json');
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+            if (isset($data['data'])) {
+                $this->crearOActualizar($data['data']);
+                http_response_code(200);
+                echo json_encode(array("message" => "Datos procesados exitosamente."));
+            } else {
+                http_response_code(400);
+                echo json_encode(array("message" => "Datos no válidos."));
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(array("message" => "Server error: " . $e->getMessage()));
+        }
+    }
+
     public function validarInformacionFinanciera($idUsuario) {
         $infoFinanciera = InformacionFinanciera::validarInformacionFinanciera($idUsuario);
         if ($infoFinanciera) {

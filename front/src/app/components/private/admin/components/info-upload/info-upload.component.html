@@ -11,3 +11,10 @@
     <button (click)="onSavingFileUpload()" [disabled]="!selectedSavingFile">Upload</button>
     <p *ngIf="savingMessage">{{ savingMessage }}</p>
 </div>
+
+<div class="upload-container">
+    <h2>Subir montos maximos de ahorro</h2>
+    <input type="file" (change)="onMaxAmountFileSelected($event)" />
+    <button (click)="onMaxAmountFileUpload()" [disabled]="!selectedMaxAmountFile">Upload</button>
+    <p *ngIf="maxAmountMessage">{{ maxAmountMessage }}</p>
+</div>

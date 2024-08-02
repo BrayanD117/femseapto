@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 // Environment component
 import { environment } from '../../environments/environment';
@@ -36,6 +36,24 @@ export class FinancialInfoService {
   update(user: FinancialInformation): Observable<FinancialInformation> {
     const url = `${this.apiUrl}/informacionfinanciera.php`;
     return this.http.put<FinancialInformation>(url, user, { withCredentials: true });
+  }
+
+  uploadData(data: any[]): Observable<any> {
+    console.log("AYUDAAAAAAAAAAA")
+    return this.http.post(`${this.apiUrl}/informacionfinanciera.php`, { data }, { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(errorMessage);
   }
 }
 
