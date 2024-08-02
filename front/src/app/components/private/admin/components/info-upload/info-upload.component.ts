@@ -52,7 +52,7 @@ export class InfoUploadComponent {
         if (worksheet) {
           const jsonData: any[] = [];
           worksheet.eachRow((row, rowNumber) => {
-            if (rowNumber > 0) {
+            if (rowNumber > 1) {
               const rowData = {
                 numeroDocumento: row.getCell(1).value,
                 idLineaCredito: row.getCell(2).value,
