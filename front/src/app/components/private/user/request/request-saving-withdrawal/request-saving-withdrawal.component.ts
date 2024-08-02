@@ -127,6 +127,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
       
         forkJoin(savingLineObservables).subscribe((savingLines: SavingLine[]) => {
           this.savingLines = savingLines;
+          console.log(this.savingLines);
         });
       });
     }
@@ -139,6 +140,8 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     }, 5000);
   }*/
 
+  availableBalance: string | null = null;
+
   checkWithdrawalAmount(): void {
     const selectedLineId = this.savingWdRequestForm.get('idLineaAhorro')?.value;
     const withdrawalAmount = this.savingWdRequestForm.get('montoRetirar')?.value;
@@ -147,6 +150,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     console.log("linea sele", selectedLine)
     if (selectedLine) {
       const balanceAmount = selectedLine.valorSaldo;
+      this.availableBalance = this.formatNumber(balanceAmount.toString());
       console.log("balance total", balanceAmount)
 
       if (withdrawalAmount > balanceAmount) {
@@ -197,5 +201,14 @@ export class RequestSavingWithdrawalComponent implements OnInit {
         }
       });
     }
+  }
+
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
   }
 }

@@ -43,7 +43,7 @@
               [ngClass]="'custom-input'"
               [class.is-invalid]="savingWdRequestForm.get('montoRetirar')?.errors?.['insufficientFunds']" />
             <div *ngIf="savingWdRequestForm.get('montoRetirar')?.errors?.['insufficientFunds']" class="invalid-feedback">
-              El monto a retirar no puede superar el saldo disponible.
+              El monto a retirar no puede superar el saldo disponible de {{ availableBalance }}.
             </div>
           </div>
         </div>
