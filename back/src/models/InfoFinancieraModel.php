@@ -148,5 +148,30 @@ class InformacionFinanciera {
         }
         $db->close();
     }
+
+    public static function crearMontoMaximoAhorro($idUsuario, $montoMaxAhorro) {
+        $db = getDB();
+        $query = $db->prepare("INSERT INTO informacion_financiera (
+                                id_usuario, monto_max_ahorro)
+                                VALUES (?, ?)");
+        $query->bind_param("ii", $idUsuario, $montoMaxAhorro);
+        $query->execute();
+        if ($query->affected_rows > 0) {
+            $id = $query->insert_id;
+        }
+        $query->close();
+        $db->close();
+        return $id;
+    }
+    
+    public static function actualizarMontoMaximoAhorro($id, $montoMaxAhorro) {
+        $db = getDB();
+        $query = $db->prepare("UPDATE informacion_financiera SET monto_max_ahorro = ? WHERE id = ?");
+        $query->bind_param("ii", $montoMaxAhorro, $id);
+        $query->execute();
+        $query->close();
+        $db->close();
+        return $query->affected_rows > 0;
+    }  
 }
 ?>

@@ -28,6 +28,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
   userId: number | null = null;
   savingLines: SavingLine[] = [];
   savingBalances: SavingBalance[] = [];
+  availableBalance: string | null = null;
 
   displayMessage: string = '';
   isAdditionalDisabled: boolean = false;
@@ -127,7 +128,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
       
         forkJoin(savingLineObservables).subscribe((savingLines: SavingLine[]) => {
           this.savingLines = savingLines;
-          console.log(this.savingLines);
+          //console.log(this.savingLines);
         });
       });
     }
@@ -140,21 +141,20 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     }, 5000);
   }*/
 
-  availableBalance: string | null = null;
 
   checkWithdrawalAmount(): void {
     const selectedLineId = this.savingWdRequestForm.get('idLineaAhorro')?.value;
     const withdrawalAmount = this.savingWdRequestForm.get('montoRetirar')?.value;
 
     const selectedLine = this.savingBalances.find(balance => balance.idLineaAhorro === selectedLineId);
-    console.log("linea sele", selectedLine)
+    //console.log("linea sele", selectedLine)
     if (selectedLine) {
       const balanceAmount = selectedLine.valorSaldo;
       this.availableBalance = this.formatNumber(balanceAmount.toString());
-      console.log("balance total", balanceAmount)
+      //console.log("balance total", balanceAmount)
 
       if (withdrawalAmount > balanceAmount) {
-        console.log("es mayor")
+        //console.log("es mayor")
         this.savingWdRequestForm.get('montoRetirar')?.setErrors({ insufficientFunds: true });
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El monto a retirar no puede superar el saldo disponible.' });
       } else {

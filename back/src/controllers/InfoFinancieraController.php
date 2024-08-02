@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/InfoFinancieraModel.php';
+require_once __DIR__ . '/../models/UsuarioModel.php';
 
 class InfoFinancieraController {
     
@@ -68,14 +69,14 @@ class InfoFinancieraController {
                 unset($dato['numeroDocumento']);
                 
                 $idUsuario = $dato['idUsuario'];
-                $idLineaCredito = $dato['idLineaCredito'];
+                $montoMaxAhorro = $dato['montoMaxAhorro'];
                 
-                $montonMaxAhorro = SaldoCredito::obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito);
+                $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($idUsuario);
                 
-                if ($montonMaxAhorro) {
-                    $this->actualizar($montonMaxAhorro->id, $dato);
+                if ($infoFinanciera) {
+                    InformacionFinanciera::actualizarMontoMaximoAhorro($infoFinanciera->id, $montoMaxAhorro);
                 } else {
-                    $this->crear($dato);
+                    InformacionFinanciera::crearMontoMaximoAhorro($idUsuario, $montoMaxAhorro);
                 }
             }
         }
