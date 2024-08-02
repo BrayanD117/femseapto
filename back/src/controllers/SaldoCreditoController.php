@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/SaldoCreditoModel.php';
+require_once __DIR__ . '/../models/UsuarioModel.php';
 
 class SaldoCreditoController {
 
@@ -48,6 +49,29 @@ class SaldoCreditoController {
         $saldoCredito->guardar();
 
         return true;
+    }
+
+    public function crearOActualizar($datos) {
+        foreach ($datos as $dato) {
+            $numeroDocumento = $dato['numeroDocumento'];
+            $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
+            
+            if ($usuario) {
+                $dato['idUsuario'] = $usuario->id;
+                unset($dato['numeroDocumento']);
+                
+                $idUsuario = $dato['idUsuario'];
+                $idLineaCredito = $dato['idLineaCredito'];
+                
+                $saldoExistente = SaldoCredito::obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito);
+                
+                if ($saldoExistente) {
+                    $this->actualizar($saldoExistente->id, $dato);
+                } else {
+                    $this->crear($dato);
+                }
+            }
+        }
     }
 
     /**
@@ -108,6 +132,24 @@ class SaldoCreditoController {
         $saldoCredito->eliminar();
 
         return true;
+    }
+
+    public function upload() {
+        header('Content-Type: application/json');
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+            if (isset($data['data'])) {
+                $this->crearOActualizar($data['data']);
+                http_response_code(200);
+                echo json_encode(array("message" => "Datos procesados exitosamente."));
+            } else {
+                http_response_code(400);
+                echo json_encode(array("message" => "Datos no válidos."));
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(array("message" => "Server error: " . $e->getMessage()));
+        }
     }
 }
 ?>

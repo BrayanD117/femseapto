@@ -45,6 +45,7 @@ import { ExecutiveWelcomeComponent } from './components/private/executive/execut
 import { ExecutiveReportsComponent } from './components/private/executive/components/executive-reports/executive-reports.component';
 import { NotFoundComponent } from './components/public/not-found/not-found.component';
 import { InfoRequestCreditComponent } from './components/private/user/request/request-credit/info-request-credit/info-request-credit.component';
+import { InfoUploadComponent } from './components/private/admin/components/info-upload/info-upload.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -99,6 +100,7 @@ export const routes: Routes = [
                     },
                     { path: 'upload', component: FileUploadComponent },
                     { path: 'download', component: FileListComponent },
+                    { path: 'upload-data', component: InfoUploadComponent},
                 ],
             },
             { path: 'executive',  canActivate: [ExecutiveGuard],

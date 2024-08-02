@@ -105,6 +105,21 @@ class Usuario {
         return $user;
     }
 
+    public static function obtenerPorNumeroDocumento($numDocumento) {
+        $db = getDB();
+        $query = $db->prepare("SELECT * FROM usuarios WHERE numero_documento = ?");
+        $query->bind_param("s", $numDocumento);
+        $query->execute();
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+        $user = null;
+        if ($query->fetch()) {
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $creadoEl, $actualizadoEl);
+        }
+        $query->close();
+        $db->close();
+        return $user;
+    }
+
     public static function existePorNumeroDocumentoYUsuario($numeroDocumento, $usuario) {
         $db = getDB();
         $query = $db->prepare("SELECT COUNT(*) FROM usuarios WHERE numero_documento = ? OR usuario = ?");

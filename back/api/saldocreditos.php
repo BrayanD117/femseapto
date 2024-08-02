@@ -20,21 +20,17 @@ $controlador = new SaldoCreditoController();
 
 // Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $datos = json_decode(file_get_contents("php://input"), true);
-    $idNuevo = $controlador->crear($datos);
-    echo json_encode(['id' => $idNuevo]); // Devuelve el ID
+    $controlador->upload();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idExistente = $datos['id']; // Obtener el ID
+    $idExistente = $datos['id'];
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]); // Devuelve true si la actualización fue exitosa
+    echo json_encode(['success' => $actualizacionExitosa]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $resp = $controlador->obtenerPorId($id);
         if ($resp) {
-            // Establecer el encabezado de respuesta JSON
-            header('Content-Type: application/json');
             echo json_encode($resp);
         } else {
             http_response_code(404);
@@ -44,8 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_GET['idUsuario'];
         $resp = $controlador->obtenerPorIdUsuario($id);
         if ($resp) {
-            // Establecer el encabezado de respuesta JSON
-            header('Content-Type: application/json');
             echo json_encode($resp);
         } else {
             http_response_code(404);
@@ -53,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         $resp = $controlador->obtenerTodos();
-        header('Content-Type: application/json');
         echo json_encode($resp);
     }
 } else {

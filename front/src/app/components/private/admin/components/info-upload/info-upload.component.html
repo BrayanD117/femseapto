@@ -1,1 +1,6 @@
-<p>info-upload works!</p>
+<div class="upload-container">
+    <h2>Upload Credit Balance File</h2>
+    <input type="file" (change)="onFileSelected($event)" />
+    <button (click)="onUpload()" [disabled]="!selectedFile">Upload</button>
+    <p *ngIf="message">{{ message }}</p>
+</div>
