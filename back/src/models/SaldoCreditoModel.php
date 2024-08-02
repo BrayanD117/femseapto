@@ -79,15 +79,19 @@ class SaldoCredito {
 
     public static function obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM saldo_creditos WHERE id_usuario = ? AND id_linea_credito = ?");
+        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, valor_pagado, valor_saldo, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ? AND id_linea_credito = ?");
         $query->bind_param("ii", $idUsuario, $idLineaCredito);
         $query->execute();
-        $result = $query->get_result();
-        $saldoCredito = $result->fetch_object('SaldoCredito');
+        $query->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $valorPagado, $valorSaldo, $creadoEl, $actualizadoEl);
+        $saldoCredito = null;
+        if ($query->fetch()) {
+            $saldoCredito = new SaldoCredito($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $valorPagado, $valorSaldo, $creadoEl, $actualizadoEl);
+        }
         $query->close();
         $db->close();
         return $saldoCredito;
     }
+    
 
     public static function obtenerTodos() {
         $db = getDB();
