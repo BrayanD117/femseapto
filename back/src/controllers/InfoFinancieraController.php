@@ -68,15 +68,12 @@ class InfoFinancieraController {
                 $dato['idUsuario'] = $usuario->id;
                 unset($dato['numeroDocumento']);
                 
-                $idUsuario = $dato['idUsuario'];
-                $montoMaxAhorro = $dato['montoMaxAhorro'];
-                
-                $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($idUsuario);
+                $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($usuario->id);
                 
                 if ($infoFinanciera) {
-                    InformacionFinanciera::actualizarMontoMaximoAhorro($infoFinanciera->id, $montoMaxAhorro);
+                    InformacionFinanciera::actualizarMontoMaximoAhorro($usuario->id, $dato['montoMaxAhorro']);
                 } else {
-                    InformacionFinanciera::crearMontoMaximoAhorro($idUsuario, $montoMaxAhorro);
+                    InformacionFinanciera::crearMontoMaximoAhorro($usuario->id, $dato['montoMaxAhorro']);
                 }
             }
         }

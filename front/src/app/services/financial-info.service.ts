@@ -39,8 +39,7 @@ export class FinancialInfoService {
   }
 
   uploadData(data: any[]): Observable<any> {
-    console.log("AYUDAAAAAAAAAAA")
-    return this.http.post(`${this.apiUrl}/informacionfinanciera.php`, { data }, { withCredentials: true })
+    return this.http.post(`${this.apiUrl}/informacionfinanciera.php?file=1`, { data }, { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );

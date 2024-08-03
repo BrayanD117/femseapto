@@ -9,22 +9,20 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-/*if ($decodedToken === null) {
+if ($decodedToken === null) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
     exit(); // Terminar la ejecución si el token no es válido
-}*/
+}
 
 $controlador = new InfoFinancieraController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_GET['file'])){
+    if (isset($_GET['file'])) {
         $controlador->upload();
     } else {
-        //$datos = $_POST;
         $datos = json_decode(file_get_contents("php://input"), true);
-        $idNuevo = $controlador->crear($datos);
-        echo json_encode(['id' => $idNuevo]);
+        $controlador->crearOActualizar($datos['data']);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);

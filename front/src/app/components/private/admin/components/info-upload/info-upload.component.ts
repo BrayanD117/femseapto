@@ -26,8 +26,8 @@ export class InfoUploadComponent {
   };
 
   constructor(private creditBalanceService: CreditBalanceService,
-    private savingBalanceService: SavingBalanceService, private financialInfoService: FinancialInfoService,
-  ) {}
+              private savingBalanceService: SavingBalanceService, 
+              private financialInfoService: FinancialInfoService) {}
 
   onFileSelected(event: any, type: string) {
     const file: File = event.target.files[0];
@@ -56,10 +56,9 @@ export class InfoUploadComponent {
         if (worksheet) {
           const jsonData: any[] = [];
           worksheet.eachRow((row, rowNumber) => {
-            if (rowNumber > 1) {
+            if (rowNumber > 1) { // Assuming first row is the header
               const rowData = this.extractRowData(type, row);
               jsonData.push(rowData);
-              console.log("JSON DATA: ", jsonData);
             }
           });
 
