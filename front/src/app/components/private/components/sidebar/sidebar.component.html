@@ -79,6 +79,18 @@
             </ul>
           </div>
         </li>
+        <li class="mb-1" *ngIf="userRole === 1">
+          <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+            data-bs-toggle="collapse" data-bs-target="#admin-plain-collapse" aria-expanded="false">
+            Archivos Planos
+          </button>
+          <div class="collapse" id="admin-plain-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink="/auth/admin/upload-data"
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Cargar</a></li>
+            </ul>
+          </div>
+        </li>
         <!-- SIDEBAR DE USUARIO -->
         <li class="mb-1" *ngIf="userRole === 2">
           <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -163,7 +175,7 @@
     <li class="mb-1" *ngIf="userRole === 1">
       <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
         data-bs-toggle="collapse" data-bs-target="#admin-credits-collapse" aria-expanded="false">
-        Servicios de Crédito
+        Créditos
       </button>
       <div class="collapse" id="admin-credits-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -175,7 +187,7 @@
     <li class="mb-1" *ngIf="userRole === 1">
       <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
         data-bs-toggle="collapse" data-bs-target="#admin-savings-collapse" aria-expanded="false">
-        Servicios de Ahorro
+        Ahorros
       </button>
       <div class="collapse" id="admin-savings-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -215,6 +227,18 @@
             class="link-body-emphasis d-inline-flex text-decoration-none rounded">Gestionar Administradores</a></li>
           <li><a routerLink="/auth/admin/manage/executive"
             class="link-body-emphasis d-inline-flex text-decoration-none rounded">Gestionar Directivos</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1" *ngIf="userRole === 1">
+      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+        data-bs-toggle="collapse" data-bs-target="#admin-plain-collapse" aria-expanded="false">
+        Archivos Planos
+      </button>
+      <div class="collapse" id="admin-plain-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/admin/upload-data"
+            class="link-body-emphasis d-inline-flex text-decoration-none rounded">Cargar</a></li>
         </ul>
       </div>
     </li>
