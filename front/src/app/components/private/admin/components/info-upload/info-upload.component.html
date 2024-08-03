@@ -1,20 +1,20 @@
 <div class="upload-container">
     <h2>Subir saldos créditos vigentes</h2>
-    <input type="file" (change)="onCreditFileSelected($event)" />
-    <button (click)="onCreditFileUpload()" [disabled]="!selectedCreditFile">Upload</button>
-    <p *ngIf="creditMessage">{{ creditMessage }}</p>
+    <input type="file" (change)="onFileSelected($event, 'credit')" />
+    <button (click)="onFileUpload('credit')" [disabled]="!selectedFiles['credit']">Upload</button>
+    <p *ngIf="messages['credit']">{{ messages['credit'] }}</p>
 </div>
 
 <div class="upload-container">
     <h2>Subir saldos ahorros vigentes</h2>
-    <input type="file" (change)="onSavingFileSelected($event)" />
-    <button (click)="onSavingFileUpload()" [disabled]="!selectedSavingFile">Upload</button>
-    <p *ngIf="savingMessage">{{ savingMessage }}</p>
+    <input type="file" (change)="onFileSelected($event, 'saving')" />
+    <button (click)="onFileUpload('saving')" [disabled]="!selectedFiles['saving']">Upload</button>
+    <p *ngIf="messages['saving']">{{ messages['saving'] }}</p>
 </div>
 
 <div class="upload-container">
-    <h2>Subir montos maximos de ahorro</h2>
-    <input type="file" (change)="onMaxAmountFileSelected($event)" />
-    <button (click)="onMaxAmountFileUpload()" [disabled]="!selectedMaxAmountFile">Upload</button>
-    <p *ngIf="maxAmountMessage">{{ maxAmountMessage }}</p>
+    <h2>Subir montos máximos de ahorro</h2>
+    <input type="file" (change)="onFileSelected($event, 'maxAmount')" />
+    <button (click)="onFileUpload('maxAmount')" [disabled]="!selectedFiles['maxAmount']">Upload</button>
+    <p *ngIf="messages['maxAmount']">{{ messages['maxAmount'] }}</p>
 </div>
