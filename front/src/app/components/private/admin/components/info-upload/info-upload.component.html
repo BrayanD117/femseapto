@@ -1,20 +1,27 @@
-<div class="upload-container">
-    <h2>Subir saldos créditos vigentes</h2>
-    <input type="file" (change)="onFileSelected($event, 'credit')" />
-    <button (click)="onFileUpload('credit')" [disabled]="!selectedFiles['credit']">Upload</button>
-    <p *ngIf="messages['credit']">{{ messages['credit'] }}</p>
-</div>
+<p-toast></p-toast>
+<div class="container mt-5">
+    <h1>Cargue de Archivos planos</h1>
+    <h5>Cargar saldos créditos vigentes</h5>
+    <div class="input-group mb-3">
+        <input type="file" class="form-control" (change)="onFileSelected($event, 'credit')" id="inputGroupFile04"
+            aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" (click)="onFileUpload('credit')"
+            [disabled]="!selectedFiles['credit']" id="inputGroupFileAddon04">Cargar Archivo</button>
+    </div>
 
-<div class="upload-container">
-    <h2>Subir saldos ahorros vigentes</h2>
-    <input type="file" (change)="onFileSelected($event, 'saving')" />
-    <button (click)="onFileUpload('saving')" [disabled]="!selectedFiles['saving']">Upload</button>
-    <p *ngIf="messages['saving']">{{ messages['saving'] }}</p>
-</div>
+    <h5>Cargar saldos ahorros vigentes</h5>
+    <div class="input-group mb-3">
+        <input type="file" class="form-control" (change)="onFileSelected($event, 'saving')" id="inputGroupFile04"
+            aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" (click)="onFileUpload('saving')"
+            [disabled]="!selectedFiles['saving']" id="inputGroupFileAddon04">Cargar Archivo</button>
+    </div>
 
-<div class="upload-container">
-    <h2>Subir montos máximos de ahorro</h2>
-    <input type="file" (change)="onFileSelected($event, 'maxAmount')" />
-    <button (click)="onFileUpload('maxAmount')" [disabled]="!selectedFiles['maxAmount']">Upload</button>
-    <p *ngIf="messages['maxAmount']">{{ messages['maxAmount'] }}</p>
+    <h5>Cargar montos máximos de ahorro</h5>
+    <div class="input-group">
+        <input type="file" class="form-control" (change)="onFileSelected($event, 'maxAmount')" id="inputGroupFile04"
+            aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" (click)="onFileUpload('maxAmount')"
+            [disabled]="!selectedFiles['maxAmount']" id="inputGroupFileAddon04">Cargar Archivo</button>
+    </div>
 </div>

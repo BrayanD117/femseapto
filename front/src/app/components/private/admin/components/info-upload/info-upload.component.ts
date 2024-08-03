@@ -4,11 +4,15 @@ import { SavingBalanceService } from '../../../../../services/saving-balance.ser
 import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { CommonModule } from '@angular/common';
 import * as ExcelJS from 'exceljs';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-info-upload',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './info-upload.component.html',
   styleUrls: ['./info-upload.component.css']
 })
@@ -26,8 +30,11 @@ export class InfoUploadComponent {
   };
 
   constructor(private creditBalanceService: CreditBalanceService,
-              private savingBalanceService: SavingBalanceService, 
-              private financialInfoService: FinancialInfoService) {}
+    private savingBalanceService: SavingBalanceService,
+    private financialInfoService: FinancialInfoService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
   onFileSelected(event: any, type: string) {
     const file: File = event.target.files[0];
@@ -116,16 +123,18 @@ export class InfoUploadComponent {
     }
 
     if (service) {
-      service.uploadData(data).subscribe(
-        response => {
+      service.uploadData(data).subscribe({
+        next: (response) => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo plano cargado correctamente.' }); 
           console.log(response);
           this.messages[type] = 'File uploaded successfully';
         },
-        error => {
-          console.error("Error: ", error);
-          this.messages[type] = `Failed to upload file: ${error}`;
+        error: (err) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar el archivo plano. Por favor, intente otra vez' });
+          console.error("Error: ", err);
+          this.messages[type] = `Failed to upload file: ${err}`;
         }
-      );
+      });
     }
   }
 }
