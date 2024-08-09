@@ -15,6 +15,10 @@
   animation: pulse 1.5s infinite;
 }
 
+.speedDial .p-speeddial-button .pi-whatsapp {
+  font-size: 1.7rem;
+}
+
 .speedDial .p-speeddial-button::before,
 .speedDial .p-speeddial-button::after {
   content: '';
