@@ -1,25 +1,50 @@
-  .speedDial {
-    position: fixed;
-    bottom: 230px;
-    right: 100px;
-    z-index: 1000;
-  }
-  
-  .speedDial .p-speeddial-button {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-    padding: 0 !important;
-  }
+.speedDial {
+  position: fixed;
+  bottom: 230px;
+  right: 100px;
+  z-index: 1000;
+}
 
-  .speedDial .p-speeddial-action {
-    background-color: #23c55f !important;
-    color: #ffffff !important;
-    border-radius: 50% !important;
-  }
-  a{
-    text-decoration: none !important; 
-  }
+.speedDial .p-speeddial-button {
+  width: 69px !important;
+  height: 69px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  position: relative;
+  overflow: visible;
+  animation: pulse 1.5s infinite;
+}
+
+.speedDial .p-speeddial-button::before,
+.speedDial .p-speeddial-button::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(35, 197, 95, 0.5);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: ripple 1.5s infinite;
+  pointer-events: none;
+}
+
+.speedDial .p-speeddial-button::after {
+  animation-delay: 0.75s;
+}
+
+.speedDial .p-speeddial-action {
+  background-color: #23c55f !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+}
+
+a {
+  text-decoration: none !important; 
+}
+
 .custom-tooltip .p-tooltip-text {
   background-color: #fab600;
   color: #000000; 
@@ -27,6 +52,32 @@
   border-radius: 5px; 
   font-size: 14px; 
 }
+
 .custom-tooltip .p-tooltip-arrow {
   border-left-color: #fab600;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
 }
