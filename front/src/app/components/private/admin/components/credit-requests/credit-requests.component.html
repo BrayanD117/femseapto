@@ -4,6 +4,7 @@
     <p-table
       #dt2
       [value]="creditRequests"
+      dataKey="id"
       styleClass="p-datatable-striped"
       [paginator]="true"
       [rows]="rows"
@@ -49,11 +50,15 @@
         <tr>
           <th style="width: 5%">No.</th>
           <th style="width: 10%">No. Documento</th>
-          <th style="width: 15%">Nombre Completo</th>
+          <th pSortableColumn="nombreAsociado" style="width: 15%">
+            Nombre Completo <p-sortIcon field="nombreAsociado" />
+          </th>
           <th style="width: 15%">Monto Solicitado</th>
-          <th style="width: 5%">Plazo Quincenal</th>
+          <th pSortableColumn="plazoQuincenal" style="width: 5%">Plazo Quincenal <p-sortIcon field="plazoQuincenal" /></th>
           <th style="width: 10%">Valor Cuota Quincenal</th>
-          <th style="width: 20%">Linea de Crédito</th>
+          <th pSortableColumn="nombreLineaCredito" style="width: 20%">
+            Linea de Crédito <p-sortIcon field="nombreLineaCredito" />
+          </th>
           <th style="width: 5%">Tasa de Interés(%)</th>
           <th style="width: 20%">Fecha de Solicitud</th>
           <th style="width: 20%">Acciones</th>

@@ -2,3 +2,18 @@ h1, h5 {
     color: #00823d;
     font-weight: bold;
 }
+
+.spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border: 0.2em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -482,10 +482,16 @@
       <button class="btn btn-primary m-1" (click)="prevSection()">Atrás</button>
       <button
         class="btn btn-success m-1"
-        [disabled]="infoForm.invalid"
+        [disabled]="infoForm.invalid || isSubmitting"
         type="submit"
       >
+      <ng-container *ngIf="!isSubmitting; else loadingTemplate">
         Guardar
+      </ng-container>
+      <ng-template #loadingTemplate>
+        <span class="spinner-border spinner-border-sm"></span>
+        Cargando...
+      </ng-template>
       </button>
       
       <app-request-credit></app-request-credit>
