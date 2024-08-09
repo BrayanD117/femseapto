@@ -19,6 +19,8 @@ export class PublicPersonComponent {
   publicPersonForm: FormGroup;
   userId: number | null = null;
 
+  isSubmitting: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private publicPersonService: PublicPersonService,
@@ -80,6 +82,11 @@ export class PublicPersonComponent {
   }
 
   submit(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
 
     if (this.publicPersonForm.valid) {
       const data: PublicPerson = this.publicPersonForm.value;
@@ -87,20 +94,34 @@ export class PublicPersonComponent {
         this.publicPersonService.update(data).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       } else {
         this.publicPersonService.create(data).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log(response);
+            this.publicPersonForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al crear la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       }

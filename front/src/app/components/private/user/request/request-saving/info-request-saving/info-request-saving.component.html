@@ -100,8 +100,14 @@
     </div>
   </div>
   <div class="d-grid gap-2 mt-3">
-    <button class="btn btn-primary" [disabled]="infoForm.invalid" type="submit">
-      Guardar Información Personal
+    <button class="btn btn-primary" [disabled]="infoForm.invalid || isSubmitting" type="submit">
+      <ng-container *ngIf="!isSubmitting; else loadingTemplate">
+        Guardar Información Personal
+      </ng-container>
+      <ng-template #loadingTemplate>
+        <span class="spinner-border spinner-border-sm"></span>
+        Cargando...
+      </ng-template>
     </button>
   </div>
 </form>

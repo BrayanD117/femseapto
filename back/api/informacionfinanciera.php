@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controlador->upload();
     } else {
         $datos = json_decode(file_get_contents("php://input"), true);
-        $controlador->crearOActualizar($datos['data']);
+        $idNuevo = $controlador->crear($datos);
+        echo json_encode(['id' => $idNuevo]);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);

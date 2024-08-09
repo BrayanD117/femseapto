@@ -186,7 +186,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
   submit(): void {
     if (this.savingWdRequestForm.valid) {
       const data: RequestSavingWithdrawal = this.savingWdRequestForm.value;
-      console.log(data);
+      //console.log(data);
 
       this.savingWdRequestService.create(data).subscribe({
         next: () => {

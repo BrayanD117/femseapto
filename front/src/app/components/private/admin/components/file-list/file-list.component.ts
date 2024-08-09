@@ -21,7 +21,7 @@ export class FileListComponent implements OnInit {
   loadFiles() {
     this.fileService.listFiles().subscribe({
       next: (files: string[]) => {
-        console.log(files)
+        //console.log(files)
         this.files = files;
       },
       error: error => {

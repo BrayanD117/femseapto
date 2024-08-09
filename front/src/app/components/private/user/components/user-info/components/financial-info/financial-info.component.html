@@ -133,7 +133,15 @@
             locale="es-CO" />
     </div>
     <div class="d-grid gap-2">
-      <button class="btn btn-primary" [disabled]="financialForm.invalid" type="submit">Guardar Información Financiera</button>
+      <button class="btn btn-success" [disabled]="financialForm.invalid || isSubmitting" type="submit">
+        <ng-container *ngIf="!isSubmitting; else loadingTemplate">
+          Guardar Información Financiera
+        </ng-container>
+        <ng-template #loadingTemplate>
+          <span class="spinner-border spinner-border-sm"></span>
+          Cargando...
+        </ng-template>
+      </button>
     </div>
   </div>
 </form>

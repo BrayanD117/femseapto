@@ -29,6 +29,8 @@ export class InfoRequestSavingComponent implements OnInit {
   citiesRes: City[] = [];
   companies: Company[] = [];
 
+  isSubmitting: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private naturalPersonService: NaturalpersonService,
@@ -148,6 +150,11 @@ export class InfoRequestSavingComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
 
     console.log("ANTES", this.infoForm.value);
 
@@ -164,6 +171,9 @@ export class InfoRequestSavingComponent implements OnInit {
               summary: 'Éxito',
               detail: 'Información actualizada correctamente',
             });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
@@ -173,16 +183,24 @@ export class InfoRequestSavingComponent implements OnInit {
               detail:
                 'No se pudo actualizar la información. Vuelve a intentarlo.',
             });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
         });
       } else {
         this.naturalPersonService.create(data).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log(response);
+            this.infoForm.patchValue({ id: response.id });
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
               detail: 'Información creada correctamente',
             });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al crear la información', err);
@@ -191,6 +209,9 @@ export class InfoRequestSavingComponent implements OnInit {
               summary: 'Error',
               detail: 'No se pudo crear la información. Vuelve a intentarlo.',
             });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
         });
       }
@@ -200,6 +221,9 @@ export class InfoRequestSavingComponent implements OnInit {
         summary: 'Error',
         detail: 'Algún dato te falta por registrar.',
       });
+      setTimeout(() => {
+        this.isSubmitting = false;
+      }, 500);
     }
   }
 }

@@ -24,6 +24,8 @@ export class FinancialInfoComponent implements OnInit {
 
   bankAccountTypes: BankAccountType[] = [];
   
+  isSubmitting: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private financialInfoService: FinancialInfoService,
@@ -132,6 +134,12 @@ export class FinancialInfoComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
     this.financialForm.get('totalIngresosMensuales')?.enable();
     this.financialForm.get('totalEgresosMensuales')?.enable();
     this.financialForm.get('totalPatrimonio')?.enable();
@@ -144,25 +152,42 @@ export class FinancialInfoComponent implements OnInit {
         this.financialInfoService.update(parsedData).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera actualizada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al actualizar la información financiera', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información financiera. Vuelve a intentarlo.' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       } else {
         this.financialInfoService.create(parsedData).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log(response);
+            this.financialForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera creada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al actualizar la información financiera', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información financiera. Vuelve a intentarlo.' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       }     
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Vuelve a iniciar sesión e inténtalo de nuevo.' });
+      setTimeout(() => {
+        this.isSubmitting = false;
+      }, 500);
     }
 
     this.financialForm.get('totalIngresosMensuales')?.disable();

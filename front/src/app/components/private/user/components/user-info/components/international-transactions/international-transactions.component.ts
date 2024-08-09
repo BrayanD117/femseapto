@@ -22,6 +22,8 @@ export class InternationalTransactionsComponent implements OnInit {
 
   countries: Country[] = [];
 
+  isSubmitting: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private interTransService: InternationalTransactionsService,
@@ -128,6 +130,11 @@ export class InternationalTransactionsComponent implements OnInit {
   }
 
   submit(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
     
     if (this.intTransForm.valid) {
       const data: InternationalTransaction = this.intTransForm.value;
@@ -135,20 +142,34 @@ export class InternationalTransactionsComponent implements OnInit {
         this.interTransService.update(data).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       } else {
         this.interTransService.create(data).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log(response);
+            this.intTransForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           },
           error: (err) => {
             console.error('Error al crear la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información' });
+            setTimeout(() => {
+              this.isSubmitting = false;
+            }, 500);
           }
         });
       }

@@ -140,11 +140,17 @@
       </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button
-        class="btn btn-primary me-md-2"
-        [disabled]="publicPersonForm.invalid"
+        class="btn btn-success me-md-2"
+        [disabled]="publicPersonForm.invalid || isSubmitting"
         type="submit"
       >
+      <ng-container *ngIf="!isSubmitting; else loadingTemplate">
         Guardar
+      </ng-container>
+      <ng-template #loadingTemplate>
+        <span class="spinner-border spinner-border-sm"></span>
+        Cargando...
+      </ng-template>
       </button>
     </div>
   </div>

@@ -28,9 +28,9 @@ export class LoginGuard implements CanActivate {
       }
     }
 
-    console.log('No valid token found, redirecting to /login...');
+    //console.log('No valid token found, redirecting to /login...');
     this.router.navigate(['/login']).then(() => {
-      console.log('Redirect successful');
+      //console.log('Redirect successful');
     }).catch(err => {
       console.error('Redirect failed', err);
     });

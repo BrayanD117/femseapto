@@ -126,7 +126,7 @@ export class InfoUploadComponent {
       service.uploadData(data).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo plano cargado correctamente.' }); 
-          console.log(response);
+          //console.log(response);
           this.messages[type] = 'File uploaded successfully';
         },
         error: (err) => {
