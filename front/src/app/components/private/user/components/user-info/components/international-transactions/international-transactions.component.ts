@@ -157,7 +157,7 @@ export class InternationalTransactionsComponent implements OnInit {
       } else {
         this.interTransService.create(data).subscribe({
           next: (response) => {
-            console.log(response);
+            //console.log(response);
             this.intTransForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
             setTimeout(() => {

@@ -156,12 +156,12 @@ export class InfoRequestSavingComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    console.log("ANTES", this.infoForm.value);
+    //console.log("ANTES", this.infoForm.value);
 
     if (this.infoForm.valid) {
       const data: NaturalPerson = this.infoForm.value;
 
-      console.log("ENTRA", this.infoForm.value);
+      //console.log("ENTRA", this.infoForm.value);
 
       if (data.id) {
         this.naturalPersonService.update(data).subscribe({
@@ -191,7 +191,7 @@ export class InfoRequestSavingComponent implements OnInit {
       } else {
         this.naturalPersonService.create(data).subscribe({
           next: (response) => {
-            console.log(response);
+            //console.log(response);
             this.infoForm.patchValue({ id: response.id });
             this.messageService.add({
               severity: 'success',

@@ -167,7 +167,7 @@ export class FinancialInfoComponent implements OnInit {
       } else {
         this.financialInfoService.create(parsedData).subscribe({
           next: (response) => {
-            console.log(response);
+            //console.log(response);
             this.financialForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera creada correctamente' });
             setTimeout(() => {

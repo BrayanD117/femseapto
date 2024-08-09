@@ -369,7 +369,7 @@ export class InfoRequestCreditComponent implements OnInit {
       } else {
         this.naturalPersonService.create(data).subscribe({
           next: (response) => {
-            console.log(response);
+            //console.log(response);
             this.infoForm.patchValue({ id: response.id });
             this.messageService.add({
               severity: 'success',

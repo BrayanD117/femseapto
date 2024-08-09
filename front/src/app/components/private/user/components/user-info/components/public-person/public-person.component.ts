@@ -109,7 +109,7 @@ export class PublicPersonComponent {
       } else {
         this.publicPersonService.create(data).subscribe({
           next: (response) => {
-            console.log(response);
+            //console.log(response);
             this.publicPersonForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
             setTimeout(() => {

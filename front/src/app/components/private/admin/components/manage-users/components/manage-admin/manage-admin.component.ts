@@ -150,13 +150,13 @@ export class ManageAdminComponent {
 
   changeState(id: number): void {
     const user = this.users.find((user) => user.id === id);
-    console.log('id', id);
+    //console.log('id', id);
     if (user) {
       this.userService.changeState(id).subscribe({
         next: (response) => {
           // Actualiza el estado del usuario en la lista
           user.activo = user.activo === 0 ? 1 : 0;
-          console.log('Estado del usuario actualizado');
+          //console.log('Estado del usuario actualizado');
         },
         error: (err) => {
           console.error('Error al cambiar el estado del usuario', err);
@@ -182,14 +182,14 @@ export class ManageAdminComponent {
   }
 
   submit(): void {
-    console.log(this.editUserForm.value);
+    //console.log(this.editUserForm.value);
     if (this.editUserForm.valid) {
       const userFormData = this.editUserForm.value;
       if (this.isEditMode) {
-        console.log('antes', userFormData);
+        //console.log('antes', userFormData);
         this.userService.update(userFormData).subscribe({
           next: () => {
-            console.log('después', userFormData);
+            //console.log('después', userFormData);
             const index = this.users.findIndex(
               (user) => user.id === userFormData.id
             );
@@ -197,7 +197,7 @@ export class ManageAdminComponent {
               this.users[index] = userFormData;
             }
             //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
-            console.log('Usuario actualizado');
+            //console.log('Usuario actualizado');
             this.formReset();
           },
           error: (err) => {
@@ -205,16 +205,16 @@ export class ManageAdminComponent {
           },
         });
       } else {
-        console.log(userFormData);
+        //console.log(userFormData);
         this.userService.create(userFormData).subscribe({
           next: () => {
             this.users.push(userFormData);
-            console.log('Usuario creado');
+            //console.log('Usuario creado');
             this.formReset();
           },
           error: (err) => {
             console.error('Error al crear el usuario', err);
-            console.log('Error al crear el usuario', err.error.id.message);
+            //console.log('Error al crear el usuario', err.error.id.message);
           },
         });
       }
