@@ -37,28 +37,24 @@ export class AboutComponent implements OnInit {
 
   images: { itemImageSrc: string, title: string }[] = [
     {
-      itemImageSrc: '../../../assets/ayuda_mutua.jpg',
-      title: 'Ayuda mutua'
-    },
-    {
       itemImageSrc: '../../../assets/responsabilidad.jpg',
       title: 'Responsabilidad'
     },
     {
+      itemImageSrc: '../../../assets/ayuda_mutua.jpg',
+      title: 'Igualdad'
+    },  
+    {
       itemImageSrc: '../../../assets/honestidad.jpg',
-      title: 'Honestidad'
+      title: 'Integridad'
     },
     {
       itemImageSrc: '../../../assets/respeto.jpg',
-      title: 'Respeto'
-    },
-    {
-      itemImageSrc: '../../../assets/transparencia.jpg',
       title: 'Transparencia'
     },
     {
-      itemImageSrc: '../../../assets/confianza.jpg',
-      title: 'Confianza'
+      itemImageSrc: '../../../assets/transparencia.jpg',
+      title: 'Solidaridad'
     }
   ];
 

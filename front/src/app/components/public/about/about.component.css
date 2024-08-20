@@ -16,6 +16,7 @@
 
 .first-text{
   padding-right: 30px;
+  text-align: justify;
 }
 
 @media (max-width: 991.98px) {
@@ -130,5 +131,4 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }

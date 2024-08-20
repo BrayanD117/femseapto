@@ -69,7 +69,7 @@
             </div>
         </div>
 
-    <!-- REQUISITOS -->
+    <!-- CONDICIONES PARA SOLICITAR EL AHORRO -->
     <h2 class="fw-bold mt-3 text-center">Requisitos para el ahorro voluntario en el fondo</h2>
     <p class="subtitle">Para iniciar el ahorro voluntario en el Fondo, los asociados deben cumplir con los siguientes
         requisitos:</p>
@@ -78,7 +78,7 @@
         <div class="col-lg-6 mt-3">
             <div class="card shadow">
                 <div class="card-header fw-bold text-center h3">
-                    Requisitos
+                    Condiciones para solicitar tu ahorro
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush card-text text-start">
@@ -99,14 +99,53 @@
         <div class="col-lg-6 mt-3">
             <div class="card shadow">
                 <div class="card-header fw-bold text-center h3">
-                    Plazo
+                    Condiciones para retirar tu ahorro
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush card-text text-start">
-                        <li class="list-group-item"> Los asociados pueden realizar 
-                            sus ahorros durante el tiempo que deseen, siempre y cuando cuenten con capacidad de endeudamiento. 
-                            Cada asociado tiene un límite en el monto de su ahorro, determinado por su capacidad de descuento 
-                            de nómina.</li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-person-check-fill me-3"></i>
+                            <span>Diligenciar y enviar el documento en físico a la oficina de FEMSEAPTO.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center" *ngIf="selectedSavingLine === 'AHORRO VIVIENDA'">
+                            <i class="bi bi-clipboard-check-fill me-3"></i>
+                            <span>
+                                Cuando vayas a renovar tu vivienda, o compra de vivienda, lo puedes solicitar cumpliendo los siguientes plazos:
+                                <ul>
+                                    <li>Para desembolsar en la 1ra quincena del mes: plazo de hacer llegar el documento hasta el 10 del mes.</li>
+                                    <li>Para desembolsar en la 2da quincena del mes:  plazo de hacer llegar el documento hasta el 25 del mes.</li>
+                                </ul>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center" *ngIf="selectedSavingLine === 'AHORRO NAVIDEÑO'">
+                            <i class="bi bi-clipboard-check-fill me-3"></i>
+                            <span>
+                                En la ultima quincena de noviembre y en las dos quincenas del mes de diciembre, lo puedes solicitar cumpliendo los siguientes plazos:
+                                <ul>
+                                    <li>Para desembolsar en la 1ra quincena del mes: plazo de hacer llegar el documento hasta el 10 del mes.</li>
+                                    <li>Para desembolsar en la 2da quincena del mes:  plazo de hacer llegar el documento hasta el 25 del mes.</li>
+                                </ul>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center" *ngIf="selectedSavingLine === 'AHORRO VACACIONAL'">
+                            <i class="bi bi-clipboard-check-fill me-3"></i>
+                            <span>
+                                Solo cuando vayas a salir a vacaciones, lo puedes solicitar cumpliendo los siguientes plazos:
+                                <ul>
+                                    <li>Para desembolsar en la 1ra quincena del mes: plazo de hacer llegar el documento hasta el 10 del mes.</li>
+                                    <li>Para desembolsar en la 2da quincena del mes:  plazo de hacer llegar el documento hasta el 25 del mes.</li>
+                                </ul>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center" *ngIf="selectedSavingLine === 'AHORRO EXTRAORDINARIO'">
+                            <i class="bi bi-clipboard-check-fill me-3"></i>
+                            <span>Lo puedes solicitar en la quincena que deseas cumpliendo los siguientes plazos:
+                                <ul>
+                                    <li>Para desembolsar en la 1ra quincena del mes: plazo de hacer llegar el documento hasta el 10 del mes.</li>
+                                    <li>Para desembolsar en la 2da quincena del mes:  plazo de hacer llegar el documento hasta el 25 del mes.</li>
+                                </ul>
+                            </span>
+                        </li>
                     </ul>
                 </div>
             </div>
