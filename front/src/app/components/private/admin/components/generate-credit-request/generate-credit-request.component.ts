@@ -55,6 +55,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   cedulaLugarExpConyuge: string = '';
   telefonoConyuge: string = '';
   jefeInmediato: string = '';
+  dependencia: string = '';
   tipoVivienda: number = 0;
   telefono: string = '';
   celular: string = '';
@@ -174,6 +175,7 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.municipioResidencia = person.mpioResidencia;
           this.email = person.correoElectronico;
           this.jefeInmediato = person.jefeInmediato;
+          this.dependencia = `Dependencia: ${ person.dependenciaEmpresa || '' }`.trim();
           this.tipoContrato = person.idTipoContrato;
           this.nivelEducativo = person.idNivelEducativo;
           this.tipoVivienda = person.idTipoVivienda;
@@ -412,6 +414,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('E16').value = this.direccionResidencia;
         worksheet.getCell('M16').value = this.municipioResidencia;
         worksheet.getCell('T16').value = this.departamentoResidencia;
+        worksheet.getCell('A17').value = this.dependencia;
 
         if (this.tipoContrato === 1) {
           worksheet.getCell('Q17').value = 'X';
