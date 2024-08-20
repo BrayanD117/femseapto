@@ -30,7 +30,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   plazoQuincenal: number = 0;
   valorCuotaQuincenal: number = 0;
   fechaSolicitud: string = '';
-  lineaCredito: string = '';
+  lineaCredito: number = 0;
   reestructurado: string = '';
   periocidadPago: string = '';
   tasaInteres: number = 0;
@@ -118,26 +118,26 @@ export class GenerateCreditRequestComponent implements OnInit {
             this.plazoQuincenal = request.plazoQuincenal;
             this.valorCuotaQuincenal = request.valorCuotaQuincenal;
             this.fechaSolicitud = request.fechaSolicitud;
-            this.lineaCredito = request.idLineaCredito;
+            this.lineaCredito = Number(request.idLineaCredito);
             this.reestructurado = request.reestructurado;
             this.periocidadPago = request.periocidadPago;
             this.tasaInteres = request.tasaInteres;
-          },
-          error: (err) => {
-            console.error(
-              'Error al obtener el nombre de la línea de crédito',
-              err
-            );
-          },
-        });
-    }
-
-    if (this.lineaCredito) {
-      this.lineasCreditoService
-        .getNameById(Number(this.lineaCredito))
-        .subscribe({
-          next: (nombre) => {
-            this.lineaCreditoNombre = nombre;
+            
+            if (this.lineaCredito) {
+              this.lineasCreditoService
+                .getNameById(Number(this.lineaCredito))
+                .subscribe({
+                  next: (nombre) => {
+                    this.lineaCreditoNombre = nombre;
+                  },
+                  error: (err) => {
+                    console.error(
+                      'Error al obtener el nombre de la línea de crédito',
+                      err
+                    );
+                  },
+                });
+            }
           },
           error: (err) => {
             console.error(
