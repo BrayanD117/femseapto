@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
 import { UserService } from '../../../../../services/user.service';
@@ -19,12 +20,15 @@ import { RequestCreditService } from '../../../../../services/request-credit.ser
 @Component({
   selector: 'app-generate-credit-request',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './generate-credit-request.component.html',
   styleUrls: ['./generate-credit-request.component.css'],
 })
 export class GenerateCreditRequestComponent implements OnInit {
   @Input() userId: number = 0;
   @Input() idSolicitudCredito: number = 0;
+
+  isLoading: boolean = false;
 
   montoSolicitado: number = 0;
   plazoQuincenal: number = 0;
@@ -576,5 +580,13 @@ export class GenerateCreditRequestComponent implements OnInit {
       console.error('Error reading the template file:', error);
       throw error;
     }
+  }
+
+  onGenerateClick() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.generateExcel();
+      this.isLoading = false;
+    }, 10000);
   }
 }
