@@ -77,3 +77,13 @@ h1, h2, h3, h4 {
         width: auto;
     }
 }
+
+.line-break br {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .line-break br {
+        display: inline;
+    }
+}

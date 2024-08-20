@@ -27,8 +27,8 @@
                 <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO CREDIPRIMA')">
                     <i class="bi bi-calendar2-check icon"></i>CREDITO CREDIPRIMA
                 </button>
-                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO DE CALAMADAD')">
-                    <i class="bi bi-people-fill icon"></i>CREDITO DE CALAMADAD
+                <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO DE CALAMIDAD')">
+                    <i class="bi bi-people-fill icon"></i>CREDITO DE CALAMIDAD
                 </button> 
                 <button class="btn btn-primary options mb-3" type="button" (click)="selectCreditLine('CREDITO VACACIONAL')">
                     <i class="bi bi-sunglasses icon"></i>CREDITO VACACIONAL 
@@ -80,7 +80,7 @@
                                 <p-divider layout="vertical" />
                                 <span>0.7% mensual - plazo máximo 5 años.</span>
                                 <p-divider layout="vertical" />
-                                <span>1.0% mensual - plazos de 5 y hasta 10 años.</span>
+                                <span>1.0% mensual - plazos superiores a 5 y hasta 10 años.</span>
                             </li>
                         </ul>
                         <p-divider/>
@@ -105,8 +105,7 @@
                                 </ul>
                             </li>
                             <li class="list-group-item d-flex flex-column flex-lg-row align-items-center">
-                                <i class="bi bi-house-add-fill me-3 description-icon"></i>
-                                <span>Compra de vivienda, para compra de vivienda nueva.</span>
+                                <span class="line-break text-center">Compra de vivienda, <br>para compra <br>de vivienda nueva.</span>
                                 <p-divider layout="vertical" class="d-none d-lg-block"/>
                                 <ul class="list-group list-group-flush card-text text-start mt-3 mt-lg-0 ms-lg-3">
                                     <li class="list-group-item d-flex align-items-center">
@@ -125,7 +124,7 @@
                 <div *ngIf="selectedCreditLine === 'CREDITO VEHICULO'" class="credit-line">
                     <img src="../../../assets/honestidad.jpg" alt="Credito Vehiculo" class="img-fluid">
                     <h3>CREDITO VEHICULO</h3>
-                    <h5>Esta línea de crédito está destinada para la compra de vehículos automotores propios. Para esta línea en particular el comité de crédito tendrá la facultad de estudiar cada caso y aprobar el monto que considere viable teniendo presente las condiciones del solicitante, en cuanto a visto bueno, antigüedad, reporte de centrales de riesgo, valor de aportes y ahorros en el fondo de empleados.</h5>
+                    <h5>Esta línea de crédito está destinada para la compra de vehículos automotores propios.</h5>
                     <ul class="list-group list-group-flush card-text text-start">
                         <li class="list-group-item d-flex align-items-center">
                             <i class="bi bi-person-arms-up me-3 description-icon"></i>
@@ -151,6 +150,14 @@
                             <i class="bi bi-calendar2-date me-3 description-icon"></i>
                             <span>El modelo de los vehículos no podrá ser mayor a 15 años.</span>
                         </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-car-front-fill me-3 description-icon"></i>
+                            <span>El monto máximo de aprobación para automóviles será el 90% del valor del vehículo, el 10% el asociado podrá programarse mediante un ahorro, o recursos propios.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-bicycle me-3 description-icon"></i>
+                            <span>El monto máximo de aprobación para motocicletas será el 100%</span>
+                        </li>
                     </ul>
                     <h4>LEGALIZACIÓN DEL CRÉDITO</h4>
                     <ul class="list-group list-group-flush card-text text-start">
@@ -169,6 +176,18 @@
                         <li class="list-group-item d-flex align-items-center">
                             <i class="bi bi-card-list me-3 description-icon"></i>
                             <span>Copia de tarjeta de propiedad.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-file-earmark-lock2-fill me-3 description-icon"></i>
+                            <span>El vehículo tendrá una póliza de seguro, para garantía de la prenda, este valor lo asumirá el asociado y la póliza deberá ser renovada hasta tanto el saldo a capital sea igual o inferior a la sumatoria de los aportes ordinarios y ahorros permanentes. Los asociados que no cumplan con la obligación de actualizar la póliza se les suspenderá el servicio de crédito hasta tanto subsane el incumplimiento, para lo cual el Fondo de Empleados podrá constituir la respectiva póliza con cargo al asociado. </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-car-front-fill me-3 description-icon"></i>
+                            <span>El vehículo quedará con limitación de dominio (prenda) a favor de FEMSEAPTO, y este costo lo asumirá el asociado. </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-calendar-week me-3 description-icon"></i>
+                            <span>Para acceder a este crédito el asociado contará con una antigüedad de 6 MESES.</span>
                         </li>
                     </ul>
                     <div class="d-grid gap-2 col-6 mx-auto mb-3">
@@ -194,14 +213,17 @@
                         </li>
                         <li class="list-group-item d-flex align-items-center">
                             <i class="bi bi-cash-coin me-3 description-icon"></i>
-                            <span>La tasa de interés: 1.2% mensual – plazo máximo 4 años, 1.5% mensual – plazos superiores a 4 y hasta 6 años.</span>
-                            </li>
-                            </ul>
-                            <div class="d-grid gap-2 col-6 mx-auto mb-3">
-                            <button class="text-center btn btn-primary" type="button" routerLink="/auth/user/request/credit"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
-                            </div>
-                            
-                            </div>
+                            <span>La tasa de interés: </span>
+                            <p-divider layout="vertical" />
+                            <span>1.2% mensual – plazo máximo 4 años.</span>
+                            <p-divider layout="vertical" />
+                            <span>1.5% mensual – plazos superiores a 4 y hasta 6 años.</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                        <button class="text-center btn btn-primary" type="button" routerLink="/auth/user/request/credit"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
+                    </div>
+                </div>
                             <div *ngIf="selectedCreditLine === 'CREDITO CONSUMO'" class="credit-line">
                                 <img src="../../../assets/honestidad.jpg" alt="Credito Consumo" class="img-fluid">
                                 <h3>CREDITO CONSUMO</h3>
@@ -299,10 +321,6 @@
                                 <ul class="list-group list-group-flush card-text text-start">
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-calendar-check me-3 description-icon"></i>
-                                        <span>Se otorgará únicamente en los siguientes casos:</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="bi bi-calendar-check me-3 description-icon"></i>
                                         <span>Este crédito se debe tramitar tres meses antes de los meses de Junio y Diciembre.</span>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
@@ -322,9 +340,9 @@
                                     <button class="text-center btn btn-primary" type="button" routerLink="/auth/user/request/credit"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
                                 </div>
                             </div>
-                            <div *ngIf="selectedCreditLine === 'CREDITO DE CALAMADAD'" class="credit-line">
-                                <img src="../../../assets/honestidad.jpg" alt="CREDITO DE CALAMADAD" class="img-fluid">
-                                <h3>CREDITO DE CALAMADAD</h3>
+                            <div *ngIf="selectedCreditLine === 'CREDITO DE CALAMIDAD'" class="credit-line">
+                                <img src="../../../assets/honestidad.jpg" alt="CREDITO DE CALAMIDAD" class="img-fluid">
+                                <h3>CREDITO DE CALAMIDAD</h3>
                                 <h5>Entiéndase como crédito emergente o de calamidad doméstica, el que se otorga al asociado que, por un hecho imprevisible, aleatorio que no se puede evitar, causa un perjuicio temporal a él y/o su familia.</h5>
                                 <ul class="list-group list-group-flush card-text text-start">
                                     <li class="list-group-item d-flex align-items-center">
@@ -349,10 +367,6 @@
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-calendar-check me-3 description-icon"></i>
                                         <span>No se requiere antigüedad, podrá acceder al crédito en el momento que se realice el primer descuento de la cuota de afiliación.</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="bi bi-file-earmark-text me-3 description-icon"></i>
-                                        <span>Se otorgará únicamente en los siguientes casos:</span>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-people-fill me-3 description-icon"></i>
@@ -397,6 +411,13 @@
                                         <span>La tasa de interés: 1 % mensual.</span>
                                     </li>
                                 </ul>
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <ul class="list-group list-group-flush card-text text-start">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-calendar-check me-3 description-icon"></i>
+                                        <span>Se solicitará al proceso de nómina de la patronal la confirmación de la fecha de salida a vacaciones.</span>
+                                    </li>
+                                </ul>
                                 <div class="d-grid gap-2 col-6 mx-auto mb-3">
                                     <button class="text-center btn btn-primary" type="button" routerLink="/auth/user/request/credit"><i class="bi bi-person-raised-hand icon"></i>Solicítalo aquí</button>
                                 </div>
@@ -427,6 +448,14 @@
                                 <ul class="list-group list-group-flush card-text text-start">
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-file-earmark-text me-3 description-icon"></i>
+                                        <span>El asociado en todos los casos debe anexar a su solicitud de crédito la documentación necesaria para probar el destino del crédito - Anexar recibo de matrícula.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-cash-stack me-3 description-icon"></i>
+                                        <span>El fondo realizará el pago directamente a la entidad educativa.</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-arrow-up-fill me-3 description-icon"></i>
                                         <span>El asociado en todos los casos debe anexar a su solicitud de crédito la documentación necesaria para probar el destino del crédito - Anexar recibo de matrícula.</span>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
@@ -516,7 +545,7 @@
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-person-arms-up me-3 description-icon"></i>
                                         <span>Monto: valor de cartera – base de estudio.</span>
-                                    </li>
+                                    </li>    
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-clipboard-check-fill me-3 description-icon"></i>
                                         <span>Destinación: Compra Obligaciones.</span>
@@ -527,7 +556,11 @@
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
                                         <i class="bi bi-cash-coin me-3 description-icon"></i>
-                                        <span>La tasa de interés: 1.0% mensual – plazo máximo 4 años, 1.4% mensual – plazos superiores a 4 y hasta 7 años.</span>
+                                        <span>La tasa de interés: </span>
+                                        <p-divider layout="vertical" />
+                                        <span>1.0% mensual – plazo máximo 4 años.</span>
+                                        <p-divider layout="vertical" />
+                                        <span>1.4% mensual – plazos superiores a 4 y hasta 7 años.</span>
                                     </li>
                                 </ul>
                                 <h4>CONDICIONES ESPECIALES</h4>
