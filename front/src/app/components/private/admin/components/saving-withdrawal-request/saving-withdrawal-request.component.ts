@@ -44,10 +44,6 @@ export class SavingWithdrawalRequestComponent {
     this.loadSavingWdRequests();
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
-
   onFilterGlobal(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {

@@ -88,8 +88,10 @@ export class InfoUploadComponent {
           cuotaActual: row.getCell(3).value,
           cuotasTotales: row.getCell(4).value,
           valorSolicitado: row.getCell(5).value,
-          valorPagado: row.getCell(6).value,
-          valorSaldo: row.getCell(7).value
+          cuotaQuincenal: row.getCell(6).value,
+          valorPagado: row.getCell(7).value,
+          valorSaldo: row.getCell(8).value,
+          fechaCorte: row.getCell(9).value
         };
       case 'saving':
         return {

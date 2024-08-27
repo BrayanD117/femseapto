@@ -11,6 +11,9 @@
                         <th pSortableColumn="valorSolicitado" style="width:10%">
                             Valor Crédito <p-sortIcon field="valorSolicitado" />
                         </th>
+                        <th pSortableColumn="cuotaQuincenal" style="width:10%">
+                            Cuota Quincenal <p-sortIcon field="cuotaQuincenal" />
+                        </th>
                         <th pSortableColumn="cuotasTotales" style="width:5%">
                             Cuotas Totales <p-sortIcon field="cuotasTotales" />
                         </th>
@@ -26,6 +29,9 @@
                         <th pSortableColumn="valorSaldo" style="width:10%">
                             Saldo por Pagar <p-sortIcon field="valorSaldo" />
                         </th>
+                        <th pSortableColumn="fechaCorte" style="width:10%">
+                            Fecha Corte <p-sortIcon field="fechaCorte" />
+                        </th>
                         <th pSortableColumn="actualizadoEl" style="width:10%">
                             Fecha Actualización Información <p-sortIcon field="actualizadoEl" />
                         </th>
@@ -35,11 +41,13 @@
                     <tr>
                         <td>{{ credit.lineaCreditoNombre }}</td>
                         <td>{{ credit.valorSolicitado }}</td>
+                        <td>{{ credit.cuotaQuincenal }}</td>
                         <td>{{ credit.cuotasTotales }}</td>
                         <td>{{ credit.cuotasPendientes }}</td>
                         <td>{{ credit.cuotaActual }}</td>
                         <td>{{ credit.valorPagado }}</td>
                         <td>{{ credit.valorSaldo }}</td>
+                        <td>{{ credit.fechaCorte }}</td>
                         <td>{{ credit.actualizadoEl }}</td>
                     </tr>
                 </ng-template>

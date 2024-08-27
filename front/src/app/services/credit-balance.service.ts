@@ -44,8 +44,10 @@ export interface CreditBalance {
   cuotaActual: number;
   cuotasTotales: number;
   valorSolicitado: string;
+  cuotaQuincenal: string;
   valorPagado: string;
   valorSaldo: string;
+  fechaCorte: Date;
   creadoEl: Date;
   actualizadoEl: Date;
 }

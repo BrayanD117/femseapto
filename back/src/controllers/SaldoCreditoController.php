@@ -18,8 +18,10 @@ class SaldoCreditoController {
             $datos['cuotaActual'],
             $datos['cuotasTotales'],
             $datos['valorSolicitado'],
+            $datos['cuotaQuincenal'],
             $datos['valorPagado'],
-            $datos['valorSaldo']
+            $datos['valorSaldo'],
+            $datos['fechaCorte']
         );
 
         $saldoCredito->guardar();
@@ -43,8 +45,10 @@ class SaldoCreditoController {
         $saldoCredito->cuotaActual = $datos['cuotaActual'];
         $saldoCredito->cuotasTotales = $datos['cuotasTotales'];
         $saldoCredito->valorSolicitado = $datos['valorSolicitado'];
+        $saldoCredito->cuotaQuincenal = $datos['cuotaQuincenal'];
         $saldoCredito->valorPagado = $datos['valorPagado'];
         $saldoCredito->valorSaldo = $datos['valorSaldo'];
+        $saldoCredito->fechaCorte = $datos['fechaCorte'];
 
         $saldoCredito->guardar();
 

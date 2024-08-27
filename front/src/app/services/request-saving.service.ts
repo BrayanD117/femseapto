@@ -23,14 +23,8 @@ export class SolicitudAhorroService {
     return this.http.get(`${this.apiUrl}/lineasahorro.php`, { withCredentials: true });
   }
 
-  getAll(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach(key => {
-      if (params[key] !== undefined && params[key] !== null) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(`${this.apiUrl}/solicitudesahorro.php`, { params: httpParams, withCredentials: true });
+  getAll(params: { page: number; size: number; search: string }): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/solicitudesahorro.php`, { params, withCredentials: true });
   }
 
   getById(id: number): Observable<any> {

@@ -33,6 +33,7 @@ export class CreditBalanceComponent implements OnInit {
             ...credit,
             lineaCreditoNombre: nombre,
             valorSolicitado: this.formatNumber(credit.valorSolicitado),
+            cuotaQuincenal: this.formatNumber(credit.cuotaQuincenal),
             valorPagado: this.formatNumber(credit.valorPagado),
             valorSaldo: this.formatNumber(credit.valorSaldo),
             cuotasPendientes: credit.cuotasTotales - credit.cuotaActual

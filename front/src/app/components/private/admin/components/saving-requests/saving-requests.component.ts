@@ -43,9 +43,7 @@ export class SavingRequestsComponent implements OnInit {
     this.loadSavingRequests();
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
+  
 
   onFilterGlobal(event: Event) {
     const target = event.target as HTMLInputElement;
