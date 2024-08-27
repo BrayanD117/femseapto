@@ -46,6 +46,7 @@ import { ExecutiveReportsComponent } from './components/private/executive/compon
 import { NotFoundComponent } from './components/public/not-found/not-found.component';
 import { InfoRequestCreditComponent } from './components/private/user/request/request-credit/info-request-credit/info-request-credit.component';
 import { InfoUploadComponent } from './components/private/admin/components/info-upload/info-upload.component';
+import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -70,7 +71,11 @@ export const routes: Routes = [
                 children: [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
-                    { path: 'savings', component: UserSavingComponent },
+                    { path: 'savings',
+                        children: [
+                        { path: 'balance', component: SavingBalanceComponent },
+                    ],
+                    },
                     { path: 'credits',
                         children: [
                         { path: 'balance', component: CreditBalanceComponent },

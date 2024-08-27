@@ -1,0 +1,40 @@
+<div class="container mt-5">
+    <h1>Información sobre sus ahorros</h1>
+    <div class="card mt-3">
+        <div class="card-body">
+            <p-table [value]="savingsBalance" [tableStyle]="{'min-width': '40rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="idLineaAhorro" style="width:30%">
+                            Línea Ahorro <p-sortIcon field="idLineaAhorro" />
+                        </th>
+                        <th pSortableColumn="ahorroQuincenal" style="width:30%">
+                            Ahorro Quincenal <p-sortIcon field="ahorroQuincenal" />
+                        </th>
+                        <th pSortableColumn="valorSaldo" style="width:30%">
+                            Saldo Ahorro <p-sortIcon field="valorSaldo" />
+                        </th>
+                        <th pSortableColumn="fechaCorte" style="width:20%">
+                            Fecha Corte <p-sortIcon field="fechaCorte" />
+                        </th>
+                        <th pSortableColumn="actualizadoEl" style="width:20%">
+                            Fecha Actualización <p-sortIcon field="actualizadoEl" />
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-saving>
+                    <tr>
+                        <td>{{ saving.lineaAhorroNombre }}</td>
+                        <td>{{ saving.ahorroQuincenal }}</td>
+                        <td>{{ saving.valorSaldo }}</td>
+                        <td>{{ saving.fechaCorte | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ saving.actualizadoEl | date:'dd/MM/yyyy' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div *ngIf="!savingsBalance || savingsBalance.length === 0" class="text-center mt-3">
+                No hay ahorros disponibles.
+            </div>
+        </div>
+    </div>
+</div>
