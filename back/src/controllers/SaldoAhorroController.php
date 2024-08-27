@@ -15,7 +15,9 @@ class SaldoAhorroController {
             null, // El id se genera automáticamente al guardar
             $datos['idUsuario'],
             $datos['idLineaAhorro'],
-            $datos['valorSaldo']
+            $datos['ahorroQuincenal'],
+            $datos['valorSaldo'],
+            $datos['fechaCorte']
         );
 
         $saldoAhorro->guardar();
@@ -36,7 +38,9 @@ class SaldoAhorroController {
         }
 
         $saldoAhorro->idLineaAhorro = $datos['idLineaAhorro'];
+        $saldoAhorro->ahorroQuincenal = $datos['ahorroQuincenal'];
         $saldoAhorro->valorSaldo = $datos['valorSaldo'];
+        $saldoAhorro->fechaCorte = $datos['fechaCorte'];
 
         $saldoAhorro->guardar();
 
