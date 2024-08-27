@@ -80,6 +80,7 @@ export class InfoUploadComponent {
   }
 
   extractRowData(type: string, row: any): any {
+    const fechaCorte = new Date(row.getCell(9).value).toISOString().split('T')[0]; 
     switch (type) {
       case 'credit':
         return {
@@ -91,7 +92,7 @@ export class InfoUploadComponent {
           cuotaQuincenal: row.getCell(6).value,
           valorPagado: row.getCell(7).value,
           valorSaldo: row.getCell(8).value,
-          fechaCorte: row.getCell(9).value
+          fechaCorte: fechaCorte,
         };
       case 'saving':
         return {
