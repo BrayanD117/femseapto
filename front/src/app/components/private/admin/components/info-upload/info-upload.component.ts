@@ -80,7 +80,8 @@ export class InfoUploadComponent {
   }
 
   extractRowData(type: string, row: any): any {
-    const fechaCorte = new Date(row.getCell(9).value).toISOString().split('T')[0]; 
+    const creditClosingDate = new Date(row.getCell(9).value).toISOString().split('T')[0];
+    const savingClosingDate = new Date(row.getCell(5).value).toISOString().split('T')[0];
     switch (type) {
       case 'credit':
         return {
@@ -92,13 +93,15 @@ export class InfoUploadComponent {
           cuotaQuincenal: row.getCell(6).value,
           valorPagado: row.getCell(7).value,
           valorSaldo: row.getCell(8).value,
-          fechaCorte: fechaCorte,
+          fechaCorte: creditClosingDate,
         };
       case 'saving':
         return {
           numeroDocumento: row.getCell(1).value,
           idLineaAhorro: row.getCell(2).value,
-          valorSaldo: row.getCell(3).value
+          ahorroQuincenal: row.getCell(3).value,
+          valorSaldo: row.getCell(4).value,
+          fechaCorte: savingClosingDate
         };
       case 'maxAmount':
         return {

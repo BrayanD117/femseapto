@@ -40,7 +40,9 @@ export interface SavingBalance {
   id: number;
   idUsuario: number;
   idLineaAhorro: number;
+  ahorroQuincenal: number;
   valorSaldo: number;
+  fechaCorte: Date;
   creadoEl: Date;
   actualizadoEl: Date;
 }
