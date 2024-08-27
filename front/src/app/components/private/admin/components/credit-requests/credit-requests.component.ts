@@ -103,7 +103,7 @@ export class CreditRequestsComponent implements OnInit {
   }
 
   formatNumber(value: string): string {
-    const numericValue = parseFloat(value.replace(',', '.')); // Asegura que el formato de número sea válido
+    const numericValue = parseFloat(value.replace(',', '.'));
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',

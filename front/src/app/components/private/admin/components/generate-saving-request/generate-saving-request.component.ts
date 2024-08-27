@@ -20,6 +20,8 @@ export class GenerateSavingRequestComponent implements OnInit {
   @Input() userId: number = 0;
   @Input() idSolicitudAhorro: number = 0;
 
+  defaultFont: { underline: boolean; name: string; size: number };
+
   nombreCompleto: string = '';
   numeroDocumento: number = 0;
   municipioExpedicionDocumento: string = '';
@@ -40,7 +42,9 @@ export class GenerateSavingRequestComponent implements OnInit {
     private solicitudAhorroService: SolicitudAhorroService,
     private companyService: CompanyService,
     private financialInfoService: FinancialInfoService
-  ) {}
+  ) {
+    this.defaultFont = { underline: false, name: 'Calibri', size: 10 };
+  }
 
   ngOnInit() {
     this.loadData();
@@ -113,47 +117,47 @@ export class GenerateSavingRequestComponent implements OnInit {
 
       if (worksheet) {
         const texto = [
-          { text: "Yo ", font: { underline: false } },
-          { text: this.nombreCompleto, font: { underline: true } },
-          { text: " Identificado con cédula N° ", font: { underline: false } },
-          { text: this.numeroDocumento.toString(), font: { underline: true } },
-          { text: " de ", font: { underline: false } },
-          { text: this.municipioExpedicionDocumento, font: { underline: true } },
-          { text: ", autorizo a ", font: { underline: false } },
-          { text: this.nombreEmpresa, font: { underline: true } },
-          { text: " para descontar de mi salario el valor de $ ", font: { underline: false } },
-          { text: this.valorTotalAhorro.toString(), font: { underline: true } },
-          { text: " quincenalmente, a partir de la ", font: { underline: false } },
-          { text: this.quincena, font: { underline: true } },
-          { text: " quincena de ", font: { underline: false } },
-          { text: this.mes, font: { underline: true } },
-          { text: ".", font: { underline: false } }
+          { text: "Yo ", font: this.defaultFont },
+          { text: this.nombreCompleto, font: { ...this.defaultFont, underline: true } },
+          { text: " Identificado con cédula N° ", font: this.defaultFont },
+          { text: this.numeroDocumento.toString(), font: { ...this.defaultFont, underline: true } },
+          { text: " de ", font: this.defaultFont },
+          { text: this.municipioExpedicionDocumento, font: { ...this.defaultFont, underline: true } },
+          { text: ", autorizo a ", font: this.defaultFont },
+          { text: this.nombreEmpresa, font: { ...this.defaultFont, underline: true } },
+          { text: " para descontar de mi salario el valor de ", font: this.defaultFont },
+          { text: this.formatNumber(this.valorTotalAhorro.toString()), font: { ...this.defaultFont, underline: true } },
+          { text: " quincenalmente, a partir de la ", font: this.defaultFont },
+          { text: this.quincena, font: { ...this.defaultFont, underline: true } },
+          { text: " quincena de ", font: this.defaultFont },
+          { text: this.mes, font: { ...this.defaultFont, underline: true } },
+          { text: ".", font: this.defaultFont }
         ];
 
         worksheet.getCell('B5').value = { richText: texto };
 
         if (this.tipoAsociado === 1) {
           const salarioTexto = [
-            { text: "Salario $ ", font: { underline: false } },
-            { text: this.salario.toString(), font: { underline: true } }
+            { text: "Salario ", font: this.defaultFont },
+            { text: this.formatNumber(this.salario.toString()), font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B6').value = { richText: salarioTexto };
 
           const nombreTexto = [
-            { text: "NOMBRE: ", font: { underline: false } },
-            { text: this.nombreCompleto, font: { underline: true } }
+            { text: "NOMBRE: ", font: this.defaultFont },
+            { text: this.nombreCompleto, font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B13').value = { richText: nombreTexto };
 
           const cedulaTexto = [
-            { text: "CEDULA: ", font: { underline: false } },
-            { text: this.numeroDocumento.toString(), font: { underline: true } }
+            { text: "CEDULA: ", font: this.defaultFont },
+            { text: this.numeroDocumento.toString(), font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B14').value = { richText: cedulaTexto };
 
           const celularTexto = [
-            { text: "CELULAR: ", font: { underline: false } },
-            { text: this.celular, font: { underline: true } }
+            { text: "CELULAR: ", font: this.defaultFont },
+            { text: this.celular, font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B15').value = { richText: celularTexto };
 
@@ -163,19 +167,19 @@ export class GenerateSavingRequestComponent implements OnInit {
             switch (linea.idLineaAhorro) {
               case 1:
                 cellAddress = 'D11';
-                label = 'Vivienda: $ ';
+                label = 'Vivienda: ';
                 break;
               case 2:
                 cellAddress = 'D9';
-                label = 'Navideño: $ ';
+                label = 'Navideño: ';
                 break;
               case 3:
                 cellAddress = 'D10';
-                label = 'Vacacional: $ ';
+                label = 'Vacacional: ';
                 break;
               case 4:
                 cellAddress = 'D8';
-                label = 'Extraordinario: $ ';
+                label = 'Extraordinario: ';
                 break;
             }
             if (cellAddress) {
@@ -184,28 +188,28 @@ export class GenerateSavingRequestComponent implements OnInit {
             if (label && linea.montoAhorrar !== undefined) {
               worksheet.getCell(`E${cellAddress.slice(1)}`).value = {
                 richText: [
-                  { text: label, font: { underline: false } },
-                  { text: linea.montoAhorrar.toString(), font: { underline: true } }
+                  { text: label, font: this.defaultFont },
+                  { text: this.formatNumber(linea.montoAhorrar.toString()), font: { ...this.defaultFont, underline: true } }
                 ]
               };
             }
           });
         } else if (this.tipoAsociado === 2) {
           const nombreTexto = [
-            { text: "NOMBRE: ", font: { underline: false } },
-            { text: this.nombreCompleto, font: { underline: true } }
+            { text: "NOMBRE: ", font: this.defaultFont },
+            { text: this.nombreCompleto, font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B10').value = { richText: nombreTexto };
 
           const cedulaTexto = [
-            { text: "CEDULA: ", font: { underline: false } },
-            { text: this.numeroDocumento.toString(), font: { underline: true } }
+            { text: "CEDULA: ", font: this.defaultFont },
+            { text: this.numeroDocumento.toString(), font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B11').value = { richText: cedulaTexto };
 
           const celularTexto = [
-            { text: "CELULAR: ", font: { underline: false } },
-            { text: this.celular, font: { underline: true } }
+            { text: "CELULAR: ", font: this.defaultFont },
+            { text: this.celular, font: { ...this.defaultFont, underline: true } }
           ];
           worksheet.getCell('B12').value = { richText: celularTexto };
 
@@ -214,8 +218,8 @@ export class GenerateSavingRequestComponent implements OnInit {
             worksheet.getCell('D8').value = 'X';
             worksheet.getCell('E8').value = {
               richText: [
-                { text: 'Extraordinario: $ ', font: { underline: false } },
-                { text: linea.montoAhorrar.toString(), font: { underline: true } }
+                { text: 'Extraordinario: ', font: this.defaultFont },
+                { text: this.formatNumber(linea.montoAhorrar.toString()), font: { ...this.defaultFont, underline: true } }
               ]
             };
           }
@@ -246,5 +250,14 @@ export class GenerateSavingRequestComponent implements OnInit {
       console.error('Error reading the template file:', error);
       throw error;
     }
+  }
+
+  formatNumber(value: string): string {
+    const numericValue = parseFloat(value.replace(',', '.'));
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(numericValue);
   }
 }
