@@ -102,17 +102,22 @@ export class RequestSavingWithdrawalComponent implements OnInit {
 
   validateUserRecords(): void {
 
-    if(this.userId) {
-      this.naturalpersonService.validate(this.userId).subscribe(response => {
-        if (!response) {
-          this.displayMessage = 'Por favor, registre la información personal';
-          this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
-        } else {
-          this.isAdditionalDisabled = false;
-        }
-      });
+    if (this.userId) {
+        let allValid = true;
+
+        this.naturalpersonService.validate(this.userId).subscribe(response => {
+            if (!response) {
+                this.displayMessage = 'Por favor, registre la información personal';
+                this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessage });
+                allValid = false;
+            }
+            this.checkValidationComplete(allValid);
+        });
     }   
+}
+
+  checkValidationComplete(allValid: boolean): void {
+      this.isAdditionalDisabled = !allValid;
   }
 
   getSavingBalances(): void {

@@ -100,27 +100,32 @@ export class RequestSavingComponent implements OnInit {
 
   validateUserRecords(): void {
     const token = this.loginService.getTokenClaims();
-    if(token) {
-      this.financialInfoService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.displayMessageFinancialInfo = 'Por favor, registre la información financiera';
-          this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageFinancialInfo });
-        } else {
-          this.isAdditionalDisabled = false;
-        }
-      });
 
-      this.naturalpersonService.validate(token.userId).subscribe(response => {
-        if (!response) {
-          this.displayMessageNatPerson = 'Por favor, registre la información personal';
-          this.isAdditionalDisabled = true;
-          this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageNatPerson });
-        } else {
-          this.isAdditionalDisabled = false;
-        }
-      });
+    if (token) {
+        let allValid = true;
+
+        this.financialInfoService.validate(token.userId).subscribe(response => {
+            if (!response) {
+                this.displayMessageFinancialInfo = 'Por favor, registre la información financiera';
+                this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageFinancialInfo });
+                allValid = false;
+            }
+            this.checkValidationComplete(allValid);
+        });
+
+        this.naturalpersonService.validate(token.userId).subscribe(response => {
+            if (!response) {
+                this.displayMessageNatPerson = 'Por favor, registre la información personal';
+                this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: this.displayMessageNatPerson });
+                allValid = false;
+            }
+            this.checkValidationComplete(allValid);
+        });
     }   
+}
+
+  checkValidationComplete(allValid: boolean): void {
+      this.isAdditionalDisabled = !allValid;
   }
 
   /*private handleWarning(detail: string): void {
