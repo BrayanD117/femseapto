@@ -1,0 +1,45 @@
+<div class="container mt-5">
+    <h1>Historial de Solicitudes de Ahorros</h1>
+    <div class="card mt-3">
+        <div class="card-body">
+            <p-table [value]="savingRequests" [tableStyle]="{'min-width': '60rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="montoTotalAhorrar">
+                            Monto Total a Ahorrar <p-sortIcon field="montoTotalAhorrar" />
+                        </th>
+                        <th pSortableColumn="quincena">
+                            Quincena <p-sortIcon field="quincena" />
+                        </th>
+                        <th pSortableColumn="mes">
+                            Mes <p-sortIcon field="mes" />
+                        </th>
+                        <th pSortableColumn="fechaSolicitud">
+                            Fecha de Solicitud <p-sortIcon field="fechaSolicitud" />
+                        </th>
+                        <th>
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-savingRequest>
+                    <tr>
+                        <td>{{ savingRequest.montoTotalAhorrar }}</td>
+                        <td>{{ savingRequest.quincena }}</td>
+                        <td>{{ savingRequest.mes }}</td>
+                        <td>{{ savingRequest.fechaSolicitud }}</td>
+                        <td>
+                            <app-generate-saving-request
+                              [userId]="savingRequest.idUsuario"
+                              [idSolicitudAhorro]="savingRequest.id"
+                            ></app-generate-saving-request>
+                          </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div *ngIf="!savingRequests || savingRequests.length === 0" class="text-center mt-3">
+                No hay solicitudes de ahorros disponibles.
+            </div>
+        </div>
+    </div>
+</div>

@@ -47,6 +47,7 @@ import { NotFoundComponent } from './components/public/not-found/not-found.compo
 import { InfoRequestCreditComponent } from './components/private/user/request/request-credit/info-request-credit/info-request-credit.component';
 import { InfoUploadComponent } from './components/private/admin/components/info-upload/info-upload.component';
 import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
+import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -73,7 +74,7 @@ export const routes: Routes = [
                     { path: 'information', component: UserInfoComponent },
                     { path: 'savings',
                         children: [
-                        { path: 'balance', component: SavingBalanceComponent },
+                        { path: 'balance', component: SavingBalanceComponent }
                     ],
                     },
                     { path: 'credits',
@@ -85,7 +86,8 @@ export const routes: Routes = [
                         children: [
                             { path: 'credit', component: InfoRequestCreditComponent },
                             { path: 'saving', component: RequestSavingComponent },
-                            { path: 'saving-withdrawal', component: RequestSavingWithdrawalComponent }
+                            { path: 'saving-withdrawal', component: RequestSavingWithdrawalComponent },
+                            { path: 'saving-history', component: SavingRequestHistoryComponent }
                         ], 
                     },    
                 ]
