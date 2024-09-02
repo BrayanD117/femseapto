@@ -1,10 +1,13 @@
 <?php
 
 require_once __DIR__ . '/../models/UsuarioModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class UsuarioController {
     
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
 
         if($datos['id_rol'] == 1) {
             $randomDocumentNumber = rand(10000, 99999);
@@ -52,6 +55,9 @@ class UsuarioController {
     }
 
     public function actualizar($id, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $usuario = Usuario::obtenerPorId($id);
         if (!$usuario) {
             return false;

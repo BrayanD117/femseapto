@@ -1,9 +1,13 @@
 <?php
 require_once __DIR__ . '/../models/InfoNucleoFamiliarModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class InformacionNucleoFamiliarController {
 
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $infoFamiliar = new InformacionNucleoFamiliar(
             null,
             $datos['idUsuario'],
@@ -28,6 +32,9 @@ class InformacionNucleoFamiliarController {
     }
 
     public function actualizar($id, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $infoFamiliar = InformacionNucleoFamiliar::obtenerPorId($id);
         if (!$infoFamiliar) {
             return false;

@@ -1,9 +1,13 @@
 <?php
 require_once __DIR__ . '/../models/PersonaNaturalModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class PersonaNaturalController {
-    
+  
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $personaNatural = new PersonaNatural(
             null,
             $datos['idUsuario'],
@@ -54,6 +58,8 @@ class PersonaNaturalController {
     }
 
     public function actualizar($id, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
 
         $personaNatural = PersonaNatural::obtenerPorId($id);
         if (!$personaNatural) {
