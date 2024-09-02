@@ -63,7 +63,7 @@ class SolicitudAhorro {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_ahorro WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_ahorro WHERE id_usuario = ? ORDER BY fecha_solicitud DESC");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud);
@@ -113,7 +113,7 @@ class SolicitudAhorro {
         $db = getDB();
         $offset = ($page - 1) * $size;
         $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT * FROM solicitudes_ahorro $searchQuery LIMIT ? OFFSET ?";
+        $query = "SELECT * FROM solicitudes_ahorro $searchQuery ORDER BY fecha_solicitud DESC LIMIT ? OFFSET ?";
         $stmt = $db->prepare($query);
         $stmt->bind_param("ii", $size, $offset);
         $stmt->execute();

@@ -93,7 +93,7 @@ class SolicitudCredito {
         $db = getDB();
         $offset = ($page - 1) * $size;
         $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT * FROM solicitudes_credito $searchQuery LIMIT ? OFFSET ?";
+        $query = "SELECT * FROM solicitudes_credito $searchQuery ORDER BY fecha_solicitud DESC LIMIT ? OFFSET ?";
         $stmt = $db->prepare($query);
         $stmt->bind_param("ii", $size, $offset);
         $stmt->execute();
