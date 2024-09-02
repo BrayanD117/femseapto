@@ -1,10 +1,14 @@
 <?php
 
 require_once __DIR__ . '/../models/OperacionesInternacionalesModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class OperacionesInternacionalesController {
 
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $operacion = new OperacionesInternacionales(
             null,
             $datos['idUsuario'],
@@ -27,6 +31,9 @@ class OperacionesInternacionalesController {
     }
 
     public function actualizar($id, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $operacion = OperacionesInternacionales::obtenerPorId($id);
         if (!$operacion) {
             return false;

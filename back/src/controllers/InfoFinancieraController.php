@@ -2,10 +2,14 @@
 
 require_once __DIR__ . '/../models/InfoFinancieraModel.php';
 require_once __DIR__ . '/../models/UsuarioModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class InfoFinancieraController {
     
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $infoFinanciera = new InformacionFinanciera(
             null,
             $datos['idUsuario'],
@@ -32,6 +36,8 @@ class InfoFinancieraController {
     }
 
     public function actualizar($idUsuario, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
 
         $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($idUsuario);
         if (!$infoFinanciera) {

@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/SolicitudRetiroAhorroModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class SolicitudRetiroAhorroController {
 
@@ -10,6 +11,9 @@ class SolicitudRetiroAhorroController {
      * @return int|null ID de la solicitud de retiro de ahorro creada.
      */
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $solicitud = new SolicitudRetiroAhorro(
             null, // El id se genera automáticamente al guardar
             $datos['idUsuario'],
@@ -35,6 +39,9 @@ class SolicitudRetiroAhorroController {
      * @return bool True si la actualización fue exitosa, false si falló o no se encontró la solicitud de retiro de ahorro.
      */
     public function actualizar($id, $datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $solicitud = SolicitudRetiroAhorro::obtenerPorId($id);
         if (!$solicitud) {
             return false;

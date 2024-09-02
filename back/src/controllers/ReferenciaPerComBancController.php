@@ -1,10 +1,14 @@
 <?php
 
 require_once __DIR__ . '/../models/ReferenciaPersonalComercialBancariaModel.php';
+require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class ReferenciaPersonalComercialBancariaController {
 
     public function crear($datos) {
+
+        $datos = DataUtils::convertirDatos($datos);
+
         $referencia = new ReferenciaPersonalComercialBancaria(
             null,
             $datos['idUsuario'],
@@ -24,6 +28,9 @@ class ReferenciaPersonalComercialBancariaController {
     }
 
     public function actualizar($id, $datos) {
+        
+        $datos = DataUtils::convertirDatos($datos);
+
         $referencia = ReferenciaPersonalComercialBancaria::obtenerPorId($id);
         if (!$referencia) {
             return false;
