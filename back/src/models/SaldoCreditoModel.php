@@ -35,52 +35,111 @@ class SaldoCredito
     public function guardar()
     {
         $db = getDB();
-        if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("iiiidddds", $this->idUsuario, $this->idLineaCredito, $this->cuotaActual, $this->cuotasTotales, $this->valorSolicitado, $this->cuotaQuincenal, $this->valorPagado, $this->valorSaldo, $this->fechaCorte);
-        } else {
-            $query = $db->prepare("UPDATE saldo_creditos SET id_linea_credito = ?, cuota_actual = ?, cuotas_totales = ?, valor_solicitado = ?, cuota_quincenal = ?, valor_pagado = ?, valor_saldo = ?, fecha_corte = ? WHERE id = ?");
-            $query->bind_param("iiiddddsi", $this->idLineaCredito, $this->cuotaActual, $this->cuotasTotales, $this->valorSolicitado, $this->cuotaQuincenal, $this->valorPagado, $this->valorSaldo, $this->fechaCorte, $this->id);
+        $db->begin_transaction();
+        try {
+            $queryStr = $this->id === null ?
+                "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" :
+                "UPDATE saldo_creditos SET id_linea_credito = ?, cuota_actual = ?, cuotas_totales = ?, valor_solicitado = ?, cuota_quincenal = ?, valor_pagado = ?, valor_saldo = ?, fecha_corte = ? WHERE id = ?";
+            
+            $stmt = $db->prepare($queryStr);
+
+            if ($this->id === null) {
+                $stmt->bind_param("iiiidddds", $this->idUsuario, $this->idLineaCredito, $this->cuotaActual, $this->cuotasTotales, $this->valorSolicitado, $this->cuotaQuincenal, $this->valorPagado, $this->valorSaldo, $this->fechaCorte);
+            } else {
+                $stmt->bind_param("iiiddddsi", $this->idLineaCredito, $this->cuotaActual, $this->cuotasTotales, $this->valorSolicitado, $this->cuotaQuincenal, $this->valorPagado, $this->valorSaldo, $this->fechaCorte, $this->id);
+            }
+
+            $stmt->execute();
+            
+            if ($stmt->error) {
+                throw new Exception("Error en la consulta: " . $stmt->error);
+            }
+
+            if ($this->id === null) {
+                $this->id = $stmt->insert_id;
+            }
+
+            $db->commit();
+        } catch (Exception $e) {
+            $db->rollback();
+            error_log($e->getMessage());
+            throw $e;
+        } finally {
+            $stmt->close();
+            $db->close();
         }
-        $query->execute();
-        if ($this->id === null) {
-            $this->id = $query->insert_id;
+    }
+
+    public static function guardarEnLote($datos)
+{
+    $db = getDB();
+    $db->begin_transaction();
+    try {
+        $stmt = $db->prepare(
+            "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
+            ON DUPLICATE KEY UPDATE id_linea_credito = VALUES(id_linea_credito), cuota_actual = VALUES(cuota_actual), cuotas_totales = VALUES(cuotas_totales), valor_solicitado = VALUES(valor_solicitado), cuota_quincenal = VALUES(cuota_quincenal), valor_pagado = VALUES(valor_pagado), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
+        );
+
+        foreach ($datos as $dato) {
+            // Validar que todos los campos requeridos no estén vacíos
+            if (isset($dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte'])) {
+                $stmt->bind_param("iiiidddds", $dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte']);
+                $stmt->execute();
+
+                if ($stmt->error) {
+                    throw new Exception("Error en la consulta: " . $stmt->error);
+                }
+            } else {
+                error_log("Datos incompletos: " . json_encode($dato));
+            }
         }
-        $query->close();
+
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollback();
+        error_log($e->getMessage());
+        throw $e;
+    } finally {
+        $stmt->close();
         $db->close();
     }
+}
 
     public static function obtenerPorId($id)
     {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id = ?");
-        $query->bind_param("i", $id);
-        $query->execute();
-        $query->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
+        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $stmt->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
+
         $saldoCredito = null;
-        if ($query->fetch()) {
+        if ($stmt->fetch()) {
             $saldoCredito = new SaldoCredito($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
         }
-        $query->close();
+
+        $stmt->close();
         $db->close();
+
         return $saldoCredito;
     }
 
     public static function obtenerPorIdUsuario($idUsuario)
     {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, DATE_FORMAT(fecha_corte, '%d/%m/%Y') as fecha_corte, DATE_FORMAT(creado_el, '%d/%m/%Y') as creado_el, DATE_FORMAT(creado_el, '%d/%m/%Y') as actualizado_el FROM saldo_creditos WHERE id_usuario = ?");
-        $query->bind_param("i", $idUsuario);
-        $query->execute();
-        $query->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
+        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ?");
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $stmt->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
 
         $saldos = [];
-
-        while ($query->fetch()) {
+        while ($stmt->fetch()) {
             $saldos[] = new SaldoCredito($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
         }
 
-        $query->close();
+        $stmt->close();
         $db->close();
 
         return $saldos;
@@ -89,42 +148,50 @@ class SaldoCredito
     public static function obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito)
     {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ? AND id_linea_credito = ?");
-        $query->bind_param("ii", $idUsuario, $idLineaCredito);
-        $query->execute();
-        $query->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
+        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ? AND id_linea_credito = ?");
+        $stmt->bind_param("ii", $idUsuario, $idLineaCredito);
+        $stmt->execute();
+        $stmt->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
+
         $saldoCredito = null;
-        if ($query->fetch()) {
+        if ($stmt->fetch()) {
             $saldoCredito = new SaldoCredito($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
         }
-        $query->close();
+
+        $stmt->close();
         $db->close();
+
         return $saldoCredito;
     }
-
 
     public static function obtenerTodos()
     {
         $db = getDB();
-        $query = "SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos";
-        $result = $db->query($query);
+        $result = $db->query("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos");
+
         $saldos = [];
         while ($row = $result->fetch_assoc()) {
             $saldos[] = new SaldoCredito($row['id'], $row['id_usuario'], $row['id_linea_credito'], $row['cuota_actual'], $row['cuotas_totales'], $row['valor_solicitado'], $row['cuota_quincenal'], $row['valor_pagado'], $row['valor_saldo'], $row['fecha_corte'], $row['creado_el'], $row['actualizado_el']);
         }
+
         $db->close();
+
         return $saldos;
     }
 
     public function eliminar()
     {
         $db = getDB();
-        if ($this->id !== null) {
-            $query = $db->prepare("DELETE FROM saldo_creditos WHERE id = ?");
-            $query->bind_param("i", $this->id);
-            $query->execute();
-            $query->close();
+        $stmt = $db->prepare("DELETE FROM saldo_creditos WHERE id = ?");
+        $stmt->bind_param("i", $this->id);
+        $stmt->execute();
+
+        if ($stmt->error) {
+            error_log("Error in SaldoCredito::eliminar - " . $stmt->error);
+            throw new Exception("Database Error: " . $stmt->error);
         }
+
+        $stmt->close();
         $db->close();
     }
 }

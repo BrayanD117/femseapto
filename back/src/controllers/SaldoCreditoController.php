@@ -5,14 +5,9 @@ require_once __DIR__ . '/../models/UsuarioModel.php';
 
 class SaldoCreditoController {
 
-    /**
-     * Crea un nuevo saldo de crédito.
-     * @param array $datos Datos del saldo de crédito a crear.
-     * @return int|null ID del saldo de crédito creado.
-     */
     public function crear($datos) {
         $saldoCredito = new SaldoCredito(
-            null, // El id se genera automáticamente al guardar
+            null,
             $datos['idUsuario'],
             $datos['idLineaCredito'],
             $datos['cuotaActual'],
@@ -25,16 +20,9 @@ class SaldoCreditoController {
         );
 
         $saldoCredito->guardar();
-        
         return $saldoCredito->id;
     }
 
-    /**
-     * Actualiza un saldo de crédito existente.
-     * @param int $id ID del saldo de crédito a actualizar.
-     * @param array $datos Nuevos datos del saldo de crédito.
-     * @return bool True si la actualización fue exitosa, false si falló o no se encontró el saldo de crédito.
-     */
     public function actualizar($id, $datos) {
         $saldoCredito = SaldoCredito::obtenerPorId($id);
         if (!$saldoCredito) {
@@ -51,38 +39,55 @@ class SaldoCreditoController {
         $saldoCredito->fechaCorte = $datos['fechaCorte'];
 
         $saldoCredito->guardar();
-
         return true;
     }
 
     public function crearOActualizar($datos) {
-        foreach ($datos as $dato) {
-            $numeroDocumento = $dato['numeroDocumento'];
-            $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
-            
-            if ($usuario) {
-                $dato['idUsuario'] = $usuario->id;
-                unset($dato['numeroDocumento']);
-                
-                $idUsuario = $dato['idUsuario'];
-                $idLineaCredito = $dato['idLineaCredito'];
-                
-                $saldoExistente = SaldoCredito::obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito);
-                
-                if ($saldoExistente) {
-                    $this->actualizar($saldoExistente->id, $dato);
-                } else {
-                    $this->crear($dato);
-                }
+        $batchSize = 100;
+        $db = getDB();
+        $db->begin_transaction();
+
+        try {
+            $usuariosIds = array_column($datos, 'numeroDocumento');
+            $usuariosIds = implode(',', array_map([$db, 'real_escape_string'], $usuariosIds));
+
+            $query = $db->query("SELECT id_usuario, id_linea_credito FROM saldo_creditos WHERE id_usuario IN ($usuariosIds)");
+            $saldosExistentes = [];
+
+            while ($row = $query->fetch_assoc()) {
+                $saldosExistentes[$row['id_usuario']][$row['id_linea_credito']] = true;
             }
+
+            $batches = array_chunk($datos, $batchSize);
+
+            foreach ($batches as $batch) {
+                foreach ($batch as $key => $dato) {
+                    $numeroDocumento = $dato['numeroDocumento'];
+                    $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
+
+                    if ($usuario) {
+                        $batch[$key]['idUsuario'] = $usuario->id;
+                        unset($batch[$key]['numeroDocumento']);
+
+                        $idUsuario = $batch[$key]['idUsuario'];
+                        $idLineaCredito = $batch[$key]['idLineaCredito'];
+
+                        if (isset($saldosExistentes[$idUsuario][$idLineaCredito])) {
+                            $saldoCredito = SaldoCredito::obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito);
+                            $batch[$key]['id'] = $saldoCredito->id;
+                        }
+                    }
+                }
+                SaldoCredito::guardarEnLote($batch);
+            }
+
+            $db->commit();
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
         }
     }
 
-    /**
-     * Obtiene un saldo de crédito por su ID.
-     * @param int $id ID del saldo de crédito a obtener.
-     * @return SaldoCredito|array El saldo de crédito encontrado o un array con un mensaje de error si no se encuentra.
-     */
     public function obtenerPorId($id) {
         $saldoCredito = SaldoCredito::obtenerPorId($id);
         if ($saldoCredito) {
@@ -93,11 +98,6 @@ class SaldoCreditoController {
         }
     }
 
-    /**
-     * Obtiene los saldos de crédito por ID de usuario.
-     * @param int $idUsuario ID del usuario a obtener.
-     * @return SaldoCredito|array Los saldos de crédito encontrados o un array con un mensaje de error si no se encuentran.
-     */
     public function obtenerPorIdUsuario($idUsuario) {
         $saldos = SaldoCredito::obtenerPorIdUsuario($idUsuario);
         if ($saldos) {
@@ -108,10 +108,6 @@ class SaldoCreditoController {
         }
     }
 
-    /**
-     * Obtiene todos los saldos de crédito disponibles.
-     * @return array|array[] Todos los saldos de crédito encontrados o un array con un mensaje de error si no se encuentran.
-     */
     public function obtenerTodos() {
         $saldos = SaldoCredito::obtenerTodos();
         if ($saldos) {
@@ -122,11 +118,6 @@ class SaldoCreditoController {
         }
     }
 
-    /**
-     * Elimina un saldo de crédito por su ID.
-     * @param int $id ID del saldo de crédito a eliminar.
-     * @return bool True si la eliminación fue exitosa, false si falló o no se encontró el saldo de crédito.
-     */
     public function eliminar($id) {
         $saldoCredito = SaldoCredito::obtenerPorId($id);
         if (!$saldoCredito) {
@@ -134,7 +125,6 @@ class SaldoCreditoController {
         }
 
         $saldoCredito->eliminar();
-
         return true;
     }
 
@@ -156,4 +146,3 @@ class SaldoCreditoController {
         }
     }
 }
-?>
