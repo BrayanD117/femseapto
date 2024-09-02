@@ -9,11 +9,11 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-if ($decodedToken === null) {
+/*if ($decodedToken === null) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
     exit();
-}
+}*/
 
 $controlador = new SolicitudRetiroAhorroController();
 

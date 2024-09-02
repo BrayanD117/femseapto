@@ -1,6 +1,8 @@
 <div class="container mt-5">
-    <h1>Historial de Solicitudes de Ahorros</h1>
-    <div class="card mt-3">
+    <h1>Historial de Solicitudes</h1>
+
+    <h5 class="mt-3">Solicitudes de Ahorros</h5>
+    <div class="card">
         <div class="card-body">
             <p-table [value]="savingRequests" [tableStyle]="{'min-width': '60rem'}">
                 <ng-template pTemplate="header">
@@ -39,6 +41,50 @@
             </p-table>
             <div *ngIf="!savingRequests || savingRequests.length === 0" class="text-center mt-3">
                 No hay solicitudes de ahorros disponibles.
+            </div>
+        </div>
+    </div>
+
+    <h5 class="mt-3">Solicitudes de Retiros de Ahorros</h5>
+    <div class="card">
+        <div class="card-body">
+            <p-table [value]="savingWithdrawalRequests" [tableStyle]="{'min-width': '60rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="nombreLineaAhorro">
+                            Línea de Ahorro <p-sortIcon field="nombreLineaAhorro" />
+                        </th>
+                        <th pSortableColumn="montoRetirarFormateado">
+                            Monto a Retirar <p-sortIcon field="montoRetirarFormateado" />
+                        </th>
+                        <th pSortableColumn="banco">
+                            Banco <p-sortIcon field="banco" />
+                        </th>
+                        <th pSortableColumn="fechaSolicitud">
+                            Fecha de Solicitud <p-sortIcon field="fechaSolicitud" />
+                        </th>
+                        <th>
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-savingWithdrawalRequest>
+                    <tr>
+                        <td>{{ savingWithdrawalRequest.lineaAhorroNombre }}</td>
+                        <td>{{ savingWithdrawalRequest.montoRetirarFormateado }}</td>
+                        <td>{{ savingWithdrawalRequest.banco }}</td>
+                        <td>{{ savingWithdrawalRequest.fechaSolicitud }}</td>
+                        <td>
+                            <app-generate-saving-withdrawal-request
+                              [userId]="savingWithdrawalRequest.idUsuario"
+                              [savingWdRequestId]="savingWithdrawalRequest.id"
+                            ></app-generate-saving-withdrawal-request>
+                          </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div *ngIf="!savingWithdrawalRequests || savingWithdrawalRequests.length === 0" class="text-center mt-3">
+                No hay solicitudes de retiros de ahorros disponibles.
             </div>
         </div>
     </div>

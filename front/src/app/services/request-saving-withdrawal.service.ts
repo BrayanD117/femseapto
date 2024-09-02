@@ -16,8 +16,8 @@ export class RequestSavingWithdrawalService {
     return this.http.get<RequestSavingWithdrawal>(`${this.apiUrl}/solicitudesretiroahorro.php?id=${id}` , { withCredentials: true });
   }
 
-  getByUserId(userId: number): Observable<RequestSavingWithdrawal> {
-    return this.http.get<RequestSavingWithdrawal>(`${this.apiUrl}/solicitudesretiroahorro.php?idUsuario=${userId}` , { withCredentials: true });
+  getByUserId(userId: number): Observable<RequestSavingWithdrawal[]> {
+    return this.http.get<RequestSavingWithdrawal[]>(`${this.apiUrl}/solicitudesretiroahorro.php?idUsuario=${userId}`, { withCredentials: true });
   }
 
   getAll(params: { page: number; size: number; search: string }): Observable<any> {
