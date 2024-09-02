@@ -65,7 +65,7 @@ class SolicitudRetiroAhorro {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM solicitudes_retiro_ahorro WHERE id_usuario = ?");
+        $query = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, monto_retirar, banco, numero_cuenta, devolucion_caja, observaciones, continuar_ahorro, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_retiro_ahorro WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $idLineaAhorro, $montoRetirar, $banco, $numeroCuenta, $devolucionCaja, $observaciones, $continuarAhorro, $fechaSolicitud);
