@@ -12,7 +12,7 @@ class SaldoAhorroController {
      */
     public function crear($datos) {
         $saldoAhorro = new SaldoAhorro(
-            null, // El id se genera automáticamente al guardar
+            null,
             $datos['idUsuario'],
             $datos['idLineaAhorro'],
             $datos['ahorroQuincenal'],
@@ -48,25 +48,48 @@ class SaldoAhorroController {
     }
 
     public function crearOActualizar($datos) {
-        foreach ($datos as $dato) {
-            $numeroDocumento = $dato['numeroDocumento'];
-            $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
-            
-            if ($usuario) {
-                $dato['idUsuario'] = $usuario->id;
-                unset($dato['numeroDocumento']);
-                
-                $idUsuario = $dato['idUsuario'];
-                $idLineaAhorro = $dato['idLineaAhorro'];
-                
-                $saldoExistente = SaldoAhorro::obtenerPorIdUsuarioYLineaAhorro($idUsuario, $idLineaAhorro);
-                
-                if ($saldoExistente) {
-                    $this->actualizar($saldoExistente->id, $dato);
-                } else {
-                    $this->crear($dato);
-                }
+        $batchSize = 100;
+        $db = getDB();
+        $db->begin_transaction();
+
+        try {
+            $usuariosIds = array_column($datos, 'numeroDocumento');
+            $usuariosIds = implode(',', array_map([$db, 'real_escape_string'], $usuariosIds));
+
+            $query = $db->query("SELECT id_usuario, id_linea_ahorro FROM saldo_ahorros WHERE id_usuario IN ($usuariosIds)");
+            $saldosExistentes = [];
+
+            while ($row = $query->fetch_assoc()) {
+                $saldosExistentes[$row['id_usuario']][$row['id_linea_ahorro']] = true;
             }
+
+            $batches = array_chunk($datos, $batchSize);
+
+            foreach ($batches as $batch) {
+                foreach ($batch as $key => $dato) {
+                    $numeroDocumento = $dato['numeroDocumento'];
+                    $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
+
+                    if ($usuario) {
+                        $batch[$key]['idUsuario'] = $usuario->id;
+                        unset($batch[$key]['numeroDocumento']);
+
+                        $idUsuario = $batch[$key]['idUsuario'];
+                        $idLineaAhorro = $batch[$key]['idLineaAhorro'];
+
+                        if (isset($saldosExistentes[$idUsuario][$idLineaAhorro])) {
+                            $saldoAhorro = SaldoAhorro::obtenerPorIdUsuarioYLineaAhorro($idUsuario, $idLineaAhorro);
+                            $batch[$key]['id'] = $saldoAhorro->id;
+                        }
+                    }
+                }
+                SaldoAhorro::guardarEnLote($batch);
+            }
+
+            $db->commit();
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
         }
     }
 

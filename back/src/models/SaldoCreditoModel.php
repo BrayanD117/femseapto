@@ -40,7 +40,7 @@ class SaldoCredito
             $queryStr = $this->id === null ?
                 "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" :
                 "UPDATE saldo_creditos SET id_linea_credito = ?, cuota_actual = ?, cuotas_totales = ?, valor_solicitado = ?, cuota_quincenal = ?, valor_pagado = ?, valor_saldo = ?, fecha_corte = ? WHERE id = ?";
-            
+
             $stmt = $db->prepare($queryStr);
 
             if ($this->id === null) {
@@ -50,7 +50,7 @@ class SaldoCredito
             }
 
             $stmt->execute();
-            
+
             if ($stmt->error) {
                 throw new Exception("Error en la consulta: " . $stmt->error);
             }
@@ -71,40 +71,40 @@ class SaldoCredito
     }
 
     public static function guardarEnLote($datos)
-{
-    $db = getDB();
-    $db->begin_transaction();
-    try {
-        $stmt = $db->prepare(
-            "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) 
+    {
+        $db = getDB();
+        $db->begin_transaction();
+        try {
+            $stmt = $db->prepare(
+                "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
             ON DUPLICATE KEY UPDATE id_linea_credito = VALUES(id_linea_credito), cuota_actual = VALUES(cuota_actual), cuotas_totales = VALUES(cuotas_totales), valor_solicitado = VALUES(valor_solicitado), cuota_quincenal = VALUES(cuota_quincenal), valor_pagado = VALUES(valor_pagado), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
-        );
+            );
 
-        foreach ($datos as $dato) {
-            // Validar que todos los campos requeridos no estén vacíos
-            if (isset($dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte'])) {
-                $stmt->bind_param("iiiidddds", $dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte']);
-                $stmt->execute();
+            foreach ($datos as $dato) {
+                // Validar que todos los campos requeridos no estén vacíos
+                if (isset($dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte'])) {
+                    $stmt->bind_param("iiiidddds", $dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte']);
+                    $stmt->execute();
 
-                if ($stmt->error) {
-                    throw new Exception("Error en la consulta: " . $stmt->error);
+                    if ($stmt->error) {
+                        throw new Exception("Error en la consulta: " . $stmt->error);
+                    }
+                } else {
+                    error_log("Datos incompletos: " . json_encode($dato));
                 }
-            } else {
-                error_log("Datos incompletos: " . json_encode($dato));
             }
-        }
 
-        $db->commit();
-    } catch (Exception $e) {
-        $db->rollback();
-        error_log($e->getMessage());
-        throw $e;
-    } finally {
-        $stmt->close();
-        $db->close();
+            $db->commit();
+        } catch (Exception $e) {
+            $db->rollback();
+            error_log($e->getMessage());
+            throw $e;
+        } finally {
+            $stmt->close();
+            $db->close();
+        }
     }
-}
 
     public static function obtenerPorId($id)
     {

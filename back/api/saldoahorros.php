@@ -12,50 +12,32 @@ $decodedToken = verifyJWTToken($token, $key);
 if ($decodedToken === null) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
-    exit(); // Terminar la ejecución si el token no es válido
+    exit();
 }
 
-// Crear una instancia del controlador
 $controlador = new SaldoAhorroController();
 
-// Verificar el método de solicitud HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controlador->upload();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idExistente = $datos['id']; // Obtener el ID
+    $idExistente = $datos['id'];
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]); // Devuelve true si la actualización fue exitosa
+    echo json_encode(['success' => $actualizacionExitosa]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $resp = $controlador->obtenerPorId($id);
-        if ($resp) {
-            // Establecer el encabezado de respuesta JSON
-            header('Content-Type: application/json');
-            echo json_encode($resp);
-        } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Saldo de ahorro no encontrado."));
-        }
+        echo json_encode($resp);
     } elseif (isset($_GET['idUsuario'])) {
         $id = $_GET['idUsuario'];
         $resp = $controlador->obtenerPorIdUsuario($id);
-        if ($resp) {
-            // Establecer el encabezado de respuesta JSON
-            header('Content-Type: application/json');
-            echo json_encode($resp);
-        } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Saldo de ahorro no encontrado."));
-        }
+        echo json_encode($resp);
     } else {
         $resp = $controlador->obtenerTodos();
-        header('Content-Type: application/json');
         echo json_encode($resp);
     }
 } else {
     http_response_code(405);
     echo json_encode(array("message" => "Método no permitido."));
 }
-?>
