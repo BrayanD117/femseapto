@@ -29,6 +29,20 @@ export class InfoUploadComponent {
     maxAmount: null
   };
 
+  // Progress trackers for each type of file upload
+  progress: { [key: string]: number } = {
+    credit: 0,
+    saving: 0,
+    maxAmount: 0
+  };
+
+  // Track completed requests
+  completedRequests: { [key: string]: number } = {
+    credit: 0,
+    saving: 0,
+    maxAmount: 0
+  };
+
   constructor(
     private creditBalanceService: CreditBalanceService,
     private savingBalanceService: SavingBalanceService,
@@ -83,17 +97,13 @@ export class InfoUploadComponent {
   }
 
   extractRowData(type: string, row: any): any {
-    // Verificar que solo se procesen filas con datos en las columnas A a I
     const hasData = row.getCell(1).value || row.getCell(2).value || row.getCell(3).value ||
       row.getCell(4).value || row.getCell(5).value || row.getCell(6).value ||
       row.getCell(7).value || row.getCell(8).value || row.getCell(9).value;
 
     if (!hasData) {
-      return null; // Ignorar la fila si no tiene datos en las columnas A a I
+      return null;
     }
-
-    const creditClosingDate = new Date(row.getCell(9).value).toISOString().split('T')[0];
-    const savingClosingDate = new Date(row.getCell(5).value).toISOString().split('T')[0];
 
     switch (type) {
       case 'credit':
@@ -106,15 +116,13 @@ export class InfoUploadComponent {
           cuotaQuincenal: row.getCell(6).value,
           valorPagado: row.getCell(7).value,
           valorSaldo: row.getCell(8).value,
-          fechaCorte: creditClosingDate,
         };
       case 'saving':
         return {
           numeroDocumento: row.getCell(1).value,
           idLineaAhorro: row.getCell(2).value,
           ahorroQuincenal: row.getCell(3).value,
-          valorSaldo: row.getCell(4).value,
-          fechaCorte: savingClosingDate
+          valorSaldo: row.getCell(4).value
         };
       case 'maxAmount':
         return {
@@ -143,38 +151,32 @@ export class InfoUploadComponent {
         break;
     }
 
+    this.completedRequests[type] = 0;  // Reset the completed requests counter
+
     if (service) {
       const batchPromises = [];
 
       for (let i = 0; i < totalBatches; i++) {
         const batch = data.slice(i * batchSize, (i + 1) * batchSize);
-        batchPromises.push(this.uploadBatch(service, batch, i + 1, totalBatches));
+        batchPromises.push(this.uploadBatch(service, batch, totalBatches, type));
       }
 
       try {
         await Promise.all(batchPromises);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo plano cargado correctamente.' });
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo cargado correctamente.' });
       } catch (err) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar el archivo plano. Por favor, intente otra vez' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar el archivo. Inténtelo de nuevo.' });
         console.error("Error: ", err);
       }
     }
   }
 
-
-
-  async uploadBatch(service: any, batch: any[], batchNumber: number, totalBatches: number): Promise<void> {
+  async uploadBatch(service: any, batch: any[], totalBatches: number, type: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Log the batch data to the console before sending it
-      console.log('Uploading batch:', batch);
-
       service.uploadData(batch).subscribe({
         next: () => {
-          const progress = Math.round((batchNumber / totalBatches) * 100);
-          this.updateProgress(progress);
-          if (batchNumber === totalBatches) {
-            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo plano cargado correctamente.' });
-          }
+          this.completedRequests[type] += 1;  // Increment the completed requests counter
+          this.updateProgress(type, totalBatches);
           resolve();
         },
         error: (err: any) => {
@@ -184,10 +186,8 @@ export class InfoUploadComponent {
     });
   }
 
-  updateProgress(value: number) {
-    const progressBarElement = document.getElementById('progress-bar') as HTMLDivElement;
-    if (progressBarElement) {
-      progressBarElement.style.width = `${value}%`;
-    }
+  updateProgress(type: string, totalBatches: number) {
+    const progressValue = Math.round((this.completedRequests[type] / totalBatches) * 100);
+    this.progress[type] = progressValue;
   }
 }
