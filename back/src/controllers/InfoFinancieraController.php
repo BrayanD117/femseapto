@@ -66,6 +66,8 @@ class InfoFinancieraController {
     }
 
     public function crearOActualizar($datos) {
+        $usuariosValidos = [];
+    
         foreach ($datos as $dato) {
             $numeroDocumento = $dato['numeroDocumento'];
             $usuario = Usuario::obtenerPorNumeroDocumento($numeroDocumento);
@@ -73,17 +75,15 @@ class InfoFinancieraController {
             if ($usuario) {
                 $dato['idUsuario'] = $usuario->id;
                 unset($dato['numeroDocumento']);
-                
-                $infoFinanciera = InformacionFinanciera::obtenerPorIdUsuario($usuario->id);
-                
-                if ($infoFinanciera) {
-                    InformacionFinanciera::actualizarMontoMaximoAhorro($usuario->id, $dato['montoMaxAhorro']);
-                } else {
-                    InformacionFinanciera::crearMontoMaximoAhorro($usuario->id, $dato['montoMaxAhorro']);
-                }
+                $usuariosValidos[] = $dato;
             }
         }
+    
+        if (!empty($usuariosValidos)) {
+            InformacionFinanciera::crearOModificarMontosMaximosAhorroBulk($usuariosValidos);
+        }
     }
+    
 
     public function upload() {
         header('Content-Type: application/json');

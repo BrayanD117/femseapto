@@ -154,28 +154,38 @@ class InformacionFinanciera {
         $db->close();
     }
 
-    public static function crearMontoMaximoAhorro($idUsuario, $montoMaxAhorro) {
+    public static function crearOModificarMontosMaximosAhorroBulk($datos) {
         $db = getDB();
-        $query = $db->prepare("INSERT INTO informacion_financiera (id_usuario, monto_max_ahorro) VALUES (?, ?)");
-        $query->bind_param("ii", $idUsuario, $montoMaxAhorro);
-        $query->execute();
-        $id = null;
-        if ($query->affected_rows > 0) {
-            $id = $query->insert_id;
+        $queryParts = [];
+        $params = [];
+        
+        foreach ($datos as $dato) {
+            $queryParts[] = "(?, ?)";
+            $params[] = $dato['idUsuario'];
+            $params[] = $dato['montoMaxAhorro'];
         }
-        $query->close();
+    
+        // Consulta de inserción masiva con actualización condicional
+        $query = "
+            INSERT INTO informacion_financiera (id_usuario, monto_max_ahorro) 
+            VALUES " . implode(", ", $queryParts) . " 
+            ON DUPLICATE KEY UPDATE monto_max_ahorro = VALUES(monto_max_ahorro)";
+        
+        $stmt = $db->prepare($query);
+        
+        // Asignar los parámetros de la consulta
+        $types = str_repeat('ii', count($datos));
+        $stmt->bind_param($types, ...$params);
+    
+        // Ejecutar consulta
+        $stmt->execute();
+        if ($stmt->error) {
+            throw new Exception("Error en la ejecución de la consulta: " . $stmt->error);
+        }
+        
+        $stmt->close();
         $db->close();
-        return $id;
     }
     
-    public static function actualizarMontoMaximoAhorro($idUsuario, $montoMaxAhorro) {
-        $db = getDB();
-        $query = $db->prepare("UPDATE informacion_financiera SET monto_max_ahorro = ? WHERE id_usuario = ?");
-        $query->bind_param("ii", $montoMaxAhorro, $idUsuario);
-        $query->execute();
-        $query->close();
-        $db->close();
-        return true;
-    }
 }
 ?>
