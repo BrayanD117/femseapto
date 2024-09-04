@@ -65,6 +65,8 @@ export class InfoUploadComponent {
   }
 
   async onFileUpload(type: string) {
+    this.progress[type] = 0;
+
     const file = this.selectedFiles[type];
     if (file) {
       const fileReader = new FileReader();
@@ -151,7 +153,7 @@ export class InfoUploadComponent {
         break;
     }
 
-    this.completedRequests[type] = 0;  // Reset the completed requests counter
+    this.completedRequests[type] = 0;
 
     if (service) {
       const batchPromises = [];
@@ -175,7 +177,7 @@ export class InfoUploadComponent {
     return new Promise((resolve, reject) => {
       service.uploadData(batch).subscribe({
         next: () => {
-          this.completedRequests[type] += 1;  // Increment the completed requests counter
+          this.completedRequests[type] += 1;
           this.updateProgress(type, totalBatches);
           resolve();
         },

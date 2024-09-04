@@ -9,7 +9,9 @@
             [disabled]="!selectedFiles['credit']">Cargar Archivo</button>
     </div>
     <div class="progress mb-3">
-        <div class="progress-bar" role="progressbar" [style.width.%]="progress['credit']">{{ progress['credit'] }}%</div>
+        <div class="progress-text">{{ progress['credit'] }}%</div> <!-- Progreso centrado -->
+        <div class="progress-bar" role="progressbar" 
+             [style.width.%]="progress['credit']"></div>
     </div>
 
     <h5>Cargar saldos ahorros vigentes</h5>
@@ -19,7 +21,9 @@
             [disabled]="!selectedFiles['saving']">Cargar Archivo</button>
     </div>
     <div class="progress mb-3">
-        <div class="progress-bar" role="progressbar" [style.width.%]="progress['saving']">{{ progress['saving'] }}%</div>
+        <div class="progress-text">{{ progress['saving'] }}%</div>
+        <div class="progress-bar" role="progressbar" 
+             [style.width.%]="progress['saving']"></div>
     </div>
 
     <h5>Cargar montos máximos de ahorro</h5>
@@ -29,6 +33,8 @@
             [disabled]="!selectedFiles['maxAmount']">Cargar Archivo</button>
     </div>
     <div class="progress mb-3">
-        <div class="progress-bar" role="progressbar" [style.width.%]="progress['maxAmount']">{{ progress['maxAmount'] }}%</div>
+        <div class="progress-text">{{ progress['maxAmount'] }}%</div>
+        <div class="progress-bar" role="progressbar" 
+             [style.width.%]="progress['maxAmount']"></div>
     </div>
 </div>
