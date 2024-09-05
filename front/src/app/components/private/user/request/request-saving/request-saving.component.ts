@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SolicitudAhorroService } from '../../../../../services/request-saving.service';
@@ -14,16 +14,22 @@ import { InfoRequestSavingComponent } from './info-request-saving/info-request-s
 import { FinancialInfoComponent } from '../../components/user-info/components/financial-info/financial-info.component';
 import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
+import { GenerateSavingRequestComponent } from '../../../admin/components/generate-saving-request/generate-saving-request.component';
+
 
 @Component({
   selector: 'app-request-saving',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, ButtonModule, CurrencyFormatPipe, InfoRequestSavingComponent, FinancialInfoComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, ButtonModule, CurrencyFormatPipe, InfoRequestSavingComponent, FinancialInfoComponent, GenerateSavingRequestComponent],
   providers: [MessageService],
   templateUrl: './request-saving.component.html',
   styleUrls: ['./request-saving.component.css']
 })
 export class RequestSavingComponent implements OnInit {
+  @ViewChild('generateSavingRequestComponent') generateSavingRequestComponent!: GenerateSavingRequestComponent;
+
+  isLoading = false;
+
   savingsForm: FormGroup;
   maxSavingsAmount: number = 0;
   savingLines: any[] = [];
@@ -34,6 +40,13 @@ export class RequestSavingComponent implements OnInit {
   displayMessageNatPerson: string = '';
   displayMessageFinancialInfo: string = '';
   isAdditionalDisabled: boolean = false;
+
+  savingRequest = {
+    idUsuario: 0,
+    id: 0
+  };
+
+  
 
   constructor(
     private fb: FormBuilder,
@@ -61,6 +74,8 @@ export class RequestSavingComponent implements OnInit {
 
     if (token) {
       const userId = token.userId;
+
+      this.savingRequest.idUsuario = userId;
 
       this.userService.getById(userId).subscribe(
         (user: any) => {
@@ -234,6 +249,8 @@ export class RequestSavingComponent implements OnInit {
 
   onSubmit(): void {
     if (this.savingsForm.valid) {
+      this.isLoading = true;
+
       const token = this.loginService.getTokenClaims();
 
       if (token) {
@@ -254,19 +271,27 @@ export class RequestSavingComponent implements OnInit {
         };
 
         this.savingsService.createSavingsRequest(savingsData).subscribe({
-          next: () => {
+          next: (response) => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de ahorro creada exitosamente.' });
             this.resetForm();
+
+            this.savingRequest.id = response.id;
+
             setTimeout(() => {
+              this.generateSavingRequestComponent.generateExcel();
+              this.isLoading = false;
               this.router.navigate(['/auth/user']);
-            }, 3000);
+            }, 5000);
+
           },
           error: (err) => {
             console.error('Error creando la solicitud de ahorro', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear la solicitud de ahorro. Vuelve a intentarlo.' });
+            this.isLoading = false;
           }
         });
       } else {
+        this.isLoading = false;
         console.error('User ID not found');
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Vuelve a iniciar sesión e intentalo de nuevo.' });
       }

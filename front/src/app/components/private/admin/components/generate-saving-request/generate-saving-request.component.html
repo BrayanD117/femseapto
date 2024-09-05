@@ -1,1 +1,5 @@
-<button class="btn btn-primary btn-sm" (click)="generateExcel()">Generar Excel</button>
+<button class="btn btn-primary btn-sm" (click)="onGenerateClick()" [disabled]="isLoading">
+    <span *ngIf="!isLoading">Generar</span>
+    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="isLoading"> Generando...</span>
+</button>

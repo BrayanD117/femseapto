@@ -9,16 +9,20 @@ import { FinancialInfoService } from '../../../../../services/financial-info.ser
 import { firstValueFrom } from 'rxjs';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-generate-saving-request',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './generate-saving-request.component.html',
   styleUrls: ['./generate-saving-request.component.css'],
 })
 export class GenerateSavingRequestComponent implements OnInit {
   @Input() userId: number = 0;
   @Input() idSolicitudAhorro: number = 0;
+
+  isLoading: boolean = false;
 
   defaultFont: { underline: boolean; name: string; size: number };
 
@@ -259,5 +263,13 @@ export class GenerateSavingRequestComponent implements OnInit {
       currency: 'COP',
       minimumFractionDigits: 0
     }).format(numericValue);
+  }
+
+  onGenerateClick() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.generateExcel();
+      this.isLoading = false;
+    }, 5000);
   }
 }

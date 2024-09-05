@@ -101,9 +101,21 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-primary" [disabled]="savingWdRequestForm.invalid  || isAdditionalDisabled" type="submit">Guardar</button>
+          <button class="btn btn-primary" [disabled]="savingWdRequestForm.invalid  || isAdditionalDisabled" type="submit">
+            <span *ngIf="!isLoading">Enviar solicitud</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="isLoading"> Enviando...</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<app-generate-saving-withdrawal-request
+  *ngIf="savingWithdrawalRequest.id !== 0"
+  [userId]="savingWithdrawalRequest.idUsuario"
+  [savingWdRequestId]="savingWithdrawalRequest.id"
+  #generateSavingWithdrawalRequestComponent
+  style="display: none;"
+></app-generate-saving-withdrawal-request>

@@ -149,9 +149,19 @@
           class="btn btn-primary"
           [disabled]="savingsForm.invalid || isAdditionalDisabled"
         >
-          Enviar Solicitud
+        <span *ngIf="!isLoading">Enviar solicitud</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span *ngIf="isLoading"> Enviando...</span>
         </button>
       </form>
     </div>
   </div>
 </div>
+
+<app-generate-saving-request
+  *ngIf="savingRequest.id !== 0"
+  [userId]="savingRequest.idUsuario"
+  [idSolicitudAhorro]="savingRequest.id"
+  #generateSavingRequestComponent
+  style="display: none;"
+></app-generate-saving-request>

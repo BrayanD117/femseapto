@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -14,16 +14,21 @@ import { Router } from '@angular/router';
 
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 import { InfoRequestSavingComponent } from '../request-saving/info-request-saving/info-request-saving.component';
+import { GenerateSavingWithdrawalRequestComponent } from '../../../admin/components/generate-saving-withdrawal-request/generate-saving-withdrawal-request.component';
 
 @Component({
   selector: 'app-request-saving-withdrawal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, InputNumberModule, InfoRequestSavingComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, InputNumberModule, InfoRequestSavingComponent, GenerateSavingWithdrawalRequestComponent],
   providers: [MessageService],
   templateUrl: './request-saving-withdrawal.component.html',
   styleUrls: ['./request-saving-withdrawal.component.css']
 })
 export class RequestSavingWithdrawalComponent implements OnInit {
+  @ViewChild('generateSavingWithdrawalRequestComponent') generateSavingWithdrawalRequestComponent!: GenerateSavingWithdrawalRequestComponent;
+
+  isLoading = false;
+  
   savingWdRequestForm: FormGroup;
   userId: number | null = null;
   savingLines: SavingLine[] = [];
@@ -32,6 +37,11 @@ export class RequestSavingWithdrawalComponent implements OnInit {
 
   displayMessage: string = '';
   isAdditionalDisabled: boolean = false;
+
+  savingWithdrawalRequest = {
+    idUsuario: 0,
+    id: 0
+  };
 
   constructor(private fb: FormBuilder,
               private loginService: LoginService,
@@ -60,6 +70,7 @@ export class RequestSavingWithdrawalComponent implements OnInit {
     this.getUserIdFromToken();
 
     if(this.userId)
+      this.savingWithdrawalRequest.idUsuario = this.userId;
       this.validateUserRecords();
       //this.userInfoValidationService.validateUserRecords(this.userId, this.handleWarning.bind(this));
     
@@ -190,19 +201,25 @@ export class RequestSavingWithdrawalComponent implements OnInit {
 
   submit(): void {
     if (this.savingWdRequestForm.valid) {
+      this.isLoading = true;
+
       const data: RequestSavingWithdrawal = this.savingWdRequestForm.value;
       //console.log(data);
 
       this.savingWdRequestService.create(data).subscribe({
-        next: () => {
+        next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de retiro de ahorro creada correctamente' });
+          this.savingWithdrawalRequest.id = response.id;
           setTimeout(() => {
+            this.generateSavingWithdrawalRequestComponent.generateExcel();
+            this.isLoading = false;
             this.router.navigate(['/auth/user']);
-          }, 2000);
+          }, 5000);
         },
         error: (err) => {
           console.error('Error', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la solicitud de retiro de ahorro. Por favor, intente otra vez' });
+          this.isLoading = false;
         }
       });
     }
