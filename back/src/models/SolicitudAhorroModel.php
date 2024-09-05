@@ -63,7 +63,7 @@ class SolicitudAhorro {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_ahorro WHERE id_usuario = ? ORDER BY fecha_solicitud DESC");
+        $query = $db->prepare("SELECT id, id_usuario, monto_total_ahorrar, quincena, mes, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_ahorro WHERE id_usuario = ? ORDER BY fecha_solicitud ASC");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $montoTotalAhorrar, $quincena, $mes, $fechaSolicitud);
