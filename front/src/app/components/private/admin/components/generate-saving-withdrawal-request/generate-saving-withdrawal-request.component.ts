@@ -10,12 +10,12 @@ import { saveAs } from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-generate-saving-withdrawal-request',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   providers: [DatePipe],
   templateUrl: './generate-saving-withdrawal-request.component.html',
   styleUrl: './generate-saving-withdrawal-request.component.css'
@@ -24,6 +24,7 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
   @Input() userId: number = 0;
   @Input() savingWdRequestId: number = 0;
 
+  isLoading: boolean = false;
 
   fullName: string = '';
   docNumber: number = 0;
@@ -179,5 +180,13 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
       console.error('Error reading the template file:', error);
       throw error;
     }
+  }
+
+  onGenerateClick() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.generateExcel();
+      this.isLoading = false;
+    }, 5000);
   }
 }
