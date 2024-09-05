@@ -364,8 +364,13 @@ export class GenerateCreditRequestComponent implements OnInit {
       await this.loadTemplate(workbook);
       const worksheet = workbook.getWorksheet(1);
 
-      // Agregar datos dinámicos
       if (worksheet) {
+
+        await worksheet.protect('femseapto2024', { 
+          selectLockedCells: true, 
+          selectUnlockedCells: true 
+        });
+
         worksheet.getCell('G5').value = Number(this.montoSolicitado);
         worksheet.getCell('O5').value = Number(this.plazoQuincenal);
         worksheet.getCell('U5').value = Number(this.valorCuotaQuincenal);

@@ -117,6 +117,12 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
 
       // Agregar datos dinámicos
       if (worksheet) {
+
+        await worksheet.protect('femseapto2024', { 
+          selectLockedCells: true, 
+          selectUnlockedCells: true 
+        });
+
         worksheet.getCell('B8').value = this.fullName;
         worksheet.getCell('B9').value = this.docNumber;
         worksheet.getCell('I9').value = this.date;
