@@ -120,6 +120,12 @@ export class GenerateSavingRequestComponent implements OnInit {
       const worksheet = workbook.getWorksheet(1);
 
       if (worksheet) {
+
+        await worksheet.protect('femseapto2024', { 
+          selectLockedCells: true, 
+          selectUnlockedCells: true 
+        });
+
         const texto = [
           { text: "Yo ", font: this.defaultFont },
           { text: this.nombreCompleto, font: { ...this.defaultFont, underline: true } },
