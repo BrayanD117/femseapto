@@ -3,7 +3,7 @@
 class DataUtils {
     public static function convertirDatos($datos) {
         foreach ($datos as $key => $value) {
-            if ($key === 'correoElectronico') {
+            if ($key === 'correoElectronico' || $key === 'usuario') {
                 // Convertir el correo electrónico a minúsculas
                 $datos[$key] = is_string($value) ? strtolower($value) : $value;
             } elseif (is_string($value)) {

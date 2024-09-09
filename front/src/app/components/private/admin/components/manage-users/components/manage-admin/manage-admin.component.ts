@@ -26,6 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-manage-admin',
@@ -41,7 +43,9 @@ import { DropdownModule } from 'primeng/dropdown';
     MultiSelectModule,
     DropdownModule,
     HttpClientModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './manage-admin.component.html',
   styleUrl: './manage-admin.component.css',
 })
@@ -70,16 +74,17 @@ export class ManageAdminComponent {
     private userService: UserService,
     private docTypeService: DocumentTypeService,
     private roleService: RoleService,
-    private associateTypeService: AssociateTypeService
+    private associateTypeService: AssociateTypeService,
+    private messageService: MessageService,
   ) {
     this.editUserForm = this.fb.group({
       id: [null],
       idTipoDocumento: [null],
       numeroDocumento: [''],
       primerApellido: [''],
-      //segundoApellido: [''],
+      segundoApellido: [''],
       primerNombre: [''],
-      //segundoNombre: [''],
+      segundoNombre: [''],
       usuario: ['', Validators.required],
       id_rol: [1],
       id_tipo_asociado: [null],
@@ -184,6 +189,8 @@ export class ManageAdminComponent {
   submit(): void {
     //console.log(this.editUserForm.value);
     if (this.editUserForm.valid) {
+
+      console.log(this.editUserForm.value);
       const userFormData = this.editUserForm.value;
       if (this.isEditMode) {
         //console.log('antes', userFormData);
@@ -199,9 +206,11 @@ export class ManageAdminComponent {
             //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             //console.log('Usuario actualizado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario actualizado correctamente' });
           },
           error: (err) => {
             console.error('Error al actualizar el usuario', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el usuario. Por favor, intente otra vez' });
           },
         });
       } else {
@@ -211,10 +220,12 @@ export class ManageAdminComponent {
             this.users.push(userFormData);
             //console.log('Usuario creado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario creado correctamente' });
           },
           error: (err) => {
             console.error('Error al crear el usuario', err);
             //console.log('Error al crear el usuario', err.error.id.message);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear el usuario. Por favor, intente otra vez' });
           },
         });
       }

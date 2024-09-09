@@ -16,11 +16,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-manage-executive',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './manage-executive.component.html',
   styleUrl: './manage-executive.component.css'
 })
@@ -49,7 +52,8 @@ export class ManageExecutiveComponent {
     private userService: UserService,
     private docTypeService: DocumentTypeService,
     private roleService: RoleService,
-    private associateTypeService: AssociateTypeService
+    private associateTypeService: AssociateTypeService,
+    private messageService: MessageService,
   ) {
     this.editUserForm = this.fb.group({
       id: [null],
@@ -164,32 +168,30 @@ export class ManageExecutiveComponent {
     if (this.editUserForm.valid) {
       const userFormData = this.editUserForm.value;
       if(this.isEditMode) {
-        //console.log("antes", userFormData);
         this.userService.update(userFormData).subscribe({
           next: () => {
-            //console.log("después", userFormData);
             const index = this.users.findIndex(user => user.id === userFormData.id);
             if (index !== -1) {
               this.users[index] = userFormData;
             }
-            //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
-            //console.log('Usuario actualizado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Directivo actualizado correctamente' });
           },
           error: err => {
             console.error('Error al actualizar el usuario', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: err.id.message });
           }
         });
       } else {
-        //console.log(userFormData);  
         this.userService.create(userFormData).subscribe({
           next: () => {
             this.users.push(userFormData);
-            //console.log('Usuario creado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Directivo creado correctamente' });
           },
           error: err => {
             console.error('Error al crear el usuario', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.id.message });
           }
         });
       }  

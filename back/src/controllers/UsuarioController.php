@@ -16,6 +16,8 @@ class UsuarioController {
             $datos['primerApellido'] = 'Admin';
             $datos['idTipoDocumento'] = 1;
             $datos['id_tipo_asociado'] = 3;
+        } elseif ($datos['id_rol'] == 2) {
+            $datos['usuario'] = $datos['numeroDocumento'];
         } elseif ($datos['id_rol'] == 3) {
             $datos['id_tipo_asociado'] = 3;
         }

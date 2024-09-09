@@ -16,11 +16,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-manage-user',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './manage-user.component.html',
   styleUrl: './manage-user.component.css'
 })
@@ -49,7 +52,8 @@ export class ManageUserComponent {
     private userService: UserService,
     private docTypeService: DocumentTypeService,
     private roleService: RoleService,
-    private associateTypeService: AssociateTypeService
+    private associateTypeService: AssociateTypeService,
+    private messageService: MessageService,
   ) {
     this.editUserForm = this.fb.group({
       id: [null],
@@ -59,7 +63,7 @@ export class ManageUserComponent {
       segundoApellido: [''],
       primerNombre: ['', Validators.required],
       segundoNombre: [''],
-      usuario: ['', Validators.required],
+      usuario: [''],
       id_rol: [2, Validators.required],
       id_tipo_asociado: [null, Validators.required],
       activo: [1, Validators.required]
@@ -161,6 +165,7 @@ export class ManageUserComponent {
     //console.log(this.editUserForm.value); 
     if (this.editUserForm.valid) {
       const userFormData = this.editUserForm.value;
+      console.log(userFormData);
       if(this.isEditMode) {
         //console.log("antes", userFormData);
         this.userService.update(userFormData).subscribe({
@@ -173,9 +178,11 @@ export class ManageUserComponent {
             //userFormData.activo = userFormData.activo === 0 ? 1 : 0;
             //console.log('Usuario actualizado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario actualizado correctamente' });
           },
           error: err => {
             console.error('Error al actualizar el usuario', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el usuario. Por favor, intente otra vez' });
           }
         });
       } else {
@@ -185,9 +192,11 @@ export class ManageUserComponent {
             this.users.push(userFormData);
             //console.log('Usuario creado');
             this.formReset();
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario creado correctamente' });
           },
           error: err => {
             console.error('Error al crear el usuario', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear el usuario. Por favor, intente otra vez' });
           }
         });
       }  
