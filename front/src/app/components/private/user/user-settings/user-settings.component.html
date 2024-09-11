@@ -1,55 +1,69 @@
 <p-toast></p-toast>
 <div class="container">
     <h1 class="mt-5 text-center">Cambiar Contraseña</h1>
-  
+
     <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="currentPassword" class="form-label">Contraseña Actual</label>
-        <input
-          type="password"
-          id="currentPassword"
-          class="form-control"
-          formControlName="currentPassword"
-          placeholder="Introduce tu contraseña actual"
-        />
-        <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched">
-          <small class="text-danger">La contraseña actual es requerida</small>
+        <div class="mb-3 position-relative">
+            <label for="currentPassword" class="form-label">Contraseña Actual</label>
+            <div class="password-container">
+                <input
+                  [type]="showCurrentPassword ? 'text' : 'password'"
+                  id="currentPassword"
+                  class="form-control"
+                  formControlName="currentPassword"
+                  placeholder="Introduce tu contraseña actual"/>
+                <i
+                  class="pi password-toggle-icon"
+                  [ngClass]="showCurrentPassword ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility('current')"></i>
+            </div>
+            <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched">
+                <small class="text-danger">La contraseña actual es requerida</small>
+            </div>
         </div>
-      </div>
-  
-      <div class="mb-3">
-        <label for="newPassword" class="form-label">Nueva Contraseña</label>
-        <input
-          type="password"
-          id="newPassword"
-          class="form-control"
-          formControlName="newPassword"
-          placeholder="Introduce tu nueva contraseña"
-        />
-        <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched">
-          <small class="text-danger">La nueva contraseña es requerida y debe tener al menos 6 caracteres</small>
+
+        <div class="mb-3 position-relative">
+            <label for="newPassword" class="form-label">Nueva Contraseña</label>
+            <div class="password-container">
+                <input
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  id="newPassword"
+                  class="form-control"
+                  formControlName="newPassword"
+                  placeholder="Introduce tu nueva contraseña"/>
+                <i
+                  class="pi password-toggle-icon"
+                  [ngClass]="showNewPassword ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility('new')"></i>
+            </div>
+            <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched">
+                <small class="text-danger">La nueva contraseña es requerida y debe tener al menos 6 caracteres</small>
+            </div>
         </div>
-      </div>
-  
-      <div class="mb-3">
-        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          class="form-control"
-          formControlName="confirmPassword"
-          placeholder="Confirma tu nueva contraseña"
-        />
-        <div *ngIf="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
-          <small class="text-danger">Debes confirmar la nueva contraseña</small>
+
+        <div class="mb-3 position-relative">
+            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+            <div class="password-container">
+                <input
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  id="confirmPassword"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  placeholder="Confirma tu nueva contraseña"/>
+                <i
+                  class="pi password-toggle-icon"
+                  [ngClass]="showNewPassword ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility('new')"></i>
+            </div>
+            <div *ngIf="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
+                <small class="text-danger">Debes confirmar la nueva contraseña</small>
+            </div>
         </div>
-      </div>
-  
-      <div *ngIf="passwordMismatch" class="alert alert-danger">
-        Las contraseñas no coinciden.
-      </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="changePasswordForm.invalid">Cambiar Contraseña</button>
+
+        <div *ngIf="passwordMismatch" class="alert alert-danger">
+            Las contraseñas no coinciden.
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="changePasswordForm.invalid">Cambiar Contraseña</button>
     </form>
-  </div>
-  
+</div>

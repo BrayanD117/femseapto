@@ -17,6 +17,8 @@ import { CommonModule } from '@angular/common';
 export class UserSettingsComponent {
   changePasswordForm: FormGroup;
   passwordMismatch = false;
+  showCurrentPassword = false;
+  showNewPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +54,14 @@ export class UserSettingsComponent {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMsg });
         }
       });
+    }
+  }
+
+  togglePasswordVisibility(field: string) {
+    if (field === 'current') {
+      this.showCurrentPassword = !this.showCurrentPassword;
+    } else if (field === 'new') {
+      this.showNewPassword = !this.showNewPassword;
     }
   }
 }
