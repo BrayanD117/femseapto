@@ -53,7 +53,7 @@ export interface NaturalPerson {
   idTipoVivienda: number;
   estrato: number;
   direccionResidencia: string;
-  antigVivienda: number;
+  antigVivienda: string;
   idEstadoCivil: number;
   cabezaFamilia: string;
   personasACargo: number;
@@ -71,7 +71,7 @@ export interface NaturalPerson {
   dependenciaEmpresa: string;
   cargoOcupa: string;
   jefeInmediato: string;
-  aniosAntigEmpresa: number;
+  antigEmpresa: string;
   mesesAntigEmpresa: number;
   mesSaleVacaciones: string;
   nombreEmergencia: string;

@@ -4,10 +4,10 @@ class DataUtils {
     public static function convertirDatos($datos) {
         foreach ($datos as $key => $value) {
             if ($key === 'correoElectronico' || $key === 'usuario') {
-                // Convertir el correo electrónico a minúsculas
                 $datos[$key] = is_string($value) ? strtolower($value) : $value;
+            } if ($key === 'antigVivienda' || $key === 'antigEmpresa') {
+                $datos[$key] = $value;
             } elseif (is_string($value)) {
-                // Convertir otros valores a mayúsculas
                 $datos[$key] = strtoupper($value);
             }
         }

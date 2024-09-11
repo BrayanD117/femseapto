@@ -142,7 +142,9 @@ export class NaturalPersonComponent implements OnInit {
       dependenciaEmpresa: ['', Validators.required],
       cargoOcupa: ['', Validators.required],
       jefeInmediato: ['', Validators.required],
-      aniosAntigEmpresa: ['', Validators.required],
+      antigEmpresa: ['', Validators.required],
+      duracionAntigEmpresa: ['', Validators.required],
+      periodoAntigEmpresa: ['', Validators.required],
       //mesesAntigEmpresa: ['', Validators.required],
       mesSaleVacaciones: ['', Validators.required],
       nombreEmergencia: ['', Validators.required],
@@ -248,18 +250,28 @@ export class NaturalPersonComponent implements OnInit {
       this.naturalPersonService
         .getByUserId(this.userId)
         .subscribe((natPerson) => {
-          let duration: string = '';
-          let period: string = '';
+          let durationHome: string = '';
+          let periodHome: string = '';
+          let durationCompany: string = '';
+          let periodCompany: string = '';
   
-          if (natPerson.antiguedadVivienda) {
-            const [extractedDuration, extractedPeriod] = natPerson.antiguedadVivienda.split(' ');
-            duration = extractedDuration;
-            period = extractedPeriod;
+          if (natPerson.antigVivienda) {
+            const [extractedDuration, extractedPeriod] = natPerson.antigVivienda.split(' ');
+            durationHome = extractedDuration;
+            periodHome = extractedPeriod;
+          }
+
+          if (natPerson.antigEmpresa) {
+            const [extractedDuration, extractedPeriod] = natPerson.antigEmpresa.split(' ');
+            durationCompany = extractedDuration;
+            periodCompany = extractedPeriod;
           }
 
           this.natPersonForm.patchValue({
-            duracionAntigVivienda: duration,
-            periodoAntigVivienda: period,
+            duracionAntigVivienda: durationHome,
+            periodoAntigVivienda: periodHome,
+            duracionAntigEmpresa: durationCompany,
+            periodoAntigEmpresa: periodCompany,
             ...natPerson
           });
 
@@ -326,13 +338,17 @@ export class NaturalPersonComponent implements OnInit {
 
 
     if (this.natPersonForm.valid) {
-      const duration = this.natPersonForm.get('duracionAntigVivienda')?.value;
-      const period = this.natPersonForm.get('periodoAntigVivienda')?.value;
+      const durationHome = this.natPersonForm.get('duracionAntigVivienda')?.value;
+      const periodHome = this.natPersonForm.get('periodoAntigVivienda')?.value;
+      const durationCompany = this.natPersonForm.get('duracionAntigEmpresa')?.value;
+      const periodCompany = this.natPersonForm.get('periodoAntigEmpresa')?.value;
 
       // Combina ambos valores en una cadena para enviar al backend
-      const antiguedadVivienda = `${duration} ${period}`;
+      const antiguedadVivienda = `${durationHome} ${periodHome}`;
+      const antiguedadEmpresa = `${durationCompany} ${periodCompany}`;
       this.natPersonForm.patchValue({
-        antigVivienda: antiguedadVivienda
+        antigVivienda: antiguedadVivienda,
+        antigEmpresa: antiguedadEmpresa
       });
 
       if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
