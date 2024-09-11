@@ -26,7 +26,7 @@ class PersonaNaturalController {
             $datos['idTipoVivienda'] ?? null,
             $datos['estrato'] ?? null,
             $datos['direccionResidencia'] ?? null,
-            $datos['aniosAntigVivienda'] ?? null,
+            $datos['antigVivienda'] ?? null,
             $datos['idEstadoCivil'] ?? null,
             $datos['cabezaFamilia'] ?? null,
             $datos['personasACargo'] ?? null,
@@ -44,7 +44,7 @@ class PersonaNaturalController {
             $datos['dependenciaEmpresa'] ?? null,
             $datos['cargoOcupa'] ?? null,
             $datos['jefeInmediato'] ?? null,
-            $datos['aniosAntigEmpresa'] ?? null,
+            $datos['antigEmpresa'] ?? null,
             $datos['mesesAntigEmpresa']  ?? null,
             $datos['mesSaleVacaciones'] ?? null,
             $datos['nombreEmergencia'] ?? null,
@@ -81,7 +81,7 @@ class PersonaNaturalController {
         $personaNatural->idTipoVivienda = $datos['idTipoVivienda'] ?? null;
         $personaNatural->estrato = $datos['estrato'] ?? null;
         $personaNatural->direccionResidencia = $datos['direccionResidencia'] ?? null;
-        $personaNatural->aniosAntigVivienda = $datos['aniosAntigVivienda'] ?? null;
+        $personaNatural->antigVivienda = $datos['antigVivienda'] ?? null;
         $personaNatural->idEstadoCivil = $datos['idEstadoCivil'] ?? null;
         $personaNatural->cabezaFamilia = $datos['cabezaFamilia'] ?? null;
         $personaNatural->personasACargo = $datos['personasACargo'] ?? null;
@@ -99,7 +99,7 @@ class PersonaNaturalController {
         $personaNatural->dependenciaEmpresa = $datos['dependenciaEmpresa'] ?? null;
         $personaNatural->cargoOcupa = $datos['cargoOcupa'] ?? null;
         $personaNatural->jefeInmediato = $datos['jefeInmediato'] ?? null;
-        $personaNatural->aniosAntigEmpresa = $datos['aniosAntigEmpresa'] ?? null;
+        $personaNatural->antigEmpresa = $datos['antigEmpresa'] ?? null;
         $personaNatural->mesesAntigEmpresa = $datos['mesesAntigEmpresa'] ?? null;
         $personaNatural->mesSaleVacaciones = $datos['mesSaleVacaciones'] ?? null;
         $personaNatural->nombreEmergencia = $datos['nombreEmergencia'] ?? null;

@@ -19,7 +19,7 @@ class PersonaNatural {
     public $idTipoVivienda;
     public $estrato;
     public $direccionResidencia;
-    public $aniosAntigVivienda;
+    public $antigVivienda;
     public $idEstadoCivil;
     public $cabezaFamilia;
     public $personasACargo;
@@ -37,7 +37,7 @@ class PersonaNatural {
     public $dependenciaEmpresa;
     public $cargoOcupa;
     public $jefeInmediato;
-    public $aniosAntigEmpresa;
+    public $antigEmpresa;
     public $mesesAntigEmpresa;
     public $mesSaleVacaciones;
     public $nombreEmergencia;
@@ -62,7 +62,7 @@ class PersonaNatural {
         $idTipoVivienda = '',
         $estrato = '',
         $direccionResidencia = '',
-        $aniosAntigVivienda = '',
+        $antigVivienda = '',
         $idEstadoCivil = '',
         $cabezaFamilia = '',
         $personasACargo = '',
@@ -80,7 +80,7 @@ class PersonaNatural {
         $dependenciaEmpresa = '',
         $cargoOcupa = '',
         $jefeInmediato = '',
-        $aniosAntigEmpresa = '',
+        $antigEmpresa = '',
         $mesesAntigEmpresa = '',
         $mesSaleVacaciones = '',
         $nombreEmergencia = '',
@@ -105,7 +105,7 @@ class PersonaNatural {
         $this->idTipoVivienda = $idTipoVivienda;
         $this->estrato = $estrato;
         $this->direccionResidencia = $direccionResidencia;
-        $this->aniosAntigVivienda = $aniosAntigVivienda;
+        $this->antigVivienda = $antigVivienda;
         $this->idEstadoCivil = $idEstadoCivil;
         $this->cabezaFamilia = $cabezaFamilia;
         $this->personasACargo = $personasACargo;
@@ -123,7 +123,7 @@ class PersonaNatural {
         $this->dependenciaEmpresa = $dependenciaEmpresa;
         $this->cargoOcupa = $cargoOcupa;
         $this->jefeInmediato = $jefeInmediato;
-        $this->aniosAntigEmpresa = $aniosAntigEmpresa;
+        $this->antigEmpresa = $antigEmpresa;
         $this->mesesAntigEmpresa = $mesesAntigEmpresa;
         $this->mesSaleVacaciones = $mesSaleVacaciones;
         $this->nombreEmergencia = $nombreEmergencia;
@@ -136,19 +136,19 @@ class PersonaNatural {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, id_dpto_exp_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, id_dpto_nac, mpio_nacimiento, otro_lugar_nacimiento, id_dpto_residencia, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, anios_antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, jefe_inmediato, anios_antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("iissssssssssiiisiisisissssissiisssissss", $this->idUsuario, $this->idGenero,
+            $query = $db->prepare("INSERT INTO personas_naturales (id_usuario, id_genero, fecha_expedicion_doc, id_dpto_exp_doc, mpio_expedicion_doc, fecha_nacimiento, pais_nacimiento, id_dpto_nac, mpio_nacimiento, otro_lugar_nacimiento, id_dpto_residencia, mpio_residencia, id_zona_residencia, id_tipo_vivienda, estrato, direccion_residencia, antiguedad_vivienda, id_estado_civil, cabeza_familia, personas_a_cargo, tiene_hijos, numero_hijos, correo_electronico, telefono, celular, telefono_oficina, id_nivel_educativo, profesion, ocupacion_oficio, id_empresa_labor, id_tipo_contrato, dependencia_empresa, cargo_ocupa, jefe_inmediato, antiguedad_empresa, mes_sale_vacaciones, nombre_emergencia, numero_cedula_emergencia, numero_celular_emergencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("iissssssssssiiissisisissssissiissssssss", $this->idUsuario, $this->idGenero,
                 $this->fechaExpDoc, $this->idDeptoExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
                 $this->paisNacimiento, $this->idDeptoNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->idDeptoResidencia, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
-                $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
+                $this->direccionResidencia, $this->antigVivienda, $this->idEstadoCivil, $this->cabezaFamilia, $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->antigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
                 $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia
             );
         } else {
-            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, id_dpto_exp_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, id_dpto_nac = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, id_dpto_residencia = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, anios_antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, jefe_inmediato = ?, anios_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
-            $query->bind_param("issssssssssiiisiisisissssissiisssissssi", $this->idGenero,
+            $query = $db->prepare("UPDATE personas_naturales SET id_genero = ?, fecha_expedicion_doc = ?, id_dpto_exp_doc = ?, mpio_expedicion_doc = ?, fecha_nacimiento = ?, pais_nacimiento = ?, id_dpto_nac = ?, mpio_nacimiento = ?, otro_lugar_nacimiento = ?, id_dpto_residencia = ?, mpio_residencia = ?, id_zona_residencia = ?, id_tipo_vivienda = ?, estrato = ?, direccion_residencia = ?, antiguedad_vivienda = ?, id_estado_civil = ?, cabeza_familia = ?, personas_a_cargo = ?, tiene_hijos = ?, numero_hijos = ?, correo_electronico = ?, telefono = ?, celular = ?, telefono_oficina = ?, id_nivel_educativo = ?, profesion = ?, ocupacion_oficio = ?, id_empresa_labor = ?, id_tipo_contrato = ?, dependencia_empresa = ?, cargo_ocupa = ?, jefe_inmediato = ?, anios_antiguedad_empresa = ?, mes_sale_vacaciones = ?, nombre_emergencia = ?, numero_cedula_emergencia = ?, numero_celular_emergencia = ? WHERE id = ?");
+            $query->bind_param("issssssssssiiissisisissssissiissssssssi", $this->idGenero,
             $this->fechaExpDoc, $this->idDeptoExpDoc, $this->mpioExpDoc, $this->fechaNacimiento,
             $this->paisNacimiento, $this->idDeptoNacimiento, $this->mpioNacimiento, $this->otroLugarNacimiento, $this->idDeptoResidencia, $this->mpioResidencia, $this->idZonaResidencia, $this->idTipoVivienda, $this->estrato,
-            $this->direccionResidencia, $this->aniosAntigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->aniosAntigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
+            $this->direccionResidencia, $this->antigVivienda, $this->idEstadoCivil, $this->cabezaFamilia,  $this->personasACargo, $this->tieneHijos, $this->numeroHijos, $this->correoElectronico, $this->telefono, $this->celular, $this->telefonoOficina, $this->idNivelEducativo, $this->profesion, $this->ocupacionOficio, $this->idEmpresaLabor, $this->idTipoContrato, $this->dependenciaEmpresa, $this->cargoOcupa, $this->jefeInmediato, $this->antigEmpresa, $this->mesSaleVacaciones, $this->nombreEmergencia,
             $this->numeroCedulaEmergencia, $this->numeroCelularEmergencia, $this->id
             );
         }
@@ -194,7 +194,7 @@ class PersonaNatural {
         $idTipoVivienda,
         $estrato,
         $direccionResidencia,
-        $aniosAntigVivienda,
+        $antigVivienda,
         $idEstadoCivil,
         $cabezaFamilia,
         $personasACargo,
@@ -212,7 +212,7 @@ class PersonaNatural {
         $dependenciaEmpresa,
         $cargoOcupa,
         $jefeInmediato,
-        $aniosAntigEmpresa,
+        $antigEmpresa,
         $mesesAntigEmpresa,
         $mesSaleVacaciones,
         $nombreEmergencia,
@@ -239,7 +239,7 @@ class PersonaNatural {
             $idTipoVivienda,
             $estrato,
             $direccionResidencia,
-            $aniosAntigVivienda,
+            $antigVivienda,
             $idEstadoCivil,
             $cabezaFamilia,
             $personasACargo,
@@ -257,7 +257,7 @@ class PersonaNatural {
             $dependenciaEmpresa,
             $cargoOcupa,
             $jefeInmediato,
-            $aniosAntigEmpresa,
+            $antigEmpresa,
             $mesesAntigEmpresa,
             $mesSaleVacaciones,
             $nombreEmergencia,
@@ -293,7 +293,7 @@ class PersonaNatural {
         $idTipoVivienda,
         $estrato,
         $direccionResidencia,
-        $aniosAntigVivienda,
+        $antigVivienda,
         $idEstadoCivil,
         $cabezaFamilia,
         $personasACargo,
@@ -311,7 +311,7 @@ class PersonaNatural {
         $dependenciaEmpresa,
         $cargoOcupa,
         $jefeInmediato,
-        $aniosAntigEmpresa,
+        $antigEmpresa,
         $mesesAntigEmpresa,
         $mesSaleVacaciones,
         $nombreEmergencia,
@@ -338,7 +338,7 @@ class PersonaNatural {
             $idTipoVivienda,
             $estrato,
             $direccionResidencia,
-            $aniosAntigVivienda,
+            $antigVivienda,
             $idEstadoCivil,
             $cabezaFamilia,
             $personasACargo,
@@ -356,7 +356,7 @@ class PersonaNatural {
             $dependenciaEmpresa,
             $cargoOcupa,
             $jefeInmediato,
-            $aniosAntigEmpresa,
+            $antigEmpresa,
             $mesesAntigEmpresa,
             $mesSaleVacaciones,
             $nombreEmergencia,
@@ -393,7 +393,7 @@ class PersonaNatural {
             $row['id_tipo_vivienda'],
             $row['estrato'],
             $row['direccion_residencia'],
-            $row['anios_antiguedad_vivienda'],
+            $row['antiguedad_vivienda'],
             $row['id_estado_civil'],
             $row['cabeza_familia'],
             $row['personas_a_cargo'],
@@ -411,7 +411,7 @@ class PersonaNatural {
             $row['dependencia_empresa'],
             $row['cargo_ocupa'],
             $row['jefe_inmediato'],
-            $row['anios_antiguedad_empresa'],
+            $row['antiguedad_empresa'],
             $row['meses_antiguedad_empresa'],
             $row['mes_sale_vacaciones'],
             $row['nombre_emergencia'],

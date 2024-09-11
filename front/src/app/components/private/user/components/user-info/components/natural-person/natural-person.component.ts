@@ -122,7 +122,9 @@ export class NaturalPersonComponent implements OnInit {
       idTipoVivienda: ['', Validators.required],
       estrato: ['', Validators.required],
       direccionResidencia: ['', Validators.required],
-      aniosAntigVivienda: ['', Validators.required],
+      antigVivienda: ['', Validators.required],
+      duracionAntigVivienda: ['', Validators.required],
+      periodoAntigVivienda: ['', Validators.required],
       idEstadoCivil: ['', Validators.required],
       cabezaFamilia: ['', Validators.required],
       personasACargo: [{ value: '', disabled: true }],
@@ -246,7 +248,21 @@ export class NaturalPersonComponent implements OnInit {
       this.naturalPersonService
         .getByUserId(this.userId)
         .subscribe((natPerson) => {
-          this.natPersonForm.patchValue(natPerson);
+          let duration: string = '';
+          let period: string = '';
+  
+          if (natPerson.antiguedadVivienda) {
+            const [extractedDuration, extractedPeriod] = natPerson.antiguedadVivienda.split(' ');
+            duration = extractedDuration;
+            period = extractedPeriod;
+          }
+
+          this.natPersonForm.patchValue({
+            duracionAntigVivienda: duration,
+            periodoAntigVivienda: period,
+            ...natPerson
+          });
+
           this.toggleFieldsHasChildren(
             this.natPersonForm.get('tieneHijos')?.value
           );
@@ -310,6 +326,15 @@ export class NaturalPersonComponent implements OnInit {
 
 
     if (this.natPersonForm.valid) {
+      const duration = this.natPersonForm.get('duracionAntigVivienda')?.value;
+      const period = this.natPersonForm.get('periodoAntigVivienda')?.value;
+
+      // Combina ambos valores en una cadena para enviar al backend
+      const antiguedadVivienda = `${duration} ${period}`;
+      this.natPersonForm.patchValue({
+        antigVivienda: antiguedadVivienda
+      });
+
       if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
         this.natPersonForm.get('numeroHijos')?.enable();
         this.natPersonForm.get('numeroHijos')?.setValue(0);

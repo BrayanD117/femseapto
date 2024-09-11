@@ -148,7 +148,14 @@
         </div>
         <div class="col-md-6">
           <label for="aniosAntigVivienda" class="form-label">Años de antigüedad en la vivienda de residencia</label>
-          <input formControlName="aniosAntigVivienda" type="number" class="form-control" />
+          <div class="input-group mb-3">
+            <input type="number" class="form-control" formControlName="duracionAntigVivienda">
+            <select class="form-select" style="max-width: 220px;" formControlName="periodoAntigVivienda">
+              <option value="" selected disabled>Seleccione Periodo...</option>
+              <option value="Años">Años</option>
+              <option value="Meses">Meses</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
