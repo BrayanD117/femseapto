@@ -36,8 +36,6 @@ export class LoginComponent {
   
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;
-          console.log("RESPONSE: ", response)
-          console.log("RESPONSE primer ingreso: ", response.primer_ingreso)
           if (response.primer_ingreso === 0) {
             this.router.navigate(['/auth/user/settings']);
           } else {

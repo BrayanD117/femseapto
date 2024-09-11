@@ -23,6 +23,7 @@ export class UserSettingsComponent {
   showCurrentPassword = false;
   showNewPassword = false;
   userId = 0;
+  passwordStrengthClass = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +35,11 @@ export class UserSettingsComponent {
   ) {
     this.changePasswordForm = this.fb.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        this.passwordValidator()
+      ]],
       confirmPassword: ['', Validators.required]
     });
 
@@ -42,6 +47,30 @@ export class UserSettingsComponent {
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
       this.userId = decodedToken.userId;
+    }
+  }
+
+  passwordValidator() {
+    return (control: any) => {
+      const value = control.value || '';
+      const hasNumber = /\d/.test(value);
+      const hasLetter = /[a-zA-Z]/.test(value);
+      const valid = hasNumber && hasLetter;
+      return !valid ? { passwordInvalid: true } : null;
+    };
+  }
+
+  evaluatePasswordStrength() {
+    const password = this.changePasswordForm.get('newPassword')?.value || '';
+    
+    if (!password) {
+      this.passwordStrengthClass = ''; // Dejar la barra vacía cuando no haya texto
+    } else if (password.length >= 8 && /[A-Z]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      this.passwordStrengthClass = 'strong';
+    } else if (password.length >= 6) {
+      this.passwordStrengthClass = 'medium';
+    } else {
+      this.passwordStrengthClass = 'low';
     }
   }
 
@@ -57,22 +86,19 @@ export class UserSettingsComponent {
 
       this.passwordMismatch = false;
 
-      console.log("this.userId",this.userId)
-
       this.userService.changePassword(currentPassword, newPassword).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contraseña actualizada correctamente', life: 3000 });
 
           this.userService.updatePrimerIngreso(this.userId, 1).subscribe({
             next: (response) => {
-              console.log('Respuesta del servidor:', response);
               this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Primer ingreso actualizado' });
               this.router.navigate(['/auth/user']);
             },
             error: (err) => {
               console.error('Error al actualizar el primer ingreso:', err);
             }
-          });          
+          });
         },
         error: (error) => {
           const errorMsg = error.error?.message || 'No se pudo cambiar la contraseña';
