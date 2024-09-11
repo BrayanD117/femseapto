@@ -128,7 +128,9 @@ export class InfoRequestCreditComponent implements OnInit {
       idTipoVivienda: ['', Validators.required],
       estrato: ['', Validators.required],
       direccionResidencia: ['', Validators.required],
-      aniosAntigVivienda: ['', Validators.required],
+      antigVivienda: [''],
+      duracionAntigVivienda: ['', Validators.required],
+      periodoAntigVivienda: ['', Validators.required],
       idEstadoCivil: ['', Validators.required],
       cabezaFamilia: ['', Validators.required],
       personasACargo: [{ value: '', disabled: true }],
@@ -146,7 +148,9 @@ export class InfoRequestCreditComponent implements OnInit {
       dependenciaEmpresa: ['', Validators.required],
       cargoOcupa: [null],
       jefeInmediato: ['', Validators.required],
-      aniosAntigEmpresa: ['', Validators.required],
+      antigEmpresa: [''],
+      duracionAntigEmpresa: ['', Validators.required],
+      periodoAntigEmpresa: ['', Validators.required],
       //mesesAntigEmpresa: ['', Validators.required],
       mesSaleVacaciones: ['', Validators.required],
       nombreEmergencia: [null],
@@ -268,10 +272,31 @@ export class InfoRequestCreditComponent implements OnInit {
       this.naturalPersonService
         .getByUserId(this.userId)
         .subscribe((natPerson) => {
-          this.infoForm.patchValue(natPerson);
-          /*this.toggleFieldsHasChildren(
-            this.infoForm.get('tieneHijos')?.value
-          );*/
+          let durationHome: string = '';
+          let periodHome: string = '';
+          let durationCompany: string = '';
+          let periodCompany: string = '';
+  
+          if (natPerson.antigVivienda) {
+            const [extractedDuration, extractedPeriod] = natPerson.antigVivienda.split(' ');
+            durationHome = extractedDuration;
+            periodHome = extractedPeriod;
+          }
+
+          if (natPerson.antigEmpresa) {
+            const [extractedDuration, extractedPeriod] = natPerson.antigEmpresa.split(' ');
+            durationCompany = extractedDuration;
+            periodCompany = extractedPeriod;
+          }
+
+          this.infoForm.patchValue({
+            duracionAntigVivienda: durationHome,
+            periodoAntigVivienda: periodHome,
+            duracionAntigEmpresa: durationCompany,
+            periodoAntigEmpresa: periodCompany,
+            ...natPerson
+          });
+
           this.toggleFieldsPeople(this.infoForm.get('cabezaFamilia')?.value);
 
           this.onDepartamentoChange('idDeptoExpDoc');
@@ -297,17 +322,6 @@ export class InfoRequestCreditComponent implements OnInit {
     }
   }
 
-  /*toggleFieldsHasChildren(value: string): void {
-    const numChildrenControl = this.infoForm.get('numeroHijos');
-
-    if (value === 'NO' || value === '') {
-      numChildrenControl?.setValue(0);
-      numChildrenControl?.disable();
-    } else {
-      numChildrenControl?.enable();
-    }
-  }*/
-
   toggleFieldsPeople(value: string): void {
     const numPeopleControl = this.infoForm.get('personasACargo');
 
@@ -320,7 +334,6 @@ export class InfoRequestCreditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //console.log("ANTES", this.infoForm.value);
     if (this.isSubmitting) {
       return;
     }
@@ -328,18 +341,24 @@ export class InfoRequestCreditComponent implements OnInit {
     this.isSubmitting = true;
 
     if (this.infoForm.valid) {
-      /*if (this.infoForm.get('tieneHijos')?.value === 'NO') {
-        this.infoForm.get('numeroHijos')?.enable();
-        this.infoForm.get('numeroHijos')?.setValue(0);
-      }*/
+      const durationHome = this.infoForm.get('duracionAntigVivienda')?.value;
+      const periodHome = this.infoForm.get('periodoAntigVivienda')?.value;
+      const durationCompany = this.infoForm.get('duracionAntigEmpresa')?.value;
+      const periodCompany = this.infoForm.get('periodoAntigEmpresa')?.value;
+
+      // Combina ambos valores en una cadena para enviar al backend
+      const antiguedadVivienda = `${durationHome} ${periodHome}`;
+      const antiguedadEmpresa = `${durationCompany} ${periodCompany}`;
+      this.infoForm.patchValue({
+        antigVivienda: antiguedadVivienda,
+        antigEmpresa: antiguedadEmpresa
+      });
 
       if (this.infoForm.get('cabezaFamilia')?.value === 'NO') {
         this.infoForm.get('personasACargo')?.enable();
         this.infoForm.get('personasACargo')?.setValue(0);
       }
       const data: NaturalPerson = this.infoForm.value;
-
-      //console.log("ENTRA", this.infoForm.value);
 
       if (data.id) {
         this.naturalPersonService.update(data).subscribe({
@@ -403,11 +422,7 @@ export class InfoRequestCreditComponent implements OnInit {
         this.isSubmitting = false;
       }, 500);
     }
-
-    /*if (this.infoForm.get('tieneHijos')?.value === 'NO') {
-      this.infoForm.get('numeroHijos')?.disable();
-    }*/
-
+    
     if (this.infoForm.get('cabezaFamilia')?.value === 'NO') {
       this.infoForm.get('personasACargo')?.disable();
     }

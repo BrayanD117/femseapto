@@ -153,9 +153,14 @@ export class RequestSavingComponent implements OnInit {
   addSavingLinesControls(): void {
     const linesArray = this.savingsForm.get('lines') as FormArray;
 
+    if (linesArray.length > 0) {
+      return;
+    }
+
     const filteredSavingLines = this.tipoAsociado === 2
       ? this.savingLines.filter(line => line.nombre === 'Ahorro Extraordinario')
       : this.savingLines;
+    console.log(this.savingLines);
 
     filteredSavingLines.forEach((line: any) => {
       linesArray.push(this.fb.group({
