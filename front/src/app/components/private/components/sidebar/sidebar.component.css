@@ -1,6 +1,13 @@
 .offcanvas-header {
   background-color: rgba(250, 182, 0, 0.5);
 }
+.header-mobile{
+  background-color: rgba(250, 182, 0, 0.5);
+}
+.button-mobile{
+  background-color: rgba(250, 182, 0, 0.5);
+  border-color: rgba(250, 182, 0, 0.5);
+}
 
 #sidebar {
   background-color: rgba(250, 182, 0, 0.5);
