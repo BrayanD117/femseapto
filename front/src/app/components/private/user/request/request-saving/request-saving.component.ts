@@ -16,7 +16,6 @@ import { FinancialInfoService } from '../../../../../services/financial-info.ser
 import { NaturalpersonService } from '../../../../../services/naturalperson.service';
 import { GenerateSavingRequestComponent } from '../../../admin/components/generate-saving-request/generate-saving-request.component';
 
-
 @Component({
   selector: 'app-request-saving',
   standalone: true,

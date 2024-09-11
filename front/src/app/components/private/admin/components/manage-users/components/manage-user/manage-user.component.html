@@ -60,18 +60,20 @@
           </td>
           <td>
             <button
-              class="btn btn-warning btn-sm me-2"
+              class="btn btn-md me-2"
               (click)="changeState(user.id)"
+              [ngClass]="user.activo ? 'btn-danger' : 'btn-success'"
             >
-              {{ user.activo ? "Deshabilitar" : "Habilitar" }}
+              <i class="bi bi-person-fill-slash"></i>
             </button>
             <button
-              class="btn btn-primary btn-sm"
+              class="btn btn-md"
               (click)="editUser(user.id)"
+              [ngClass]="user.editable ? 'btn-warning' : 'btn-primary'"
               data-bs-toggle="modal"
               data-bs-target="#userModal"
             >
-              Editar
+              <i class="bi bi-person-fill-gear"></i>
             </button>
           </td>
       </tr>
