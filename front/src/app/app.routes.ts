@@ -49,6 +49,7 @@ import { InfoUploadComponent } from './components/private/admin/components/info-
 import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
 import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
 import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
+import { FirstLoginGuard } from './guards/first-login.guard';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -73,7 +74,7 @@ export const routes: Routes = [
                 children: [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
-                    { path: 'settings', component: UserSettingsComponent },
+                    { path: 'settings', component: UserSettingsComponent, canActivate: [FirstLoginGuard] },
                     { path: 'savings',
                         children: [
                         { path: 'balance', component: SavingBalanceComponent }

@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'iat' => $issuedAt,    
                 'exp' => $expirationTime,  
                 'userId' => $usuarioObj->id,
-                'id_rol' => $usuarioObj->id_rol
+                'id_rol' => $usuarioObj->id_rol,
             ];
 
             $jwt = JWT::encode($payload, $key, 'HS256');
@@ -47,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = [
                 'success' => true,
                 'message' => 'Login exitoso.',
-                'token' => $jwt
+                'token' => $jwt,
+                'primer_ingreso' => $usuarioObj->primerIngreso
             ];
         } else {
             $response = [

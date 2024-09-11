@@ -32,40 +32,28 @@ export class LoginComponent {
       next: (response) => {
         if (response.success) {
           localStorage.setItem('auth_token', response.token);
-          this.cookieService.set('auth_token', response.token, {
-            expires: 1,
-            path: '/',
-          });
-
+          this.cookieService.set('auth_token', response.token, { expires: 1, path: '/' });
+  
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;
-
-          if (!this.loginService.isTokenExpired()) {
-            if (rol === 1) { // Suponiendo que 1 es el rol de administrador
+          console.log("RESPONSE: ", response)
+          console.log("RESPONSE primer ingreso: ", response.primer_ingreso)
+          if (response.primer_ingreso === 0) {
+            this.router.navigate(['/auth/user/settings']);
+          } else {
+            if (rol === 1) {
               this.router.navigate(['/auth/admin']);
-            } else if(rol === 3){
+            } else if (rol === 3) {
               this.router.navigate(['/auth/executive']);
-            }else {
+            } else {
               this.router.navigate(['/auth/user']);
             }
-            //window.location.href = 'auth/user'
-          } else {
-            console.error('Token ha expirado');
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail:
-                'La sesíon ha terminado. Por favor, vuelve a iniciar sesión.',
-            });
-            this.router.navigate(['/login']);
           }
         } else {
-          console.error('Error en login:', response.message);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail:
-              'Usuario o contraseña incorrecta. Vuelve a intentarlo.',
+            detail: 'Usuario o contraseña incorrecta. Vuelve a intentarlo.',
           });
         }
       },
@@ -73,7 +61,7 @@ export class LoginComponent {
         console.error('Error en la petición:', error);
       },
     });
-  }
+  }  
   
 
   options: AnimationOptions = {
