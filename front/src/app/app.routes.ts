@@ -48,6 +48,7 @@ import { InfoRequestCreditComponent } from './components/private/user/request/re
 import { InfoUploadComponent } from './components/private/admin/components/info-upload/info-upload.component';
 import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
 import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
+import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -72,6 +73,7 @@ export const routes: Routes = [
                 children: [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
+                    { path: 'settings', component: UserSettingsComponent },
                     { path: 'savings',
                         children: [
                         { path: 'balance', component: SavingBalanceComponent }
