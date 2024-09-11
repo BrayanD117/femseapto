@@ -33,6 +33,11 @@ export class UserService {
   changeState(id: number): Observable<any> {
     return this.http.patch(`${this.apiUrl}/usuarios.php?id=${id}`, null, { withCredentials: true });
   }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    const url = `${this.apiUrl}/usuarios.php?changePassword=true`;
+    return this.http.post(url, { currentPassword, newPassword }, { withCredentials: true });
+  }
 }
 
 export interface User {

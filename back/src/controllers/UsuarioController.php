@@ -142,5 +142,25 @@ class UsuarioController {
             return array("message" => "Usuario no encontrado.");
         }
     }
+
+    public function cambiarContrasenia($id, $currentPassword, $newPassword) {
+        $usuario = Usuario::obtenerPorId($id);
+        if (!$usuario) {
+            return array("message" => "Usuario no encontrado.");
+        }
+    
+        if (!password_verify($currentPassword, $usuario->contrasenia)) {
+            http_response_code(400);
+            return array("message" => "Contraseña actual incorrecta.");
+        }
+    
+        $options = ['cost' => 12];
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT, $options);
+        $usuario->contrasenia = $hashedPassword;
+        $usuario->guardar();
+    
+        return array("message" => "Contraseña actualizada exitosamente.");
+    }
+    
 }
 ?>

@@ -9,31 +9,47 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-if ($decodedToken === null) {
+if ($decodedToken === null || !isset($decodedToken->userId)) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
     exit();
 }
 
+$idUsuario = $decodedToken->userId;
 // Crear una instancia del controlador
 $controlador = new UsuarioController();
 
 // Verificar el método de solicitud HTTP
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['changePassword']) && $_GET['changePassword'] === 'true') {
+    $datos = json_decode(file_get_contents("php://input"), true);
+    
+    if (!isset($datos['currentPassword']) || !isset($datos['newPassword'])) {
+        http_response_code(400);
+        echo json_encode(array("message" => "Datos incompletos para cambiar la contraseña."));
+        exit();
+    }
+
+    $currentPassword = $datos['currentPassword'];
+    $newPassword = $datos['newPassword'];
+
+    $response = $controlador->cambiarContrasenia($idUsuario, $currentPassword, $newPassword);
+    header('Content-Type: application/json');
+    echo json_encode($response);
+
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idNuevo = $controlador->crear($datos);
     echo json_encode(['id' => $idNuevo]); // Devuelve el ID de la nueva persona creada
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
-    $idExistente = $datos['id']; // Obtener el ID de la persona a actualizar
+    $idExistente = $datos['id'];
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]); // Devuelve true si la actualización fue exitosa
+    echo json_encode(['success' => $actualizacionExitosa]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $usuario = $controlador->obtenerPorId($id);
         if ($usuario) {
-            // Establecer el encabezado de respuesta JSON
             header('Content-Type: application/json');
             echo json_encode($usuario);
         } else {
