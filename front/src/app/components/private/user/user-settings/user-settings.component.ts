@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../../services/user.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-settings',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ToastModule],
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.css'],
   providers: [MessageService]
@@ -35,6 +36,7 @@ export class UserSettingsComponent {
 
       if (newPassword !== confirmPassword) {
         this.passwordMismatch = true;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Las contraseñas no coinciden' });
         return;
       }
 
@@ -42,12 +44,12 @@ export class UserSettingsComponent {
 
       this.userService.changePassword(currentPassword, newPassword).subscribe({
         next: (response) => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contraseña actualizada correctamente' });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contraseña actualizada correctamente', life: 3000 });
           this.changePasswordForm.reset();
         },
         error: (error) => {
-          console.error('Error al cambiar la contraseña:', error);
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cambiar la contraseña' });
+          const errorMsg = error.error?.message || 'No se pudo cambiar la contraseña';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMsg });
         }
       });
     }
