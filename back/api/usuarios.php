@@ -36,6 +36,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['changePassword']) && $
     header('Content-Type: application/json');
     echo json_encode($response);
 
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updatePrimerIngreso']) && $_GET['updatePrimerIngreso'] === 'true') {
+    $datos = json_decode(file_get_contents("php://input"), true);
+    
+    if (!isset($datos['userId']) || !isset($datos['primerIngreso'])) {
+        http_response_code(400);
+        echo json_encode(array("message" => "Datos incompletos para actualizar el primer ingreso."));
+        exit();
+    }
+
+    $userId = $datos['userId'];
+    $primerIngreso = $datos['primerIngreso'];
+
+    $usuario = $controlador->obtenerPorId($userId);
+    if ($usuario) {
+        $usuario->primerIngreso = $primerIngreso;
+        $usuario->guardar();
+        http_response_code(200);
+        echo json_encode(array("message" => "Primer ingreso actualizado correctamente."));
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "Usuario no encontrado."));
+    }
+    
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idNuevo = $controlador->crear($datos);

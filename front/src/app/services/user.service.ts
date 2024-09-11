@@ -38,6 +38,11 @@ export class UserService {
     const url = `${this.apiUrl}/usuarios.php?changePassword=true`;
     return this.http.post(url, { currentPassword, newPassword }, { withCredentials: true });
   }
+
+  updatePrimerIngreso(userId: number, primerIngreso: number): Observable<any> {
+    const url = `${this.apiUrl}/usuarios.php?updatePrimerIngreso=true`;
+    return this.http.post(url, { userId, primerIngreso }, { withCredentials: true });
+  }
 }
 
 export interface User {
