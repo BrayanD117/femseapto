@@ -161,6 +161,27 @@ class UsuarioController {
     
         return array("message" => "Contraseña actualizada exitosamente.");
     }
+
+    public function restablecerContrasenia($id) {
+        $usuario = Usuario::obtenerPorId($id);
+        if (!$usuario) {
+            http_response_code(404);
+            return array("message" => "Usuario no encontrado.");
+        }
     
+        $documento = $usuario->numeroDocumento;
+        $options = ['cost' => 12];
+        $nuevaContrasenaHasheada = password_hash($documento, PASSWORD_BCRYPT, $options);
+    
+        $resultado = Usuario::restablecerContrasenia($id, $nuevaContrasenaHasheada);
+    
+        if ($resultado) {
+            http_response_code(200);
+            return array("message" => "Contraseña restablecida exitosamente.");
+        } else {
+            http_response_code(500);
+            return array("message" => "Error al restablecer la contraseña.");
+        }
+    }    
 }
 ?>

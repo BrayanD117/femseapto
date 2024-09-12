@@ -62,12 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['changePassword']) && $
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idNuevo = $controlador->crear($datos);
-    echo json_encode(['id' => $idNuevo]); // Devuelve el ID de la nueva persona creada
+    echo json_encode(['id' => $idNuevo]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idExistente = $datos['id'];
-    $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
-    echo json_encode(['success' => $actualizacionExitosa]);
+
+    if (isset($datos['restablecerContrasenia']) && $datos['restablecerContrasenia'] === true) {
+        $actualizacionExitosa = $controlador->restablecerContrasenia($idExistente);
+        echo json_encode(['success' => $actualizacionExitosa]);
+    } else {
+        $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
+        echo json_encode(['success' => $actualizacionExitosa]);
+    }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];

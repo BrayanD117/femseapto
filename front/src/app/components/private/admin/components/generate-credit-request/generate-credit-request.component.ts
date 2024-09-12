@@ -186,12 +186,8 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.telefono = person.telefono;
           this.celular = person.celular;
           this.telefonoOficina = person.telefonoOficina;
-          this.permanenciaVivienda = `${
-            person.aniosAntigVivienda || ''
-          } AÑOS`.trim();
-          this.antiguedadEmpresa = `${
-            person.aniosAntigEmpresa || ''
-          } AÑOS`.trim();
+          this.permanenciaVivienda = person.antigVivienda;
+          this.antiguedadEmpresa = person.antigEmpresa;
           this.salidaVacaciones = person.mesSaleVacaciones;
           this.headOfFamily = person.cabezaFamilia || '';
 

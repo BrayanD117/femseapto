@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -42,6 +42,20 @@ export class UserService {
   updatePrimerIngreso(userId: number, primerIngreso: number): Observable<any> {
     const url = `${this.apiUrl}/usuarios.php?updatePrimerIngreso=true`;
     return this.http.post(url, { userId, primerIngreso }, { withCredentials: true });
+  }
+
+  resetPassword(id: number): Observable<any> {
+    const url = `${this.apiUrl}/usuarios.php`;
+    const body = { 
+      id: id,
+      restablecerContrasenia: true
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.put(url, body, { headers: headers, withCredentials: true });
   }
 }
 

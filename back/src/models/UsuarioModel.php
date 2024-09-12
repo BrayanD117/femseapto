@@ -90,7 +90,28 @@ class Usuario {
         }
         return true;
     }
+
+    public static function restablecerContrasenia($id, $nuevaContrasena) {
+        $db = getDB();
+        try {
+            $query = $db->prepare("UPDATE usuarios SET contrasenia = ?, primer_ingreso = false WHERE id = ?");
+            $query->bind_param("si", $nuevaContrasena, $id);
+            $query->execute();
     
+            if ($query->error) {
+                throw new Exception('Error al actualizar la contraseña: ' . $query->error);
+            }
+    
+            $query->close();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        } finally {
+            $db->close();
+        }
+    
+        return true;
+    }    
 
     public static function obtenerPorId($id) {
         $db = getDB();

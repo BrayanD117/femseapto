@@ -1,25 +1,17 @@
 <p-toast></p-toast>
 <div class="card">
-  <p-table
-      #dt2
-      [value]="users"
-      styleClass="p-datatable-striped" 
-      [paginator]="true"
-      [rows]="rows"
-      [totalRecords]="totalRecords"
-      [loading]="loading"
-      [lazy]="true"
-      (onLazyLoad)="loadUsers(($event.first ?? 0) / ($event.rows ?? 10) + 1, $event.rows ?? 10)"
-      [rowsPerPageOptions]="[10, 25, 50]" 
-      [globalFilterFields]="['numeroDocumento', 'primerApellido', 'segundoNombre', 'primerNombre']"
-      [tableStyle]="{ 'min-width': '75rem' }"
-  >
-  <ng-template pTemplate="caption">
+  <p-table #dt2 [value]="users" styleClass="p-datatable-striped" [paginator]="true" [rows]="rows"
+    [totalRecords]="totalRecords" [loading]="loading" [lazy]="true"
+    (onLazyLoad)="loadUsers(($event.first ?? 0) / ($event.rows ?? 10) + 1, $event.rows ?? 10)"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [globalFilterFields]="['numeroDocumento', 'primerApellido', 'segundoNombre', 'primerNombre']"
+    [tableStyle]="{ 'min-width': '75rem' }">
+    <ng-template pTemplate="caption">
       <div class="flex">
         <button class="btn btn-success m-2" (click)="createUser()" data-bs-toggle="modal" data-bs-target="#userModal">
           Crear Usuario
         </button>
-          <!--<p-iconField iconPosition="left" class="ml-auto">
+        <!--<p-iconField iconPosition="left" class="ml-auto">
               <p-inputIcon>
                   <i class="pi pi-search"></i>
               </p-inputIcon>
@@ -30,59 +22,57 @@
                   placeholder="Buscar palabra clave" />
           </p-iconField>-->
       </div>
-  </ng-template>
-  <ng-template pTemplate="header">
+    </ng-template>
+    <ng-template pTemplate="header">
       <tr>
-          <th style="width:10%">No. Documento</th>
-          <th style="width:15%">Primer Apellido</th>
-          <th style="width:15%">Segundo Apellido</th>
-          <th style="width:15%">Primer Nombre</th>
-          <th style="width:15%">Segundo Nombre</th>
-          <th style="width:20%">Acciones</th>
+        <th style="width:10%">No. Documento</th>
+        <th style="width:15%">Primer Apellido</th>
+        <th style="width:15%">Segundo Apellido</th>
+        <th style="width:15%">Primer Nombre</th>
+        <th style="width:15%">Segundo Nombre</th>
+        <th style="width:20%">Acciones</th>
       </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-user>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
       <tr>
-          <td>
-              {{ user.numeroDocumento }}
-          </td>
-          <td>
-            {{ user.primerApellido }}
-          </td>
-          <td>
-            {{ user.segundoApellido }}
-          </td>
-          <td>
-            {{ user.primerNombre }}
-          </td>
-          <td>
-            {{ user.segundoNombre }}
-          </td>
-          <td>
-            <button
-              class="btn btn-md me-2"
-              (click)="changeState(user.id)"
-              [ngClass]="user.activo ? 'btn-danger' : 'btn-success'"
-            >
-              <i class="bi bi-person-fill-slash"></i>
-            </button>
-            <button
-              class="btn btn-md"
-              (click)="editUser(user.id)"
-              [ngClass]="user.editable ? 'btn-warning' : 'btn-primary'"
-              data-bs-toggle="modal"
-              data-bs-target="#userModal"
-            >
-              <i class="bi bi-person-fill-gear"></i>
-            </button>
-          </td>
+        <td>
+          {{ user.numeroDocumento }}
+        </td>
+        <td>
+          {{ user.primerApellido }}
+        </td>
+        <td>
+          {{ user.segundoApellido }}
+        </td>
+        <td>
+          {{ user.primerNombre }}
+        </td>
+        <td>
+          {{ user.segundoNombre }}
+        </td>
+        <td>
+          <button class="btn btn-md me-2" (click)="changeState(user.id)"
+            [ngClass]="user.activo ? 'btn-danger' : 'btn-success'">
+            <i class="bi bi-person-fill-slash"></i>
+          </button>
+          <button class="btn btn-md me-2 btn-primary" (click)="editUser(user.id)"
+            data-bs-toggle="modal"
+            data-bs-target="#userModal">
+            <i class="bi bi-person-fill-gear"></i>
+          </button>
+          <button class="btn btn-md btn-warning" (click)="openResetPasswordModal(user.id)"
+            data-bs-toggle="modal"
+            data-bs-target="#resetPasswordModal">
+            <i class="bi bi-key-fill text-white"></i>
+          </button>
+        </td>
       </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
       <tr>
-          <td colspan="5">No se encontraron usuarios.</td>
+        <td colspan="5">No se encontraron usuarios.</td>
       </tr>
-  </ng-template>
+    </ng-template>
   </p-table>
 </div>
 
@@ -92,7 +82,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Información del Usuario</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="formReset()"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="formReset()"></button>
       </div>
       <form [formGroup]="editUserForm" (ngSubmit)="submit()">
         <div class="modal-body">
@@ -109,23 +100,28 @@
             </div>
             <div class="col-md-5">
               <label for="numeroDocumento" class="form-label">Número de Documento</label>
-              <input type="text" id="numeroDocumento" class="form-control" formControlName="numeroDocumento" placeholder="Escribe el No. de documento"/>
+              <input type="text" id="numeroDocumento" class="form-control" formControlName="numeroDocumento"
+                placeholder="Escribe el No. de documento" />
             </div>
             <div class="col-md-6">
               <label for="primerApellido" class="form-label">Primer Apellido</label>
-              <input type="text" id="primerApellido" class="form-control" formControlName="primerApellido" placeholder="Escribe el primer apellido"/>
+              <input type="text" id="primerApellido" class="form-control" formControlName="primerApellido"
+                placeholder="Escribe el primer apellido" />
             </div>
             <div class="col-md-6">
               <label for="segundoApellido" class="form-label">Segundo Apellido</label>
-              <input type="text" id="segundoApellido" class="form-control" formControlName="segundoApellido" placeholder="Escribe el segundo apellido"/>
+              <input type="text" id="segundoApellido" class="form-control" formControlName="segundoApellido"
+                placeholder="Escribe el segundo apellido" />
             </div>
             <div class="col-md-6">
               <label for="primerNombre" class="form-label">Primer Nombre</label>
-              <input type="text" id="primerNombre" class="form-control" formControlName="primerNombre" placeholder="Escribe el primer nombre"/>
+              <input type="text" id="primerNombre" class="form-control" formControlName="primerNombre"
+                placeholder="Escribe el primer nombre" />
             </div>
             <div class="col-md-6">
               <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-              <input type="text" id="segundoNombre" class="form-control" formControlName="segundoNombre" placeholder="Escribe el segundo nombre"/>
+              <input type="text" id="segundoNombre" class="form-control" formControlName="segundoNombre"
+                placeholder="Escribe el segundo nombre" />
             </div>
             <!--<div class="col-md-8">
               <label for="usuario" class="form-label">Usuario</label>
@@ -160,10 +156,31 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="formReset()">Cerrar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="editUserForm.invalid"
-          data-bs-dismiss="modal">{{ isEditMode ? 'Guardar Cambios' : 'Crear Usuario' }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="editUserForm.invalid" data-bs-dismiss="modal">{{
+            isEditMode ? 'Guardar Cambios' : 'Crear Usuario' }}</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<!-- End Modal -->
+
+
+<!-- Modal de Confirmación de Restablecimiento -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordLabel">Restablecer Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro que deseas restablecer la contraseña para este usuario?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmResetPassword()" data-bs-dismiss="modal">Restablecer</button>
+      </div>
     </div>
   </div>
 </div>
