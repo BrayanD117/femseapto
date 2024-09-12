@@ -47,6 +47,8 @@ export class ManageExecutiveComponent {
   roles: Role[] = []
   associatesTypes: AssociateType[] = []
 
+  selectedUserId: number | null = null;
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -161,6 +163,23 @@ export class ManageExecutiveComponent {
     this.isEditMode = false;
     this.formReset()
     this.editUserForm.patchValue({ activo: 1, id_rol: 3, idTipoDocumento: '' }); // Establecer el estado activo como true por defecto
+  }
+
+  openResetPasswordModal(userId: number) {
+    this.selectedUserId = userId;
+  }
+
+  confirmResetPassword() {
+    if (this.selectedUserId !== null) {
+      this.userService.resetPassword(this.selectedUserId).subscribe({
+        next: (response) => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contraseña restablecida con éxito.' });
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al restablecer la contraseña.' });
+        }
+      });
+    }
   }
 
   submit(): void {

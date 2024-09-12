@@ -50,16 +50,38 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th style="width: 20%">Acciones</th>
         <th style="width: 10%">No. Documento</th>
         <th style="width: 15%">Primer Apellido</th>
         <th style="width: 15%">Segundo Apellido</th>
         <th style="width: 15%">Primer Nombre</th>
         <th style="width: 15%">Segundo Nombre</th>
-        <th style="width: 20%">Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
       <tr>
+        <td>
+          <button
+            class="btn btn-md me-2"
+            (click)="changeState(user.id)"
+            [ngClass]="user.activo ? 'btn-danger' : 'btn-success'"
+          >
+            <i class="bi bi-person-fill-slash"></i>
+          </button>
+          <button
+            class="btn btn-primary btn-md me-2"
+            (click)="editUser(user.id)"
+            data-bs-toggle="modal"
+            data-bs-target="#userModal"
+          >
+            <i class="bi bi-person-fill-gear"></i>
+          </button>
+          <button class="btn btn-md btn-warning" (click)="openResetPasswordModal(user.id)"
+            data-bs-toggle="modal"
+            data-bs-target="#resetPasswordModal">
+            <i class="bi bi-key-fill text-white"></i>
+          </button>
+        </td>
         <td>
           {{ user.numeroDocumento }}
         </td>
@@ -74,22 +96,6 @@
         </td>
         <td>
           {{ user.segundoNombre }}
-        </td>
-        <td>
-          <button
-            class="btn btn-warning btn-sm me-2"
-            (click)="changeState(user.id)"
-          >
-            {{ user.activo ? "Deshabilitar" : "Habilitar" }}
-          </button>
-          <button
-            class="btn btn-primary btn-sm"
-            (click)="editUser(user.id)"
-            data-bs-toggle="modal"
-            data-bs-target="#userModal"
-          >
-            Editar
-          </button>
         </td>
       </tr>
     </ng-template>
@@ -272,6 +278,26 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<!-- End Modal -->
+
+<!-- Modal de Confirmación de Restablecimiento -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordLabel">Restablecer Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro que deseas restablecer la contraseña para este usuario?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmResetPassword()" data-bs-dismiss="modal">Restablecer</button>
+      </div>
     </div>
   </div>
 </div>
