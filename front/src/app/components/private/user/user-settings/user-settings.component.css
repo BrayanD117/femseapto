@@ -1,41 +1,51 @@
+h1 {
+  color: #00823d;
+  font-weight: bold;
+}
+
+.btn {
+  background-color: #00823d;
+  color: white;
+}
+
 .password-container {
-    position: relative;
-  }
-  
-  .password-toggle-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #6c757d;
-  }  
-  .password-strength-bar {
-    height: 10px;
-    background-color: #e0e0e0;
-    margin-top: 5px;
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .strength-bar {
-    height: 100%;
-    border-radius: 5px;
-  }
-  
-  .low {
-    width: 10%;
-    background-color: red;
-  }
-  
-  .medium {
-    width: 66%;
-    background-color: orange;
-  }
-  
-  .strong {
-    width: 100%;
-    background-color: green;
-  }
-  
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.password-strength-bar {
+  height: 10px;
+  background-color: #e0e0e0;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.strength-bar {
+  height: 100%;
+  border-radius: 5px;
+}
+
+.low {
+  width: 10%;
+  background-color: red;
+}
+
+.medium {
+  width: 66%;
+  background-color: orange;
+}
+
+.strong {
+  width: 100%;
+  background-color: green;
+}

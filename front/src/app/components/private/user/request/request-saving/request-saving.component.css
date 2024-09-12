@@ -1,17 +1,17 @@
 .container {
-    max-width: 600px;
-    margin: auto;
-  }
-  
-  .form-control.ng-touched.ng-invalid {
-    border-color: #dc3545;
-  }
-  
-  .text-danger {
-    font-size: 0.875em;
-  }
+  max-width: 600px;
+  margin: auto;
+}
 
-  h1, h5 {
-    color: #00823d;
-    font-weight: bold;
+.form-control.ng-touched.ng-invalid {
+  border-color: #dc3545;
+}
+
+.text-danger {
+  font-size: 0.875em;
+}
+
+h1, h5 {
+  color: #00823d;
+  font-weight: bold;
 }
