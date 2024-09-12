@@ -37,7 +37,7 @@ export class LoginComponent {
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;
           if (response.primer_ingreso === 0) {
-            this.router.navigate(['/auth/user/settings']);
+            this.router.navigate(['/auth/settings']);
           } else {
             if (rol === 1) {
               this.router.navigate(['/auth/admin']);

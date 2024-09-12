@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../utils/DataUtils.php';
 class UsuarioController {
     
     public function crear($datos) {
-
+        
         $datos = DataUtils::convertirDatos($datos);
 
         if($datos['id_rol'] == 1) {
@@ -23,7 +23,7 @@ class UsuarioController {
         }
 
         if ($this->existePorNumeroDocumentoYUsuario($datos['numeroDocumento'], $datos['usuario'])) {
-            http_response_code(409); // Código de estado HTTP 409 Conflict
+            http_response_code(409);
             return array("message" => "Usuario ya existe.");
         }
         
@@ -39,14 +39,15 @@ class UsuarioController {
             $datos['id_rol'],
             $datos['usuario'],
             $hashedPassword,
-            $datos['primerNombre'],
-            $datos['segundoNombre'] ?? null,
             $datos['primerApellido'],
             $datos['segundoApellido'] ?? null,
+            $datos['primerNombre'],
+            $datos['segundoNombre'] ?? null,  
             $datos['idTipoDocumento'],
             $datos['numeroDocumento'],
             $datos['id_tipo_asociado'],
             $datos['activo'] ?? null,
+            null,
             null,
             null
         );
@@ -65,8 +66,12 @@ class UsuarioController {
             return false;
         }
 
+        if ($usuario->numeroDocumento !== $datos['numeroDocumento']) {
+            $usuario->usuario = $datos['numeroDocumento'];
+        }
+
         $usuario->id_rol = $datos['id_rol'];
-        $usuario->usuario = $datos['usuario'];
+        //$usuario->usuario = $datos['usuario'];
         //$usuario->contrasenia = $datos['contrasenia'];
         $usuario->primerNombre = $datos['primerNombre'];
         $usuario->segundoNombre = $datos['segundoNombre'] ?? null;

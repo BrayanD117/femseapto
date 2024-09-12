@@ -6,10 +6,10 @@ class Usuario {
     public $id_rol;
     public $usuario;
     public $contrasenia;
-    public $primerNombre;
-    public $segundoNombre;
     public $primerApellido;
     public $segundoApellido;
+    public $primerNombre;
+    public $segundoNombre;
     public $idTipoDocumento;
     public $numeroDocumento;
     public $id_tipo_asociado;
@@ -24,10 +24,10 @@ class Usuario {
         $this->id_rol = $id_rol;
         $this->usuario = $usuario;
         $this->contrasenia = $contrasenia;
-        $this->primerNombre = $primerNombre;
-        $this->segundoNombre = $segundoNombre;
         $this->primerApellido = $primerApellido;
         $this->segundoApellido = $segundoApellido;
+        $this->primerNombre = $primerNombre;
+        $this->segundoNombre = $segundoNombre;
         $this->idTipoDocumento = $idTipoDocumento;
         $this->numeroDocumento = $numeroDocumento;
         $this->id_tipo_asociado = $id_tipo_asociado;
@@ -40,11 +40,11 @@ class Usuario {
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO usuarios (id_rol, usuario, contrasenia, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_tipo_documento, numero_documento, id_tipo_asociado, activo, primer_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("issssssisiii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo, $this->primerIngreso);
+            $query = $db->prepare("INSERT INTO usuarios (id_rol, usuario, contrasenia, primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, id_tipo_documento, numero_documento, id_tipo_asociado, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("issssssisii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerApellido, $this->segundoApellido, $this->primerNombre, $this->segundoNombre, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo);
         } else {
-            $query = $db->prepare("UPDATE usuarios SET id_rol = ?, usuario = ?, contrasenia = ?, primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, id_tipo_documento = ?, numero_documento = ?, id_tipo_asociado = ?, activo = ?, primer_ingreso = ? WHERE id = ?");
-            $query->bind_param("issssssisiiii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo, $this->primerIngreso, $this->id);
+            $query = $db->prepare("UPDATE usuarios SET id_rol = ?, usuario = ?, contrasenia = ?, primer_apellido = ?, segundo_apellido = ?, primer_nombre = ?, segundo_nombre = ?, id_tipo_documento = ?, numero_documento = ?, id_tipo_asociado = ?, activo = ?, primer_ingreso = ? WHERE id = ?");
+            $query->bind_param("issssssisiiii", $this->id_rol, $this->usuario, $this->contrasenia, $this->primerApellido, $this->segundoApellido, $this->primerNombre, $this->segundoNombre, $this->idTipoDocumento, $this->numeroDocumento, $this->id_tipo_asociado, $this->activo, $this->primerIngreso, $this->id);
         }
         $query->execute();
         if ($query->error) {
@@ -118,10 +118,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         $user = null;
         if ($query->fetch()) {
-            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -133,10 +133,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE numero_documento = ?");
         $query->bind_param("s", $numDocumento);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         $user = null;
         if ($query->fetch()) {
-            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+            $user = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();
@@ -240,10 +240,10 @@ class Usuario {
         $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ? AND activo = 1");
         $query->bind_param("s", $usuario);
         $query->execute();
-        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+        $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         $usuarioObj = null;
         if ($query->fetch()) {
-            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
+            $usuarioObj = new Usuario($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
         }
         $query->close();
         $db->close();

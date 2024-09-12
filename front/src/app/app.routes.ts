@@ -11,11 +11,8 @@ import { LoginComponent } from './components/public/login/login.component';
 import { WelcomeComponent } from './components/private/welcome/welcome.component';
 // Auth User Components
 import { UserInfoComponent } from './components/private/user/components/user-info/user-info.component';
-import { UserSavingComponent } from './components/private/user/components/user-saving/user-saving.component';
-import { UserCreditsComponent } from './components/private/user/components/user-credits/user-credits.component';
 import { CreditBalanceComponent } from './components/private/user/credit-balance/credit-balance.component';
 // Request Components
-import { RequestCreditComponent } from './components/private/user/request/request-credit/request-credit.component';
 import { RequestSavingComponent } from './components/private/user/request/request-saving/request-saving.component';
 import { RequestSavingWithdrawalComponent } from './components/private/user/request/request-saving-withdrawal/request-saving-withdrawal.component';
 
@@ -49,7 +46,6 @@ import { InfoUploadComponent } from './components/private/admin/components/info-
 import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
 import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
 import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
-import { FirstLoginGuard } from './guards/first-login.guard';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -69,12 +65,11 @@ export const routes: Routes = [
     },
     { path: 'auth', component: PrivateComponent, canActivate: [LoginGuard],
         children: [
-            // Hacer componente para Not Found{ path: '', redirectTo: 'user/welcome', pathMatch: 'full' },
+            { path: 'settings', component: UserSettingsComponent },
             { path: 'user', canActivate: [UserGuard], 
                 children: [
                     { path: '', component: WelcomeComponent },
                     { path: 'information', component: UserInfoComponent },
-                    { path: 'settings', component: UserSettingsComponent, canActivate: [FirstLoginGuard] },
                     { path: 'savings',
                         children: [
                         { path: 'balance', component: SavingBalanceComponent }

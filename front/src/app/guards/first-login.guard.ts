@@ -30,8 +30,8 @@ export class FirstLoginGuard implements CanActivate {
 
     return this.userService.getById(userId).pipe(
       map(user => {
-        if (user.primerIngreso === 0 && state.url !== '/auth/user/settings') {
-          this.router.navigate(['/auth/user/settings']);
+        if (user.primerIngreso === 0 && state.url !== '/auth/settings') {
+          this.router.navigate(['/auth/settings']);
           return false;
         }
         return true;

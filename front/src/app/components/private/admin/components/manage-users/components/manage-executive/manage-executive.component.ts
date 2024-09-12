@@ -96,7 +96,7 @@ export class ManageExecutiveComponent {
       next: response => {
         this.users = response.data;
         this.totalRecords = response.total;
-        this.loading = false;    
+        this.loading = false;
       },
       error: err => {
         console.error('Error al cargar los usuarios', err);
@@ -204,6 +204,7 @@ export class ManageExecutiveComponent {
       } else {
         this.userService.create(userFormData).subscribe({
           next: () => {
+            console.log(userFormData);
             this.users.push(userFormData);
             this.formReset();
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Directivo creado correctamente' });
