@@ -70,17 +70,17 @@ export class FinancialInfoComponent implements OnInit {
         if(financialInfo) {
           this.financialForm.patchValue({
             ...financialInfo,
-            ingresosMensuales: this.formatToCurrency(parseInt(financialInfo.ingresosMensuales)),
-            primaProductividad: parseFloat(financialInfo.primaProductividad) || 0,
-            otrosIngresosMensuales: parseFloat(financialInfo.otrosIngresosMensuales) || 0,
-            totalIngresosMensuales: parseFloat(financialInfo.totalIngresosMensuales) || 0,
-            egresosMensuales: parseFloat(financialInfo.egresosMensuales) || 0,
-            obligacionFinanciera: parseFloat(financialInfo.obligacionFinanciera) || 0,
-            otrosEgresosMensuales: parseFloat(financialInfo.otrosEgresosMensuales) || 0,
-            totalEgresosMensuales: parseFloat(financialInfo.totalEgresosMensuales) || 0,
-            totalActivos: parseFloat(financialInfo.totalActivos) || 0,
-            totalPasivos: parseFloat(financialInfo.totalPasivos) || 0,
-            totalPatrimonio: parseFloat(financialInfo.totalPatrimonio) || 0
+            ingresosMensuales: this.formatToCurrency(parseInt(financialInfo.ingresosMensuales, 10)),
+            primaProductividad: this.formatToCurrency(parseInt(financialInfo.primaProductividad, 10)),
+            otrosIngresosMensuales: this.formatToCurrency(parseInt(financialInfo.otrosIngresosMensuales, 10)),
+            totalIngresosMensuales: this.formatToCurrency(parseInt(financialInfo.totalIngresosMensuales, 10)),
+            egresosMensuales: this.formatToCurrency(parseInt(financialInfo.egresosMensuales, 10)),
+            obligacionFinanciera: this.formatToCurrency(parseInt(financialInfo.obligacionFinanciera, 10)),
+            otrosEgresosMensuales: this.formatToCurrency(parseInt(financialInfo.otrosEgresosMensuales, 10)),
+            totalEgresosMensuales: this.formatToCurrency(parseInt(financialInfo.totalEgresosMensuales, 10)),
+            totalActivos: this.formatToCurrency(parseInt(financialInfo.totalActivos, 10)),
+            totalPasivos: this.formatToCurrency(parseInt(financialInfo.totalPasivos, 10)),
+            totalPatrimonio: this.formatToCurrency(parseInt(financialInfo.totalPatrimonio, 10))
           });
         }    
       });
@@ -109,43 +109,51 @@ export class FinancialInfoComponent implements OnInit {
   }
 
   updateTotalIncome(): void {
-      const income = this.financialForm.get('ingresosMensuales')?.value || 0;
-      const otherIncome = this.financialForm.get('otrosIngresosMensuales')?.value || 0;
-      const prod = this.financialForm.get('primaProductividad')?.value || 0;
+      //const income = this.financialForm.get('ingresosMensuales')?.value || 0;
+      //const otherIncome = this.financialForm.get('otrosIngresosMensuales')?.value || 0;
+      //const prod = this.financialForm.get('primaProductividad')?.value || 0;
+      const income = parseInt(this.financialForm.get('ingresosMensuales')?.value.replace(/\./g, ''), 10);
+      const otherIncome = parseInt(this.financialForm.get('otrosIngresosMensuales')?.value.replace(/\./g, ''), 10);
+      const prod = parseInt(this.financialForm.get('primaProductividad')?.value.replace(/\./g, ''), 10);
       const totalIncome = income + otherIncome + prod;
-      this.financialForm.get('totalIngresosMensuales')?.setValue(totalIncome, { emitEvent: true }); 
+      this.financialForm.get('totalIngresosMensuales')?.setValue(this.formatToCurrency(totalIncome), { emitEvent: true }); 
   }
 
   updateTotalExpense(): void {
-      const expense = this.financialForm.get('egresosMensuales')?.value || 0;
-      const oblig = this.financialForm.get('obligacionFinanciera')?.value || 0;
-      const otherExpense = this.financialForm.get('otrosEgresosMensuales')?.value || 0;
+      //const expense = this.financialForm.get('egresosMensuales')?.value || 0;
+      //const oblig = this.financialForm.get('obligacionFinanciera')?.value || 0;
+      //const otherExpense = this.financialForm.get('otrosEgresosMensuales')?.value || 0;
+      const expense = parseInt(this.financialForm.get('egresosMensuales')?.value.replace(/\./g, ''), 10);
+      const oblig = parseInt(this.financialForm.get('obligacionFinanciera')?.value.replace(/\./g, ''), 10);
+      const otherExpense = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.replace(/\./g, ''), 10);
+
       const totalExpense = expense + oblig + otherExpense;
-      this.financialForm.get('totalEgresosMensuales')?.setValue(totalExpense, { emitEvent: true }); 
+      this.financialForm.get('totalEgresosMensuales')?.setValue(this.formatToCurrency(totalExpense), { emitEvent: true }); 
   }
 
   updateTotals(): void {
-      const income = this.financialForm.get('totalActivos')?.value || 0;
-      const expense = this.financialForm.get('totalPasivos')?.value || 0;
-  
-      const totalAssets = income - expense;
-  
-      this.financialForm.get('totalPatrimonio')?.setValue(totalAssets, { emitEvent: true });
+    //const income = this.financialForm.get('totalActivos')?.value || 0;
+    //const expense = this.financialForm.get('totalPasivos')?.value || 0;
+    const income = parseInt(this.financialForm.get('totalActivos')?.value.replace(/\./g, ''), 10);
+    const expense = parseInt(this.financialForm.get('totalPasivos')?.value.replace(/\./g, ''), 10);
+
+    const totalAssets = income - expense;
+
+    this.financialForm.get('totalPatrimonio')?.setValue(this.formatToCurrency(totalAssets), { emitEvent: true });
   }
 
   formatCurrency(controlName: string): void {
     const control = this.financialForm.get(controlName);
     if (control) {
       const value = control.value.replace(/\D/g, '');
-      control.setValue(this.formatToCurrency(value), { emitEvent: false });
+      control.setValue(this.formatToCurrency(parseInt(value, 10)), { emitEvent: false });
     }
   }
 
-  formatToCurrency(value: string | number): string {
+  formatToCurrency(value: number): string {
     if (!value) return '0';
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
-
 
   onSubmit(): void {
     if (this.isSubmitting) {
@@ -161,6 +169,18 @@ export class FinancialInfoComponent implements OnInit {
     if (this.financialForm.valid) {
 
       const parsedData = { ...this.financialForm.value };
+
+      parsedData.ingresosMensuales = parseInt(this.financialForm.get('ingresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.primaProductividad = parseInt(this.financialForm.get('primaProductividad')?.value.replace(/\./g, ''), 10);
+      parsedData.otrosIngresosMensuales = parseInt(this.financialForm.get('otrosIngresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.totalIngresosMensuales = parseInt(this.financialForm.get('totalIngresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.egresosMensuales = parseInt(this.financialForm.get('egresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.obligacionFinanciera = parseInt(this.financialForm.get('obligacionFinanciera')?.value.replace(/\./g, ''), 10);
+      parsedData.otrosEgresosMensuales = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.totalEgresosMensuales = parseInt(this.financialForm.get('totalEgresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.totalActivos = parseInt(this.financialForm.get('totalActivos')?.value.replace(/\./g, ''), 10);
+      parsedData.totalPasivos = parseInt(this.financialForm.get('totalPasivos')?.value.replace(/\./g, ''), 10);
+      parsedData.totalPatrimonio = parseInt(this.financialForm.get('totalPatrimonio')?.value.replace(/\./g, ''), 10);
 
       if(parsedData.id) {
         this.financialInfoService.update(parsedData).subscribe({

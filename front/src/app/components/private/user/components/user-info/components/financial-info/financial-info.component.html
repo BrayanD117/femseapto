@@ -28,28 +28,36 @@
           formControlName="ingresosMensuales" 
           (input)="formatCurrency('ingresosMensuales')" 
           aria-label="Ingresos Mensuales">
-        <span class="input-group-text">.00</span>
+        <span class="input-group-text">,00</span>
       </div>
     </div>    
     <div class="col-md-6">
       <label for="primaProductividad" class="form-label">Prima de Productividad</label>
       <br>
-      <p-inputNumber 
-        formControlName="primaProductividad"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="primaProductividad" 
+          (input)="formatCurrency('primaProductividad')" 
+          aria-label="Prima de Productividad">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="otrosIngresosMensuales" class="form-label">Otros Ingresos Mensuales</label>
       <br>
-      <p-inputNumber 
-        formControlName="otrosIngresosMensuales"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="otrosIngresosMensuales" 
+          (input)="formatCurrency('otrosIngresosMensuales')" 
+          aria-label="Otros Ingresos Mensuales">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="conceptoOtrosIngresosMens" class="form-label">Concepto de Otros Ingresos Mensuales</label>
@@ -58,82 +66,110 @@
     <div class="col-md-6">
       <label for="totalIngresosMensuales" class="form-label">Total de Ingresos Mensuales</label>
       <br>
-      <p-inputNumber 
-        formControlName="totalIngresosMensuales"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="totalIngresosMensuales" 
+          (input)="formatCurrency('totalIngresosMensuales')" 
+          aria-label="Total Ingresos Mensuales">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="egresosMensuales" class="form-label">Egresos Mensuales</label>
       <br>
-      <p-inputNumber 
-        formControlName="egresosMensuales"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="egresosMensuales" 
+          (input)="formatCurrency('egresosMensuales')" 
+          aria-label="Egresos Mensuales">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="obligacionFinanciera" class="form-label">Obligación Financiera</label>
       <br>
-      <p-inputNumber 
-        formControlName="obligacionFinanciera"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="obligacionFinanciera" 
+          (input)="formatCurrency('obligacionFinanciera')" 
+          aria-label="Obligación Financiera">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="otrosEgresosMensuales" class="form-label">Otros Egresos Mensuales</label>
       <br>
-      <p-inputNumber 
-        formControlName="otrosEgresosMensuales"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="otrosEgresosMensuales" 
+          (input)="formatCurrency('otrosEgresosMensuales')" 
+          aria-label="Otros Egresos Mensuales">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="totalEgresosMensuales" class="form-label">Total de Egresos Mensuales</label>
-      <br>
-      <p-inputNumber 
-        formControlName="totalEgresosMensuales"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="totalEgresosMensuales" 
+          (input)="formatCurrency('totalEgresosMensuales')" 
+          aria-label="Total Egresos Mensuales">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="totalActivos" class="form-label">Total de Activos</label>
-      <br>
-      <p-inputNumber 
-        formControlName="totalActivos"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="totalActivos" 
+          (input)="formatCurrency('totalActivos')" 
+          aria-label="Total Activos">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="totalPasivos" class="form-label">Total de Pasivos</label>
-      <br>
-      <p-inputNumber 
-        formControlName="totalPasivos"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="totalPasivos" 
+          (input)="formatCurrency('totalPasivos')" 
+          aria-label="Total Pasivos">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="col-md-6">
       <label for="totalPatrimonio" class="form-label">Total de Patrimonio</label>
-      <br>
-      <p-inputNumber 
-        formControlName="totalPatrimonio"
-            inputId="currency-co" 
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="totalPatrimonio" 
+          (input)="formatCurrency('totalPatrimonio')" 
+          aria-label="Total Patrimonio">
+        <span class="input-group-text">,00</span>
+      </div>
     </div>
     <div class="d-grid gap-2">
       <button class="btn btn-success" [disabled]="financialForm.invalid || isSubmitting" type="submit">
