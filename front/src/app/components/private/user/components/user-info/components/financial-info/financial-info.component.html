@@ -20,14 +20,17 @@
     </div>
     <div class="col-md-6">
       <label for="ingresosMensuales" class="form-label">Ingresos Mensuales</label>
-      <br>
-      <p-inputNumber 
-        formControlName="ingresosMensuales"
-        inputId="currency-co"   
-            mode="currency" 
-            currency="COP" 
-            locale="es-CO" /> 
-    </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="ingresosMensuales" 
+          (input)="formatCurrency('ingresosMensuales')" 
+          aria-label="Ingresos Mensuales">
+        <span class="input-group-text">.00</span>
+      </div>
+    </div>    
     <div class="col-md-6">
       <label for="primaProductividad" class="form-label">Prima de Productividad</label>
       <br>

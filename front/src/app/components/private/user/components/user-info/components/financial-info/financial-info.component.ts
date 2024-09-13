@@ -70,7 +70,7 @@ export class FinancialInfoComponent implements OnInit {
         if(financialInfo) {
           this.financialForm.patchValue({
             ...financialInfo,
-            ingresosMensuales: parseFloat(financialInfo.ingresosMensuales) || 0,
+            ingresosMensuales: this.formatToCurrency(parseInt(financialInfo.ingresosMensuales)),
             primaProductividad: parseFloat(financialInfo.primaProductividad) || 0,
             otrosIngresosMensuales: parseFloat(financialInfo.otrosIngresosMensuales) || 0,
             totalIngresosMensuales: parseFloat(financialInfo.totalIngresosMensuales) || 0,
@@ -132,6 +132,20 @@ export class FinancialInfoComponent implements OnInit {
   
       this.financialForm.get('totalPatrimonio')?.setValue(totalAssets, { emitEvent: true });
   }
+
+  formatCurrency(controlName: string): void {
+    const control = this.financialForm.get(controlName);
+    if (control) {
+      const value = control.value.replace(/\D/g, '');
+      control.setValue(this.formatToCurrency(value), { emitEvent: false });
+    }
+  }
+
+  formatToCurrency(value: string | number): string {
+    if (!value) return '0';
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
 
   onSubmit(): void {
     if (this.isSubmitting) {
