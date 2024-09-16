@@ -176,7 +176,12 @@ class UsuarioController {
     
         $documento = $usuario->numeroDocumento;
         $options = ['cost' => 12];
-        $nuevaContrasenaHasheada = password_hash($documento, PASSWORD_BCRYPT, $options);
+        if($usuario->id_rol == 1) {
+            $nuevaContrasenaHasheada = password_hash($usuario->usuario, PASSWORD_BCRYPT, $options);
+        } else {
+            $nuevaContrasenaHasheada = password_hash($documento, PASSWORD_BCRYPT, $options);
+        }
+        
     
         $resultado = Usuario::restablecerContrasenia($id, $nuevaContrasenaHasheada);
     
