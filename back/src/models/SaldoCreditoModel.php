@@ -77,12 +77,11 @@ class SaldoCredito
         try {
             $stmt = $db->prepare(
                 "INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE id_linea_credito = VALUES(id_linea_credito), cuota_actual = VALUES(cuota_actual), cuotas_totales = VALUES(cuotas_totales), valor_solicitado = VALUES(valor_solicitado), cuota_quincenal = VALUES(cuota_quincenal), valor_pagado = VALUES(valor_pagado), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE cuota_actual = VALUES(cuota_actual), cuotas_totales = VALUES(cuotas_totales), valor_solicitado = VALUES(valor_solicitado), cuota_quincenal = VALUES(cuota_quincenal), valor_pagado = VALUES(valor_pagado), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
             );
 
             foreach ($datos as $dato) {
-                // Validar que todos los campos requeridos no estén vacíos
                 if (isset($dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte'])) {
                     $stmt->bind_param("iiiidddds", $dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte']);
                     $stmt->execute();
