@@ -158,14 +158,24 @@ class InformacionFinanciera {
         $db = getDB();
         $queryParts = [];
         $params = [];
+        $types = '';
         
         foreach ($datos as $dato) {
-            $queryParts[] = "(?, ?)";
-            $params[] = $dato['idUsuario'];
-            $params[] = $dato['montoMaxAhorro'];
+            if (isset($dato['idUsuario'], $dato['montoMaxAhorro'])) {
+                $queryParts[] = "(?, ?)";
+                $params[] = $dato['idUsuario'];
+                $params[] = $dato['montoMaxAhorro'];
+                $types .= 'i';
+                $types .= 'd';
+            } else {
+                error_log("Datos incompletos: " . json_encode($dato));
+            }
         }
     
-        // Consulta de inserción masiva con actualización condicional
+        if (empty($queryParts)) {
+            throw new Exception("No hay datos válidos para insertar o actualizar.");
+        }
+    
         $query = "
             INSERT INTO informacion_financiera (id_usuario, monto_max_ahorro) 
             VALUES " . implode(", ", $queryParts) . " 
@@ -173,11 +183,8 @@ class InformacionFinanciera {
         
         $stmt = $db->prepare($query);
         
-        // Asignar los parámetros de la consulta
-        $types = str_repeat('ii', count($datos));
         $stmt->bind_param($types, ...$params);
-    
-        // Ejecutar consulta
+
         $stmt->execute();
         if ($stmt->error) {
             throw new Exception("Error en la ejecución de la consulta: " . $stmt->error);
@@ -185,7 +192,7 @@ class InformacionFinanciera {
         
         $stmt->close();
         $db->close();
-    }
+    }    
     
 }
 ?>
