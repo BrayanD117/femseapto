@@ -70,11 +70,10 @@ class SaldoAhorro
             $stmt = $db->prepare(
                 "INSERT INTO saldo_ahorros (id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte) 
             VALUES (?, ?, ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE id_linea_ahorro = VALUES(id_linea_ahorro), ahorro_quincenal = VALUES(ahorro_quincenal), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
+            ON DUPLICATE KEY UPDATE ahorro_quincenal = VALUES(ahorro_quincenal), valor_saldo = VALUES(valor_saldo), fecha_corte = VALUES(fecha_corte)"
             );
 
             foreach ($datos as $dato) {
-                // Validar que todos los campos requeridos no estén vacíos
                 if (isset($dato['idUsuario'], $dato['idLineaAhorro'], $dato['ahorroQuincenal'], $dato['valorSaldo'], $dato['fechaCorte'])) {
                     $stmt->bind_param("iidds", $dato['idUsuario'], $dato['idLineaAhorro'], $dato['ahorroQuincenal'], $dato['valorSaldo'], $dato['fechaCorte']);
                     $stmt->execute();
