@@ -13,7 +13,6 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class SidebarComponent {
   @Input() userRole?: number;
-  showLogoutModal = false;
 
   constructor(
     private loginService: LoginService,
@@ -21,23 +20,10 @@ export class SidebarComponent {
     private cookieService: CookieService
   ) {}
 
-  openLogoutModal() {
-    this.showLogoutModal = true;
-  }
-
-  closeLogoutModal() {
-    this.showLogoutModal = false;
-  }
-
   confirmLogout() {
     localStorage.removeItem('auth_token');
     this.cookieService.delete('auth_token');
     this.loginService.updateAuthStatus(false);
-    //this.closeLogoutModal();
-    this.router.navigate(['/login']).then(() => {
-      console.log('Redirección exitosa');
-    }).catch(err => {
-      console.error('Error al redirigir:', err);
-    });
+    this.router.navigate(['/login']);
   }
 }
