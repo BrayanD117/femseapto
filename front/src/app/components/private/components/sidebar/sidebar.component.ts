@@ -33,7 +33,7 @@ export class SidebarComponent {
     localStorage.removeItem('auth_token');
     this.cookieService.delete('auth_token');
     this.loginService.updateAuthStatus(false);
+    this.router.navigate(['/login']);
     this.closeLogoutModal();
-    window.location.pathname = '/login';
   }
 }
