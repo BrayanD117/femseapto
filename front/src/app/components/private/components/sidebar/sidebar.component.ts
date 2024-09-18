@@ -33,7 +33,11 @@ export class SidebarComponent {
     localStorage.removeItem('auth_token');
     this.cookieService.delete('auth_token');
     this.loginService.updateAuthStatus(false);
-    this.closeLogoutModal();
-    window.location.pathname = '/login';
+    //this.closeLogoutModal();
+    this.router.navigate(['/login']).then(() => {
+      console.log('Redirección exitosa');
+    }).catch(err => {
+      console.error('Error al redirigir:', err);
+    });
   }
 }
