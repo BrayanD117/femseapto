@@ -32,7 +32,7 @@ export class LoginComponent {
       next: (response) => {
         if (response.success) {
           localStorage.setItem('auth_token', response.token);
-          this.cookieService.set('auth_token', response.token, { expires: 1, path: '/' });
+          this.cookieService.set('auth_token', response.token, { expires: (1 / 24), path: '/' });
   
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;

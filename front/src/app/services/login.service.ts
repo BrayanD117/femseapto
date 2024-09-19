@@ -46,4 +46,8 @@ export class LoginService {
     const token = localStorage.getItem('auth_token');
     return token ? this.jwtHelper.decodeToken(token) : null;
   }
+
+  logout() {
+    return this.http.post(`${this.authUrl}/auth/logout.php`, { });
+  }
 }

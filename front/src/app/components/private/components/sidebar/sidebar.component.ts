@@ -12,10 +12,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent {
   @Input() userRole?: number;
-  private authListenerSubs: Subscription | undefined;
-  isAuthenticated = false;
 
   constructor(
     private loginService: LoginService,
@@ -23,42 +21,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService
   ) {}
 
-  ngOnInit() {
-    this.authListenerSubs = this.loginService
-      .getAuthStatusListener()
-      .subscribe((isAuthenticated) => {
-        this.isAuthenticated = isAuthenticated;
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.authListenerSubs) {
-      this.authListenerSubs.unsubscribe();
-    }
-  }
+  /*confirmLogout() {
+    localStorage.removeItem('auth_token');
+    this.cookieService.delete('auth_token', '/');
+    this.loginService.updateAuthStatus(false);
+    this.router.navigate(['/login']);
+  }*/
 
   confirmLogout() {
     localStorage.removeItem('auth_token');
-    this.cookieService.delete('auth_token');
     
-    if (!this.cookieService.check('auth_token')) {
-      this.loginService.updateAuthStatus(false);
+    this.loginService.logout().subscribe(() => {
+      this.cookieService.delete('auth_token', '/');
       this.router.navigate(['/login']);
-    } else {
-      console.error('Error al eliminar la cookie');
-    }
-  }
-
-  handleLogout() {
-    this.confirmLogout();
-    this.closeModal();
-  }
-
-  closeModal() {
-    const modalElement = document.getElementById('logoutModal');
-    if (modalElement) {
-      const modalInstance = new (window as any).bootstrap.Modal(modalElement);
-      modalInstance.hide();
-    }
+    });
   }
 }
