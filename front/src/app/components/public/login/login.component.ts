@@ -9,6 +9,7 @@ import { LoginService } from '../../../services/login.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,13 @@ export class LoginComponent {
       next: (response) => {
         if (response.success) {
           localStorage.setItem('auth_token', response.token);
-          this.cookieService.set('auth_token', response.token, { expires: (1 / 24), path: '/' });
+          this.cookieService.set('auth_token', response.token,
+            { expires: (1 / 1440),
+              path: '/',
+              domain: environment.cookieDomain,
+              secure: environment.cookieSecure,
+              sameSite: 'Strict' });
+          console.log(environment.cookieDomain);
   
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;

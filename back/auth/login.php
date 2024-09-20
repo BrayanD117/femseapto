@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuarioObj && password_verify($contrasenia, $usuarioObj->contrasenia)) {
         if ($usuarioObj->activo) {
             $issuedAt = time();
-            $expirationTime = $issuedAt + 3600;  // token válido por 1 hora
+            $expirationTime = $issuedAt + 60;  // token válido por 1 hora
             $payload = [
                 'iss' => 'localhost',
                 'iat' => $issuedAt,    

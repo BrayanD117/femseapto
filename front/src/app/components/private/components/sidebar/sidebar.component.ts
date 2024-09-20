@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,7 +33,8 @@ export class SidebarComponent {
     localStorage.removeItem('auth_token');
     
     this.loginService.logout().subscribe(() => {
-      this.cookieService.delete('auth_token', '/');
+      //this.cookieService.delete('auth_token', '/');
+      this.cookieService.delete('auth_token', '/', environment.cookieDomain, environment.cookieSecure, 'Strict');
       this.router.navigate(['/login']);
     });
   }
