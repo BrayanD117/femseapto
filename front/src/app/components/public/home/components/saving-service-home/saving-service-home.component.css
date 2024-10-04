@@ -72,6 +72,15 @@ h2, .card-title {
     }  
 }
 
+.img-custom {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+
 /*@media (min-width: 1200px) and (max-width: 1399.98px) {
     .card-action {
         margin-right: 30%;
