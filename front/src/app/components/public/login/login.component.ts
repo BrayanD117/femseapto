@@ -34,7 +34,7 @@ export class LoginComponent {
         if (response.success) {
           localStorage.setItem('auth_token', response.token);
           this.cookieService.set('auth_token', response.token,
-            { expires: (1 / 1440),
+            { expires: (1 / 24),
               path: '/',
               domain: environment.cookieDomain,
               secure: environment.cookieSecure,
