@@ -60,7 +60,6 @@ class Usuario {
     public static function cambiarEstadoActivo($id) {
         $db = getDB();
         try {
-            // Obtener el estado actual del usuario
             $query = $db->prepare("SELECT activo FROM usuarios WHERE id = ?");
             $query->bind_param("i", $id);
             $query->execute();
@@ -68,10 +67,8 @@ class Usuario {
             $query->fetch();
             $query->close();
     
-            // Cambiar el estado activo
             $nuevoEstado = ($estadoActual == 1) ? 0 : 1;
     
-            // Actualizar el estado del usuario
             $query = $db->prepare("UPDATE usuarios SET activo = ? WHERE id = ?");
             $query->bind_param("ii", $nuevoEstado, $id);
             $query->execute();
@@ -82,7 +79,6 @@ class Usuario {
     
             $query->close();
         } catch (Exception $e) {
-            // Manejo de errores
             error_log($e->getMessage());
             return false;
         } finally {
@@ -167,61 +163,78 @@ class Usuario {
         return $users;
     }
 
-    public static function obtenerConPaginacion($page, $size, $idRol) {
+    public static function obtenerConPaginacion($page, $size, $idRol, $search = null) {
         $db = getDB();
         $offset = ($page - 1) * $size;
-        
-        // Consulta principal con el parámetro id_rol
-        $query = "SELECT * FROM usuarios WHERE id_rol = ? LIMIT ? OFFSET ?";
+    
+        $query = "SELECT * FROM usuarios WHERE id_rol = ?";
+    
+        if (!empty($search)) {
+            $query .= " AND (usuario LIKE ? OR primer_apellido LIKE ? OR segundo_apellido LIKE ? OR primer_nombre LIKE ? OR segundo_nombre LIKE ? OR numero_documento LIKE ?)";
+        }
+    
+        $query .= " LIMIT ? OFFSET ?";
+    
         $stmt = $db->prepare($query);
-        
-        // Verifica si la preparación de la consulta fue exitosa
+    
         if ($stmt === false) {
             die('Error en la preparación de la consulta: ' . $db->error);
         }
-        
-        // Asignación de parámetros
-        $stmt->bind_param('iii', $idRol, $size, $offset);
+    
+        if (!empty($search)) {
+            $searchParam = "%" . $search . "%";
+            $stmt->bind_param('issssssii', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $size, $offset);
+        } else {
+            $stmt->bind_param('iii', $idRol, $size, $offset);
+        }
+    
         $stmt->execute();
-        
-        // Verifica si la ejecución de la consulta fue exitosa
+    
         if ($stmt->errno) {
             die('Error en la ejecución de la consulta: ' . $stmt->error);
         }
-        
+    
         $result = $stmt->get_result();
         $usuarios = [];
-        
+    
         while ($row = $result->fetch_assoc()) {
             $usuarios[] = new Usuario($row['id'], $row['id_rol'], $row['usuario'], null, $row['primer_apellido'], $row['segundo_apellido'], $row['primer_nombre'], $row['segundo_nombre'], $row['id_tipo_documento'], $row['numero_documento'], $row['id_tipo_asociado'], $row['activo'], null, $row['creado_el'], $row['actualizado_el']);
         }
-        
-        // Consulta para contar los registros con el parámetro id_rol
+    
         $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = ?";
+    
+        if (!empty($search)) {
+            $countQuery .= " AND (usuario LIKE ? OR primer_apellido LIKE ? OR segundo_apellido LIKE ? OR primer_nombre LIKE ? OR segundo_nombre LIKE ? OR numero_documento LIKE ?)";
+        }
+    
         $countStmt = $db->prepare($countQuery);
-        
-        // Verifica si la preparación de la consulta de conteo fue exitosa
+    
         if ($countStmt === false) {
             die('Error en la preparación de la consulta de conteo: ' . $db->error);
         }
-        
-        $countStmt->bind_param('i', $idRol);
+    
+        if (!empty($search)) {
+            $countStmt->bind_param('issssss', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+        } else {
+            $countStmt->bind_param('i', $idRol);
+        }
+    
         $countStmt->execute();
-        
-        // Verifica si la ejecución de la consulta de conteo fue exitosa
+    
         if ($countStmt->errno) {
             die('Error en la ejecución de la consulta de conteo: ' . $countStmt->error);
         }
-        
+    
         $countResult = $countStmt->get_result();
         $total = $countResult->fetch_assoc()['total'];
-        
+    
         $db->close();
+    
         return [
             'data' => $usuarios,
             'total' => $total
         ];
-    }
+    }    
 
     public function eliminar() {
         $db = getDB();
@@ -234,7 +247,6 @@ class Usuario {
         $db->close();
     }
 
-    // User Login
     public static function buscarPorUsuario($usuario) {
         $db = getDB();
         $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ? AND activo = 1");
