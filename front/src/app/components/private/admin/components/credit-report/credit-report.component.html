@@ -1,0 +1,11 @@
+<p-toast></p-toast>
+<div class="date-picker-container">
+    <label for="startDate">Fecha de inicio:</label>
+    <input type="date" id="startDate" [(ngModel)]="startDate">
+  
+    <label for="endDate">Fecha de fin:</label>
+    <input type="date" id="endDate" [(ngModel)]="endDate">
+  
+    <button (click)="generateExcel()">Generar Excel</button>
+  </div>
+  

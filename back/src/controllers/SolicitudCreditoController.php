@@ -124,5 +124,9 @@ class SolicitudCreditoController {
 
         return true;
     }
+    
+    public function obtenerPorRangoDeFechas($startDate, $endDate) {
+        return SolicitudCredito::obtenerPorRangoDeFechas($startDate, $endDate);
+    }  
 }
 ?>

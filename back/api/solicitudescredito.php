@@ -30,23 +30,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $resp = $controlador->obtenerPorId($id);
-        if ($resp) {
-            header('Content-Type: application/json');
-            echo json_encode($resp);
-        } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Solicitud de crédito no encontrada."));
-        }
+        header('Content-Type: application/json');
+        echo json_encode($resp);
     } elseif (isset($_GET['idUsuario'])) {
-        $id = $_GET['idUsuario'];
-        $resp = $controlador->obtenerPorIdUsuario($id);
-        if ($resp) {
-            header('Content-Type: application/json');
-            echo json_encode($resp);
-        } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Solicitudes de crédito no encontradas."));
-        }
+        $idUsuario = $_GET['idUsuario'];
+        $resp = $controlador->obtenerPorIdUsuario($idUsuario);
+        header('Content-Type: application/json');
+        echo json_encode($resp);
+    } elseif (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+        $startDate = $_GET['startDate'];
+        $endDate = $_GET['endDate'];
+    
+        error_log("Consultando solicitudes de crédito desde: $startDate 00:00:00 hasta: $endDate 23:59:59");
+    
+        $resp = $controlador->obtenerPorRangoDeFechas($startDate, $endDate);
+        header('Content-Type: application/json');
+        echo json_encode($resp);
     } else {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;

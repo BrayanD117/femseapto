@@ -4,6 +4,7 @@ import { UserService, User } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GenerateCreditRequestComponent } from '../generate-credit-request/generate-credit-request.component';
+import { CreditReportComponent } from '../credit-report/credit-report.component';
 import { forkJoin } from 'rxjs';
 import { LineasCreditoService } from '../../../../../services/lineas-credito.service';
 
@@ -20,7 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-credit-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule, GenerateCreditRequestComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, GenerateCreditRequestComponent, CreditReportComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
   templateUrl: './credit-requests.component.html',
   styleUrls: ['./credit-requests.component.css']
 })
