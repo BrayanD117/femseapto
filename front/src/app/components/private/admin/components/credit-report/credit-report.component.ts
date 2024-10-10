@@ -55,6 +55,11 @@ export class CreditReportComponent {
     return `${year}-${month}-${day}`;
   }
 
+  private getMonthName(date: Date): string {
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    return monthNames[date.getMonth()];
+  }
+
   generateExcel(): void {
     if (this.startDate && this.endDate) {
       const formattedStartDate = this.formatDate(new Date(this.startDate));
@@ -119,22 +124,27 @@ export class CreditReportComponent {
     credits.forEach((credit) => {
       worksheet.addRow({
         id: credit.id,
-        numeroDocumento: credit.numeroDocumento,
+        numeroDocumento: Number(credit.numeroDocumento),
         nombreCompleto: credit.nombreCompleto,
         nombreLineaCredito: credit.nombreLineaCredito,
-        montoSolicitado: credit.montoSolicitado,
-        tasaInteres: credit.tasaInteres,
-        plazoQuincenal: credit.plazoQuincenal,
-        valorCuotaQuincenal: credit.valorCuotaQuincenal,
+        montoSolicitado: Number(credit.montoSolicitado),
+        tasaInteres: Number(credit.tasaInteres),
+        plazoQuincenal: Number(credit.plazoQuincenal),
+        valorCuotaQuincenal: Number(credit.valorCuotaQuincenal),
         fechaSolicitud: credit.fechaSolicitud,
       });
     });
+
+    const monthStart = this.startDate ? this.getMonthName(new Date(this.startDate)) : '';
+    const monthEnd = this.endDate ? this.getMonthName(new Date(this.endDate)) : '';
+
+    const fileName = `Solicitudes_Creditos_${monthStart}_${monthEnd}.xlsx`;
 
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Solicitudes_Credito.xlsx');
+      saveAs(blob, fileName);
     });
   }
 }
