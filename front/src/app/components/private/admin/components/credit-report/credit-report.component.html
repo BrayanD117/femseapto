@@ -14,7 +14,13 @@
       </div>
     </div>
     <div class="p-field p-col-12 mb-5" style="text-align: center; margin-top: 10px;">
-        <button pButton type="button" label="Generar Reporte" class="p-button-success" icon="pi pi-file-excel" (click)="generateExcel()"></button>
+        <button pButton type="button" 
+          [label]="isGenerating ? 'Generando...' : 'Generar Reporte'" 
+          [icon]="isGenerating ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'" 
+          class="p-button-success" 
+          [disabled]="isGenerating"  
+          (click)="generateExcel()">
+        </button>
     </div>
   </div>
 </div>

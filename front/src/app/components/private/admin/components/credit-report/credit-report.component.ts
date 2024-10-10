@@ -25,6 +25,7 @@ export class CreditReportComponent {
   startDate: string | null = null;
   endDate: string | null = null;
   maxDate: Date = new Date();
+  isGenerating: boolean = false;
 
   constructor(
     private requestCreditService: RequestCreditService,
@@ -66,6 +67,7 @@ export class CreditReportComponent {
 
   generateExcel(): void {
     if (this.startDate && this.endDate) {
+      this.isGenerating = true; 
       const formattedStartDate = this.formatDate(new Date(this.startDate));
       const formattedEndDate = this.formatDate(new Date(this.endDate));
 
@@ -83,6 +85,7 @@ export class CreditReportComponent {
           error: (err) => {
             console.error('Error al obtener los créditos:', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al obtener los créditos.' });
+            this.isGenerating = false; 
           }
         });
     } else {
@@ -125,19 +128,19 @@ export class CreditReportComponent {
       { header: 'Fecha de Solicitud', key: 'fechaSolicitud', width: 20 },
     ];
 
-    credits.forEach((credit) => {
-      worksheet.addRow({
-        id: credit.id,
-        numeroDocumento: Number(credit.numeroDocumento),
-        nombreCompleto: credit.nombreCompleto,
-        nombreLineaCredito: credit.nombreLineaCredito,
-        montoSolicitado: Number(credit.montoSolicitado),
-        tasaInteres: Number(credit.tasaInteres),
-        plazoQuincenal: Number(credit.plazoQuincenal),
-        valorCuotaQuincenal: Number(credit.valorCuotaQuincenal),
-        fechaSolicitud: credit.fechaSolicitud,
-      });
-    });
+    const rows = credits.map(credit => [
+      credit.id,
+      Number(credit.numeroDocumento),
+      credit.nombreCompleto,
+      credit.nombreLineaCredito,
+      Number(credit.montoSolicitado),
+      Number(credit.tasaInteres),
+      Number(credit.plazoQuincenal),
+      Number(credit.valorCuotaQuincenal),
+      credit.fechaSolicitud
+    ]);
+
+    worksheet.addRows(rows);
 
     const monthStart = this.startDate ? this.getMonthName(new Date(this.startDate)) : '';
     const monthEnd = this.endDate ? this.getMonthName(new Date(this.endDate)) : '';
@@ -146,10 +149,11 @@ export class CreditReportComponent {
     const fileName = `Solicitudes_Creditos_${monthStart}_${monthEnd}_${reportYear}.xlsx`;
 
     workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      saveAs(blob, fileName);
+        const blob = new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        saveAs(blob, fileName);
+        this.isGenerating = false;
     });
   }
 }
