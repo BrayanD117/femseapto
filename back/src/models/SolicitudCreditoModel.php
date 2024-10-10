@@ -11,9 +11,10 @@ class SolicitudCredito {
     public $reestructurado;
     public $periocidadPago;
     public $tasaInteres;
+    public $rutaDocumento;
     public $fechaSolicitud;
 
-    public function __construct($id = null, $idUsuario = null, $montoSolicitado = null, $plazoQuincenal = null, $valorCuotaQuincenal = null, $idLineaCredito = null, $reestructurado = null, $periocidadPago = null, $tasaInteres = null, $fechaSolicitud = null) {
+    public function __construct($id = null, $idUsuario = null, $montoSolicitado = null, $plazoQuincenal = null, $valorCuotaQuincenal = null, $idLineaCredito = null, $reestructurado = null, $periocidadPago = null, $tasaInteres = null, $rutaDocumento = null, $fechaSolicitud = null) {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->montoSolicitado = $montoSolicitado;
@@ -23,17 +24,18 @@ class SolicitudCredito {
         $this->reestructurado = $reestructurado;
         $this->periocidadPago = $periocidadPago;
         $this->tasaInteres = $tasaInteres;
+        $this->rutaDocumento = $rutaDocumento;
         $this->fechaSolicitud = $fechaSolicitud;
     }
 
     public function guardar() {
         $db = getDB();
         if ($this->id === null) {
-            $query = $db->prepare("INSERT INTO solicitudes_credito (id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $query->bind_param("ididisss", $this->idUsuario, $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres);
+            $query = $db->prepare("INSERT INTO solicitudes_credito (id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $query->bind_param("ididissss", $this->idUsuario, $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres, $this->rutaDocumento);
         } else {
-            $query = $db->prepare("UPDATE solicitudes_credito SET monto_solicitado = ?, plazo_quincenal = ?, valor_cuota_quincenal = ?, id_linea_credito = ?, reestructurado = ?, periocidad_pago = ?, tasa_interes = ? WHERE id = ?");
-            $query->bind_param("didisssi", $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres, $this->id);
+            $query = $db->prepare("UPDATE solicitudes_credito SET monto_solicitado = ?, plazo_quincenal = ?, valor_cuota_quincenal = ?, id_linea_credito = ?, reestructurado = ?, periocidad_pago = ?, tasa_interes = ?, ruta_documento = ? WHERE id = ?");
+            $query->bind_param("didissssi", $this->montoSolicitado, $this->plazoQuincenal, $this->valorCuotaQuincenal, $this->idLineaCredito, $this->reestructurado, $this->periocidadPago, $this->tasaInteres, $this->rutaDocumento, $this->id);
         }
         $query->execute();
         if ($this->id === null) {
@@ -45,13 +47,13 @@ class SolicitudCredito {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, fecha_solicitud FROM solicitudes_credito WHERE id = ?");
+        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
         $solicitud = null;
         if ($query->fetch()) {
-            $solicitud = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+            $solicitud = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
         }
         $query->close();
         $db->close();
@@ -63,12 +65,12 @@ class SolicitudCredito {
         $query = $db->prepare("SELECT * FROM solicitudes_credito WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
-        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+        $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
         
         $solCred = [];
 
         while ($query->fetch()) {
-            $solCred[] = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $fechaSolicitud);
+            $solCred[] = new SolicitudCredito($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
         }
         
         $query->close();
@@ -79,11 +81,11 @@ class SolicitudCredito {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, fecha_solicitud FROM solicitudes_credito";
+        $query = "SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito";
         $result = $db->query($query);
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
-            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['fecha_solicitud']);
+            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['ruta_documento'], $row['fecha_solicitud']);
         }
         $db->close();
         return $solicitudes;
@@ -100,7 +102,7 @@ class SolicitudCredito {
         $result = $stmt->get_result();
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
-            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['fecha_solicitud']);
+            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['ruta_documento'], $row['fecha_solicitud']);
         }
         
         $countQuery = "SELECT COUNT(*) as total FROM solicitudes_credito $searchQuery";
@@ -131,7 +133,7 @@ class SolicitudCredito {
         $startDateTime = $startDate . ' 00:00:00';
         $endDateTime = $endDate . ' 23:59:59';
         
-        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, fecha_solicitud FROM solicitudes_credito WHERE fecha_solicitud BETWEEN ? AND ?");
+        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito WHERE fecha_solicitud BETWEEN ? AND ?");
         $query->bind_param("ss", $startDateTime, $endDateTime);
         $query->execute();
         $result = $query->get_result();
@@ -148,6 +150,7 @@ class SolicitudCredito {
                 $row['reestructurado'],
                 $row['periocidad_pago'],
                 $row['tasa_interes'],
+                $row['ruta_documento'],
                 $row['fecha_solicitud']
             );
         }

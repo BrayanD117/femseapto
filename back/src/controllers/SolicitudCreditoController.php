@@ -20,6 +20,7 @@ class SolicitudCreditoController {
             null,//$datos['reestructurado'],
             null,//$datos['periocidadPago'],
             $datos['tasaInteres'],
+            $datos['rutaDocumento'],
             null
         );
 
@@ -47,6 +48,7 @@ class SolicitudCreditoController {
         $solicitud->reestructurado = $datos['reestructurado'];
         $solicitud->periocidadPago = $datos['periocidadPago'];
         $solicitud->tasaInteres = $datos['tasaInteres'];
+        $solicitud->rutaDocumento = $datos['rutaDocumento'];
         $solicitud->fechaSolicitud = $datos['fechaSolicitud'];
 
         $solicitud->guardar();
