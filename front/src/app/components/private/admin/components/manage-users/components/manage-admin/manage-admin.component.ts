@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -28,6 +29,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-manage-admin',
@@ -54,6 +56,7 @@ export class ManageAdminComponent {
 
   users: User[] = [];
   editUserForm: FormGroup;
+  searchControl: FormControl;
   selectedUser: User | null = null;
   isEditMode: boolean = false;
 
@@ -93,10 +96,22 @@ export class ManageAdminComponent {
       contrasenia: ['', Validators.required],
       activo: [1, Validators.required],
     });
+
+    this.searchControl = new FormControl('');
   }
 
   ngOnInit(): void {
     this.loadUsers();
+
+    this.searchControl.valueChanges
+    .pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    )
+    .subscribe(searchQuery => {
+      this.loadUsers(this.currentPage, this.rows, 1, searchQuery);
+    });
+
     this.getAllDocTypes();
     this.getAllRoles();
     this.getAllAssociateTypes();
@@ -106,16 +121,9 @@ export class ManageAdminComponent {
     table.clear();
   }
 
-  onFilterGlobal(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      this.dt2.filterGlobal(target.value, 'contains');
-    }
-  }
-
-  loadUsers(page: number = 1, size: number = 10, idRol: number = 1): void {
+  loadUsers(page: number = 1, size: number = 10, idRol: number = 1, search: string = ''): void {
     this.loading = true;
-    this.userService.getAll({ page, size, idRol }).subscribe({
+    this.userService.getAll({ page, size, idRol, search }).subscribe({
       next: (response) => {
         this.users = response.data;
         this.totalRecords = response.total;
@@ -146,13 +154,9 @@ export class ManageAdminComponent {
     });
   }
 
-  onSearch(): void {
-    this.loadUsers();
-  }
-
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadUsers(this.currentPage, this.rows);
+    this.loadUsers(this.currentPage, this.rows, 1, this.searchControl.value);
   }
 
   changeState(id: number): void {

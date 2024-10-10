@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { User, UserService } from '../../../../../../../services/user.service';
 import { DocumentType, DocumentTypeService } from '../../../../../../../services/document-type.service';
@@ -18,6 +18,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-manage-executive',
@@ -32,6 +33,7 @@ export class ManageExecutiveComponent {
   
   users: User[] = [];
   editUserForm: FormGroup;
+  searchControl: FormControl;
   selectedUser: User | null = null;
   isEditMode: boolean = true;
 
@@ -70,10 +72,22 @@ export class ManageExecutiveComponent {
       id_tipo_asociado: [3],
       activo: [true, Validators.required]
     });
+
+    this.searchControl = new FormControl('');
   }
 
   ngOnInit(): void {
     this.loadUsers();
+
+    this.searchControl.valueChanges
+    .pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    )
+    .subscribe(searchQuery => {
+      this.loadUsers(this.currentPage, this.rows, 3, searchQuery);
+    });
+
     this.getAllDocTypes();
     this.getAllRoles();
     this.getAllAssociateTypes();
@@ -83,16 +97,9 @@ export class ManageExecutiveComponent {
     table.clear();
   }
 
-  onFilterGlobal(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      this.dt2.filterGlobal(target.value, 'contains');
-    }
-  }
-
-  loadUsers(page: number = 1, size: number = 10, idRol: number = 3): void {
+  loadUsers(page: number = 1, size: number = 10, idRol: number = 3, search: string = ''): void {
     this.loading = true;
-    this.userService.getAll({ page, size, idRol}).subscribe({
+    this.userService.getAll({ page, size, idRol, search }).subscribe({
       next: response => {
         this.users = response.data;
         this.totalRecords = response.total;
@@ -123,13 +130,9 @@ export class ManageExecutiveComponent {
     });
   }
 
-  onSearch(): void {
-    this.loadUsers();
-  }
-
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadUsers(this.currentPage, this.rows);
+    this.loadUsers(this.currentPage, this.rows, 3, this.searchControl.value);
   }
 
   changeState(id: number): void {
