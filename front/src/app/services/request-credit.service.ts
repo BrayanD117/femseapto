@@ -23,4 +23,12 @@ export class RequestCreditService {
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php?id=${id}`, { withCredentials: true });
   }
+
+  getCreditsByDateRange(startDate: string, endDate: string): Observable<any[]> {
+    const params = new HttpParams()
+      .set('startDate', startDate)
+      .set('endDate', endDate);
+    return this.http.get<any[]>(`${this.apiUrl}/solicitudescredito.php`, { params, withCredentials: true });
+  }
+  
 }

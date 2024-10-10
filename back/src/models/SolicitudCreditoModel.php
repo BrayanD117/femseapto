@@ -124,5 +124,38 @@ class SolicitudCredito {
         }
         $db->close();
     }
+
+    public static function obtenerPorRangoDeFechas($startDate, $endDate) {
+        $db = getDB();
+        
+        $startDateTime = $startDate . ' 00:00:00';
+        $endDateTime = $endDate . ' 23:59:59';
+        
+        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, fecha_solicitud FROM solicitudes_credito WHERE fecha_solicitud BETWEEN ? AND ?");
+        $query->bind_param("ss", $startDateTime, $endDateTime);
+        $query->execute();
+        $result = $query->get_result();
+    
+        $solicitudes = [];
+        while ($row = $result->fetch_assoc()) {
+            $solicitudes[] = new SolicitudCredito(
+                $row['id'],
+                $row['id_usuario'],
+                $row['monto_solicitado'],
+                $row['plazo_quincenal'],
+                $row['valor_cuota_quincenal'],
+                $row['id_linea_credito'],
+                $row['reestructurado'],
+                $row['periocidad_pago'],
+                $row['tasa_interes'],
+                $row['fecha_solicitud']
+            );
+        }
+        error_log("Número de solicitudes encontradas: " . count($solicitudes));
+    
+        $query->close();
+        $db->close();
+        return $solicitudes;
+    }     
 }
 ?>
