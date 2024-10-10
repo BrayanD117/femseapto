@@ -12,8 +12,8 @@ export class RequestCreditService {
 
   constructor(private http: HttpClient) { }
 
-  create(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/solicitudescredito.php`, data, { withCredentials: true });
+  create(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/solicitudescredito.php`, formData, { withCredentials: true });
   }
 
   getAll(params: { page: number; size: number; search: string }): Observable<any> {
@@ -29,6 +29,5 @@ export class RequestCreditService {
       .set('startDate', startDate)
       .set('endDate', endDate);
     return this.http.get<any[]>(`${this.apiUrl}/solicitudescredito.php`, { params, withCredentials: true });
-  }
-  
+  }  
 }

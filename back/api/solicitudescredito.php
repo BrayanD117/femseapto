@@ -18,9 +18,52 @@ if ($decodedToken === null) {
 $controlador = new SolicitudCreditoController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $datos = json_decode(file_get_contents("php://input"), true);
-    $idNuevo = $controlador->crear($datos);
-    echo json_encode(['id' => $idNuevo]);
+    $data = $_POST;
+
+    $idNuevo = $controlador->crear($data);
+
+    if (!$idNuevo) {
+        http_response_code(500);
+        echo json_encode(['message' => 'Error al crear la solicitud']);
+        exit();
+    }
+
+    $uploadFileDir = __DIR__ . '/../uploads/documents/';
+    
+    if (!is_dir($uploadFileDir)) {
+        mkdir($uploadFileDir, 0777, true);
+    }
+
+    if (isset($_FILES['rutaDocumento']) && $_FILES['rutaDocumento']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['rutaDocumento']['tmp_name'];
+        $originalFileName = $_FILES['rutaDocumento']['name'];
+        $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+
+        $newFileName = $data['idUsuario'] . '_' . $idNuevo . '.' . $fileExtension;
+
+        $dest_path = $uploadFileDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            $data['rutaDocumento'] = $dest_path;
+
+            if ($controlador->actualizar($idNuevo, $data)) {
+                http_response_code(201);
+                echo json_encode(['id' => $idNuevo, 'message' => 'Solicitud creada con éxito y archivo PDF guardado']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['message' => 'Error al actualizar la solicitud con la ruta del archivo']);
+                exit();
+            }
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error al mover el archivo PDF']);
+            exit();
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(['message' => 'No se subió ningún archivo o hubo un error en la subida', 'hola' => $_FILES]);
+        exit();
+    }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $datos = json_decode(file_get_contents("php://input"), true);
     $idExistente = $datos['id'];
@@ -40,9 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_GET['startDate']) && isset($_GET['endDate'])) {
         $startDate = $_GET['startDate'];
         $endDate = $_GET['endDate'];
-    
+
         error_log("Consultando solicitudes de crédito desde: $startDate 00:00:00 hasta: $endDate 23:59:59");
-    
+
         $resp = $controlador->obtenerPorRangoDeFechas($startDate, $endDate);
         header('Content-Type: application/json');
         echo json_encode($resp);
@@ -59,4 +102,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     http_response_code(405);
     echo json_encode(array("message" => "Método no permitido."));
 }
-?>

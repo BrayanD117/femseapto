@@ -38,6 +38,8 @@ export class RequestCreditComponent implements OnInit {
   displayMessageFamRecommend: string = '';
   isAdditionalDisabled: boolean = false;
 
+  pdfFile: File | null = null;
+
   constructor(
     private fb: FormBuilder,
     private creditsService: RequestCreditService,
@@ -57,7 +59,8 @@ export class RequestCreditComponent implements OnInit {
       valorCuotaQuincenal: [{ value: 0, disabled: false }, [Validators.required, Validators.min(1)]],
       idLineaCredito: ['', Validators.required],
       tasaInteres: [{ value: '', disabled: false }, Validators.required],
-      valorMensual: [{ value: '', disabled: true }]
+      valorMensual: [{ value: '', disabled: true }],
+      rutaDocumento: [null, Validators.required]
     });
   }
 
@@ -224,28 +227,50 @@ export class RequestCreditComponent implements OnInit {
     this.creditConditions = textoCondiciones.split('.').map(sentence => sentence.trim()).filter(sentence => sentence.length > 0);
   }
 
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.pdfFile = input.files[0];
+      this.creditForm.patchValue({ rutaDocumento: this.pdfFile });
+      this.creditForm.get('rutaDocumento')?.updateValueAndValidity();
+    }
+  }
+
   onSubmit(): void {
     if (this.creditForm.valid) {
       const token = this.loginService.getTokenClaims();
 
       if(token) {
         const userId = token.userId;
+        const formData = new FormData();
 
-        this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/[$]/g, ''); // Elimina el símbolo de moneda
-        this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/\./g, ''); // Elimina los separadores de miles
-        this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/,/g, '.'); // Reemplaza la coma decimal por punto
+        //this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/[$]/g, ''); // Elimina el símbolo de moneda
+        //this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/\./g, ''); // Elimina los separadores de miles
+        //this.creditForm.value.valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal.replace(/,/g, '.'); // Reemplaza la coma decimal por punto
         
-        const numeroFloat = parseFloat(this.creditForm.value.valorCuotaQuincenal);
+        //const numeroFloat = parseFloat(this.creditForm.value.valorCuotaQuincenal);
 
-        const creditData = {
-          idUsuario: userId,
-          montoSolicitado: this.creditForm.value.montoSolicitado,
-          plazoQuincenal: this.creditForm.value.plazoQuincenal,
-          valorCuotaQuincenal: numeroFloat,
-          idLineaCredito: parseFloat(this.creditForm.value.idLineaCredito),
-          tasaInteres: parseFloat(this.creditForm.value.tasaInteres)
-        };
-        this.creditsService.create(creditData).subscribe({
+        let valorCuotaQuincenal = this.creditForm.value.valorCuotaQuincenal
+        .replace(/[$]/g, '') // Elimina el símbolo de moneda
+        .replace(/\./g, '') // Elimina los separadores de miles
+        .replace(/,/g, '.'); // Reemplaza la coma decimal por punto
+        const valorCuotaFloat = parseFloat(valorCuotaQuincenal);
+
+        formData.append('idUsuario', userId);
+        formData.append('montoSolicitado', this.creditForm.value.montoSolicitado);
+        formData.append('plazoQuincenal', this.creditForm.value.plazoQuincenal);
+        formData.append('valorCuotaQuincenal', valorCuotaFloat.toString());
+        formData.append('idLineaCredito', this.creditForm.value.idLineaCredito);
+        formData.append('tasaInteres', this.creditForm.value.tasaInteres);
+
+        if (this.pdfFile) {
+          formData.append('rutaDocumento', this.pdfFile, this.pdfFile.name);
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe subir la copia del documento' });
+          return;
+        }
+
+        this.creditsService.create(formData).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de crédito creada correctamente' });
             setTimeout(() => {

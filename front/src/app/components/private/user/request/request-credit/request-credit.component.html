@@ -100,6 +100,13 @@
           <label for="valorMensual" class="form-label">Valor mensual</label>
           <input type="text" formControlName="valorMensual" class="form-control" readonly />
         </div>
+        <div class="col-md-12">
+          <label for="pdfFile" class="form-label">Subir copia de documento de identidad en archivo PDF</label>
+          <input type="file" (change)="onFileChange($event)" class="form-control" accept="application/pdf" />
+          <div *ngIf="creditForm.controls['rutaDocumento'].invalid && creditForm.controls['rutaDocumento'].touched">
+            <small class="text-danger">La copia de documento de identidad es obligatoria</small>
+          </div>
+        </div>
         <div class="col-12">
           <button
             type="submit"

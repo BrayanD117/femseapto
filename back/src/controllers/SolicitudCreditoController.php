@@ -20,7 +20,7 @@ class SolicitudCreditoController {
             null,//$datos['reestructurado'],
             null,//$datos['periocidadPago'],
             $datos['tasaInteres'],
-            $datos['rutaDocumento'],
+            $datos['rutaDocumento'] ?? null,
             null
         );
 
@@ -45,11 +45,11 @@ class SolicitudCreditoController {
         $solicitud->plazoQuincenal = $datos['plazoQuincenal'];
         $solicitud->valorCuotaQuincenal = $datos['valorCuotaQuincenal'];
         $solicitud->idLineaCredito = $datos['idLineaCredito'];
-        $solicitud->reestructurado = $datos['reestructurado'];
-        $solicitud->periocidadPago = $datos['periocidadPago'];
+        $solicitud->reestructurado = $datos['reestructurado'] ?? null;
+        $solicitud->periocidadPago = $datos['periocidadPago'] ?? null;
         $solicitud->tasaInteres = $datos['tasaInteres'];
-        $solicitud->rutaDocumento = $datos['rutaDocumento'];
-        $solicitud->fechaSolicitud = $datos['fechaSolicitud'];
+        $solicitud->rutaDocumento = $datos['rutaDocumento'] ?? null;
+        $solicitud->fechaSolicitud = $datos['fechaSolicitud'] ?? null;
 
         $solicitud->guardar();
 
