@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
 
 import { User, UserService } from '../../../../../../../services/user.service';
 import { DocumentType, DocumentTypeService } from '../../../../../../../services/document-type.service';
@@ -78,9 +80,14 @@ export class ManageUserComponent {
   ngOnInit(): void {
     this.loadUsers();
 
-    this.searchControl.valueChanges.subscribe(searchQuery => {
-      this.loadUsers(this.currentPage, this.rows, 2, searchQuery);
-    });
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+      .subscribe(searchQuery => {
+        this.loadUsers(this.currentPage, this.rows, 2, searchQuery);
+      });
 
     this.getAllDocTypes();
     this.getAllRoles();
