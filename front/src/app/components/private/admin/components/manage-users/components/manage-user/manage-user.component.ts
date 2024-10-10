@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 
 import { User, UserService } from '../../../../../../../services/user.service';
 import { DocumentType, DocumentTypeService } from '../../../../../../../services/document-type.service';
@@ -32,6 +32,7 @@ export class ManageUserComponent {
   
   users: User[] = [];
   editUserForm: FormGroup;
+  searchControl: FormControl;
   selectedUser: User | null = null;
   isEditMode: boolean = true;
 
@@ -70,10 +71,17 @@ export class ManageUserComponent {
       id_tipo_asociado: [null, Validators.required],
       activo: [1, Validators.required]
     });
+
+    this.searchControl = new FormControl('');
   }
 
   ngOnInit(): void {
     this.loadUsers();
+
+    this.searchControl.valueChanges.subscribe(searchQuery => {
+      this.loadUsers(this.currentPage, this.rows, 2, searchQuery);
+    });
+
     this.getAllDocTypes();
     this.getAllRoles();
     this.getAllAssociateTypes();
@@ -83,16 +91,9 @@ export class ManageUserComponent {
     table.clear();
   }
 
-  onFilterGlobal(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      this.dt2.filterGlobal(target.value, 'contains');
-    }
-  }
-
-  loadUsers(page: number = 1, size: number = 10, idRol: number = 2): void {
+  loadUsers(page: number = 1, size: number = 10, idRol: number = 2, search: string = ''): void {
     this.loading = true;
-    this.userService.getAll({ page, size, idRol}).subscribe({
+    this.userService.getAll({ page, size, idRol, search }).subscribe({
       next: response => {
         this.users = response.data;
         this.totalRecords = response.total;
@@ -123,24 +124,17 @@ export class ManageUserComponent {
     });
   }
 
-  onSearch(): void {
-    this.loadUsers();
-  }
-
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadUsers(this.currentPage, this.rows);
+    this.loadUsers(this.currentPage, this.rows, 2, this.searchControl.value);
   }
 
   changeState(id: number): void {
     const user = this.users.find(user => user.id === id);
-    //console.log("id", id);
     if (user) {
       this.userService.changeState(id).subscribe({
         next: response => {
-          // Actualiza el estado del usuario en la lista
           user.activo = user.activo === 0 ? 1 : 0;
-          //console.log('Estado del usuario actualizado');
         },
         error: err => {
           console.error('Error al cambiar el estado del usuario', err);

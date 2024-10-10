@@ -89,8 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['changePassword']) && $
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;
         $idRol = isset($_GET['idRol']) ? (int)$_GET['idRol'] : null;
+        $search = isset($_GET['search']) ? $_GET['search'] : null;
 
-        $resp = $controlador->obtenerConPaginacion($page, $size, $idRol);
+        $resp = $controlador->obtenerConPaginacion($page, $size, $idRol, $search);
         header('Content-Type: application/json');
         echo json_encode($resp);
     }

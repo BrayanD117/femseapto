@@ -123,8 +123,8 @@ class UsuarioController {
         }
     }
 
-    public function obtenerConPaginacion($page, $size, $idRol) {
-        return Usuario::obtenerConPaginacion($page, $size, $idRol);
+    public function obtenerConPaginacion($page, $size, $idRol, $search = null) {
+        return Usuario::obtenerConPaginacion($page, $size, $idRol, $search);
     }
 
     public function eliminar($id) {
