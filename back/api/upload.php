@@ -2,7 +2,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['file'])) {
         $file = $_FILES['file'];
-        $uploadDir = '../uploads/'; // Directorio de subida
+        $uploadDir = '../uploads/information'; // Directorio de subida
 
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
