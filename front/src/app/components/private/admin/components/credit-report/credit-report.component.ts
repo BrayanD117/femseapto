@@ -60,6 +60,10 @@ export class CreditReportComponent {
     return monthNames[date.getMonth()];
   }
 
+  private getYear(date: Date): string {
+    return date.getFullYear().toString();
+  }
+
   generateExcel(): void {
     if (this.startDate && this.endDate) {
       const formattedStartDate = this.formatDate(new Date(this.startDate));
@@ -137,8 +141,9 @@ export class CreditReportComponent {
 
     const monthStart = this.startDate ? this.getMonthName(new Date(this.startDate)) : '';
     const monthEnd = this.endDate ? this.getMonthName(new Date(this.endDate)) : '';
+    const reportYear = this.startDate ? this.getYear(new Date(this.startDate)) : '';
 
-    const fileName = `Solicitudes_Creditos_${monthStart}_${monthEnd}.xlsx`;
+    const fileName = `Solicitudes_Creditos_${monthStart}_${monthEnd}_${reportYear}.xlsx`;
 
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], {
