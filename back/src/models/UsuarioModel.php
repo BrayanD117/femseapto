@@ -170,7 +170,8 @@ class Usuario {
         $query = "SELECT * FROM usuarios WHERE id_rol = ?";
     
         if (!empty($search)) {
-            $query .= " AND (primer_apellido LIKE ?
+            $query .= " AND (usuario LIKE ?
+                            OR primer_apellido LIKE ?
                             OR segundo_apellido LIKE ?
                             OR primer_nombre LIKE ?
                             OR segundo_nombre LIKE ?
@@ -188,7 +189,7 @@ class Usuario {
     
         if (!empty($search)) {
             $searchParam = "%" . $search . "%";
-            $stmt->bind_param('issssssii', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $size, $offset);
+            $stmt->bind_param('isssssssii', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $size, $offset);
         } else {
             $stmt->bind_param('iii', $idRol, $size, $offset);
         }
@@ -209,7 +210,8 @@ class Usuario {
         $countQuery = "SELECT COUNT(*) as total FROM usuarios WHERE id_rol = ?";
     
         if (!empty($search)) {
-            $countQuery .= " AND (primer_apellido LIKE ?
+            $countQuery .= " AND (usuario LIKE ?
+                                OR primer_apellido LIKE ?
                                 OR segundo_apellido LIKE ?
                                 OR primer_nombre LIKE ?
                                 OR segundo_nombre LIKE ?
@@ -224,7 +226,7 @@ class Usuario {
         }
     
         if (!empty($search)) {
-            $countStmt->bind_param('issssss', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+            $countStmt->bind_param('isssssss', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
         } else {
             $countStmt->bind_param('i', $idRol);
         }
