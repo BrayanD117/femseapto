@@ -56,13 +56,10 @@ export class CreditReportComponent {
   }
 
   generateExcel(): void {
-    console.log("Fechas enviadas:", this.startDate, this.endDate);
     if (this.startDate && this.endDate) {
       const formattedStartDate = this.formatDate(new Date(this.startDate));
       const formattedEndDate = this.formatDate(new Date(this.endDate));
-  
-      console.log("Fechas formateadas:", formattedStartDate, formattedEndDate);
-  
+
       this.requestCreditService
         .getCreditsByDateRange(formattedStartDate, formattedEndDate)
         .subscribe({
@@ -113,7 +110,7 @@ export class CreditReportComponent {
       { header: 'Nombre Completo', key: 'nombreCompleto', width: 35 },
       { header: 'Línea de Crédito', key: 'nombreLineaCredito', width: 25 },
       { header: 'Monto Solicitado', key: 'montoSolicitado', width: 20 },
-      { header: 'Tasa de Interés %', key: 'tasaInteres', width: 15 },
+      { header: 'Tasa de Interés (%)', key: 'tasaInteres', width: 20 },
       { header: 'Plazo Quincenal', key: 'plazoQuincenal', width: 15 },
       { header: 'Valor Cuota', key: 'valorCuotaQuincenal', width: 15 },
       { header: 'Fecha de Solicitud', key: 'fechaSolicitud', width: 20 },
