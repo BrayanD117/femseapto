@@ -8,12 +8,14 @@ import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-credit-report',
   standalone: true,
-  imports: [FormsModule, ToastModule],
+  imports: [FormsModule, ToastModule, CalendarModule, ButtonModule],
   providers: [MessageService],
   templateUrl: './credit-report.component.html',
   styleUrls: ['./credit-report.component.css'],
@@ -22,6 +24,7 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 export class CreditReportComponent {
   startDate: string | null = null;
   endDate: string | null = null;
+  maxDate: Date = new Date();
 
   constructor(
     private requestCreditService: RequestCreditService,
@@ -33,13 +36,35 @@ export class CreditReportComponent {
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+    this.primengConfig.setTranslation({
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      today: "Hoy",
+      clear: "Limpiar",
+      dateFormat: "dd-mm-yyyy",
+      firstDayOfWeek: 1
+    });
+  }  
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   generateExcel(): void {
     console.log("Fechas enviadas:", this.startDate, this.endDate);
     if (this.startDate && this.endDate) {
+      const formattedStartDate = this.formatDate(new Date(this.startDate));
+      const formattedEndDate = this.formatDate(new Date(this.endDate));
+  
+      console.log("Fechas formateadas:", formattedStartDate, formattedEndDate);
+  
       this.requestCreditService
-        .getCreditsByDateRange(this.startDate, this.endDate)
+        .getCreditsByDateRange(formattedStartDate, formattedEndDate)
         .subscribe({
           next: (credits) => {
             if (Array.isArray(credits) && credits.length === 0) {
@@ -57,7 +82,7 @@ export class CreditReportComponent {
     } else {
       this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Por favor, seleccione ambas fechas.' });
     }
-  }
+  }  
 
   private fetchAdditionalInfo(credits: any[]): void {
     const requests = credits.map((credit) => {

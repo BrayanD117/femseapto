@@ -1,11 +1,20 @@
 <p-toast></p-toast>
-<div class="date-picker-container">
-    <label for="startDate">Fecha de inicio:</label>
-    <input type="date" id="startDate" [(ngModel)]="startDate">
-  
-    <label for="endDate">Fecha de fin:</label>
-    <input type="date" id="endDate" [(ngModel)]="endDate">
-  
-    <button (click)="generateExcel()">Generar Excel</button>
+<div class="date-picker-container p-fluid p-formgrid p-grid" style="margin-top: 20px;">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="p-field p-col-12">
+        <label for="startDate">Fecha de inicio:</label>
+        <p-calendar [(ngModel)]="startDate" [maxDate]="maxDate" inputId="startDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="p-field p-col-12">
+        <label for="endDate">Fecha de fin:</label>
+        <p-calendar [(ngModel)]="endDate" [maxDate]="maxDate" inputId="endDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
+      </div>
+    </div>
+    <div class="p-field p-col-12 mb-5" style="text-align: center; margin-top: 10px;">
+        <button pButton type="button" label="Generar Reporte" class="p-button-success" icon="pi pi-file-excel" (click)="generateExcel()"></button>
+    </div>
   </div>
-  
+</div>
