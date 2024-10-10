@@ -176,7 +176,17 @@ class Usuario {
                             OR primer_nombre LIKE ?
                             OR segundo_nombre LIKE ?
                             OR numero_documento LIKE ?
-                            OR CONCAT(primer_apellido, ' ', segundo_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?)";
+                            OR CONCAT(primer_apellido, ' ', segundo_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?
+                            OR CONCAT(primer_nombre, ' ', segundo_nombre, ' ', primer_apellido, ' ', segundo_apellido) LIKE ?
+                            OR CONCAT(primer_nombre, ' ', primer_apellido) LIKE ?
+                            OR CONCAT(primer_nombre, ' ', segundo_apellido) LIKE ?
+                            OR CONCAT(primer_apellido, ' ', primer_nombre) LIKE ? 
+                            OR CONCAT(segundo_apellido, ' ', primer_nombre, ' ', primer_apellido) LIKE ?
+                            OR CONCAT(primer_apellido, ' ', segundo_apellido) LIKE ?
+                            OR CONCAT(primer_nombre, ' ', segundo_nombre) LIKE ?
+                            OR CONCAT(primer_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?
+                            OR CONCAT(primer_nombre, ' ', primer_apellido, ' ', segundo_apellido) LIKE ?
+                        )";
         }
     
         $query .= " LIMIT ? OFFSET ?";
@@ -189,7 +199,8 @@ class Usuario {
     
         if (!empty($search)) {
             $searchParam = "%" . $search . "%";
-            $stmt->bind_param('isssssssii', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $size, $offset);
+            $stmt->bind_param('issssssssssssssssii', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam,
+                $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $size, $offset);
         } else {
             $stmt->bind_param('iii', $idRol, $size, $offset);
         }
@@ -216,7 +227,17 @@ class Usuario {
                                 OR primer_nombre LIKE ?
                                 OR segundo_nombre LIKE ?
                                 OR numero_documento LIKE ?
-                                OR CONCAT(primer_apellido, ' ', segundo_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?)";
+                                OR CONCAT(primer_apellido, ' ', segundo_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?
+                                OR CONCAT(primer_nombre, ' ', segundo_nombre, ' ', primer_apellido, ' ', segundo_apellido) LIKE ?
+                                OR CONCAT(primer_nombre, ' ', primer_apellido) LIKE ?
+                                OR CONCAT(primer_nombre, ' ', segundo_apellido) LIKE ? 
+                                OR CONCAT(primer_apellido, ' ', primer_nombre) LIKE ? 
+                                OR CONCAT(segundo_apellido, ' ', primer_nombre, ' ', primer_apellido) LIKE ?
+                                OR CONCAT(primer_apellido, ' ', segundo_apellido) LIKE ?
+                                OR CONCAT(primer_nombre, ' ', segundo_nombre) LIKE ?
+                                OR CONCAT(primer_apellido, ' ', primer_nombre, ' ', segundo_nombre) LIKE ?
+                                OR CONCAT(primer_nombre, ' ', primer_apellido, ' ', segundo_apellido) LIKE ?
+                            )";
         }
     
         $countStmt = $db->prepare($countQuery);
@@ -226,7 +247,8 @@ class Usuario {
         }
     
         if (!empty($search)) {
-            $countStmt->bind_param('isssssss', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+            $countStmt->bind_param('issssssssssssssss', $idRol, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam,
+                $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
         } else {
             $countStmt->bind_param('i', $idRol);
         }
