@@ -57,6 +57,11 @@ export class UserService {
 
     return this.http.put(url, body, { headers: headers, withCredentials: true });
   }
+
+  getUserReport(): Observable<any> {
+    const url = `${this.apiUrl}/reporteUsuarios.php`;
+    return this.http.get(url, { responseType: 'text', withCredentials: true });
+  }
 }
 
 export interface User {

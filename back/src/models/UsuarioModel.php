@@ -295,5 +295,45 @@ class Usuario {
         $db->close();
         return $usuarioObj;
     }
+
+    public static function obtenerFechasActualizacionPorUsuarios() {
+        $db = getDB();
+        $query = "
+            SELECT u.id AS idUsuario, 
+                u.numero_documento AS numeroDocumento,
+                CONCAT(IFNULL(u.primer_nombre, ''), ' ', IFNULL(u.primer_apellido, '')) AS nombre,
+                MAX(IFNULL(fechas.fecha_actualizacion, '0000-00-00')) AS fechaUltimaActualizacion
+            FROM usuarios u
+            LEFT JOIN (
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM personas_naturales GROUP BY id_usuario
+                UNION
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM informacion_financiera GROUP BY id_usuario
+                UNION
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM informacion_nucleo_familiar GROUP BY id_usuario
+                UNION
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM referencias_personales_comerciales_bancarias GROUP BY id_usuario
+                UNION
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM operaciones_internacionales GROUP BY id_usuario
+                UNION
+                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM personas_expuestas_publicamente GROUP BY id_usuario
+            ) AS fechas ON u.id = fechas.id_usuario
+            GROUP BY u.id
+        ";
+    
+        $result = $db->query($query);
+        $usuarios = [];
+    
+        while ($row = $result->fetch_assoc()) {
+            $usuarios[] = [
+                'id' => $row['idUsuario'],
+                'numeroDocumento' => $row['numeroDocumento'],
+                'nombre' => $row['nombre'],
+                'fechaUltimaActualizacion' => $row['fechaUltimaActualizacion']
+            ];
+        }
+    
+        $db->close();
+        return $usuarios;
+    }
 }
 ?>
