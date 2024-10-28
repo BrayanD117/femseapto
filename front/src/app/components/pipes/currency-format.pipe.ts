@@ -9,7 +9,7 @@ export class CurrencyFormatPipe implements PipeTransform {
     if (value == null) {
       return '';
     }
-    const formattedValue = value.toLocaleString('es-ES');
+    const formattedValue = value.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     return `$ ${formattedValue}`;
   }
 }
