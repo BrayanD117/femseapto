@@ -583,10 +583,11 @@ export class GenerateCreditRequestComponent implements OnInit {
     }
   }
 
-  onGenerateClick() {
+  async onGenerateClick() {
     this.isLoading = true;
-    setTimeout(() => {
-      this.generateExcel();
+    setTimeout(async () => {
+      await this.generateExcel();
+      await this.creditRequestService.downloadCreditRequestPdf(this.idSolicitudCredito, this.numeroDocumento);
       this.isLoading = false;
     }, 10000);
   }

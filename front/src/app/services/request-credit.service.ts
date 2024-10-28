@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
+import saveAs from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,19 @@ export class RequestCreditService {
       .set('startDate', startDate)
       .set('endDate', endDate);
     return this.http.get<any[]>(`${this.apiUrl}/solicitudescredito.php`, { params, withCredentials: true });
-  }  
+  }
+
+  async downloadCreditRequestPdf(idSolicitudCredito: number, numeroDocumento: number): Promise<void> {
+    try {
+      const pdfData = await firstValueFrom(
+        this.http.get(`${this.apiUrl}/solicitudescredito.php?id=${idSolicitudCredito}&download=pdf`, {
+          withCredentials: true,
+          responseType: 'blob'
+        })
+      );
+      saveAs(pdfData, `Solicitud_Credito_${idSolicitudCredito}_${numeroDocumento}.pdf`);
+    } catch (error) {
+      console.error('Error al descargar el PDF:', error);
+    }
+  }
 }

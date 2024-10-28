@@ -9,11 +9,11 @@ $token = $_COOKIE['auth_token'] ?? '';
 
 $decodedToken = verifyJWTToken($token, $key);
 
-if ($decodedToken === null) {
+/*if ($decodedToken === null) {
     http_response_code(401);
     echo json_encode(array("message" => "Token no válido o no proporcionado."));
     exit();
-}
+}*/
 
 $controlador = new SolicitudCreditoController();
 
@@ -44,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dest_path = $uploadFileDir . $newFileName;
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            $data['rutaDocumento'] = $dest_path;
+            $relativeFilePath = 'uploads/documents/' . $newFileName;
+            $data['rutaDocumento'] = $relativeFilePath;
 
             if ($controlador->actualizar($idNuevo, $data)) {
                 http_response_code(201);
@@ -70,7 +71,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $actualizacionExitosa = $controlador->actualizar($idExistente, $datos);
     echo json_encode(['success' => $actualizacionExitosa]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id'])) {
+    if (isset($_GET['id']) && isset($_GET['download']) && $_GET['download'] === 'pdf') {
+        $id = $_GET['id'];
+        $solicitud = $controlador->obtenerPorId($id);
+
+        if ($solicitud && isset($solicitud->rutaDocumento)) {
+            $filepath = realpath(__DIR__ . '/../' . $solicitud->rutaDocumento);
+
+            error_log("Ruta del archivo: $filepath");
+
+            if(file_exists($filepath)) {
+                if (ob_get_length()) ob_end_clean();
+                
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: attachment; filename="'.basename($filepath) . '"');
+                header('Content-Length: ' . filesize($filepath));
+                header('Pragma: public');
+                header('Cache-Control: public, must-revalidate, max-age=0');
+                readfile($filepath);
+                exit();
+            } else {
+                http_response_code(404);
+                echo json_encode(['message' => 'Archivo PDF no encontrado en la ruta: ' . $filepath]);
+            }          
+        } else {
+            http_response_code(404);
+            echo json_encode(['message' => 'Solicitud no encontrada.']);
+        }
+    } elseif (isset($_GET['id'])) {
         $id = $_GET['id'];
         $resp = $controlador->obtenerPorId($id);
         header('Content-Type: application/json');
