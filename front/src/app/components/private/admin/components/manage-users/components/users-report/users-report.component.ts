@@ -23,7 +23,7 @@ export class UsersReportComponent {
         const worksheet = workbook.addWorksheet('Reporte de Usuarios');
 
         worksheet.columns = [
-          { header: 'Número de Documento', key: 'numeroDocumento', width: 20 },
+          { header: 'Número de Documento', key: 'numeroDocumento', width: 30 },
           { header: 'Nombre', key: 'nombre', width: 30 },
           { header: 'Fecha de Actualización', key: 'fechaUltimaActualizacion', width: 20 },
         ];
@@ -36,9 +36,21 @@ export class UsersReportComponent {
           });
         });
 
+        worksheet.autoFilter = {
+          from: 'A1',
+          to: 'C1',
+        };
+
+        const colombiaDate = new Date().toLocaleDateString('es-CO', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        const fileName = `Reporte_Usuarios_${colombiaDate}.xlsx`;
+
         workbook.xlsx.writeBuffer().then((buffer) => {
           const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          fs.saveAs(blob, 'Reporte_Usuarios.xlsx');
+          fs.saveAs(blob, fileName);
         });
       },
       (error) => {

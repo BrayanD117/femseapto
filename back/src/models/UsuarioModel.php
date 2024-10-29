@@ -317,18 +317,26 @@ class Usuario {
                 UNION
                 SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM personas_expuestas_publicamente GROUP BY id_usuario
             ) AS fechas ON u.id = fechas.id_usuario
+            WHERE u.id_rol != 1
             GROUP BY u.id
         ";
     
         $result = $db->query($query);
         $usuarios = [];
     
+        $timezoneColombia = new DateTimeZone('America/Bogota');
+
         while ($row = $result->fetch_assoc()) {
+            $fechaServidor = new DateTime($row['fechaUltimaActualizacion']);
+            $fechaServidor->setTimezone($timezoneColombia);
+
+            $fechaServidor->modify('+1 hour');
+            
             $usuarios[] = [
                 'id' => $row['idUsuario'],
                 'numeroDocumento' => $row['numeroDocumento'],
                 'nombre' => $row['nombre'],
-                'fechaUltimaActualizacion' => $row['fechaUltimaActualizacion']
+                'fechaUltimaActualizacion' => $fechaServidor->format('Y-m-d H:i:s'),
             ];
         }
     
