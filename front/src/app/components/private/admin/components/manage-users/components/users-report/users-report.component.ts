@@ -16,11 +16,8 @@ export class UsersReportComponent {
   downloadUserReport(): void {
     this.userService.getUserReport().subscribe(
       (response: any) => {
-        console.log("response", response);
-        console.log("response.data", response.data);
         const jsonResponse = JSON.parse(response);
         const users = jsonResponse.data;
-        console.log('Reporte de usuarios:', users);
 
         const workbook = new Workbook();
         const worksheet = workbook.addWorksheet('Reporte de Usuarios');
@@ -33,7 +30,7 @@ export class UsersReportComponent {
 
         users.forEach((user: { numeroDocumento: string; nombre: string; fechaUltimaActualizacion: string; }) => {
           worksheet.addRow({
-            numeroDocumento: user.numeroDocumento,
+            numeroDocumento: Number(user.numeroDocumento),
             nombre: user.nombre,
             fechaUltimaActualizacion: user.fechaUltimaActualizacion || '',
           });
