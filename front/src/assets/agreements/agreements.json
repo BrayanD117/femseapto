@@ -1,0 +1,227 @@
+{
+  "vehicles": {
+    "title": "vehículos",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/yamaha.webp",
+        "title": "Disyamotos S.A.",
+        "description": "Obtén un 5% de descuento en repuestos, accesorios y lujos para motocicletas Yamaha. Además, al adquirir una moto Yamaha, recibe un casco certificado, chaleco reflectivo y porta placas."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/honda.webp",
+        "title": "Grupo Super Motos (Honda)",
+        "description": "Descuento del 5% en motos de hasta 150CC y 3% en motos mayores a 160CC, ambos antes de IVA. Además, 5% en accesorios, repuestos y mano de obra."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/inhousemotos.webp",
+        "title": "In House La Francia AKT",
+        "description": "Financia tu motocicleta AKT fácilmente con el crédito vehicular de FemSeapto."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/hero.webp",
+        "title": "Hero Motored",
+        "description": "Descuento del 5% en todas las motocicletas y en repuestos y accesorios comercializados por Hero."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/bajaj.webp",
+        "title": "Motosmart BAJAJ",
+        "description": "Obtén hasta un 3% de descuento en el valor de la moto antes de IVA y trámites, y un 10% en repuestos originales y mano de obra certificada."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/auteco.webp",
+        "title": "Sumoto Ibagué (Auteco)",
+        "description": "Descuentos del 3% en motocicletas TVS, Mobility, Victory, Kymco y Benelli, y 10% en repuestos y accesorios en Ibagué y Mariquita."
+      }
+    ]
+  },
+  "opticals": {
+    "title": "Ópticas, Lentes y Monturas",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/lentesgo.webp",
+        "title": "Lentes Go",
+        "description": "Consulta gratis para afiliados y su núcleo familiar, con descuentos de hasta el 30% en lentes, monturas y gafas seleccionadas. Precios desde $99,000 en productos específicos."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/orsovision.webp",
+        "title": "Orsovisión Ópticas",
+        "description": "Consulta de optometría sin costo, obsequio de paño óptico y estuche, y 20% de descuento en servicios y productos."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/visionnatural.webp",
+        "title": "Óptica Visión Natural",
+        "description": "Consulta al 50% o gratis al adquirir productos. Descuento de hasta 15% en monturas, lentes y servicios de laboratorio. Ofrecen capacitaciones de salud visual y servicio al cliente."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/yafravisual.webp",
+        "title": "Yafra Visual",
+        "description": "Consulta profesional para asociados, con 10% de descuento en lentes, 15% en monturas y beneficios para familiares de primer grado."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/cityopticas.webp",
+        "title": "City Ópticas",
+        "description": "Examen visual computarizado sin costo. Monturas desde $30,000 y descuentos del 10% en lentes y productos con mantenimiento gratuito durante un año."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/cristalinooptica.webp",
+        "title": "Cristalino óptica",
+        "description": "Consulta de optometría y fabricación de lentes con descuentos: 20% para asociados, 15% para padres, hijos y pareja, y 10% para otros familiares."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/visionoptima.webp",
+        "title": "Visión Óptima",
+        "description": "Servicios de optometría y fabricación de lentes con fórmulas sencillas, bifocales y progresivos digitales para asociados."
+      }
+    ]
+  },
+  "home-technology": {
+    "title": "Hogar y Tecnología",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/alkomprar.webp",
+        "title": "Alkomprar",
+        "description": "Facilita la financiación para adquirir productos de Alkomprar disponibles en su catálogo."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/ibg.webp",
+        "title": "Iván Botero Gómez",
+        "description": "A través de FemSeapto, accede a financiación para adquirir muebles para el hogar, electrodomésticos, tecnología, movilidad y comunicaciones ofrecidos por Iván Botero Gómez."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/compucity.webp",
+        "title": "CompuCity",
+        "description": "Disfruta de un 4% de descuento en portátiles, equipos de escritorio, periféricos, tablets y más. Benefíciate de obsequios como USB, parlantes y 4 mantenimientos preventivos durante el año de garantía."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/Tiendatecno.webp",
+        "title": "Tienda Tecno ",
+        "description": "Aprovecha el plan de recambio para celulares usados y obtén productos personalizados. Servicio técnico garantizado y análisis de fallas gratuito. Entrega inmediata en tiendas físicas o envíos gratis."
+      }
+    ]
+  },
+  "entertainment": {
+    "title": "Entretenimiento",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Royalfilms.webp",
+        "title": "Royal Films",
+        "description": "Por solo $15,000 disfruta de una entrada al cine, crispeta pequeña, gaseosa pequeña y una cholatina pequeña. ¡Un plan completo para tu diversión!"
+      }
+    ]
+  },
+  "family-basket": {
+    "title": "Canasta Familiar",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Mercacentro.webp",
+        "title": "Mercacentro",
+        "description": "Facilita la compra de bonos de consumo con créditos de Mercacentro, cuidando tu economía y presupuesto familiar."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/Surtiplaza.webp",
+        "title": "Surtiplaza",
+        "description": "Accede a bonos de consumo financiados con créditos de Surtiplaza, diseñados para ofrecerte mayor comodidad y ahorro."
+      }
+    ]
+  },
+  "odontology": {
+    "title": "Odontología",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Dentury.webp",
+        "title": "Dentury",
+        "description": "Valoración odontológica y profilaxis gratis. Hasta 50% de descuento en tratamientos como blanqueamiento dental, ortodoncia invisible, cirugía oral y más. Además, bonos de $300,000 en implantes dentales y beneficios adicionales por cumplimiento en ortodoncia."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/AndreaMartinez.webp",
+        "title": "Andrea Martínez",
+        "description": "Descuentos especiales en consultas, urgencias y planes de ortodoncia. Valoración inicial gratuita y tarifas preferenciales en servicios como prevención, operatoria dental, cirugía oral y estética dental."
+      }
+    ]
+  },
+  "healthy-life": {
+    "title": "Vida Saludable",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/SpinningCenterGym.webp",
+        "title": "Spinning Center Gym",
+        "description": "Accede a tarifas preferenciales para afiliación en gimnasios de Spinning Center Gym. Servicios complementarios no incluidos."
+      }
+    ]
+  },
+  "education": {
+    "title": "Educación",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Jamestown.webp",
+        "title": "Jamestown English Center",
+        "description": "Disfruta de un 10% de descuento en programas educativos con pago de contado."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/Cun.webp",
+        "title": "CUN: Corporación Unificada Nacional de Educación Superior",
+        "description": "Descuento del 25% en matrícula para programas presenciales del primer semestre y 65% en programas virtuales. Beneficio extendido a familiares en segundo grado de consanguinidad y afinidad."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/Uniminuto.webp",
+        "title": "Uniminuto: Corporación Universitaria Minuto de Dios",
+        "description": "Obtén un 15% de descuento en matrículas de pregrado y posgrado. Aplica para asociados y familiares de primer grado de consanguinidad y afinidad."
+      }
+    ]
+  },
+  "clothes": {
+    "title": "Prendas de vestir",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Vanidades.webp",
+        "title": "Vanidades",
+        "description": "10% de descuento cualquier día del año y en tu cumpleaños con diferentes medios de pago. Presenta tu documento de identidad para aplicar."
+      },
+      {
+        "imageUrl": "../../../../../assets/agreements/sou.webp",
+        "title": "SOU",
+        "description": "Descuentos exclusivos en productos y servicios de Trendmoda, aplicables para asociados de FemSeapto y sus familias."
+      }
+    ]
+  },
+  "technician-mechanics": {
+    "title": "Técnico-Mecánica",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/CDA.webp",
+        "title": "CDA Motos de la Sexta",
+        "description": "Financia fácilmente los servicios técnico-mecánicos ofrecidos por nuestro aliado."
+      }
+    ]
+  },
+  "driving": {
+    "title": "Conducción",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Tolivial.webp",
+        "title": "Academia Tolivial de automovilismo",
+        "description": "Facilita la financiación de servicios de conducción con nuestro aliado."
+      }
+    ]
+  },
+  "health-care-prepayment": {
+    "title": "Medicina Prepagada",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/Previred.webp",
+        "title": "Previred",
+        "description": "Accede a planes de medicina prepagada con opciones de financiación a través de FemSeapto."
+      }
+    ]
+  },
+  "funeral-insurance": {
+    "title": "Seguros Funerarios",
+    "cards": [
+      {
+        "imageUrl": "../../../../../assets/agreements/coorserpark.webp",
+        "title": "Coorserpark",
+        "description": "Seguro de vida de $5.000.000 y cobertura funeraria para familiares y mascotas. Incluye servicios como entierro, cremación y transporte del cuerpo, con opciones adicionales para familiares fuera del rango de cobertura."
+      }
+    ]
+  }
+}

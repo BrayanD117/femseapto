@@ -46,13 +46,19 @@ import { InfoUploadComponent } from './components/private/admin/components/info-
 import { SavingBalanceComponent } from './components/private/user/saving-balance/saving-balance.component';
 import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
 import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
+import { AgreementTypesListComponent } from './components/public/agreements/components/agreement-types-list/agreement-types-list.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
         children: [
             { path: '', component: HomeComponent },
             { path: 'about', component: AboutComponent },
-            { path: 'agreements', component: AgreementsComponent },
+            { path: 'agreements',
+                children: [
+                    { path: '', pathMatch: 'full', component: AgreementsComponent },
+                    { path: ':type', component: AgreementTypesListComponent },
+                ]
+            },
             { path: 'services',
                 children: [
                     { path: '', pathMatch: 'full', redirectTo: 'savings' },
