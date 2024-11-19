@@ -2,7 +2,7 @@
     <h2 class="text-center text-capitalize mb-2">{{ title }}</h2>
     <div
         class="row row-cols-1 row-cols-md-3 g-4"
-        [class.justify-content-center]="cards.length === 1"
+        [class.justify-content-center]="cards.length <= 2"
     >
         <div class="col" *ngFor="let card of cards">
             <div class="card h-100">
