@@ -48,132 +48,90 @@ class SaldoAhorroController {
     }
 
     public function crearOActualizar($datos) {
-        $maxRetries = 5;
-        $attempt = 0;
-    
-        while ($attempt < $maxRetries) {
-            $attempt++;
-            $db = getDB();
-    
-            try {
-                $numerosDocumento = array_unique(array_column($datos, 'numeroDocumento'));
-                $placeholders = implode(',', array_fill(0, count($numerosDocumento), '?'));
+        $db = getDB();
+        try {
+            $db->begin_transaction();
 
-                $stmt = $db->prepare("SELECT id, numero_documento FROM usuarios WHERE numero_documento IN ($placeholders)");
-    
-                $stmt->bind_param(str_repeat('s', count($numerosDocumento)), ...$numerosDocumento);
+            // Crear tabla temporal
+            $db->query("CREATE TEMPORARY TABLE temp_saldo_ahorros (
+                numero_documento VARCHAR(50),
+                id_linea_ahorro INT,
+                ahorro_quincenal DECIMAL(10,2),
+                valor_saldo DECIMAL(10,2),
+                fecha_corte DATE,
+                PRIMARY KEY (numero_documento, id_linea_ahorro)
+            )");
+
+            // Preparar inserción en la tabla temporal
+            $stmt = $db->prepare("INSERT INTO temp_saldo_ahorros (numero_documento, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?)");
+
+            foreach ($datos as $dato) {
+                $stmt->bind_param('sidds', $dato['numeroDocumento'], $dato['idLineaAhorro'], $dato['ahorroQuincenal'], $dato['valorSaldo'], $dato['fechaCorte']);
                 $stmt->execute();
-                $result = $stmt->get_result();
-    
-                $mapaUsuarios = [];
-                while ($row = $result->fetch_assoc()) {
-                    $mapaUsuarios[$row['numero_documento']] = $row['id'];
+
+                if ($stmt->error) {
+                    throw new Exception("Error al insertar en temp_saldo_ahorros: " . $stmt->error);
                 }
-    
-                $stmt->close();
-
-                if (count($mapaUsuarios) < count($numerosDocumento)) {
-                    error_log("Algunos usuarios no fueron encontrados.");
-                }
-
-                $datosProcesados = [];
-                foreach ($datos as $dato) {
-                    $numeroDocumento = $dato['numeroDocumento'];
-                    if (isset($mapaUsuarios[$numeroDocumento])) {
-                        $idUsuario = $mapaUsuarios[$numeroDocumento];
-                        $dato['idUsuario'] = $idUsuario;
-                        unset($dato['numeroDocumento']);
-                        $datosProcesados[] = $dato;
-                    } else {
-                        error_log("Usuario con numero_documento $numeroDocumento no encontrado. Registro saltado.");
-                        continue;
-                    }
-                }
-    
-                if (empty($datosProcesados)) {
-                    throw new Exception("No se encontraron usuarios correspondientes a los números de documento proporcionados.");
-                }
-
-                $idUsuarios = array_unique(array_column($datosProcesados, 'idUsuario'));
-                $placeholders = implode(',', array_fill(0, count($idUsuarios), '?'));
-
-                $stmt = $db->prepare("SELECT id_usuario, id_linea_ahorro FROM saldo_ahorros WHERE id_usuario IN ($placeholders)");
-
-                $stmt->bind_param(str_repeat('i', count($idUsuarios)), ...$idUsuarios);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                $saldosExistentes = [];
-                while ($row = $result->fetch_assoc()) {
-                    $claveRegistro = $row['id_usuario'] . '_' . $row['id_linea_ahorro'];
-                    $saldosExistentes[$claveRegistro] = true;
-                }
-    
-                $stmt->close();
-
-                $datosInsertar = [];
-                $datosActualizar = [];
-    
-                foreach ($datosProcesados as $dato) {
-                    $idUsuario = $dato['idUsuario'];
-                    $idLineaAhorro = $dato['idLineaAhorro'];
-                    $claveRegistro = $idUsuario . '_' . $idLineaAhorro;
-    
-                    if (isset($saldosExistentes[$claveRegistro])) {
-                        $datosActualizar[] = $dato;
-                    } else {
-                        $datosInsertar[] = $dato;
-                    }
-                }
-                usort($datosInsertar, function($a, $b) {
-                    if ($a['idUsuario'] == $b['idUsuario']) {
-                        return $a['idLineaAhorro'] - $b['idLineaAhorro'];
-                    }
-                    return $a['idUsuario'] - $b['idUsuario'];
-                });
-    
-                usort($datosActualizar, function($a, $b) {
-                    if ($a['idUsuario'] == $b['idUsuario']) {
-                        return $a['idLineaAhorro'] - $b['idLineaAhorro'];
-                    }
-                    return $a['idUsuario'] - $b['idUsuario'];
-                });
-
-                $batchSize = 50;
-                $insertBatches = array_chunk($datosInsertar, $batchSize);
-                $updateBatches = array_chunk($datosActualizar, $batchSize);
-
-                $db->begin_transaction();
-
-                foreach ($insertBatches as $batch) {
-                    SaldoAhorro::guardarEnLote($batch, $db);
-                }
-
-                foreach ($updateBatches as $batch) {
-                    $this->actualizarEnLote($batch, $db);
-                }
-    
-                $db->commit();
-
-                break;
-    
-            } catch (Exception $e) {
-                $db->rollback();
-                if ($db->errno == 1213 || strpos($e->getMessage(), 'Deadlock found when trying to get lock') !== false) {
-                    error_log("Deadlock detectado, intento $attempt de $maxRetries");
-                    usleep(500000);
-                    continue;
-                } else {
-                    error_log("Error en crearOActualizar: " . $e->getMessage());
-                    throw $e;
-                }
-            } finally {
-                $db->close();
             }
-        }
-    
-        if ($attempt == $maxRetries) {
-            throw new Exception("La transacción falló después de $maxRetries intentos debido a un deadlock.");
+
+            $stmt->close();
+
+            // Obtener los usuarios existentes
+            $usuariosExistentes = [];
+            $result = $db->query("SELECT numero_documento, id FROM usuarios");
+            while ($row = $result->fetch_assoc()) {
+                $usuariosExistentes[$row['numero_documento']] = $row['id'];
+            }
+
+            // Registrar los números de documento que no existen
+            $result = $db->query("SELECT DISTINCT numero_documento FROM temp_saldo_ahorros");
+            $missingUsuarios = [];
+            while ($row = $result->fetch_assoc()) {
+                if (!isset($usuariosExistentes[$row['numero_documento']])) {
+                    $missingUsuarios[] = $row['numero_documento'];
+                }
+            }
+
+            if (!empty($missingUsuarios)) {
+                // Registrar los usuarios faltantes sin detener el proceso
+                error_log("Los siguientes números de documento no fueron encontrados en usuarios: " . implode(', ', $missingUsuarios));
+            }
+
+            // Insertar o actualizar saldo_ahorros para usuarios existentes
+            $db->query("INSERT INTO saldo_ahorros (id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte)
+                        SELECT u.id, tsa.id_linea_ahorro, tsa.ahorro_quincenal, tsa.valor_saldo, tsa.fecha_corte
+                        FROM temp_saldo_ahorros tsa
+                        INNER JOIN usuarios u ON tsa.numero_documento = u.numero_documento
+                        ON DUPLICATE KEY UPDATE
+                            ahorro_quincenal = VALUES(ahorro_quincenal),
+                            valor_saldo = VALUES(valor_saldo),
+                            fecha_corte = VALUES(fecha_corte)");
+
+            if ($db->error) {
+                throw new Exception("Error al insertar o actualizar en saldo_ahorros: " . $db->error);
+            }
+
+            // Eliminar registros en saldo_ahorros que no están en temp_saldo_ahorros y pertenecen a usuarios existentes
+            $db->query("DELETE sa FROM saldo_ahorros sa
+                        INNER JOIN usuarios u ON sa.id_usuario = u.id
+                        LEFT JOIN (
+                            SELECT u.id AS id_usuario, tsa.id_linea_ahorro
+                            FROM temp_saldo_ahorros tsa
+                            INNER JOIN usuarios u ON tsa.numero_documento = u.numero_documento
+                        ) t ON sa.id_usuario = t.id_usuario AND sa.id_linea_ahorro = t.id_linea_ahorro
+                        WHERE t.id_usuario IS NULL");
+
+            if ($db->error) {
+                throw new Exception("Error al eliminar registros en saldo_ahorros: " . $db->error);
+            }
+
+            $db->commit();
+
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
+        } finally {
+            $db->close();
         }
     }
 

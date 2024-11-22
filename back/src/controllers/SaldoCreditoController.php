@@ -47,7 +47,6 @@ class SaldoCreditoController {
         try {
             $db->begin_transaction();
     
-            // Crear tabla temporal
             $db->query("CREATE TEMPORARY TABLE temp_saldo_creditos (
                 numero_documento VARCHAR(50),
                 id_linea_credito INT,
@@ -61,7 +60,6 @@ class SaldoCreditoController {
                 PRIMARY KEY (numero_documento, id_linea_credito)
             )");
     
-            // Preparar inserción en la tabla temporal
             $stmt = $db->prepare("INSERT INTO temp_saldo_creditos (numero_documento, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
             foreach ($datos as $dato) {
@@ -75,14 +73,12 @@ class SaldoCreditoController {
     
             $stmt->close();
     
-            // Obtener los usuarios existentes
             $usuariosExistentes = [];
             $result = $db->query("SELECT numero_documento, id FROM usuarios");
             while ($row = $result->fetch_assoc()) {
                 $usuariosExistentes[$row['numero_documento']] = $row['id'];
             }
     
-            // Registrar los números de documento que no existen
             $result = $db->query("SELECT DISTINCT numero_documento FROM temp_saldo_creditos");
             $missingUsuarios = [];
             while ($row = $result->fetch_assoc()) {
@@ -92,11 +88,9 @@ class SaldoCreditoController {
             }
     
             if (!empty($missingUsuarios)) {
-                // Registrar los usuarios faltantes sin detener el proceso
                 error_log("Los siguientes números de documento no fueron encontrados en usuarios: " . implode(', ', $missingUsuarios));
             }
     
-            // Insertar o actualizar saldo_creditos para usuarios existentes
             $db->query("INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte)
                         SELECT u.id, tsc.id_linea_credito, tsc.cuota_actual, tsc.cuotas_totales, tsc.valor_solicitado, tsc.cuota_quincenal, tsc.valor_pagado, tsc.valor_saldo, tsc.fecha_corte
                         FROM temp_saldo_creditos tsc
@@ -113,8 +107,7 @@ class SaldoCreditoController {
             if ($db->error) {
                 throw new Exception("Error al insertar o actualizar en saldo_creditos: " . $db->error);
             }
-    
-            // Eliminar registros en saldo_creditos que no están en temp_saldo_creditos y pertenecen a usuarios existentes
+
             $db->query("DELETE sc FROM saldo_creditos sc
                         INNER JOIN usuarios u ON sc.id_usuario = u.id
                         LEFT JOIN (
@@ -136,41 +129,7 @@ class SaldoCreditoController {
         } finally {
             $db->close();
         }
-    } 
-        
-    private function actualizarEnLote($datosActualizar, $db) {
-        $stmt = $db->prepare(
-            "UPDATE saldo_creditos SET cuota_actual = ?, cuotas_totales = ?, valor_solicitado = ?, cuota_quincenal = ?, valor_pagado = ?, valor_saldo = ?, fecha_corte = ? 
-            WHERE id_usuario = ? AND id_linea_credito = ?"
-        );
-    
-        foreach ($datosActualizar as $dato) {
-            if (isset($dato['idUsuario'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte'])) {
-                $stmt->bind_param(
-                    "iiddddsii",
-                    $dato['cuotaActual'],
-                    $dato['cuotasTotales'],
-                    $dato['valorSolicitado'],
-                    $dato['cuotaQuincenal'],
-                    $dato['valorPagado'],
-                    $dato['valorSaldo'],
-                    $dato['fechaCorte'],
-                    $dato['idUsuario'],
-                    $dato['idLineaCredito']
-                );
-                $stmt->execute();
-    
-                if ($stmt->error) {
-                    throw new Exception("Error al actualizar: " . $stmt->error);
-                }
-            } else {
-                error_log("Datos incompletos para actualización: " . json_encode($dato));
-            }
-        }
-    
-        $stmt->close();
     }
-    
 
     public function obtenerPorId($id) {
         $saldoCredito = SaldoCredito::obtenerPorId($id);
