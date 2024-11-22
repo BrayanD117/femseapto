@@ -43,135 +43,100 @@ class SaldoCreditoController {
     }
 
     public function crearOActualizar($datos) {
-        $maxRetries = 5;
-        $attempt = 0;
+        $db = getDB();
+        try {
+            $db->begin_transaction();
     
-        while ($attempt < $maxRetries) {
-            $attempt++;
-            $db = getDB();
+            // Crear tabla temporal
+            $db->query("CREATE TEMPORARY TABLE temp_saldo_creditos (
+                numero_documento VARCHAR(50),
+                id_linea_credito INT,
+                cuota_actual INT,
+                cuotas_totales INT,
+                valor_solicitado DECIMAL(10,2),
+                cuota_quincenal DECIMAL(10,2),
+                valor_pagado DECIMAL(10,2),
+                valor_saldo DECIMAL(10,2),
+                fecha_corte DATE,
+                PRIMARY KEY (numero_documento, id_linea_credito)
+            )");
     
-            try {
-                $numerosDocumento = array_unique(array_column($datos, 'numeroDocumento'));
-                $placeholders = implode(',', array_fill(0, count($numerosDocumento), '?'));
-
-                $stmt = $db->prepare("SELECT id, numero_documento FROM usuarios WHERE numero_documento IN ($placeholders)");
+            // Preparar inserción en la tabla temporal
+            $stmt = $db->prepare("INSERT INTO temp_saldo_creditos (numero_documento, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
-
-                $stmt->bind_param(str_repeat('s', count($numerosDocumento)), ...$numerosDocumento);
+            foreach ($datos as $dato) {
+                $stmt->bind_param('siiidddds', $dato['numeroDocumento'], $dato['idLineaCredito'], $dato['cuotaActual'], $dato['cuotasTotales'], $dato['valorSolicitado'], $dato['cuotaQuincenal'], $dato['valorPagado'], $dato['valorSaldo'], $dato['fechaCorte']);
                 $stmt->execute();
-                $result = $stmt->get_result();
     
-                $mapaUsuarios = [];
-                while ($row = $result->fetch_assoc()) {
-                    $mapaUsuarios[$row['numero_documento']] = $row['id'];
+                if ($stmt->error) {
+                    throw new Exception("Error al insertar en temp_saldo_creditos: " . $stmt->error);
                 }
-    
-                $stmt->close();
-
-                if (count($mapaUsuarios) < count($numerosDocumento)) {
-                    error_log("Algunos usuarios no fueron encontrados.");
-                }
-
-                $datosProcesados = [];
-                foreach ($datos as $dato) {
-                    $numeroDocumento = $dato['numeroDocumento'];
-                    if (isset($mapaUsuarios[$numeroDocumento])) {
-                        $idUsuario = $mapaUsuarios[$numeroDocumento];
-                        $dato['idUsuario'] = $idUsuario;
-                        unset($dato['numeroDocumento']);
-                        $datosProcesados[] = $dato;
-                    } else {
-                        error_log("Usuario con numero_documento $numeroDocumento no encontrado. Registro saltado.");
-                        continue;
-                    }
-                }
-    
-                if (empty($datosProcesados)) {
-                    throw new Exception("No se encontraron usuarios correspondientes a los números de documento proporcionados.");
-                }
-
-                $idUsuarios = array_unique(array_column($datosProcesados, 'idUsuario'));
-                $placeholders = implode(',', array_fill(0, count($idUsuarios), '?'));
-
-                $stmt = $db->prepare("SELECT id_usuario, id_linea_credito FROM saldo_creditos WHERE id_usuario IN ($placeholders)");
-
-                $stmt->bind_param(str_repeat('i', count($idUsuarios)), ...$idUsuarios);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                $saldosExistentes = [];
-                while ($row = $result->fetch_assoc()) {
-                    $claveRegistro = $row['id_usuario'] . '_' . $row['id_linea_credito'];
-                    $saldosExistentes[$claveRegistro] = true;
-                }
-    
-                $stmt->close();
-
-                $datosInsertar = [];
-                $datosActualizar = [];
-    
-                foreach ($datosProcesados as $dato) {
-                    $idUsuario = $dato['idUsuario'];
-                    $idLineaCredito = $dato['idLineaCredito'];
-                    $claveRegistro = $idUsuario . '_' . $idLineaCredito;
-    
-                    if (isset($saldosExistentes[$claveRegistro])) {
-                        $datosActualizar[] = $dato;
-                    } else {
-                        $datosInsertar[] = $dato;
-                    }
-                }
-                usort($datosInsertar, function($a, $b) {
-                    if ($a['idUsuario'] == $b['idUsuario']) {
-                        return $a['idLineaCredito'] - $b['idLineaCredito'];
-                    }
-                    return $a['idUsuario'] - $b['idUsuario'];
-                });
-    
-                usort($datosActualizar, function($a, $b) {
-                    if ($a['idUsuario'] == $b['idUsuario']) {
-                        return $a['idLineaCredito'] - $b['idLineaCredito'];
-                    }
-                    return $a['idUsuario'] - $b['idUsuario'];
-                });
-
-                $batchSize = 50;
-                $insertBatches = array_chunk($datosInsertar, $batchSize);
-                $updateBatches = array_chunk($datosActualizar, $batchSize);
-
-                $db->begin_transaction();
-
-                foreach ($insertBatches as $batch) {
-                    SaldoCredito::guardarEnLote($batch, $db);
-                }
-
-                foreach ($updateBatches as $batch) {
-                    $this->actualizarEnLote($batch, $db);
-                }
-    
-                $db->commit();
-
-                break;
-    
-            } catch (Exception $e) {
-                $db->rollback();
-                if ($db->errno == 1213 || strpos($e->getMessage(), 'Deadlock found when trying to get lock') !== false) {
-                    error_log("Deadlock detectado, intento $attempt de $maxRetries");
-                    usleep(500000);
-                    continue;
-                } else {
-                    error_log("Error en crearOActualizar: " . $e->getMessage());
-                    throw $e;
-                }
-            } finally {
-                $db->close();
             }
-        }
     
-        if ($attempt == $maxRetries) {
-            throw new Exception("La transacción falló después de $maxRetries intentos debido a un deadlock.");
+            $stmt->close();
+    
+            // Obtener los usuarios existentes
+            $usuariosExistentes = [];
+            $result = $db->query("SELECT numero_documento, id FROM usuarios");
+            while ($row = $result->fetch_assoc()) {
+                $usuariosExistentes[$row['numero_documento']] = $row['id'];
+            }
+    
+            // Registrar los números de documento que no existen
+            $result = $db->query("SELECT DISTINCT numero_documento FROM temp_saldo_creditos");
+            $missingUsuarios = [];
+            while ($row = $result->fetch_assoc()) {
+                if (!isset($usuariosExistentes[$row['numero_documento']])) {
+                    $missingUsuarios[] = $row['numero_documento'];
+                }
+            }
+    
+            if (!empty($missingUsuarios)) {
+                // Registrar los usuarios faltantes sin detener el proceso
+                error_log("Los siguientes números de documento no fueron encontrados en usuarios: " . implode(', ', $missingUsuarios));
+            }
+    
+            // Insertar o actualizar saldo_creditos para usuarios existentes
+            $db->query("INSERT INTO saldo_creditos (id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte)
+                        SELECT u.id, tsc.id_linea_credito, tsc.cuota_actual, tsc.cuotas_totales, tsc.valor_solicitado, tsc.cuota_quincenal, tsc.valor_pagado, tsc.valor_saldo, tsc.fecha_corte
+                        FROM temp_saldo_creditos tsc
+                        INNER JOIN usuarios u ON tsc.numero_documento = u.numero_documento
+                        ON DUPLICATE KEY UPDATE
+                            cuota_actual = VALUES(cuota_actual),
+                            cuotas_totales = VALUES(cuotas_totales),
+                            valor_solicitado = VALUES(valor_solicitado),
+                            cuota_quincenal = VALUES(cuota_quincenal),
+                            valor_pagado = VALUES(valor_pagado),
+                            valor_saldo = VALUES(valor_saldo),
+                            fecha_corte = VALUES(fecha_corte)");
+    
+            if ($db->error) {
+                throw new Exception("Error al insertar o actualizar en saldo_creditos: " . $db->error);
+            }
+    
+            // Eliminar registros en saldo_creditos que no están en temp_saldo_creditos y pertenecen a usuarios existentes
+            $db->query("DELETE sc FROM saldo_creditos sc
+                        INNER JOIN usuarios u ON sc.id_usuario = u.id
+                        LEFT JOIN (
+                            SELECT u.id AS id_usuario, tsc.id_linea_credito
+                            FROM temp_saldo_creditos tsc
+                            INNER JOIN usuarios u ON tsc.numero_documento = u.numero_documento
+                        ) t ON sc.id_usuario = t.id_usuario AND sc.id_linea_credito = t.id_linea_credito
+                        WHERE t.id_usuario IS NULL");
+    
+            if ($db->error) {
+                throw new Exception("Error al eliminar registros en saldo_creditos: " . $db->error);
+            }
+    
+            $db->commit();
+    
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
+        } finally {
+            $db->close();
         }
-    }    
+    } 
         
     private function actualizarEnLote($datosActualizar, $db) {
         $stmt = $db->prepare(

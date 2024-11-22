@@ -143,8 +143,6 @@ export class InfoUploadComponent {
 
   async uploadData(type: string, data: any[]) {
     let service;
-    const batchSize = 50;
-    const totalBatches = Math.ceil(data.length / batchSize);
 
     switch (type) {
       case 'credit':
@@ -161,15 +159,8 @@ export class InfoUploadComponent {
     this.completedRequests[type] = 0;
 
     if (service) {
-      const batchPromises = [];
-
-      for (let i = 0; i < totalBatches; i++) {
-        const batch = data.slice(i * batchSize, (i + 1) * batchSize);
-        batchPromises.push(this.uploadBatch(service, batch, totalBatches, type));
-      }
-
       try {
-        await Promise.all(batchPromises);
+        await this.uploadBatch(service, data, 1, type);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Archivo cargado correctamente.' });
       } catch (err) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar el archivo. Inténtelo de nuevo.' });
@@ -196,5 +187,5 @@ export class InfoUploadComponent {
   updateProgress(type: string, totalBatches: number) {
     const progressValue = Math.round((this.completedRequests[type] / totalBatches) * 100);
     this.progress[type] = progressValue;
-  }
+  }  
 }
