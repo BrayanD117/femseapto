@@ -1,63 +1,66 @@
-<div class="date-filter">
-  <p-calendar
-    [(ngModel)]="startDate"
-    placeholder="Fecha Inicio"
-    inputId="startDate"
-    [showIcon]="true"
-    [dateFormat]="'yy-mm-dd'"
-  ></p-calendar>
-
-  <p-calendar
-    [(ngModel)]="endDate"
-    placeholder="Fecha Fin"
-    inputId="endDate"
-    [showIcon]="true"
-    [dateFormat]="'yy-mm-dd'"
-  ></p-calendar>
-
-  <button
-    pButton
-    type="button"
-    label="Filtrar"
-    icon="pi pi-filter"
-    class="p-button-primary"
-    (click)="filterByDates()"
-  ></button>
-
-  <button
-    pButton
-    type="button"
-    label="Generar Reporte"
-    icon="pi pi-file"
-    class="p-button-success"
-    (click)="generateZipForUsers()"
-    [disabled]="users.length === 0"
-  ></button>
+<div class="container mt-3">
+  <h3>Formato contrapartes por intervalo de fechas</h3>
+  <div class="date-filter">
+    <p-calendar
+      [(ngModel)]="startDate"
+      placeholder="Fecha Inicio"
+      inputId="startDate"
+      [showIcon]="true"
+      [dateFormat]="'yy-mm-dd'"
+    ></p-calendar>
+  
+    <p-calendar
+      [(ngModel)]="endDate"
+      placeholder="Fecha Fin"
+      inputId="endDate"
+      [showIcon]="true"
+      [dateFormat]="'yy-mm-dd'"
+    ></p-calendar>
+  
+    <button
+      pButton
+      type="button"
+      label="Filtrar"
+      icon="pi pi-filter"
+      class="p-button-primary"
+      (click)="filterByDates()"
+    ></button>
+  
+    <button
+      pButton
+      type="button"
+      label="Generar Reporte"
+      icon="pi pi-file"
+      class="p-button-success"
+      (click)="generateZipForUsers()"
+      [disabled]="users.length === 0"
+    ></button>
+  </div>
+  
+  <div *ngIf="users.length > 0" class="data-table">
+    <p-table [value]="users" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Última Actualización</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.nombre }}</td>
+          <td>{{ user.numeroDocumento }}</td>
+          <td>{{ user.fechaUltimaActualizacion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <p-messages
+    *ngIf="users.length === 0 && startDate && endDate"
+    severity="info"
+    text="No se encontraron resultados con las fechas seleccionadas."
+  ></p-messages>  
 </div>
-
-<div *ngIf="users.length > 0" class="data-table">
-  <p-table [value]="users" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Documento</th>
-        <th>Última Actualización</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.nombre }}</td>
-        <td>{{ user.numeroDocumento }}</td>
-        <td>{{ user.fechaUltimaActualizacion }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
-
-<p-messages
-  *ngIf="users.length === 0 && startDate && endDate"
-  severity="info"
-  text="No se encontraron resultados con las fechas seleccionadas."
-></p-messages>
