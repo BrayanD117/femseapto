@@ -547,19 +547,20 @@ class Usuario {
                 (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreRazonSocial', sub_rpcb.nombre_razon_social,
-                        'parentesco', sub_rpcb.parentesco,
+                        'abreviatura', tr.abreviatura,
                         'direccion', sub_rpcb.direccion,
-                        'idDpto', sub_rpcb.id_dpto,
-                        'idMpio', sub_rpcb.id_mpio,
-                        'telefono', sub_rpcb.telefono,
-                        'correoElectronico', sub_rpcb.correo_electronico
+                        'ciudad', m.nombre,
+                        'telefono', sub_rpcb.telefono
                     )
                 )
                 FROM (
                     SELECT DISTINCT rpcb.* 
                     FROM referencias_personales_comerciales_bancarias rpcb
                     WHERE rpcb.id_usuario = u.id
-                ) AS sub_rpcb) AS referencias
+                    LIMIT 2
+                ) AS sub_rpcb
+                LEFT JOIN tipos_referencia tr ON sub_rpcb.id_tipo_referencia = tr.id
+                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias
             FROM 
                 usuarios u
             LEFT JOIN 

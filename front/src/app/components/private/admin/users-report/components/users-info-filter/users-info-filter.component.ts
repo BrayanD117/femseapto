@@ -167,7 +167,16 @@ export class UsersInfoFilterComponent {
           worksheet.getCell(`AE${row}`).value = familiar.celular ? Number(familiar.celular) : '';
         });
 
-        
+        const referencias = user.referencias.slice(0, 2);
+        const startRowRef = 48;
+        referencias.forEach((referencia: any, index: number) => {
+          const row = startRowRef + index;
+          worksheet.getCell(`A${row}`).value = referencia.nombreRazonSocial || '';
+          worksheet.getCell(`K${row}`).value = referencia.abreviatura || '';
+          worksheet.getCell(`L${row}`).value = referencia.direccion || '';
+          worksheet.getCell(`V${row}`).value = referencia.ciudad || '';
+          worksheet.getCell(`AD${row}`).value = referencia.telefono ? Number(referencia.telefono) : '';
+        });
       }
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
       await workbook.xlsx.writeBuffer().then((buffer) => {
