@@ -192,6 +192,25 @@ class UsuarioController {
             http_response_code(500);
             return array("message" => "Error al restablecer la contraseña.");
         }
-    }    
+    }
+    
+    public function obtenerDatosCompletoUsuarios($datos) {
+        if (!isset($datos['fechaInicio'], $datos['fechaFin'])) {
+            http_response_code(400);
+            return ['success' => false, 'message' => 'Las fechas son obligatorias'];
+        }
+    
+        $fechaInicio = $datos['fechaInicio'];
+        $fechaFin = $datos['fechaFin'];
+    
+        try {
+            $usuarios = Usuario::obtenerDatosCompletoUsuarios($fechaInicio, $fechaFin);
+            return ['success' => true, 'data' => $usuarios];
+        } catch (Exception $e) {
+            http_response_code(500);
+            return ['success' => false, 'message' => 'Error al obtener los datos: ' . $e->getMessage()];
+        }
+    }
+    
 }
 ?>

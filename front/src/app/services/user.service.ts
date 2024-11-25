@@ -62,6 +62,13 @@ export class UserService {
     const url = `${this.apiUrl}/reporteUsuarios.php`;
     return this.http.get(url, { responseType: 'text', withCredentials: true });
   }
+
+  getUsersByDateRange(fechaInicio: string, fechaFin: string): Observable<any> {
+    const url = `${this.apiUrl}/reporteUsuariosCompleto.php`;
+    const body = { fechaInicio, fechaFin };
+  
+    return this.http.post(url, body, { withCredentials: true });
+  }
 }
 
 export interface User {

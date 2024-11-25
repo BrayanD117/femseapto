@@ -343,5 +343,230 @@ class Usuario {
         $db->close();
         return $usuarios;
     }
+
+    public static function obtenerDatosCompletoUsuarios($fechaInicio, $fechaFin)
+    {
+        $db = getDB();
+
+        $query = "
+            SELECT 
+                u.id AS idUsuario,
+                u.numero_documento AS numeroDocumento,
+                u.primer_nombre AS primerNombre,
+                u.segundo_nombre AS segundoNombre,
+                u.primer_apellido AS primerApellido,
+                u.segundo_apellido AS segundoApellido,
+                MAX(pn.fecha_expedicion_doc) AS fechaExpedicionDoc,
+                MAX(pn.id_dpto_exp_doc) AS idDptoExpDoc,
+                MAX(pn.mpio_expedicion_doc) AS mpioExpedicionDoc,
+                MAX(pn.fecha_nacimiento) AS fechaNacimiento,
+                MAX(pn.pais_nacimiento) AS paisNacimiento,
+                MAX(pn.id_dpto_nac) AS idDptoNac,
+                MAX(pn.mpio_nacimiento) AS mpioNacimiento,
+                MAX(pn.otro_lugar_nacimiento) AS otroLugarNacimiento,
+                MAX(pn.id_dpto_residencia) AS idDptoResidencia,
+                MAX(pn.mpio_residencia) AS mpioResidencia,
+                MAX(pn.id_zona_residencia) AS idZonaResidencia,
+                MAX(pn.id_tipo_vivienda) AS idTipoVivienda,
+                MAX(pn.estrato) AS estrato,
+                MAX(pn.direccion_residencia) AS direccionResidencia,
+                MAX(pn.antiguedad_vivienda) AS antiguedadVivienda,
+                MAX(pn.id_estado_civil) AS idEstadoCivil,
+                MAX(pn.cabeza_familia) AS cabezaFamilia,
+                MAX(pn.personas_a_cargo) AS personasACargo,
+                MAX(pn.tiene_hijos) AS tieneHijos,
+                MAX(pn.numero_hijos) AS numeroHijos,
+                MAX(pn.correo_electronico) AS correoElectronico,
+                MAX(pn.telefono) AS telefono,
+                MAX(pn.celular) AS celular,
+                MAX(pn.telefono_oficina) AS telefonoOficina,
+                MAX(pn.id_nivel_educativo) AS idNivelEducativo,
+                MAX(pn.profesion) AS profesion,
+                MAX(pn.ocupacion_oficio) AS ocupacionOficio,
+                MAX(pn.id_empresa_labor) AS idEmpresaLabor,
+                MAX(pn.id_tipo_contrato) AS idTipoContrato,
+                MAX(pn.dependencia_empresa) AS dependenciaEmpresa,
+                MAX(pn.cargo_ocupa) AS cargoOcupa,
+                MAX(pn.jefe_inmediato) AS jefeInmediato,
+                MAX(pn.antiguedad_empresa) AS antiguedadEmpresa,
+                MAX(pn.meses_antiguedad_empresa) AS mesesAntiguedadEmpresa,
+                MAX(pn.mes_sale_vacaciones) AS mesSaleVacaciones,
+                MAX(pn.nombre_emergencia) AS nombreEmergencia,
+                MAX(pn.numero_cedula_emergencia) AS numeroCedulaEmergencia,
+                MAX(pn.numero_celular_emergencia) AS numeroCelularEmergencia,
+                MAX(inf.nombre_banco) AS nombreBanco,
+                MAX(inf.id_tipo_cuenta_banc) AS tipoCuentaBancaria,
+                MAX(inf.numero_cuenta_banc) AS numeroCuentaBancaria,
+                MAX(inf.ingresos_mensuales) AS ingresosMensuales,
+                MAX(inf.prima_productividad) AS primaProductividad,
+                MAX(inf.otros_ingresos_mensuales) AS otrosIngresosMensuales,
+                MAX(inf.concepto_otros_ingresos_mens) AS conceptoOtrosIngresosMens,
+                MAX(inf.total_ingresos_mensuales) AS totalIngresosMensuales,
+                MAX(inf.egresos_mensuales) AS egresosMensuales,
+                MAX(inf.obligacion_financiera) AS obligacionFinanciera,
+                MAX(inf.otros_egresos_mensuales) AS otrosEgresosMensuales,
+                MAX(inf.total_egresos_mensuales) AS totalEgresosMensuales,
+                MAX(inf.total_activos) AS totalActivos,
+                MAX(inf.total_pasivos) AS totalPasivos,
+                MAX(inf.total_patrimonio) AS totalPatrimonio,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'nombreCompleto', nf.nombre_completo,
+                        'parentesco', nf.id_parentesco,
+                        'numeroDocumento', nf.numero_documento,
+                        'tipoDocumento', nf.id_tipo_documento,
+                        'genero', nf.id_genero,
+                        'fechaNacimiento', nf.fecha_nacimiento,
+                        'nivelEducativo', nf.id_nivel_educativo,
+                        'trabaja', nf.trabaja,
+                        'celular', nf.celular
+                    )
+                ) AS familiares,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'nombreRazonSocial', rpcb.nombre_razon_social,
+                        'parentesco', rpcb.parentesco,
+                        'direccion', rpcb.direccion,
+                        'idDpto', rpcb.id_dpto,
+                        'idMpio', rpcb.id_mpio,
+                        'telefono', rpcb.telefono,
+                        'correoElectronico', rpcb.correo_electronico
+                    )
+                ) AS referencias,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'transaccionesMonedaExtranjera', oi.transacciones_moneda_extranjera,
+                        'transMonedaExtranjera', oi.trans_moneda_extranjera,
+                        'otrasOperaciones', oi.otras_operaciones,
+                        'cuentasMonedaExtranjera', oi.cuentas_moneda_extranjera,
+                        'bancoCuentaExtranjera', oi.banco_cuenta_extranjera,
+                        'cuentaMonedaExtranjera', oi.cuenta_moneda_extranjera,
+                        'monedaCuenta', oi.moneda_cuenta,
+                        'paisCuenta', oi.id_pais_cuenta,
+                        'ciudadCuenta', oi.ciudad_cuenta
+                    )
+                ) AS operacionesInternacionales,
+                (SELECT MAX(actualizado_el) FROM (
+                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM operaciones_internacionales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM personas_expuestas_publicamente WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
+                ) AS subquery) AS ultimaActualizacion
+            FROM 
+                usuarios u
+            LEFT JOIN 
+                personas_naturales pn ON u.id = pn.id_usuario
+            LEFT JOIN 
+                informacion_financiera inf ON u.id = inf.id_usuario
+            LEFT JOIN 
+                informacion_nucleo_familiar nf ON u.id = nf.id_usuario
+            LEFT JOIN 
+                operaciones_internacionales oi ON u.id = oi.id_usuario
+            LEFT JOIN 
+                referencias_personales_comerciales_bancarias rpcb ON u.id = rpcb.id_usuario
+            WHERE 
+                (SELECT MAX(actualizado_el) FROM (
+                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM operaciones_internacionales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM personas_expuestas_publicamente WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
+                ) AS subquery) BETWEEN ? AND ?
+            GROUP BY 
+                u.id;
+        ";
+
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("ss", $fechaInicio, $fechaFin);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $usuarios = [];
+        while ($row = $result->fetch_assoc()) {
+            $usuarios[] = [
+                'id' => $row['idUsuario'],
+                'numeroDocumento' => $row['numeroDocumento'],
+                'primerNombre' => $row['primerNombre'],
+                'segundoNombre' => $row['segundoNombre'],
+                'primerApellido' => $row['primerApellido'],
+                'segundoApellido' => $row['segundoApellido'],
+                'fechaExpedicionDoc' => $row['fechaExpedicionDoc'],
+                'idDptoExpDoc' => $row['idDptoExpDoc'],
+                'mpioExpedicionDoc' => $row['mpioExpedicionDoc'],
+                'fechaNacimiento' => $row['fechaNacimiento'],
+                'paisNacimiento' => $row['paisNacimiento'],
+                'idDptoNac' => $row['idDptoNac'],
+                'mpioNacimiento' => $row['mpioNacimiento'],
+                'otroLugarNacimiento' => $row['otroLugarNacimiento'],
+                'idDptoResidencia' => $row['idDptoResidencia'],
+                'mpioResidencia' => $row['mpioResidencia'],
+                'idZonaResidencia' => $row['idZonaResidencia'],
+                'idTipoVivienda' => $row['idTipoVivienda'],
+                'estrato' => $row['estrato'],
+                'direccionResidencia' => $row['direccionResidencia'],
+                'antiguedadVivienda' => $row['antiguedadVivienda'],
+                'idEstadoCivil' => $row['idEstadoCivil'],
+                'cabezaFamilia' => $row['cabezaFamilia'],
+                'personasACargo' => $row['personasACargo'],
+                'tieneHijos' => $row['tieneHijos'],
+                'numeroHijos' => $row['numeroHijos'],
+                'correoElectronico' => $row['correoElectronico'],
+                'telefono' => $row['telefono'],
+                'celular' => $row['celular'],
+                'telefonoOficina' => $row['telefonoOficina'],
+                'idNivelEducativo' => $row['idNivelEducativo'],
+                'profesion' => $row['profesion'],
+                'ocupacionOficio' => $row['ocupacionOficio'],
+                'idEmpresaLabor' => $row['idEmpresaLabor'],
+                'idTipoContrato' => $row['idTipoContrato'],
+                'dependenciaEmpresa' => $row['dependenciaEmpresa'],
+                'cargoOcupa' => $row['cargoOcupa'],
+                'jefeInmediato' => $row['jefeInmediato'],
+                'antiguedadEmpresa' => $row['antiguedadEmpresa'],
+                'mesesAntiguedadEmpresa' => $row['mesesAntiguedadEmpresa'],
+                'mesSaleVacaciones' => $row['mesSaleVacaciones'],
+                'nombreEmergencia' => $row['nombreEmergencia'],
+                'numeroCedulaEmergencia' => $row['numeroCedulaEmergencia'],
+                'numeroCelularEmergencia' => $row['numeroCelularEmergencia'],
+                'nombreBanco' => $row['nombreBanco'],
+                'tipoCuentaBancaria' => $row['tipoCuentaBancaria'],
+                'numeroCuentaBancaria' => $row['numeroCuentaBancaria'],
+                'ingresosMensuales' => $row['ingresosMensuales'],
+                'primaProductividad' => $row['primaProductividad'],
+                'otrosIngresosMensuales' => $row['otrosIngresosMensuales'],
+                'conceptoOtrosIngresosMens' => $row['conceptoOtrosIngresosMens'],
+                'totalIngresosMensuales' => $row['totalIngresosMensuales'],
+                'egresosMensuales' => $row['egresosMensuales'],
+                'obligacionFinanciera' => $row['obligacionFinanciera'],
+                'otrosEgresosMensuales' => $row['otrosEgresosMensuales'],
+                'totalEgresosMensuales' => $row['totalEgresosMensuales'],
+                'totalActivos' => $row['totalActivos'],
+                'totalPasivos' => $row['totalPasivos'],
+                'totalPatrimonio' => $row['totalPatrimonio'],
+                'familiares' => json_decode($row['familiares'], true),
+                'referencias' => json_decode($row['referencias'], true),
+                'operacionesInternacionales' => json_decode($row['operacionesInternacionales'], true),
+                'ultimaActualizacion' => $row['ultimaActualizacion'],
+            ];            
+        }
+
+        $stmt->close();
+        $db->close();
+
+        return $usuarios;
+    }
 }
 ?>

@@ -53,6 +53,18 @@
         </li>
         <li class="mb-1" *ngIf="userRole === 1">
           <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+            data-bs-toggle="collapse" data-bs-target="#admin-data-reports-collapse" aria-expanded="false">
+            Reportes
+          </button>
+          <div class="collapse" id="admin-data-reports-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink="/auth/admin/reports"
+                  class="link-body-emphasis d-inline-flex text-decoration-none rounded">Actualización de datos</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1" *ngIf="userRole === 1">
+          <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
             data-bs-toggle="collapse" data-bs-target="#admin-reports-collapse" aria-expanded="false">
             Informes
           </button>
@@ -205,6 +217,18 @@
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li><a routerLink="/auth/admin/savings-withdrawals"
               class="link-body-emphasis d-inline-flex text-decoration-none rounded">Solicitudes de retiro de ahorro</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1" *ngIf="userRole === 1">
+      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+        data-bs-toggle="collapse" data-bs-target="#admin-data-reports-collapse" aria-expanded="false">
+        Reportes
+      </button>
+      <div class="collapse" id="admin-data-reports-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a routerLink="/auth/admin/reports"
+              class="link-body-emphasis d-inline-flex text-decoration-none rounded">Actualización de datos</a></li>
         </ul>
       </div>
     </li>

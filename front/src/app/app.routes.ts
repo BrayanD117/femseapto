@@ -47,6 +47,7 @@ import { SavingBalanceComponent } from './components/private/user/saving-balance
 import { SavingRequestHistoryComponent } from './components/private/user/saving-request-history/saving-request-history.component';
 import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
 import { AgreementTypesListComponent } from './components/public/agreements/components/agreement-types-list/agreement-types-list.component';
+import { UsersReportComponent } from './components/private/admin/users-report/users-report.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -112,6 +113,7 @@ export const routes: Routes = [
                     { path: 'upload', component: FileUploadComponent },
                     { path: 'download', component: FileListComponent },
                     { path: 'upload-data', component: InfoUploadComponent},
+                    { path: 'reports', component: UsersReportComponent}
                 ],
             },
             { path: 'executive',  canActivate: [ExecutiveGuard],
