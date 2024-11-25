@@ -356,17 +356,18 @@ class Usuario {
                 u.segundo_nombre AS segundoNombre,
                 u.primer_apellido AS primerApellido,
                 u.segundo_apellido AS segundoApellido,
+                MAX(g.nombre) AS generoNombre,
                 MAX(pn.id_genero) AS idGenero,
                 MAX(pn.fecha_expedicion_doc) AS fechaExpedicionDoc,
-                MAX(pn.id_dpto_exp_doc) AS idDptoExpDoc,
-                MAX(pn.mpio_expedicion_doc) AS mpioExpedicionDoc,
+                MAX(deExp.nombre) AS nombreDptoExpDoc,
+                MAX(muExp.nombre) AS nombreMpioExpDoc,
                 MAX(pn.fecha_nacimiento) AS fechaNacimiento,
-                MAX(pn.pais_nacimiento) AS paisNacimiento,
-                MAX(pn.id_dpto_nac) AS idDptoNac,
-                MAX(pn.mpio_nacimiento) AS mpioNacimiento,
+                MAX(paNac.nombre) AS nombrePaisNacimiento,
+                MAX(deNac.nombre) AS nombreDptoNac,
+                MAX(muNac.nombre) AS nombreMpioNac,
                 MAX(pn.otro_lugar_nacimiento) AS otroLugarNacimiento,
-                MAX(pn.id_dpto_residencia) AS idDptoResidencia,
-                MAX(pn.mpio_residencia) AS mpioResidencia,
+                MAX(deRes.nombre) AS nombreDptoResidencia,
+                MAX(muRes.nombre) AS nombreMpioResidencia,
                 MAX(pn.id_zona_residencia) AS idZonaResidencia,
                 MAX(pn.id_tipo_vivienda) AS idTipoVivienda,
                 MAX(pn.estrato) AS estrato,
@@ -381,11 +382,19 @@ class Usuario {
                 MAX(pn.telefono) AS telefono,
                 MAX(pn.celular) AS celular,
                 MAX(pn.telefono_oficina) AS telefonoOficina,
-                MAX(pn.id_nivel_educativo) AS idNivelEducativo,
+                MAX(ne.nombre) AS nombreNivelEducativo,
                 MAX(pn.profesion) AS profesion,
                 MAX(pn.ocupacion_oficio) AS ocupacionOficio,
-                MAX(pn.id_empresa_labor) AS idEmpresaLabor,
+                MAX(e.nombre) AS nombreEmpresaLabor,
+                MAX(e.nit) AS nitEmpresa,
+                MAX(e.direccion) AS direccionEmpresa,
+                MAX(muEmp.nombre) AS municipioEmpresa,
+                MAX(e.telefono) AS telefonoEmpresa,
+                MAX(e.fax) AS faxEmpresa,
+                MAX(e.actividad_economica) AS actividadEconomicaEmpresa,
+                MAX(e.ciiu) AS ciiuEmpresa,
                 MAX(pn.id_tipo_contrato) AS idTipoContrato,
+                MAX(tc.nombre) AS tipoContratoNombre,
                 MAX(pn.dependencia_empresa) AS dependenciaEmpresa,
                 MAX(pn.cargo_ocupa) AS cargoOcupa,
                 MAX(pn.jefe_inmediato) AS jefeInmediato,
@@ -410,6 +419,15 @@ class Usuario {
                 MAX(inf.total_activos) AS totalActivos,
                 MAX(inf.total_pasivos) AS totalPasivos,
                 MAX(inf.total_patrimonio) AS totalPatrimonio,
+                (SELECT MAX(actualizado_el) FROM (
+                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
+                ) AS subquery) AS ultimaActualizacion,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreCompleto', nf.nombre_completo,
@@ -433,43 +451,39 @@ class Usuario {
                         'telefono', rpcb.telefono,
                         'correoElectronico', rpcb.correo_electronico
                     )
-                ) AS referencias,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'transaccionesMonedaExtranjera', oi.transacciones_moneda_extranjera,
-                        'transMonedaExtranjera', oi.trans_moneda_extranjera,
-                        'otrasOperaciones', oi.otras_operaciones,
-                        'cuentasMonedaExtranjera', oi.cuentas_moneda_extranjera,
-                        'bancoCuentaExtranjera', oi.banco_cuenta_extranjera,
-                        'cuentaMonedaExtranjera', oi.cuenta_moneda_extranjera,
-                        'monedaCuenta', oi.moneda_cuenta,
-                        'paisCuenta', oi.id_pais_cuenta,
-                        'ciudadCuenta', oi.ciudad_cuenta
-                    )
-                ) AS operacionesInternacionales,
-                (SELECT MAX(actualizado_el) FROM (
-                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM operaciones_internacionales WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM personas_expuestas_publicamente WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
-                ) AS subquery) AS ultimaActualizacion
+                ) AS referencias
             FROM 
                 usuarios u
             LEFT JOIN 
                 personas_naturales pn ON u.id = pn.id_usuario
             LEFT JOIN 
+                generos g ON pn.id_genero = g.id
+            LEFT JOIN 
+                departamentos deExp ON pn.id_dpto_exp_doc = deExp.id
+            LEFT JOIN 
+                municipios muExp ON pn.mpio_expedicion_doc = muExp.id
+            LEFT JOIN 
+                paises paNac ON pn.pais_nacimiento = paNac.id
+            LEFT JOIN 
+                departamentos deNac ON pn.id_dpto_nac = deNac.id
+            LEFT JOIN 
+                municipios muNac ON pn.mpio_nacimiento = muNac.id
+            LEFT JOIN 
+                departamentos deRes ON pn.id_dpto_residencia = deRes.id
+            LEFT JOIN 
+                municipios muRes ON pn.mpio_residencia = muRes.id
+            LEFT JOIN 
+                empresas e ON pn.id_empresa_labor = e.id
+            LEFT JOIN 
+                municipios muEmp ON e.id_municipio = muEmp.id
+            LEFT JOIN 
+                tipos_contrato tc ON pn.id_tipo_contrato = tc.id
+            LEFT JOIN 
+                niveles_educativos ne ON pn.id_nivel_educativo = ne.id
+            LEFT JOIN 
                 informacion_financiera inf ON u.id = inf.id_usuario
             LEFT JOIN 
                 informacion_nucleo_familiar nf ON u.id = nf.id_usuario
-            LEFT JOIN 
-                operaciones_internacionales oi ON u.id = oi.id_usuario
             LEFT JOIN 
                 referencias_personales_comerciales_bancarias rpcb ON u.id = rpcb.id_usuario
             WHERE 
@@ -479,10 +493,6 @@ class Usuario {
                     SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
                     UNION ALL
                     SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM operaciones_internacionales WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM personas_expuestas_publicamente WHERE id_usuario = u.id
                     UNION ALL
                     SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
                 ) AS subquery) BETWEEN ? AND ?
@@ -504,17 +514,17 @@ class Usuario {
                 'segundoNombre' => $row['segundoNombre'],
                 'primerApellido' => $row['primerApellido'],
                 'segundoApellido' => $row['segundoApellido'],
-                'idGenero' => $row['idGenero'],
+                'generoNombre' => $row['generoNombre'],
                 'fechaExpedicionDoc' => $row['fechaExpedicionDoc'],
-                'idDptoExpDoc' => $row['idDptoExpDoc'],
-                'mpioExpedicionDoc' => $row['mpioExpedicionDoc'],
+                'nombreDptoExpDoc' => $row['nombreDptoExpDoc'],
+                'nombreMpioExpDoc' => $row['nombreMpioExpDoc'],
                 'fechaNacimiento' => $row['fechaNacimiento'],
-                'paisNacimiento' => $row['paisNacimiento'],
-                'idDptoNac' => $row['idDptoNac'],
-                'mpioNacimiento' => $row['mpioNacimiento'],
+                'nombrePaisNacimiento' => $row['nombrePaisNacimiento'],
+                'nombreDptoNac' => $row['nombreDptoNac'],
+                'nombreMpioNac' => $row['nombreMpioNac'],
                 'otroLugarNacimiento' => $row['otroLugarNacimiento'],
-                'idDptoResidencia' => $row['idDptoResidencia'],
-                'mpioResidencia' => $row['mpioResidencia'],
+                'nombreDptoResidencia' => $row['nombreDptoResidencia'],
+                'nombreMpioResidencia' => $row['nombreMpioResidencia'],
                 'idZonaResidencia' => $row['idZonaResidencia'],
                 'idTipoVivienda' => $row['idTipoVivienda'],
                 'estrato' => $row['estrato'],
@@ -529,11 +539,19 @@ class Usuario {
                 'telefono' => $row['telefono'],
                 'celular' => $row['celular'],
                 'telefonoOficina' => $row['telefonoOficina'],
-                'idNivelEducativo' => $row['idNivelEducativo'],
+                'nombreNivelEducativo' => $row['nombreNivelEducativo'],
                 'profesion' => $row['profesion'],
                 'ocupacionOficio' => $row['ocupacionOficio'],
-                'idEmpresaLabor' => $row['idEmpresaLabor'],
+                'nombreEmpresaLabor' => $row['nombreEmpresaLabor'],
+                'nitEmpresa' => $row['nitEmpresa'],
+                'direccionEmpresa' => $row['direccionEmpresa'],
+                'municipioEmpresa' => $row['municipioEmpresa'],
+                'telefonoEmpresa' => $row['telefonoEmpresa'],
+                'faxEmpresa' => $row['faxEmpresa'],
+                'actividadEconomicaEmpresa' => $row['actividadEconomicaEmpresa'],
+                'ciiuEmpresa' => $row['ciiuEmpresa'],
                 'idTipoContrato' => $row['idTipoContrato'],
+                'tipoContratoNombre' => $row['tipoContratoNombre'],
                 'dependenciaEmpresa' => $row['dependenciaEmpresa'],
                 'cargoOcupa' => $row['cargoOcupa'],
                 'jefeInmediato' => $row['jefeInmediato'],
@@ -560,9 +578,8 @@ class Usuario {
                 'totalPatrimonio' => $row['totalPatrimonio'],
                 'familiares' => json_decode($row['familiares'], true),
                 'referencias' => json_decode($row['referencias'], true),
-                'operacionesInternacionales' => json_decode($row['operacionesInternacionales'], true),
                 'ultimaActualizacion' => $row['ultimaActualizacion'],
-            ];            
+            ];
         }
 
         $stmt->close();
