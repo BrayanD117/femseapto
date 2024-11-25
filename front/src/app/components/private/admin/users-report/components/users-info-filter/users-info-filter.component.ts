@@ -8,12 +8,9 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
+import JSZip from 'jszip';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../../../../../services/user.service';
-import { CompanyService } from '../../../../../../services/company.service';
-import { CountriesService } from '../../../../../../services/countries.service';
-import { DepartmentsService } from '../../../../../../services/departments.service';
-
 
 @Component({
   selector: 'app-users-info-filter',
@@ -31,9 +28,6 @@ export class UsersInfoFilterComponent {
   constructor(
     private userService: UserService, 
     private messageService: MessageService,
-    private companyService: CompanyService,
-    private countriesService: CountriesService,
-    private departmentsService: DepartmentsService
   ) {}
 
   filterByDates() {
@@ -78,7 +72,7 @@ export class UsersInfoFilterComponent {
     });
   }
 
-  async generateExcelForUsers() {
+  async generateZipForUsers() {
     if (this.users.length === 0) {
       this.messageService.add({
         severity: 'warn',
@@ -88,8 +82,9 @@ export class UsersInfoFilterComponent {
       return;
     }
   
+    const zip = new JSZip();
+  
     for (const user of this.users) {
-      console.log('Generando Excel para usuario:', user);
       const workbook = new Workbook();
       await fetch('/assets/FORMATO_DE_VINCULACION.xlsx')
         .then((response) => response.arrayBuffer())
@@ -111,7 +106,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('B10').value = user.estadoCivil || '';
         worksheet.getCell('L10').value = user.nombreNivelEducativo || '';
         worksheet.getCell('W10').value = user.tieneHijos || '';
-        worksheet.getCell('AH10').value = user.numeroHijos || '';
+        worksheet.getCell('AH10').value = user.numeroHijos || 0;
         worksheet.getCell('B11').value = user.correoElectronico || '';
         worksheet.getCell('N11').value = Number(user.telefono) || '';
         worksheet.getCell('AA11').value = Number(user.celular) || '';
@@ -152,7 +147,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('X38').value = Number(user.totalPasivos) || 0;
         worksheet.getCell('X39').value = Number(user.totalPatrimonio) || 0;
 
-        const familiares = user.familiares.slice(0, 4);
+        const familiares = Array.isArray(user.familiares) ? user.familiares.slice(0, 4) : [];
         const startRow = 42;
         familiares.forEach((familiar: any, index: number) => {
           const row = startRow + index;
@@ -167,7 +162,7 @@ export class UsersInfoFilterComponent {
           worksheet.getCell(`AE${row}`).value = familiar.celular ? Number(familiar.celular) : '';
         });
 
-        const referencias = user.referencias.slice(0, 2);
+        const referencias = Array.isArray(user.referencias) ? user.referencias.slice(0, 2) : [];
         const startRowRef = 48;
         referencias.forEach((referencia: any, index: number) => {
           const row = startRowRef + index;
@@ -196,13 +191,20 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('K57').value = user.familiarFuncionPublico || 'N/A';
         worksheet.getCell('R57').value = user.socioFuncionPublico || 'N/A';
       }
+      
+      const buffer = await workbook.xlsx.writeBuffer();
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
-      await workbook.xlsx.writeBuffer().then((buffer) => {
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        fs.saveAs(blob, fileName);
-      });
+
+      zip.file(fileName, buffer);
     }
-  
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      fs.saveAs(content, 'Usuarios_Vinculacion.zip');
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Archivo ZIP generado',
+        detail: 'El archivo ZIP con los Excels ha sido generado con éxito.',
+      });
+    });
     this.messageService.add({
       severity: 'success',
       summary: 'Excels generados',
