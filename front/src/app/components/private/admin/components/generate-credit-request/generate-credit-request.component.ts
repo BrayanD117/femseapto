@@ -52,6 +52,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   direccionResidencia: string = '';
   municipioResidencia: string = '';
   departamentoResidencia: string = '';
+  estrato: number = 0;
   email: string = '';
   tipoContrato: number = 0;
   nivelEducativo: number = 0;
@@ -177,6 +178,7 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.estadoCivil = person.idEstadoCivil;
           this.direccionResidencia = person.direccionResidencia;
           this.municipioResidencia = person.mpioResidencia;
+          this.estrato = person.estrato;
           this.email = person.correoElectronico;
           this.jefeInmediato = person.jefeInmediato;
           this.dependencia = `Dependencia: ${ person.dependenciaEmpresa || '' }`.trim();
@@ -502,7 +504,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('P40').value = this.ciudadPersReferencia;
 
         // Marcando celdas según el estrato
-        this.markStratumCell(worksheet, this.genero);
+        this.markStratumCell(worksheet, this.estrato);
         this.markHeadOfFamilyCell(worksheet, this.headOfFamily);
       }
 
