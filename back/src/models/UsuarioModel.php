@@ -510,6 +510,9 @@ class Usuario {
                 MAX(tv.nombre) AS tipoVivienda,
                 MAX(ec.nombre) AS estadoCivil,
                 MAX(par.nombre) AS parentescoNombre,
+                MAX(td.nombre) AS tipoDocumentoFamiliar,
+                MAX(nef.nombre) AS nivelEducativoFamiliar,
+                MAX(gf.nombre) AS generoFamiliar,
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
@@ -519,19 +522,28 @@ class Usuario {
                     UNION ALL
                     SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
                 ) AS subquery) AS ultimaActualizacion,
-                JSON_ARRAYAGG(
+                (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        'nombreCompleto', nf.nombre_completo,
+                        'nombreCompleto', sub_nf.nombre_completo,
                         'parentesco', par.nombre,
-                        'numeroDocumento', nf.numero_documento,
-                        'tipoDocumento', nf.id_tipo_documento,
-                        'genero', nf.id_genero,
-                        'fechaNacimiento', nf.fecha_nacimiento,
-                        'nivelEducativo', nf.id_nivel_educativo,
-                        'trabaja', nf.trabaja,
-                        'celular', nf.celular
+                        'numeroDocumento', sub_nf.numero_documento,
+                        'tipoDocumento', td.nombre,
+                        'genero', gf.nombre,
+                        'fechaNacimiento', sub_nf.fecha_nacimiento,
+                        'nivelEducativo', nef.nombre,
+                        'trabaja', sub_nf.trabaja,
+                        'celular', sub_nf.celular
                     )
-                ) AS familiares,
+                )
+                FROM (
+                    SELECT DISTINCT nf.* 
+                    FROM informacion_nucleo_familiar nf
+                    WHERE nf.id_usuario = u.id
+                ) AS sub_nf
+                LEFT JOIN parentescos par ON sub_nf.id_parentesco = par.id
+                LEFT JOIN tipos_documento td ON sub_nf.id_tipo_documento = td.id
+                LEFT JOIN niveles_educativos nef ON sub_nf.id_nivel_educativo = nef.id
+                LEFT JOIN generos gf ON sub_nf.id_genero = gf.id) AS familiares,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreRazonSocial', rpcb.nombre_razon_social,
@@ -575,6 +587,12 @@ class Usuario {
                 informacion_financiera inf ON u.id = inf.id_usuario
             LEFT JOIN 
                 informacion_nucleo_familiar nf ON u.id = nf.id_usuario
+            LEFT JOIN 
+                tipos_documento td ON nf.id_tipo_documento = td.id
+            LEFT JOIN 
+                niveles_educativos nef ON nf.id_nivel_educativo = nef.id
+            LEFT JOIN 
+                generos gf ON nf.id_genero = gf.id
             LEFT JOIN 
                 referencias_personales_comerciales_bancarias rpcb ON u.id = rpcb.id_usuario
             LEFT JOIN 
