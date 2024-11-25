@@ -151,6 +151,23 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('X37').value = Number(user.totalActivos) || 0;
         worksheet.getCell('X38').value = Number(user.totalPasivos) || 0;
         worksheet.getCell('X39').value = Number(user.totalPatrimonio) || 0;
+
+        const familiares = user.familiares.slice(0, 4);
+        const startRow = 42;
+        familiares.forEach((familiar: any, index: number) => {
+          const row = startRow + index;
+          worksheet.getCell(`A${row}`).value = familiar.nombreCompleto || '';
+          worksheet.getCell(`H${row}`).value = familiar.parentesco || '';
+          worksheet.getCell(`K${row}`).value = familiar.numeroDocumento ? Number(familiar.numeroDocumento) : '';
+          worksheet.getCell(`M${row}`).value = familiar.tipoDocumento || '';
+          worksheet.getCell(`N${row}`).value = familiar.genero || '';
+          worksheet.getCell(`O${row}`).value = familiar.fechaNacimiento || '';
+          worksheet.getCell(`V${row}`).value = familiar.nivelEducativo || '';
+          worksheet.getCell(`AB${row}`).value = familiar.trabaja ? 'Sí' : 'No';
+          worksheet.getCell(`AE${row}`).value = familiar.celular ? Number(familiar.celular) : '';
+        });
+
+        
       }
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
       await workbook.xlsx.writeBuffer().then((buffer) => {

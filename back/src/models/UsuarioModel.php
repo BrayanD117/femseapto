@@ -544,17 +544,22 @@ class Usuario {
                 LEFT JOIN tipos_documento td ON sub_nf.id_tipo_documento = td.id
                 LEFT JOIN niveles_educativos nef ON sub_nf.id_nivel_educativo = nef.id
                 LEFT JOIN generos gf ON sub_nf.id_genero = gf.id) AS familiares,
-                JSON_ARRAYAGG(
+                (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        'nombreRazonSocial', rpcb.nombre_razon_social,
-                        'parentesco', rpcb.parentesco,
-                        'direccion', rpcb.direccion,
-                        'idDpto', rpcb.id_dpto,
-                        'idMpio', rpcb.id_mpio,
-                        'telefono', rpcb.telefono,
-                        'correoElectronico', rpcb.correo_electronico
+                        'nombreRazonSocial', sub_rpcb.nombre_razon_social,
+                        'parentesco', sub_rpcb.parentesco,
+                        'direccion', sub_rpcb.direccion,
+                        'idDpto', sub_rpcb.id_dpto,
+                        'idMpio', sub_rpcb.id_mpio,
+                        'telefono', sub_rpcb.telefono,
+                        'correoElectronico', sub_rpcb.correo_electronico
                     )
-                ) AS referencias
+                )
+                FROM (
+                    SELECT DISTINCT rpcb.* 
+                    FROM referencias_personales_comerciales_bancarias rpcb
+                    WHERE rpcb.id_usuario = u.id
+                ) AS sub_rpcb) AS referencias
             FROM 
                 usuarios u
             LEFT JOIN 
