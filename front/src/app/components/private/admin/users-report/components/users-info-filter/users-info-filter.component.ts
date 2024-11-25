@@ -118,7 +118,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('B12').value = user.nombrePaisNacimiento || '';
         worksheet.getCell('H12').value = user.profesion || '';
         worksheet.getCell('Y12').value = user.ocupacionOficio || '';
-        // worksheet.getCell('B14').value = user.nombreTipoEmpresa || '';
+        worksheet.getCell('B14').value = user.tipoEmpresa || '';
         worksheet.getCell('R14').value = user.cargoOcupa || '';
 
         // Dirección y datos de vivienda
@@ -134,7 +134,7 @@ export class UsersInfoFilterComponent {
         // Datos empresa
         worksheet.getCell('B13').value = user.actividadEconomicaEmpresa || '';
         worksheet.getCell('K13').value = user.ciiuEmpresa || '';
-        worksheet.getCell('R13').value = user.nombreEmpresaLabor || '';
+        worksheet.getCell('O13').value = user.nombreEmpresaLabor || '';
         worksheet.getCell('AG13').value = user.nitEmpresa || '';
         worksheet.getCell('W15').value = Number(user.telefonoEmpresa) || '';
         worksheet.getCell('B15').value = user.direccionEmpresa || '';
@@ -178,17 +178,23 @@ export class UsersInfoFilterComponent {
           worksheet.getCell(`AD${row}`).value = referencia.telefono ? Number(referencia.telefono) : '';
         });
 
-        worksheet.getCell('G51').value = user.transaccionesMonedaExtranjera || '';
-        worksheet.getCell('L51').value = user.monedaTransaccion || '';
-        worksheet.getCell('Y51').value = user.otrasOperaciones || '';
-        worksheet.getCell('G52').value = user.cuentaExtranjera || '';
-        worksheet.getCell('L52').value = user.bancoExtranjera || '';
-        worksheet.getCell('P52').value = user.numeroCuentaExtranjera || '';
-        worksheet.getCell('X52').value = user.monedaCuenta || '';
-        worksheet.getCell('AD52').value = user.ciudadCuenta || '';
-        worksheet.getCell('AH52').value = user.paisCuenta || '';
+        worksheet.getCell('G51').value = user.transaccionesMonedaExtranjera || 'N/A';
+        worksheet.getCell('L51').value = user.monedaTransaccion || 'N/A';
+        worksheet.getCell('Y51').value = user.otrasOperaciones || 'N/A';
+        worksheet.getCell('G52').value = user.cuentaExtranjera || 'N/A';
+        worksheet.getCell('L52').value = user.bancoExtranjera || 'N/A';
+        worksheet.getCell('P52').value = user.numeroCuentaExtranjera || 'N/A';
+        worksheet.getCell('X52').value = user.monedaCuenta || 'N/A';
+        worksheet.getCell('AD52').value = user.ciudadCuenta || 'N/A';
+        worksheet.getCell('AH52').value = user.paisCuenta || 'N/A';
 
-        worksheet.getCell('A55').value = user.asa || '';
+        worksheet.getCell('A55').value = user.poderPublico || 'N/A';
+        worksheet.getCell('E55').value = user.manejaRecursosPublicos || 'N/A';
+        worksheet.getCell('K55').value = user.reconocimientoPublico || 'N/A';
+        worksheet.getCell('R55').value = user.funcionesPublicas || 'N/A';
+        worksheet.getCell('A57').value = user.funcionPublicoExtranjero || 'N/A';
+        worksheet.getCell('K57').value = user.familiarFuncionPublico || 'N/A';
+        worksheet.getCell('R57').value = user.socioFuncionPublico || 'N/A';
       }
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
       await workbook.xlsx.writeBuffer().then((buffer) => {

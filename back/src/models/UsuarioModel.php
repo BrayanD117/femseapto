@@ -480,6 +480,7 @@ class Usuario {
                 MAX(e.fax) AS faxEmpresa,
                 MAX(e.actividad_economica) AS actividadEconomicaEmpresa,
                 MAX(e.ciiu) AS ciiuEmpresa,
+                MAX(te.nombre) AS tipoEmpresa,
                 MAX(pn.id_tipo_contrato) AS idTipoContrato,
                 MAX(tc.nombre) AS tipoContratoNombre,
                 MAX(pn.dependencia_empresa) AS dependenciaEmpresa,
@@ -522,6 +523,14 @@ class Usuario {
                 MAX(tme.moneda_cuenta) AS monedaCuenta,
                 MAX(p.nombre) AS paisCuenta,
                 MAX(tme.ciudad_cuenta) AS ciudadCuenta,
+                MAX(pep.poder_publico) AS poderPublico,
+                MAX(pep.maneja_rec_public) AS manejaRecursosPublicos,
+                MAX(pep.reconoc_public) AS reconocimientoPublico,
+                MAX(pep.funciones_publicas) AS funcionesPublicas,
+                MAX(pep.actividad_publica) AS actividadPublica,
+                MAX(pep.funcion_publico_extranjero) AS funcionPublicoExtranjero,
+                MAX(pep.fam_funcion_publico) AS familiarFuncionPublico,
+                MAX(pep.socio_funcion_publico) AS socioFuncionPublico,
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
@@ -593,6 +602,8 @@ class Usuario {
             LEFT JOIN 
                 empresas e ON pn.id_empresa_labor = e.id
             LEFT JOIN 
+                tipos_empresa te ON e.id_tipo_empresa = te.id
+            LEFT JOIN 
                 municipios muEmp ON e.id_municipio = muEmp.id
             LEFT JOIN 
                 tipos_contrato tc ON pn.id_tipo_contrato = tc.id
@@ -622,6 +633,8 @@ class Usuario {
                 operaciones_internacionales tme ON tme.id_usuario = u.id
             LEFT JOIN 
                 paises p ON tme.id_pais_cuenta = p.id
+            LEFT JOIN 
+                personas_expuestas_publicamente pep ON pep.id_usuario = u.id
             WHERE 
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
@@ -686,6 +699,7 @@ class Usuario {
                 'faxEmpresa' => $row['faxEmpresa'],
                 'actividadEconomicaEmpresa' => $row['actividadEconomicaEmpresa'],
                 'ciiuEmpresa' => $row['ciiuEmpresa'],
+                'tipoEmpresa' => $row['tipoEmpresa'],
                 'idTipoContrato' => $row['idTipoContrato'],
                 'tipoContratoNombre' => $row['tipoContratoNombre'],
                 'dependenciaEmpresa' => $row['dependenciaEmpresa'],
@@ -725,6 +739,14 @@ class Usuario {
                 'monedaCuenta' => $row['monedaCuenta'],
                 'paisCuenta' => $row['paisCuenta'],
                 'ciudadCuenta' => $row['ciudadCuenta'],
+                'poderPublico' => $row['poderPublico'],
+                'manejaRecursosPublicos' => $row['manejaRecursosPublicos'],
+                'reconocimientoPublico' => $row['reconocimientoPublico'],
+                'funcionesPublicas' => $row['funcionesPublicas'],
+                'actividadesPublicas' => $row['actividadPublica'],
+                'funcionPublicoExtranjero' => $row['funcionPublicoExtranjero'],
+                'familiarFuncionPublico' => $row['familiarFuncionPublico'],
+                'socioFuncionPublico' => $row['socioFuncionPublico'],
                 'familiares' => json_decode($row['familiares'], true),
                 'referencias' => json_decode($row['referencias'], true),
                 'ultimaActualizacion' => $row['ultimaActualizacion'],
