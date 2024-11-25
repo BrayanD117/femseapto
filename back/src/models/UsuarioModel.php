@@ -506,6 +506,10 @@ class Usuario {
                 MAX(inf.total_activos) AS totalActivos,
                 MAX(inf.total_pasivos) AS totalPasivos,
                 MAX(inf.total_patrimonio) AS totalPatrimonio,
+                MAX(zg.nombre) AS zonaGeografica,
+                MAX(tv.nombre) AS tipoVivienda,
+                MAX(ec.nombre) AS estadoCivil,
+                MAX(par.nombre) AS parentescoNombre,
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
@@ -518,7 +522,7 @@ class Usuario {
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreCompleto', nf.nombre_completo,
-                        'parentesco', nf.id_parentesco,
+                        'parentesco', par.nombre,
                         'numeroDocumento', nf.numero_documento,
                         'tipoDocumento', nf.id_tipo_documento,
                         'genero', nf.id_genero,
@@ -573,6 +577,14 @@ class Usuario {
                 informacion_nucleo_familiar nf ON u.id = nf.id_usuario
             LEFT JOIN 
                 referencias_personales_comerciales_bancarias rpcb ON u.id = rpcb.id_usuario
+            LEFT JOIN 
+                zonas_geograficas zg ON pn.id_zona_residencia = zg.id
+            LEFT JOIN 
+                tipos_vivienda tv ON pn.id_tipo_vivienda = tv.id
+            LEFT JOIN 
+                estados_civiles ec ON pn.id_estado_civil = ec.id
+            LEFT JOIN 
+                parentescos par ON nf.id_parentesco = par.id
             WHERE 
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
@@ -663,6 +675,10 @@ class Usuario {
                 'totalActivos' => $row['totalActivos'],
                 'totalPasivos' => $row['totalPasivos'],
                 'totalPatrimonio' => $row['totalPatrimonio'],
+                'parentescoNombre' => $row['parentescoNombre'],
+                'zonaGeografica' => $row['zonaGeografica'],
+                'tipoVivienda' => $row['tipoVivienda'],
+                'estadoCivil' => $row['estadoCivil'],
                 'familiares' => json_decode($row['familiares'], true),
                 'referencias' => json_decode($row['referencias'], true),
                 'ultimaActualizacion' => $row['ultimaActualizacion'],

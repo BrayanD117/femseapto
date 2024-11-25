@@ -98,81 +98,59 @@ export class UsersInfoFilterComponent {
       const worksheet = workbook.getWorksheet(1);
   
       if (worksheet) {
+        // Datos personales
         worksheet.getCell('C6').value = user.primerApellido || '';
         worksheet.getCell('L6').value = user.segundoApellido || '';
         worksheet.getCell('S6').value = `${user.primerNombre || ''} ${user.segundoNombre || ''}`.trim();
-        const numeroDocumentoCell = worksheet.getCell('D7');
-        numeroDocumentoCell.value = user.numeroDocumento ? Number(user.numeroDocumento) : 0;
-        numeroDocumentoCell.numFmt = '0';
+        worksheet.getCell('D7').value = user.numeroDocumento ? Number(user.numeroDocumento) : '';
         worksheet.getCell('L7').value = user.fechaExpedicionDoc || '';
-        worksheet.getCell('Q7').value = user.mpioExpedicionDoc || '';
+        worksheet.getCell('Q7').value = user.nombreMpioExpDoc || '';
         worksheet.getCell('AA7').value = user.fechaNacimiento || '';
-        if (user.paisNacimiento) {
-          try {
-            const country = await this.countriesService.getById(user.paisNacimiento).toPromise();
-            console.log('Nombre del país:', country.nombre);
-            worksheet.getCell('AH7').value = country.nombre || 'N/A';
-          } catch (error) {
-            console.error(`Error al obtener el nombre del país con ID ${user.paisNacimiento}:`, error);
-            worksheet.getCell('AH7').value = 'N/A';
-          }
-        } else {
-          worksheet.getCell('AH7').value = 'N/A';
-        }
-
-        if (user.idDptoResidencia) {
-          try {
-            const department = await this.departmentsService.getById(user.idDptoResidencia).toPromise();
-            worksheet.getCell('AC8').value = department?.nombre || 'N/A';
-          } catch {
-            worksheet.getCell('AC8').value = 'N/A';
-          }
-        } else {
-          worksheet.getCell('AC8').value = 'N/A';
-        }
-
-        worksheet.getCell('A8').value = `GENERO: ${user.idGenero || 'N/A'}`;
-        worksheet.getCell('E8').value = user.direccionResidencia || '';
-        worksheet.getCell('R8').value = user.mpioResidencia || '';
-        worksheet.getCell('AC8').value = user.idDptoResidencia || '';
-        const antiguedadCell = worksheet.getCell('B9');
-        antiguedadCell.value = user.antiguedadVivienda ? user.antiguedadVivienda : 0;
-        const personasACargoCell = worksheet.getCell('G9');
-        personasACargoCell.value = user.personasACargo ? Number(user.personasACargo) : 0;
-        personasACargoCell.numFmt = '0';
-        worksheet.getCell('K9').value = user.idZonaResidencia || '';
-        worksheet.getCell('Q9').value = user.idTipoVivienda || '';
-        worksheet.getCell('AH9').value = user.estrato || '';
-        worksheet.getCell('B10').value = user.idEstadoCivil || '';
-        worksheet.getCell('L10').value = user.idNivelEducativo|| '';
+        worksheet.getCell('AH7').value = user.nombrePaisNacimiento || 'N/A';
+        worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} `|| 'N/A';
+        worksheet.getCell('B10').value = user.estadoCivil || '';
+        worksheet.getCell('L10').value = user.nombreNivelEducativo || '';
         worksheet.getCell('W10').value = user.tieneHijos || '';
         worksheet.getCell('AH10').value = user.numeroHijos || '';
         worksheet.getCell('B11').value = user.correoElectronico || '';
         worksheet.getCell('N11').value = Number(user.telefono) || '';
         worksheet.getCell('AA11').value = Number(user.celular) || '';
-        worksheet.getCell('B12').value = user.paisNacimiento || '';
+        worksheet.getCell('B12').value = user.nombrePaisNacimiento || '';
         worksheet.getCell('H12').value = user.profesion || '';
         worksheet.getCell('Y12').value = user.ocupacionOficio || '';
+        // worksheet.getCell('B14').value = user.nombreTipoEmpresa || '';
+        worksheet.getCell('R14').value = user.cargoOcupa || '';
 
-        if (user.idEmpresaLabor) {
-          try {
-            const company = await this.companyService.getById(user.idEmpresaLabor).toPromise();
-            console.log('Información de la empresa:', company);
+        // Dirección y datos de vivienda
+        worksheet.getCell('E8').value = user.direccionResidencia || '';
+        worksheet.getCell('R8').value = user.nombreMpioResidencia || '';
+        worksheet.getCell('AC8').value = user.nombreDptoResidencia || 'N/A';
+        worksheet.getCell('B9').value = user.antiguedadVivienda || '';
+        worksheet.getCell('H9').value = user.personasACargo || '';
+        worksheet.getCell('K9').value = user.zonaGeografica || '';
+        worksheet.getCell('Q9').value = user.tipoVivienda || '';
+        worksheet.getCell('AH9').value = user.estrato || '';
 
-            worksheet.getCell('B13').value = company.actividadEconomica || '';
-            worksheet.getCell('K13').value = company.ciiu || '';
-            worksheet.getCell('R13').value = company.nombre || '';
-            worksheet.getCell('AG13').value = company.nit || '';
-            worksheet.getCell('B14').value = company.idTipoEmpresa || '';
-            worksheet.getCell('B15').value = company.direccion || '';
-            worksheet.getCell('L15').value = company.idMunicipio || '';
-            worksheet.getCell('W15').value = Number(company.telefono) || '';
-          } catch (error) {
-            console.error(`Error al obtener la información de la empresa con ID ${user.idEmpresaLabor}:`, error);
-          }
+        // Datos empresa
+        worksheet.getCell('B13').value = user.actividadEconomicaEmpresa || '';
+        worksheet.getCell('K13').value = user.ciiuEmpresa || '';
+        worksheet.getCell('R13').value = user.nombreEmpresaLabor || '';
+        worksheet.getCell('AG13').value = user.nitEmpresa || '';
+        worksheet.getCell('W15').value = Number(user.telefonoEmpresa) || '';
+        worksheet.getCell('B15').value = user.direccionEmpresa || '';
+        worksheet.getCell('L15').value = user.municipioEmpresa || '';
 
-          worksheet.getCell('R14').value = user.cargoOcupa || '';
-        }
+        // Datos financieros
+        worksheet.getCell('G34').value = Number(user.ingresosMensuales) || 0;
+        worksheet.getCell('X34').value = Number(user.egresosMensuales) || 0;
+        worksheet.getCell('G35').value = Number(user.otrosIngresosMensuales) || 0;
+        worksheet.getCell('X35').value = Number(user.otrosEgresosMensuales) || 0;
+        worksheet.getCell('G36').value = Number(user.totalIngresosMensuales) || 0;
+        worksheet.getCell('X36').value = Number(user.totalEgresosMensuales) || 0;
+        worksheet.getCell('G37').value = user.conceptoOtrosIngresos || '';
+        worksheet.getCell('X37').value = Number(user.totalActivos) || 0;
+        worksheet.getCell('X38').value = Number(user.totalPasivos) || 0;
+        worksheet.getCell('X39').value = Number(user.totalPatrimonio) || 0;
       }
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
       await workbook.xlsx.writeBuffer().then((buffer) => {
