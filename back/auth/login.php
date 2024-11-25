@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuarioObj && password_verify($contrasenia, $usuarioObj->contrasenia)) {
         if ($usuarioObj->activo) {
             $issuedAt = time();
-            $expirationTime = $issuedAt + 3600;
+            $expirationTime = $issuedAt + (24 * 60 * 60);
             $payload = [
                 'iss' => 'localhost',
                 'iat' => $issuedAt,    

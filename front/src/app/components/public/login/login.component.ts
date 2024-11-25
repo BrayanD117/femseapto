@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 // Login Animation
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
-import { RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginService } from '../../../services/login.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -14,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LottieComponent, FormsModule, RouterLink, ToastModule],
+  imports: [LottieComponent, FormsModule, ToastModule],
   providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -34,7 +33,7 @@ export class LoginComponent {
         if (response.success) {
           localStorage.setItem('auth_token', response.token);
           this.cookieService.set('auth_token', response.token,
-            { expires: (1 / 24),
+            { expires: 1,
               path: '/',
               domain: environment.cookieDomain,
               secure: environment.cookieSecure,
