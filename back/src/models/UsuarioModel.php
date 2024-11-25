@@ -513,6 +513,15 @@ class Usuario {
                 MAX(td.nombre) AS tipoDocumentoFamiliar,
                 MAX(nef.nombre) AS nivelEducativoFamiliar,
                 MAX(gf.nombre) AS generoFamiliar,
+                MAX(tme.transacciones_moneda_extranjera) AS transaccionesMonedaExtranjera,
+                MAX(tme.trans_moneda_extranjera) AS monedaTransaccion,
+                MAX(tme.otras_operaciones) AS otrasOperaciones,
+                MAX(tme.cuentas_moneda_extranjera) AS cuentaExtranjera,
+                MAX(tme.banco_cuenta_extranjera) AS bancoExtranjera,
+                MAX(tme.cuenta_moneda_extranjera) AS numeroCuentaExtranjera,
+                MAX(tme.moneda_cuenta) AS monedaCuenta,
+                MAX(p.nombre) AS paisCuenta,
+                MAX(tme.ciudad_cuenta) AS ciudadCuenta,
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
@@ -609,6 +618,10 @@ class Usuario {
                 estados_civiles ec ON pn.id_estado_civil = ec.id
             LEFT JOIN 
                 parentescos par ON nf.id_parentesco = par.id
+            LEFT JOIN 
+                operaciones_internacionales tme ON tme.id_usuario = u.id
+            LEFT JOIN 
+                paises p ON tme.id_pais_cuenta = p.id
             WHERE 
                 (SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
@@ -703,6 +716,15 @@ class Usuario {
                 'zonaGeografica' => $row['zonaGeografica'],
                 'tipoVivienda' => $row['tipoVivienda'],
                 'estadoCivil' => $row['estadoCivil'],
+                'transaccionesMonedaExtranjera' => $row['transaccionesMonedaExtranjera'],
+                'monedaTransaccion' => $row['monedaTransaccion'],
+                'otrasOperaciones' => $row['otrasOperaciones'],
+                'cuentaExtranjera' => $row['cuentaExtranjera'],
+                'bancoExtranjera' => $row['bancoExtranjera'],
+                'numeroCuentaExtranjera' => $row['numeroCuentaExtranjera'],
+                'monedaCuenta' => $row['monedaCuenta'],
+                'paisCuenta' => $row['paisCuenta'],
+                'ciudadCuenta' => $row['ciudadCuenta'],
                 'familiares' => json_decode($row['familiares'], true),
                 'referencias' => json_decode($row['referencias'], true),
                 'ultimaActualizacion' => $row['ultimaActualizacion'],

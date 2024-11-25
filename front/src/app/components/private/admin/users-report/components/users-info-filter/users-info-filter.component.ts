@@ -177,6 +177,18 @@ export class UsersInfoFilterComponent {
           worksheet.getCell(`V${row}`).value = referencia.ciudad || '';
           worksheet.getCell(`AD${row}`).value = referencia.telefono ? Number(referencia.telefono) : '';
         });
+
+        worksheet.getCell('G51').value = user.transaccionesMonedaExtranjera || '';
+        worksheet.getCell('L51').value = user.monedaTransaccion || '';
+        worksheet.getCell('Y51').value = user.otrasOperaciones || '';
+        worksheet.getCell('G52').value = user.cuentaExtranjera || '';
+        worksheet.getCell('L52').value = user.bancoExtranjera || '';
+        worksheet.getCell('P52').value = user.numeroCuentaExtranjera || '';
+        worksheet.getCell('X52').value = user.monedaCuenta || '';
+        worksheet.getCell('AD52').value = user.ciudadCuenta || '';
+        worksheet.getCell('AH52').value = user.paisCuenta || '';
+
+        worksheet.getCell('A55').value = user.asa || '';
       }
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
       await workbook.xlsx.writeBuffer().then((buffer) => {
