@@ -67,7 +67,25 @@ class InformacionNucleoFamiliar {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM informacion_nucleo_familiar WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT 
+                id,
+                id_usuario,
+                nombre_completo, 
+                id_tipo_documento,
+                numero_documento,
+                id_dpto_exp_doc,
+                id_mpio_exp_doc,
+                id_parentesco,
+                id_genero,
+                fecha_nacimiento,
+                id_nivel_educativo,
+                trabaja,
+                celular,
+                CONVERT_TZ(`creado_el`, '+00:00', '-05:00') AS `creado_el`,
+                CONVERT_TZ(`actualizado_el`, '+00:00', '-05:00') AS `actualizado_el`
+                FROM informacion_nucleo_familiar WHERE id = ?
+            ");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
@@ -82,7 +100,24 @@ class InformacionNucleoFamiliar {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM informacion_nucleo_familiar WHERE id_usuario = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                nombre_completo, 
+                id_tipo_documento,
+                numero_documento,
+                id_dpto_exp_doc,
+                id_mpio_exp_doc,
+                id_parentesco,
+                id_genero,
+                fecha_nacimiento,
+                id_nivel_educativo,
+                trabaja,
+                celular,
+                CONVERT_TZ(`creado_el`, '+00:00', '-05:00') AS `creado_el`,
+                CONVERT_TZ(`actualizado_el`, '+00:00', '-05:00') AS `actualizado_el`
+            FROM informacion_nucleo_familiar WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreCompleto, $idTipoDocumento, $numeroDocumento, $idDptoExpDoc, $idMpioExpDoc, $idParentesco, $idGenero, $fechaNacimiento, $idNivelEducativo, $trabaja, $celular, $creadoEl, $actualizadoEl);
@@ -102,7 +137,23 @@ class InformacionNucleoFamiliar {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM informacion_nucleo_familiar";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    nombre_completo, 
+                    id_tipo_documento,
+                    numero_documento,
+                    id_dpto_exp_doc,
+                    id_mpio_exp_doc,
+                    id_parentesco,
+                    id_genero,
+                    fecha_nacimiento,
+                    id_nivel_educativo,
+                    trabaja,
+                    celular,
+                    CONVERT_TZ(`creado_el`, '+00:00', '-05:00') AS `creado_el`,
+                    CONVERT_TZ(`actualizado_el`, '+00:00', '-05:00') AS `actualizado_el`
+                FROM informacion_nucleo_familiar";
         $result = $db->query($query);
         $infoFamiliarArray = [];
         while ($row = $result->fetch_assoc()) {

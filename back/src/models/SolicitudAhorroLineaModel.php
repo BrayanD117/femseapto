@@ -33,7 +33,14 @@ class SolicitudAhorroLinea {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_solicitud_ahorro, id_linea_ahorro, monto_ahorrar FROM solicitudes_ahorro_lineas WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_solicitud_ahorro,
+                id_linea_ahorro,
+                monto_ahorrar
+            FROM solicitudes_ahorro_lineas
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);
@@ -48,7 +55,14 @@ class SolicitudAhorroLinea {
 
     public static function obtenerPorSolicitudId($idSolicitudAhorro) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM solicitudes_ahorro_lineas WHERE id_solicitud_ahorro = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_solicitud_ahorro,
+                id_linea_ahorro,
+                monto_ahorrar
+            FROM solicitudes_ahorro_lineas
+            WHERE id_solicitud_ahorro = ?");
         $query->bind_param("i", $idSolicitudAhorro);
         $query->execute();
         $query->bind_result($id, $idSolicitudAhorro, $idLineaAhorro, $montoAhorrar);

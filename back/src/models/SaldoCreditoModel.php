@@ -108,7 +108,22 @@ class SaldoCredito
     public static function obtenerPorId($id)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id = ?");
+        $stmt = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_credito,
+                cuota_actual,
+                cuotas_totales,
+                valor_solicitado,
+                cuota_quincenal,
+                valor_pagado,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_creditos
+            WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
@@ -128,7 +143,22 @@ class SaldoCredito
     public static function obtenerPorIdUsuario($idUsuario)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, DATE_FORMAT(fecha_corte, '%d/%m/%Y') as fecha_corte, DATE_FORMAT(creado_el, '%d/%m/%Y') as creado_el, DATE_FORMAT(actualizado_el, '%d/%m/%Y') as actualizado_el FROM saldo_creditos WHERE id_usuario = ?");
+        $stmt = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_credito,
+                cuota_actual,
+                cuotas_totales,
+                valor_solicitado,
+                cuota_quincenal,
+                valor_pagado,
+                valor_saldo,
+                DATE_FORMAT(fecha_corte, '%d/%m/%Y') as fecha_corte,
+                DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y') AS creado_el,
+                DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y') AS actualizado_el
+            FROM saldo_creditos
+            WHERE id_usuario = ?");
         $stmt->bind_param("i", $idUsuario);
         $stmt->execute();
         $stmt->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
@@ -147,7 +177,23 @@ class SaldoCredito
     public static function obtenerPorIdUsuarioYLineaCredito($idUsuario, $idLineaCredito)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos WHERE id_usuario = ? AND id_linea_credito = ?");
+        $stmt = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_credito,
+                cuota_actual,
+                cuotas_totales,
+                valor_solicitado,
+                cuota_quincenal,
+                valor_pagado,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_creditos
+            WHERE id_usuario = ?
+            AND id_linea_credito = ?");
         $stmt->bind_param("ii", $idUsuario, $idLineaCredito);
         $stmt->execute();
         $stmt->bind_result($id, $idUsuario, $idLineaCredito, $cuotaActual, $cuotasTotales, $valorSolicitado, $cuotaQuincenal, $valorPagado, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
@@ -166,7 +212,21 @@ class SaldoCredito
     public static function obtenerTodos()
     {
         $db = getDB();
-        $result = $db->query("SELECT id, id_usuario, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_creditos");
+        $result = $db->query(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_credito,
+                cuota_actual,
+                cuotas_totales,
+                valor_solicitado,
+                cuota_quincenal,
+                valor_pagado,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_creditos");
 
         $saldos = [];
         while ($row = $result->fetch_assoc()) {

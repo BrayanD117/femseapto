@@ -63,7 +63,24 @@ class OperacionesInternacionales {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                transacciones_moneda_extranjera,
+                trans_moneda_extranjera,
+                otras_operaciones,
+                cuentas_moneda_extranjera,
+                banco_cuenta_extranjera,
+                cuenta_moneda_extranjera,
+                moneda_cuenta,
+                id_pais_cuenta,
+                ciudad_cuenta,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM operaciones_internacionales 
+            WHERE id = ?
+            ");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
@@ -78,7 +95,24 @@ class OperacionesInternacionales {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM operaciones_internacionales WHERE id_usuario = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                transacciones_moneda_extranjera,
+                trans_moneda_extranjera,
+                otras_operaciones,
+                cuentas_moneda_extranjera,
+                banco_cuenta_extranjera,
+                cuenta_moneda_extranjera,
+                moneda_cuenta,
+                id_pais_cuenta,
+                ciudad_cuenta,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM operaciones_internacionales
+            WHERE id_usuario = ?
+            ");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $transaccionesMonedaExtranjera, $transMonedaExtranjera, $otrasOperaciones, $cuentasMonedaExtranjera, $bancoCuentaExtranjera, $cuentaMonedaExtranjera, $monedaCuenta, $idPaisCuenta, $ciudadCuenta, $creadoEl, $actualizadoEl);
@@ -93,7 +127,21 @@ class OperacionesInternacionales {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM operaciones_internacionales";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    transacciones_moneda_extranjera,
+                    trans_moneda_extranjera,
+                    otras_operaciones,
+                    cuentas_moneda_extranjera,
+                    banco_cuenta_extranjera,
+                    cuenta_moneda_extranjera,
+                    moneda_cuenta,
+                    id_pais_cuenta,
+                    ciudad_cuenta,
+                    CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                    CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+                FROM operaciones_internacionales";
         $result = $db->query($query);
         $operaciones = [];
         while ($row = $result->fetch_assoc()) {

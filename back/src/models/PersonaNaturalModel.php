@@ -174,7 +174,53 @@ class PersonaNatural {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM personas_naturales WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_genero,
+                fecha_expedicion_doc,
+                id_dpto_exp_doc,
+                mpio_expedicion_doc,
+                fecha_nacimiento,
+                pais_nacimiento,
+                id_dpto_nac,
+                mpio_nacimiento,
+                otro_lugar_nacimiento,
+                id_dpto_residencia,
+                mpio_residencia,
+                id_zona_residencia,
+                id_tipo_vivienda,
+                estrato,
+                direccion_residencia,
+                antiguedad_vivienda,
+                id_estado_civil,
+                cabeza_familia,
+                personas_a_cargo,
+                tiene_hijos,
+                numero_hijos,
+                correo_electronico,
+                telefono,
+                celular,
+                telefono_oficina,
+                id_nivel_educativo,
+                profesion,
+                ocupacion_oficio,
+                id_empresa_labor,
+                id_tipo_contrato,
+                dependencia_empresa,
+                cargo_ocupa,
+                jefe_inmediato,
+                antiguedad_empresa,
+                meses_antiguedad_empresa,
+                mes_sale_vacaciones,
+                nombre_emergencia,
+                numero_cedula_emergencia,
+                numero_celular_emergencia,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM personas_naturales
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id,
@@ -273,7 +319,53 @@ class PersonaNatural {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM personas_naturales WHERE id_usuario = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_genero,
+                fecha_expedicion_doc,
+                id_dpto_exp_doc,
+                mpio_expedicion_doc,
+                fecha_nacimiento,
+                pais_nacimiento,
+                id_dpto_nac,
+                mpio_nacimiento,
+                otro_lugar_nacimiento,
+                id_dpto_residencia,
+                mpio_residencia,
+                id_zona_residencia,
+                id_tipo_vivienda,
+                estrato,
+                direccion_residencia,
+                antiguedad_vivienda,
+                id_estado_civil,
+                cabeza_familia,
+                personas_a_cargo,
+                tiene_hijos,
+                numero_hijos,
+                correo_electronico,
+                telefono,
+                celular,
+                telefono_oficina,
+                id_nivel_educativo,
+                profesion,
+                ocupacion_oficio,
+                id_empresa_labor,
+                id_tipo_contrato,
+                dependencia_empresa,
+                cargo_ocupa,
+                jefe_inmediato,
+                antiguedad_empresa,
+                meses_antiguedad_empresa,
+                mes_sale_vacaciones,
+                nombre_emergencia,
+                numero_cedula_emergencia,
+                numero_celular_emergencia,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM personas_naturales
+            WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id,
@@ -372,7 +464,51 @@ class PersonaNatural {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM personas_naturales";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    id_genero,
+                    fecha_expedicion_doc,
+                    id_dpto_exp_doc,
+                    mpio_expedicion_doc,
+                    fecha_nacimiento,
+                    pais_nacimiento,
+                    id_dpto_nac,
+                    mpio_nacimiento,
+                    otro_lugar_nacimiento,
+                    id_dpto_residencia,
+                    mpio_residencia,
+                    id_zona_residencia,
+                    id_tipo_vivienda,
+                    estrato,
+                    direccion_residencia,
+                    antiguedad_vivienda,
+                    id_estado_civil,
+                    cabeza_familia,
+                    personas_a_cargo,
+                    tiene_hijos,
+                    numero_hijos,
+                    correo_electronico,
+                    telefono,
+                    celular,
+                    telefono_oficina,
+                    id_nivel_educativo,
+                    profesion,
+                    ocupacion_oficio,
+                    id_empresa_labor,
+                    id_tipo_contrato,
+                    dependencia_empresa,
+                    cargo_ocupa,
+                    jefe_inmediato,
+                    antiguedad_empresa,
+                    meses_antiguedad_empresa,
+                    mes_sale_vacaciones,
+                    nombre_emergencia,
+                    numero_cedula_emergencia,
+                    numero_celular_emergencia,
+                    CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                    CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+                FROM personas_naturales";
         $result = $db->query($query);
         $personasNaturales = [];
         while ($row = $result->fetch_assoc()) {

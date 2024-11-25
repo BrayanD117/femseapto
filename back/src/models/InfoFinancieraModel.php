@@ -100,7 +100,7 @@ class InformacionFinanciera {
                             concepto_otros_ingresos_mens, total_ingresos_mensuales,
                             egresos_mensuales, obligacion_financiera, otros_egresos_mensuales,
                             total_egresos_mensuales, total_activos, total_pasivos, total_patrimonio,
-                            monto_max_ahorro, creado_el, actualizado_el FROM informacion_financiera WHERE id_usuario = ?");
+                            monto_max_ahorro, CONVERT_TZ(`creado_el`, '+00:00', '-05:00') AS `creado_el`, CONVERT_TZ(`actualizado_el`, '+00:00', '-05:00') AS `actualizado_el` FROM informacion_financiera WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreBanco, $idTipoCuentaBanc, $numeroCuentaBanc,
@@ -125,7 +125,12 @@ class InformacionFinanciera {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM informacion_financiera";
+        $query = "SELECT id, id_usuario, nombre_banco, id_tipo_cuenta_banc, numero_cuenta_banc,
+                            ingresos_mensuales, prima_productividad, otros_ingresos_mensuales,
+                            concepto_otros_ingresos_mens, total_ingresos_mensuales,
+                            egresos_mensuales, obligacion_financiera, otros_egresos_mensuales,
+                            total_egresos_mensuales, total_activos, total_pasivos, total_patrimonio,
+                            monto_max_ahorro, CONVERT_TZ(`creado_el`, '+00:00', '-05:00') AS `creado_el`, CONVERT_TZ(`actualizado_el`, '+00:00', '-05:00') AS `actualizado_el` FROM informacion_financiera";
         $result = $db->query($query);
         $informacionFinanciera = [];
         while ($row = $result->fetch_assoc()) {

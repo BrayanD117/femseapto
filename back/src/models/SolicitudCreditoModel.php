@@ -47,7 +47,21 @@ class SolicitudCredito {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                monto_solicitado,
+                plazo_quincenal,
+                valor_cuota_quincenal,
+                id_linea_credito,
+                reestructurado,
+                periocidad_pago,
+                tasa_interes,
+                ruta_documento,
+                CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud 
+            FROM solicitudes_credito
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
@@ -62,7 +76,21 @@ class SolicitudCredito {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM solicitudes_credito WHERE id_usuario = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                monto_solicitado,
+                plazo_quincenal,
+                valor_cuota_quincenal,
+                id_linea_credito,
+                reestructurado,
+                periocidad_pago,
+                tasa_interes,
+                ruta_documento,
+                CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud 
+            FROM solicitudes_credito
+            WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $montoSolicitado, $plazoQuincenal, $valorCuotaQuincenal, $idLineaCredito, $reestructurado, $periocidadPago, $tasaInteres, $rutaDocumento, $fechaSolicitud);
@@ -81,7 +109,19 @@ class SolicitudCredito {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    monto_solicitado,
+                    plazo_quincenal,
+                    valor_cuota_quincenal,
+                    id_linea_credito,
+                    reestructurado,
+                    periocidad_pago,
+                    tasa_interes,
+                    ruta_documento,
+                    CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud
+                FROM solicitudes_credito";
         $result = $db->query($query);
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
@@ -95,7 +135,24 @@ class SolicitudCredito {
         $db = getDB();
         $offset = ($page - 1) * $size;
         $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT * FROM solicitudes_credito $searchQuery ORDER BY fecha_solicitud DESC LIMIT ? OFFSET ?";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    monto_solicitado,
+                    plazo_quincenal,
+                    valor_cuota_quincenal,
+                    id_linea_credito,
+                    reestructurado,
+                    periocidad_pago,
+                    tasa_interes,
+                    ruta_documento,
+                    CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud 
+                FROM solicitudes_credito
+                $searchQuery
+                ORDER BY fecha_solicitud
+                DESC
+                LIMIT ?
+                OFFSET ?";
         $stmt = $db->prepare($query);
         $stmt->bind_param("ii", $size, $offset);
         $stmt->execute();
@@ -133,7 +190,23 @@ class SolicitudCredito {
         $startDateTime = $startDate . ' 00:00:00';
         $endDateTime = $endDate . ' 23:59:59';
         
-        $query = $db->prepare("SELECT id, id_usuario, monto_solicitado, plazo_quincenal, valor_cuota_quincenal, id_linea_credito, reestructurado, periocidad_pago, tasa_interes, ruta_documento, fecha_solicitud FROM solicitudes_credito WHERE fecha_solicitud BETWEEN ? AND ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                monto_solicitado,
+                plazo_quincenal,
+                valor_cuota_quincenal,
+                id_linea_credito,
+                reestructurado,
+                periocidad_pago,
+                tasa_interes,
+                ruta_documento,
+                CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud
+            FROM solicitudes_credito
+            WHERE fecha_solicitud
+            BETWEEN ?
+            AND ?");
         $query->bind_param("ss", $startDateTime, $endDateTime);
         $query->execute();
         $result = $query->get_result();

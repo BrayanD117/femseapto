@@ -111,7 +111,25 @@ class Usuario {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_rol,
+                usuario,
+                contrasenia,
+                primer_apellido,
+                segundo_apellido,
+                primer_nombre,
+                segundo_nombre,
+                id_tipo_documento,
+                numero_documento,
+                id_tipo_asociado,
+                activo,
+                primer_ingreso,
+                DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS creado_el,
+                DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS actualizado_el
+            FROM usuarios
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
@@ -126,7 +144,24 @@ class Usuario {
 
     public static function obtenerPorNumeroDocumento($numDocumento) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM usuarios WHERE numero_documento = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_rol,
+                usuario,
+                contrasenia,
+                primer_apellido,
+                segundo_apellido,
+                primer_nombre,
+                segundo_nombre,
+                id_tipo_documento,
+                numero_documento,
+                id_tipo_asociado,
+                activo,
+                primer_ingreso,
+                DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS creado_el,
+                DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS actualizado_el
+            FROM usuarios WHERE numero_documento = ?");
         $query->bind_param("s", $numDocumento);
         $query->execute();
         $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);
@@ -153,7 +188,23 @@ class Usuario {
     
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM usuarios";
+        $query = "SELECT
+                    id,
+                    id_rol,
+                    usuario,
+                    contrasenia,
+                    primer_apellido,
+                    segundo_apellido,
+                    primer_nombre,
+                    segundo_nombre,
+                    id_tipo_documento,
+                    numero_documento,
+                    id_tipo_asociado,
+                    activo,
+                    primer_ingreso,
+                    DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS creado_el,
+                    DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS actualizado_el
+                FROM usuarios";
         $result = $db->query($query);
         $users = [];
         while ($row = $result->fetch_assoc()) {
@@ -167,7 +218,24 @@ class Usuario {
         $db = getDB();
         $offset = ($page - 1) * $size;
     
-        $query = "SELECT * FROM usuarios WHERE id_rol = ?";
+        $query = "SELECT
+                    id,
+                    id_rol,
+                    usuario,
+                    contrasenia,
+                    primer_apellido,
+                    segundo_apellido,
+                    primer_nombre,
+                    segundo_nombre,
+                    id_tipo_documento,
+                    numero_documento,
+                    id_tipo_asociado,
+                    activo,
+                    primer_ingreso,
+                    DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS creado_el,
+                    DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS actualizado_el
+                FROM usuarios
+                WHERE id_rol = ?";
     
         if (!empty($search)) {
             $query .= " AND (usuario LIKE ?
@@ -283,7 +351,26 @@ class Usuario {
 
     public static function buscarPorUsuario($usuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM usuarios WHERE usuario = ? AND activo = 1");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_rol,
+                usuario,
+                contrasenia,
+                primer_apellido,
+                segundo_apellido,
+                primer_nombre,
+                segundo_nombre,
+                id_tipo_documento,
+                numero_documento,
+                id_tipo_asociado,
+                activo,
+                primer_ingreso,
+                DATE_FORMAT(CONVERT_TZ(creado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS creado_el,
+                DATE_FORMAT(CONVERT_TZ(actualizado_el, '+00:00', '-05:00'), '%d/%m/%Y %H:%i:%s') AS actualizado_el
+            FROM usuarios
+            WHERE usuario = ?
+            AND activo = 1");
         $query->bind_param("s", $usuario);
         $query->execute();
         $query->bind_result($id, $id_rol, $usuario, $contrasenia, $primerApellido, $segundoApellido, $primerNombre, $segundoNombre, $idTipoDocumento, $numeroDocumento, $id_tipo_asociado, $activo, $primerIngreso, $creadoEl, $actualizadoEl);

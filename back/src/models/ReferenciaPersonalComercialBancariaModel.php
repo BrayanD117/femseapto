@@ -74,7 +74,22 @@ class ReferenciaPersonalComercialBancaria {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM referencias_personales_comerciales_bancarias WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                nombre_razon_social,
+                parentesco,
+                id_tipo_referencia,
+                id_dpto,
+                id_mpio,
+                direccion,
+                telefono,
+                correo_electronico,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM referencias_personales_comerciales_bancarias
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreRazonSocial, $parentesco, $idTipoReferencia, $idDpto, $idMunicipio, $direccion, $telefono, $correoElectronico, $creadoEl, $actualizadoEl);
@@ -89,7 +104,22 @@ class ReferenciaPersonalComercialBancaria {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM referencias_personales_comerciales_bancarias WHERE id_usuario = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                nombre_razon_social,
+                parentesco,
+                id_tipo_referencia,
+                id_dpto,
+                id_mpio,
+                direccion,
+                telefono,
+                correo_electronico,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM referencias_personales_comerciales_bancarias
+            WHERE id_usuario = ?");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $nombreRazonSocial, $parentesco, $idTipoReferencia, $idDpto, $idMunicipio, $direccion, $telefono, $correoElectronico, $creadoEl, $actualizadoEl);
@@ -109,7 +139,20 @@ class ReferenciaPersonalComercialBancaria {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM referencias_personales_comerciales_bancarias";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    nombre_razon_social,
+                    parentesco,
+                    id_tipo_referencia,
+                    id_dpto,
+                    id_mpio,
+                    direccion,
+                    telefono,
+                    correo_electronico,
+                    CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                    CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+                FROM referencias_personales_comerciales_bancarias";
         $result = $db->query($query);
         $referencias = [];
         while ($row = $result->fetch_assoc()) {

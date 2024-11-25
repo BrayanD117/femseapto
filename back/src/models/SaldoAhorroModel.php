@@ -100,7 +100,18 @@ class SaldoAhorro
     public static function obtenerPorId($id)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_ahorros WHERE id = ?");
+        $stmt = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                ahorro_quincenal,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_ahorros
+            WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
@@ -120,7 +131,18 @@ class SaldoAhorro
     public static function obtenerPorIdUsuario($idUsuario)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_ahorros WHERE id_usuario = ?");
+        $stmt = $db->prepare(
+            "SELECT 
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                ahorro_quincenal,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_ahorros
+            WHERE id_usuario = ?");
         $stmt->bind_param("i", $idUsuario);
         $stmt->execute();
         $stmt->bind_result($id, $idUsuario, $idLineaAhorro, $ahorroQuincenal, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
@@ -139,7 +161,19 @@ class SaldoAhorro
     public static function obtenerPorIdUsuarioYLineaAhorro($idUsuario, $idLineaAhorro)
     {
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_ahorros WHERE id_usuario = ? AND id_linea_ahorro = ?");
+        $stmt = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                ahorro_quincenal,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_ahorros
+            WHERE id_usuario = ? 
+            AND id_linea_ahorro = ?");
         $stmt->bind_param("ii", $idUsuario, $idLineaAhorro);
         $stmt->execute();
         $stmt->bind_result($id, $idUsuario, $idLineaAhorro, $ahorroQuincenal, $valorSaldo, $fechaCorte, $creadoEl, $actualizadoEl);
@@ -158,7 +192,17 @@ class SaldoAhorro
     public static function obtenerTodos()
     {
         $db = getDB();
-        $result = $db->query("SELECT id, id_usuario, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte, creado_el, actualizado_el FROM saldo_ahorros");
+        $result = $db->query(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                ahorro_quincenal,
+                valor_saldo,
+                fecha_corte,
+                CONVERT_TZ(creado_el, '+00:00', '-05:00') AS creado_el,
+                CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el
+            FROM saldo_ahorros");
 
         $saldos = [];
         while ($row = $result->fetch_assoc()) {

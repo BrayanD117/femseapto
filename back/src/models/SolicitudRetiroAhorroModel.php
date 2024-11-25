@@ -50,7 +50,20 @@ class SolicitudRetiroAhorro {
 
     public static function obtenerPorId($id) {
         $db = getDB();
-        $query = $db->prepare("SELECT * FROM solicitudes_retiro_ahorro WHERE id = ?");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                monto_retirar,
+                banco,
+                numero_cuenta,
+                devolucion_caja,
+                observaciones,
+                continuar_ahorro,
+                DATE_FORMAT(CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00'), '%d/%m/%Y') AS fecha_solicitud
+            FROM solicitudes_retiro_ahorro
+            WHERE id = ?");
         $query->bind_param("i", $id);
         $query->execute();
         $query->bind_result($id, $idUsuario, $idLineaAhorro, $montoRetirar, $banco, $numeroCuenta, $devolucionCaja, $observaciones, $continuarAhorro, $fechaSolicitud);
@@ -65,7 +78,22 @@ class SolicitudRetiroAhorro {
 
     public static function obtenerPorIdUsuario($idUsuario) {
         $db = getDB();
-        $query = $db->prepare("SELECT id, id_usuario, id_linea_ahorro, monto_retirar, banco, numero_cuenta, devolucion_caja, observaciones, continuar_ahorro, DATE_FORMAT(fecha_solicitud, '%d/%m/%Y') as fecha_solicitud FROM solicitudes_retiro_ahorro WHERE id_usuario = ? ORDER BY fecha_solicitud DESC");
+        $query = $db->prepare(
+            "SELECT
+                id,
+                id_usuario,
+                id_linea_ahorro,
+                monto_retirar,
+                banco,
+                numero_cuenta,
+                devolucion_caja,
+                observaciones,
+                continuar_ahorro,
+                DATE_FORMAT(CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00'), '%d/%m/%Y') AS fecha_solicitud
+            FROM solicitudes_retiro_ahorro
+            WHERE id_usuario = ?
+            ORDER BY fecha_solicitud
+            DESC");
         $query->bind_param("i", $idUsuario);
         $query->execute();
         $query->bind_result($id, $idUsuario, $idLineaAhorro, $montoRetirar, $banco, $numeroCuenta, $devolucionCaja, $observaciones, $continuarAhorro, $fechaSolicitud);
@@ -84,7 +112,18 @@ class SolicitudRetiroAhorro {
 
     public static function obtenerTodos() {
         $db = getDB();
-        $query = "SELECT * FROM solicitudes_retiro_ahorro";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    id_linea_ahorro,
+                    monto_retirar,
+                    banco,
+                    numero_cuenta,
+                    devolucion_caja,
+                    observaciones,
+                    continuar_ahorro,
+                    DATE_FORMAT(CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00'), '%d/%m/%Y') AS fecha_solicitud
+                FROM solicitudes_retiro_ahorro";
         $result = $db->query($query);
         $solicitudes = [];
         while ($row = $result->fetch_assoc()) {
@@ -98,7 +137,23 @@ class SolicitudRetiroAhorro {
         $db = getDB();
         $offset = ($page - 1) * $size;
         $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT * FROM solicitudes_retiro_ahorro $searchQuery  ORDER BY fecha_solicitud DESC LIMIT ? OFFSET ?";
+        $query = "SELECT
+                    id,
+                    id_usuario,
+                    id_linea_ahorro,
+                    monto_retirar,
+                    banco,
+                    numero_cuenta,
+                    devolucion_caja,
+                    observaciones,
+                    continuar_ahorro,
+                    DATE_FORMAT(CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00'), '%d/%m/%Y') AS fecha_solicitud
+                FROM solicitudes_retiro_ahorro
+                $searchQuery
+                ORDER BY fecha_solicitud
+                DESC
+                LIMIT ?
+                OFFSET ?";
         $stmt = $db->prepare($query);
         $stmt->bind_param("ii", $size, $offset);
         $stmt->execute();
