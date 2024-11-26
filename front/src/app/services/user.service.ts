@@ -69,6 +69,10 @@ export class UserService {
   
     return this.http.post(url, body, { withCredentials: true });
   }
+
+  getUserInfoByDocumentNumber(docNumber: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reporteUsuariosCompleto.php?numeroDocumento=${docNumber}`, { withCredentials: true });
+  }
 }
 
 export interface User {

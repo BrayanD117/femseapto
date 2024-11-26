@@ -140,8 +140,8 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('L15').value = user.municipioEmpresa || '';
 
         // Datos financieros
-        worksheet.getCell('G34').value = Number(user.ingresosMensuales) || 0;
-        worksheet.getCell('X34').value = Number(user.egresosMensuales) || 0;
+        worksheet.getCell('G34').value = (Number(user.ingresosMensuales) + Number(user.primaProductividad)) || 0;
+        worksheet.getCell('X34').value = (Number(user.egresosMensuales) + Number(user.obligacionFinanciera)) || 0;
         worksheet.getCell('G35').value = Number(user.otrosIngresosMensuales) || 0;
         worksheet.getCell('X35').value = Number(user.otrosEgresosMensuales) || 0;
         worksheet.getCell('G36').value = Number(user.totalIngresosMensuales) || 0;

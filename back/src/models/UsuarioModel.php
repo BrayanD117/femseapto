@@ -445,10 +445,10 @@ class Usuario {
                 u.segundo_apellido AS segundoApellido,
                 MAX(g.nombre) AS generoNombre,
                 MAX(pn.id_genero) AS idGenero,
-                MAX(pn.fecha_expedicion_doc) AS fechaExpedicionDoc,
+                DATE_FORMAT(MAX(pn.fecha_expedicion_doc), '%d/%m/%Y') AS fechaExpedicionDoc,
                 MAX(deExp.nombre) AS nombreDptoExpDoc,
                 MAX(muExp.nombre) AS nombreMpioExpDoc,
-                MAX(pn.fecha_nacimiento) AS fechaNacimiento,
+                DATE_FORMAT(MAX(pn.fecha_nacimiento), '%d/%m/%Y') AS fechaNacimiento,
                 MAX(paNac.nombre) AS nombrePaisNacimiento,
                 MAX(deNac.nombre) AS nombreDptoNac,
                 MAX(muNac.nombre) AS nombreMpioNac,
@@ -531,7 +531,7 @@ class Usuario {
                 MAX(pep.funcion_publico_extranjero) AS funcionPublicoExtranjero,
                 MAX(pep.fam_funcion_publico) AS familiarFuncionPublico,
                 MAX(pep.socio_funcion_publico) AS socioFuncionPublico,
-                (SELECT MAX(actualizado_el) FROM (
+                DATE_FORMAT(CONVERT_TZ((SELECT MAX(actualizado_el) FROM (
                     SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
                     SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
@@ -539,7 +539,7 @@ class Usuario {
                     SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
                     UNION ALL
                     SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
-                ) AS subquery) AS ultimaActualizacion,
+                ) AS subquery), '+00:00', '-05:00'), '%d/%m/%Y') AS ultimaActualizacion,
                 (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreCompleto', sub_nf.nombre_completo,
@@ -547,7 +547,7 @@ class Usuario {
                         'numeroDocumento', sub_nf.numero_documento,
                         'tipoDocumento', td.nombre,
                         'genero', gf.nombre,
-                        'fechaNacimiento', sub_nf.fecha_nacimiento,
+                        'fechaNacimiento', DATE_FORMAT(sub_nf.fecha_nacimiento, '%d/%m/%Y'),
                         'nivelEducativo', nef.nombre,
                         'trabaja', sub_nf.trabaja,
                         'celular', sub_nf.celular
@@ -637,13 +637,13 @@ class Usuario {
                 personas_expuestas_publicamente pep ON pep.id_usuario = u.id
             WHERE 
                 (SELECT MAX(actualizado_el) FROM (
-                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
+                    SELECT CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el FROM personas_naturales WHERE id_usuario = u.id
                     UNION ALL
-                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
+                    SELECT CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
                     UNION ALL
-                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
+                    SELECT CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
                     UNION ALL
-                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
+                    SELECT CONVERT_TZ(actualizado_el, '+00:00', '-05:00') AS actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
                 ) AS subquery) BETWEEN ? AND ?
             GROUP BY 
                 u.id;
@@ -757,6 +757,327 @@ class Usuario {
         $db->close();
 
         return $usuarios;
+    }
+
+
+    public static function obtenerDatosCompletosPorNumeroDocumento($numeroDocumento)
+    {
+        $db = getDB();
+
+        $query = "
+            SELECT 
+                u.id AS idUsuario,
+                u.numero_documento AS numeroDocumento,
+                u.primer_nombre AS primerNombre,
+                u.segundo_nombre AS segundoNombre,
+                u.primer_apellido AS primerApellido,
+                u.segundo_apellido AS segundoApellido,
+                MAX(g.nombre) AS generoNombre,
+                MAX(pn.id_genero) AS idGenero,
+                DATE_FORMAT(MAX(pn.fecha_expedicion_doc), '%d/%m/%Y') AS fechaExpedicionDoc,
+                MAX(deExp.nombre) AS nombreDptoExpDoc,
+                MAX(muExp.nombre) AS nombreMpioExpDoc,
+                DATE_FORMAT(MAX(pn.fecha_nacimiento), '%d/%m/%Y') AS fechaNacimiento,
+                MAX(paNac.nombre) AS nombrePaisNacimiento,
+                MAX(deNac.nombre) AS nombreDptoNac,
+                MAX(muNac.nombre) AS nombreMpioNac,
+                MAX(pn.otro_lugar_nacimiento) AS otroLugarNacimiento,
+                MAX(deRes.nombre) AS nombreDptoResidencia,
+                MAX(muRes.nombre) AS nombreMpioResidencia,
+                MAX(pn.id_zona_residencia) AS idZonaResidencia,
+                MAX(pn.id_tipo_vivienda) AS idTipoVivienda,
+                MAX(pn.estrato) AS estrato,
+                MAX(pn.direccion_residencia) AS direccionResidencia,
+                MAX(pn.antiguedad_vivienda) AS antiguedadVivienda,
+                MAX(pn.id_estado_civil) AS idEstadoCivil,
+                MAX(pn.cabeza_familia) AS cabezaFamilia,
+                MAX(pn.personas_a_cargo) AS personasACargo,
+                MAX(pn.tiene_hijos) AS tieneHijos,
+                MAX(pn.numero_hijos) AS numeroHijos,
+                MAX(pn.correo_electronico) AS correoElectronico,
+                MAX(pn.telefono) AS telefono,
+                MAX(pn.celular) AS celular,
+                MAX(pn.telefono_oficina) AS telefonoOficina,
+                MAX(ne.nombre) AS nombreNivelEducativo,
+                MAX(pn.profesion) AS profesion,
+                MAX(pn.ocupacion_oficio) AS ocupacionOficio,
+                MAX(e.nombre) AS nombreEmpresaLabor,
+                MAX(e.nit) AS nitEmpresa,
+                MAX(e.direccion) AS direccionEmpresa,
+                MAX(muEmp.nombre) AS municipioEmpresa,
+                MAX(e.telefono) AS telefonoEmpresa,
+                MAX(e.fax) AS faxEmpresa,
+                MAX(e.actividad_economica) AS actividadEconomicaEmpresa,
+                MAX(e.ciiu) AS ciiuEmpresa,
+                MAX(te.nombre) AS tipoEmpresa,
+                MAX(pn.id_tipo_contrato) AS idTipoContrato,
+                MAX(tc.nombre) AS tipoContratoNombre,
+                MAX(pn.dependencia_empresa) AS dependenciaEmpresa,
+                MAX(pn.cargo_ocupa) AS cargoOcupa,
+                MAX(pn.jefe_inmediato) AS jefeInmediato,
+                MAX(pn.antiguedad_empresa) AS antiguedadEmpresa,
+                MAX(pn.meses_antiguedad_empresa) AS mesesAntiguedadEmpresa,
+                MAX(pn.mes_sale_vacaciones) AS mesSaleVacaciones,
+                MAX(pn.nombre_emergencia) AS nombreEmergencia,
+                MAX(pn.numero_cedula_emergencia) AS numeroCedulaEmergencia,
+                MAX(pn.numero_celular_emergencia) AS numeroCelularEmergencia,
+                MAX(inf.nombre_banco) AS nombreBanco,
+                MAX(inf.id_tipo_cuenta_banc) AS tipoCuentaBancaria,
+                MAX(inf.numero_cuenta_banc) AS numeroCuentaBancaria,
+                MAX(inf.ingresos_mensuales) AS ingresosMensuales,
+                MAX(inf.prima_productividad) AS primaProductividad,
+                MAX(inf.otros_ingresos_mensuales) AS otrosIngresosMensuales,
+                MAX(inf.concepto_otros_ingresos_mens) AS conceptoOtrosIngresosMens,
+                MAX(inf.total_ingresos_mensuales) AS totalIngresosMensuales,
+                MAX(inf.egresos_mensuales) AS egresosMensuales,
+                MAX(inf.obligacion_financiera) AS obligacionFinanciera,
+                MAX(inf.otros_egresos_mensuales) AS otrosEgresosMensuales,
+                MAX(inf.total_egresos_mensuales) AS totalEgresosMensuales,
+                MAX(inf.total_activos) AS totalActivos,
+                MAX(inf.total_pasivos) AS totalPasivos,
+                MAX(inf.total_patrimonio) AS totalPatrimonio,
+                MAX(zg.nombre) AS zonaGeografica,
+                MAX(tv.nombre) AS tipoVivienda,
+                MAX(ec.nombre) AS estadoCivil,
+                MAX(par.nombre) AS parentescoNombre,
+                MAX(td.nombre) AS tipoDocumentoFamiliar,
+                MAX(nef.nombre) AS nivelEducativoFamiliar,
+                MAX(gf.nombre) AS generoFamiliar,
+                MAX(tme.transacciones_moneda_extranjera) AS transaccionesMonedaExtranjera,
+                MAX(tme.trans_moneda_extranjera) AS monedaTransaccion,
+                MAX(tme.otras_operaciones) AS otrasOperaciones,
+                MAX(tme.cuentas_moneda_extranjera) AS cuentaExtranjera,
+                MAX(tme.banco_cuenta_extranjera) AS bancoExtranjera,
+                MAX(tme.cuenta_moneda_extranjera) AS numeroCuentaExtranjera,
+                MAX(tme.moneda_cuenta) AS monedaCuenta,
+                MAX(p.nombre) AS paisCuenta,
+                MAX(tme.ciudad_cuenta) AS ciudadCuenta,
+                MAX(pep.poder_publico) AS poderPublico,
+                MAX(pep.maneja_rec_public) AS manejaRecursosPublicos,
+                MAX(pep.reconoc_public) AS reconocimientoPublico,
+                MAX(pep.funciones_publicas) AS funcionesPublicas,
+                MAX(pep.actividad_publica) AS actividadPublica,
+                MAX(pep.funcion_publico_extranjero) AS funcionPublicoExtranjero,
+                MAX(pep.fam_funcion_publico) AS familiarFuncionPublico,
+                MAX(pep.socio_funcion_publico) AS socioFuncionPublico,
+                DATE_FORMAT(CONVERT_TZ((SELECT MAX(actualizado_el) FROM (
+                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
+                    UNION ALL
+                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
+                ) AS subquery), '+00:00', '-05:00'), '%d/%m/%Y') AS ultimaActualizacion,
+                (SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'nombreCompleto', sub_nf.nombre_completo,
+                        'parentesco', par.nombre,
+                        'numeroDocumento', sub_nf.numero_documento,
+                        'tipoDocumento', td.nombre,
+                        'genero', gf.nombre,
+                        'fechaNacimiento', DATE_FORMAT(sub_nf.fecha_nacimiento, '%d/%m/%Y'),
+                        'nivelEducativo', nef.nombre,
+                        'trabaja', sub_nf.trabaja,
+                        'celular', sub_nf.celular
+                    )
+                )
+                FROM (
+                    SELECT DISTINCT nf.* 
+                    FROM informacion_nucleo_familiar nf
+                    WHERE nf.id_usuario = u.id
+                ) AS sub_nf
+                LEFT JOIN parentescos par ON sub_nf.id_parentesco = par.id
+                LEFT JOIN tipos_documento td ON sub_nf.id_tipo_documento = td.id
+                LEFT JOIN niveles_educativos nef ON sub_nf.id_nivel_educativo = nef.id
+                LEFT JOIN generos gf ON sub_nf.id_genero = gf.id) AS familiares,
+                (SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'nombreRazonSocial', sub_rpcb.nombre_razon_social,
+                        'abreviatura', tr.abreviatura,
+                        'direccion', sub_rpcb.direccion,
+                        'ciudad', m.nombre,
+                        'telefono', sub_rpcb.telefono
+                    )
+                )
+                FROM (
+                    SELECT DISTINCT rpcb.* 
+                    FROM referencias_personales_comerciales_bancarias rpcb
+                    WHERE rpcb.id_usuario = u.id
+                    LIMIT 2
+                ) AS sub_rpcb
+                LEFT JOIN tipos_referencia tr ON sub_rpcb.id_tipo_referencia = tr.id
+                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias
+            FROM 
+                usuarios u
+            LEFT JOIN 
+                personas_naturales pn ON u.id = pn.id_usuario
+            LEFT JOIN 
+                generos g ON pn.id_genero = g.id
+            LEFT JOIN 
+                departamentos deExp ON pn.id_dpto_exp_doc = deExp.id
+            LEFT JOIN 
+                municipios muExp ON pn.mpio_expedicion_doc = muExp.id
+            LEFT JOIN 
+                paises paNac ON pn.pais_nacimiento = paNac.id
+            LEFT JOIN 
+                departamentos deNac ON pn.id_dpto_nac = deNac.id
+            LEFT JOIN 
+                municipios muNac ON pn.mpio_nacimiento = muNac.id
+            LEFT JOIN 
+                departamentos deRes ON pn.id_dpto_residencia = deRes.id
+            LEFT JOIN 
+                municipios muRes ON pn.mpio_residencia = muRes.id
+            LEFT JOIN 
+                empresas e ON pn.id_empresa_labor = e.id
+            LEFT JOIN 
+                tipos_empresa te ON e.id_tipo_empresa = te.id
+            LEFT JOIN 
+                municipios muEmp ON e.id_municipio = muEmp.id
+            LEFT JOIN 
+                tipos_contrato tc ON pn.id_tipo_contrato = tc.id
+            LEFT JOIN 
+                niveles_educativos ne ON pn.id_nivel_educativo = ne.id
+            LEFT JOIN 
+                informacion_financiera inf ON u.id = inf.id_usuario
+            LEFT JOIN 
+                informacion_nucleo_familiar nf ON u.id = nf.id_usuario
+            LEFT JOIN 
+                tipos_documento td ON nf.id_tipo_documento = td.id
+            LEFT JOIN 
+                niveles_educativos nef ON nf.id_nivel_educativo = nef.id
+            LEFT JOIN 
+                generos gf ON nf.id_genero = gf.id
+            LEFT JOIN 
+                referencias_personales_comerciales_bancarias rpcb ON u.id = rpcb.id_usuario
+            LEFT JOIN 
+                zonas_geograficas zg ON pn.id_zona_residencia = zg.id
+            LEFT JOIN 
+                tipos_vivienda tv ON pn.id_tipo_vivienda = tv.id
+            LEFT JOIN 
+                estados_civiles ec ON pn.id_estado_civil = ec.id
+            LEFT JOIN 
+                parentescos par ON nf.id_parentesco = par.id
+            LEFT JOIN 
+                operaciones_internacionales tme ON tme.id_usuario = u.id
+            LEFT JOIN 
+                paises p ON tme.id_pais_cuenta = p.id
+            LEFT JOIN 
+                personas_expuestas_publicamente pep ON pep.id_usuario = u.id
+            WHERE 
+                u.numero_documento = ?
+            GROUP BY 
+                u.id;
+        ";
+
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("s", $numeroDocumento);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $usuario = [];
+        if ($row = $result->fetch_assoc()) {
+            $usuario = [
+                'id' => $row['idUsuario'],
+                'numeroDocumento' => $row['numeroDocumento'],
+                'primerNombre' => $row['primerNombre'],
+                'segundoNombre' => $row['segundoNombre'],
+                'primerApellido' => $row['primerApellido'],
+                'segundoApellido' => $row['segundoApellido'],
+                'generoNombre' => $row['generoNombre'],
+                'fechaExpedicionDoc' => $row['fechaExpedicionDoc'],
+                'nombreDptoExpDoc' => $row['nombreDptoExpDoc'],
+                'nombreMpioExpDoc' => $row['nombreMpioExpDoc'],
+                'fechaNacimiento' => $row['fechaNacimiento'],
+                'nombrePaisNacimiento' => $row['nombrePaisNacimiento'],
+                'nombreDptoNac' => $row['nombreDptoNac'],
+                'nombreMpioNac' => $row['nombreMpioNac'],
+                'otroLugarNacimiento' => $row['otroLugarNacimiento'],
+                'nombreDptoResidencia' => $row['nombreDptoResidencia'],
+                'nombreMpioResidencia' => $row['nombreMpioResidencia'],
+                'idZonaResidencia' => $row['idZonaResidencia'],
+                'idTipoVivienda' => $row['idTipoVivienda'],
+                'estrato' => $row['estrato'],
+                'direccionResidencia' => $row['direccionResidencia'],
+                'antiguedadVivienda' => $row['antiguedadVivienda'],
+                'idEstadoCivil' => $row['idEstadoCivil'],
+                'cabezaFamilia' => $row['cabezaFamilia'],
+                'personasACargo' => $row['personasACargo'],
+                'tieneHijos' => $row['tieneHijos'],
+                'numeroHijos' => $row['numeroHijos'],
+                'correoElectronico' => $row['correoElectronico'],
+                'telefono' => $row['telefono'],
+                'celular' => $row['celular'],
+                'telefonoOficina' => $row['telefonoOficina'],
+                'nombreNivelEducativo' => $row['nombreNivelEducativo'],
+                'profesion' => $row['profesion'],
+                'ocupacionOficio' => $row['ocupacionOficio'],
+                'nombreEmpresaLabor' => $row['nombreEmpresaLabor'],
+                'nitEmpresa' => $row['nitEmpresa'],
+                'direccionEmpresa' => $row['direccionEmpresa'],
+                'municipioEmpresa' => $row['municipioEmpresa'],
+                'telefonoEmpresa' => $row['telefonoEmpresa'],
+                'faxEmpresa' => $row['faxEmpresa'],
+                'actividadEconomicaEmpresa' => $row['actividadEconomicaEmpresa'],
+                'ciiuEmpresa' => $row['ciiuEmpresa'],
+                'tipoEmpresa' => $row['tipoEmpresa'],
+                'idTipoContrato' => $row['idTipoContrato'],
+                'tipoContratoNombre' => $row['tipoContratoNombre'],
+                'dependenciaEmpresa' => $row['dependenciaEmpresa'],
+                'cargoOcupa' => $row['cargoOcupa'],
+                'jefeInmediato' => $row['jefeInmediato'],
+                'antiguedadEmpresa' => $row['antiguedadEmpresa'],
+                'mesesAntiguedadEmpresa' => $row['mesesAntiguedadEmpresa'],
+                'mesSaleVacaciones' => $row['mesSaleVacaciones'],
+                'nombreEmergencia' => $row['nombreEmergencia'],
+                'numeroCedulaEmergencia' => $row['numeroCedulaEmergencia'],
+                'numeroCelularEmergencia' => $row['numeroCelularEmergencia'],
+                'nombreBanco' => $row['nombreBanco'],
+                'tipoCuentaBancaria' => $row['tipoCuentaBancaria'],
+                'numeroCuentaBancaria' => $row['numeroCuentaBancaria'],
+                'ingresosMensuales' => $row['ingresosMensuales'],
+                'primaProductividad' => $row['primaProductividad'],
+                'otrosIngresosMensuales' => $row['otrosIngresosMensuales'],
+                'conceptoOtrosIngresosMens' => $row['conceptoOtrosIngresosMens'],
+                'totalIngresosMensuales' => $row['totalIngresosMensuales'],
+                'egresosMensuales' => $row['egresosMensuales'],
+                'obligacionFinanciera' => $row['obligacionFinanciera'],
+                'otrosEgresosMensuales' => $row['otrosEgresosMensuales'],
+                'totalEgresosMensuales' => $row['totalEgresosMensuales'],
+                'totalActivos' => $row['totalActivos'],
+                'totalPasivos' => $row['totalPasivos'],
+                'totalPatrimonio' => $row['totalPatrimonio'],
+                'parentescoNombre' => $row['parentescoNombre'],
+                'zonaGeografica' => $row['zonaGeografica'],
+                'tipoVivienda' => $row['tipoVivienda'],
+                'estadoCivil' => $row['estadoCivil'],
+                'transaccionesMonedaExtranjera' => $row['transaccionesMonedaExtranjera'],
+                'monedaTransaccion' => $row['monedaTransaccion'],
+                'otrasOperaciones' => $row['otrasOperaciones'],
+                'cuentaExtranjera' => $row['cuentaExtranjera'],
+                'bancoExtranjera' => $row['bancoExtranjera'],
+                'numeroCuentaExtranjera' => $row['numeroCuentaExtranjera'],
+                'monedaCuenta' => $row['monedaCuenta'],
+                'paisCuenta' => $row['paisCuenta'],
+                'ciudadCuenta' => $row['ciudadCuenta'],
+                'poderPublico' => $row['poderPublico'],
+                'manejaRecursosPublicos' => $row['manejaRecursosPublicos'],
+                'reconocimientoPublico' => $row['reconocimientoPublico'],
+                'funcionesPublicas' => $row['funcionesPublicas'],
+                'actividadesPublicas' => $row['actividadPublica'],
+                'funcionPublicoExtranjero' => $row['funcionPublicoExtranjero'],
+                'familiarFuncionPublico' => $row['familiarFuncionPublico'],
+                'socioFuncionPublico' => $row['socioFuncionPublico'],
+                'familiares' => json_decode($row['familiares'], true),
+                'referencias' => json_decode($row['referencias'], true),
+                'ultimaActualizacion' => $row['ultimaActualizacion'],
+            ];
+        }
+
+        $stmt->close();
+        $db->close();
+
+        return $usuario;
     }
 }
 ?>

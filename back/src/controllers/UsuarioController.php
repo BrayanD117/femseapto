@@ -211,6 +211,15 @@ class UsuarioController {
             return ['success' => false, 'message' => 'Error al obtener los datos: ' . $e->getMessage()];
         }
     }
-    
+
+    public function obtenerDatosCompletosPorNumeroDocumento($numeroDocumento) {
+        $usuario = Usuario::obtenerDatosCompletosPorNumeroDocumento($numeroDocumento);
+        if ($usuario) {
+            return $usuario;
+        } else {
+            http_response_code(404);
+            return array("message" => "Usuario no encontrado.");
+        }
+    }
 }
 ?>

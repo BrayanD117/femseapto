@@ -1,1 +1,32 @@
-<p>users-search works!</p>
+<div class="container mt-4">
+    <h4>Generar reporte por número de documento</h4>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="documentNumber" class="form-label">Número de documento del asociado:</label>
+            <input type="text" class="form-control" id="documentNumber" [(ngModel)]="documentNumber"
+                placeholder="Ingresa el número de documento" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <button class="btn btn-primary" (click)="getUserInfo()" [disabled]="isLoading">
+                {{ isLoading ? 'Buscando...' : 'Buscar información del asociado' }}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="user" class="row mb-3">
+        <div class="col-md-12">
+            <h5>Información del Asociado:</h5>
+            <p class="mb-0">
+                <strong>Nombre:</strong> {{ user.primerNombre }} {{ user.segundoNombre }} {{ user.primerApellido }} {{
+                user.segundoApellido }}
+            </p>
+            <p class="mt-0">
+                <strong>Número de documento:</strong> {{ user.numeroDocumento }}
+            </p>
+            <button class="btn btn-success" (click)="generateExcelForUser()" [disabled]="isLoading">
+                {{ isLoading ? 'Generando Excel...' : 'Generar Excel' }}
+            </button>
+        </div>
+    </div>
+</div>
