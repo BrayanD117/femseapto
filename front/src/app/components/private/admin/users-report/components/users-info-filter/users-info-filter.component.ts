@@ -24,6 +24,7 @@ export class UsersInfoFilterComponent {
   startDate: Date | null = null;
   endDate: Date | null = null;
   users: any[] = [];
+  isLoading: boolean = false;
 
   constructor(
     private userService: UserService, 
@@ -40,12 +41,13 @@ export class UsersInfoFilterComponent {
       return;
     }
 
+    this.isLoading = true;
     const fechaInicio = this.startDate.toISOString().split('T')[0];
     const fechaFin = this.endDate.toISOString().split('T')[0];
 
     this.userService.getUsersByDateRange(fechaInicio, fechaFin).subscribe({
       next: (response: any) => {
-        console.log('Datos recibidos del backend:', response.data);
+        this.isLoading = false;
         if (response.success) {
           this.users = response.data;
           this.messageService.add({
@@ -62,6 +64,7 @@ export class UsersInfoFilterComponent {
         }
       },
       error: (error) => {
+        this.isLoading = false;
         console.error(error);
         this.messageService.add({
           severity: 'error',
@@ -82,6 +85,7 @@ export class UsersInfoFilterComponent {
       return;
     }
   
+    this.isLoading = true;
     const zip = new JSZip();
   
     for (const user of this.users) {
@@ -198,6 +202,7 @@ export class UsersInfoFilterComponent {
       zip.file(fileName, buffer);
     }
     zip.generateAsync({ type: 'blob' }).then((content) => {
+      this.isLoading = false;
       fs.saveAs(content, 'Usuarios_Vinculacion.zip');
       this.messageService.add({
         severity: 'success',

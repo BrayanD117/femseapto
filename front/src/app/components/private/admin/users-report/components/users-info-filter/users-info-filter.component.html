@@ -24,6 +24,7 @@
       icon="pi pi-filter"
       class="p-button-primary"
       (click)="filterByDates()"
+      [disabled]="isLoading"
     ></button>
   
     <button
@@ -33,34 +34,21 @@
       icon="pi pi-file"
       class="p-button-success"
       (click)="generateZipForUsers()"
-      [disabled]="users.length === 0"
+      [disabled]="users.length === 0 || isLoading"
     ></button>
-  </div>
+  </div>  
   
-  <div *ngIf="users.length > 0" class="data-table">
-    <p-table [value]="users" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Documento</th>
-          <th>Última Actualización</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-user>
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.nombre }}</td>
-          <td>{{ user.numeroDocumento }}</td>
-          <td>{{ user.fechaUltimaActualizacion }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
+  <div *ngIf="isLoading" class="loader-container">
+    <i class="pi pi-spin pi-spinner"></i> Cargando...
   </div>
-  
-  <p-messages
-    *ngIf="users.length === 0 && startDate && endDate"
-    severity="info"
-    text="No se encontraron resultados con las fechas seleccionadas."
-  ></p-messages>  
+
+  <div *ngIf="users.length > 0 && !isLoading" class="results-container">
+    <p>Se encontraron <strong>{{ users.length }}</strong> registros.</p>
+  </div>
 </div>
+
+<p-messages
+  *ngIf="users.length === 0 && startDate && endDate && !isLoading"
+  severity="info"
+  text="No se encontraron resultados con las fechas seleccionadas."
+></p-messages>

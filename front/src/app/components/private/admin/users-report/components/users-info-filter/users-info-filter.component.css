@@ -4,12 +4,38 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.data-table {
-  margin-top: 1rem;
+.date-filter p-calendar {
+  flex: 1;
+  min-width: 15rem;
 }
 
-p-calendar {
-  width: 15rem;
+.results-container {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+@media (max-width: 768px) {
+  .date-filter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #007ad9;
+}
+
+.pi-spinner {
+  margin-right: 0.5rem;
 }
