@@ -59,7 +59,7 @@ export class RequestSavingComponent implements OnInit {
     private naturalpersonService: NaturalpersonService
   ) {
     this.savingsForm = this.fb.group({
-      totalSavingsAmount: [0, [Validators.required, Validators.min(1)]],
+      totalSavingsAmount: [{ value: 0, disabled: true }],
       fortnight: ['', Validators.required],
       month: ['', Validators.required],
       lines: this.fb.array([])
@@ -136,11 +136,27 @@ export class RequestSavingComponent implements OnInit {
             this.checkValidationComplete(allValid);
         });
     }   
-}
+  }
 
   checkValidationComplete(allValid: boolean): void {
       this.isAdditionalDisabled = !allValid;
   }
+
+  calculateTotalSavingsAmount(): void {
+    const total = this.lines.controls
+      .filter(control => control.get('selected')?.value)
+      .map(control => control.get('montoAhorrar')?.value || 0)
+      .reduce((acc, value) => acc + value, 0);
+  
+    this.savingsForm.get('totalSavingsAmount')?.setValue(total);
+  
+    // Validar contra maxSavingsAmount
+    if (total > this.maxSavingsAmount) {
+      this.savingsForm.get('totalSavingsAmount')?.setErrors({ max: true });
+    } else {
+      this.savingsForm.get('totalSavingsAmount')?.setErrors(null);
+    }
+  }  
 
   /*private handleWarning(detail: string): void {
     this.messageService.add({ severity: 'warn', summary: 'Aviso', detail });
@@ -183,7 +199,7 @@ export class RequestSavingComponent implements OnInit {
       montoControl?.setValue(0);
     }
 
-    this.validateTotalSavingsAmount();
+    this.calculateTotalSavingsAmount();
   }
 
   onMontoAhorrarInput(event: Event, index: number): void {
@@ -194,39 +210,7 @@ export class RequestSavingComponent implements OnInit {
     montoControl?.setValue(value);
     inputElement.value = `$ ${value.toLocaleString('es-ES')}`;
 
-    this.validateTotalSavingsAmount();
-  }
-
-  validateTotalSavingsAmount(): void {
-    const totalSavingsAmount = this.savingsForm.get('totalSavingsAmount')?.value;
-    const totalLinesAmount = this.lines.controls
-      .map(control => control.get('montoAhorrar')?.value || 0)
-      .reduce((acc, value) => acc + value, 0);
-
-    if (totalLinesAmount > totalSavingsAmount && totalLinesAmount !== this.previousTotalLinesAmount) {
-      if (!this.toastDisplayed) {
-        this.toastDisplayed = true;
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Advertencia',
-          detail: `La suma de las líneas de ahorro no puede exceder el monto total de ahorro.`
-        });
-        setTimeout(() => {
-          this.toastDisplayed = false;
-        }, 3000);
-      }
-      this.lines.controls.forEach(control => {
-        if (control.get('selected')?.value) {
-          control.get('montoAhorrar')?.setErrors({ max: true });
-        }
-      });
-    } else {
-      this.lines.controls.forEach(control => {
-        control.get('montoAhorrar')?.setErrors(null);
-      });
-    }
-
-    this.previousTotalLinesAmount = totalLinesAmount;
+    this.calculateTotalSavingsAmount();
   }
 
   onTotalSavingsAmountInput(event: Event): void {
@@ -235,8 +219,6 @@ export class RequestSavingComponent implements OnInit {
     const value = numericValue ? parseInt(numericValue, 10) : 0;
     this.savingsForm.get('totalSavingsAmount')?.setValue(value);
     inputElement.value = `$ ${value.toLocaleString('es-ES')}`;
-
-    this.validateTotalSavingsAmount();
   }
 
   resetForm(): void {
@@ -252,13 +234,15 @@ export class RequestSavingComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.savingsForm.valid) {
+    if (this.savingsForm.valid && !this.savingsForm.get('totalSavingsAmount')?.errors?.['max']) {
       this.isLoading = true;
 
       const token = this.loginService.getTokenClaims();
 
       if (token) {
         const userId = token.userId;
+        const formValues = this.savingsForm.getRawValue();
+
         const selectedLines = this.savingsForm.value.lines
           .filter((line: any) => line.selected)
           .map((line: any) => ({
@@ -268,9 +252,9 @@ export class RequestSavingComponent implements OnInit {
 
         const savingsData = {
           idUsuario: userId,
-          montoTotalAhorrar: this.savingsForm.value.totalSavingsAmount,
-          quincena: this.savingsForm.value.fortnight,
-          mes: this.savingsForm.value.month,
+          montoTotalAhorrar: formValues.totalSavingsAmount,
+          quincena: formValues.fortnight,
+          mes: formValues.month,
           lineas: selectedLines
         };
 
@@ -305,4 +289,17 @@ export class RequestSavingComponent implements OnInit {
   get lines(): FormArray {
     return this.savingsForm.get('lines') as FormArray;
   }
+
+  formatCurrency(amount: number, currency: string = 'COP', locale: string = 'es-CO'): string {
+    if (amount === null || amount === undefined) {
+      return '';
+    }
+  
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  }  
 }

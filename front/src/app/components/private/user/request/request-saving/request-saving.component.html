@@ -22,44 +22,7 @@
     <div class="card-body">
       <form [formGroup]="savingsForm" (ngSubmit)="onSubmit()" [attr.disabled]="isAdditionalDisabled ? true : null">
         <div class="mb-3">
-          <label for="totalSavingsAmount" class="form-label"
-            >Monto Total de Ahorro</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="totalSavingsAmount"
-            formControlName="totalSavingsAmount"
-            [value]="
-              savingsForm.get('totalSavingsAmount')?.value | currencyFormat
-            "
-            (input)="onTotalSavingsAmountInput($event)"
-          />
-          <div
-            *ngIf="
-              savingsForm.get('totalSavingsAmount')?.invalid &&
-              (savingsForm.get('totalSavingsAmount')?.dirty ||
-                savingsForm.get('totalSavingsAmount')?.touched)
-            "
-            class="text-danger"
-          >
-            <div
-              *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['required']"
-            >
-              Este campo es requerido.
-            </div>
-            <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['min']">
-              El monto debe ser mayor a 0.
-            </div>
-            <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['max']">
-              El monto no puede exceder de
-              {{ maxSavingsAmount | currencyFormat }}.
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="fortnight" class="form-label">Quincena</label>
+          <label for="fortnight" class="form-label">Quincena en la que desea comenzar a ahorrar:</label>
           <select
             class="form-select"
             id="fortnight"
@@ -84,7 +47,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="month" class="form-label">Mes</label>
+          <label for="month" class="form-label">Mes en el que desea comenzar a ahorrar:</label>
           <select class="form-select" id="month" formControlName="month">
             <option value="" disabled selected>Seleccione un mes</option>
             <option value="Enero">Enero</option>
@@ -115,7 +78,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="savingLines" class="form-label">Líneas de Ahorro</label>
+          <label for="savingLines" class="form-label">Seleccione las líneas en las que desea ahorrar y especifique el monto a asignar en cada una.</label>
           <div formArrayName="lines">
             <div
               *ngFor="let line of lines.controls; let i = index"
@@ -144,10 +107,18 @@
           </div>
         </div>
 
+        <div class="mb-3">
+          <label for="totalSavingsAmount" class="form-label">Monto Total que desea ahorrar quincenalmente:</label>
+          <p class="fw-semibold">{{ savingsForm.get('totalSavingsAmount')?.value | currencyFormat }}</p>
+          <div *ngIf="savingsForm.get('totalSavingsAmount')?.errors?.['max']" class="text-danger">
+            El monto total no puede exceder de {{ formatCurrency(maxSavingsAmount) }}.
+          </div>
+        </div> 
+
         <button
           type="submit"
           class="btn btn-primary"
-          [disabled]="savingsForm.invalid || isAdditionalDisabled"
+          [disabled]="savingsForm.invalid || savingsForm.get('totalSavingsAmount')?.errors?.['max'] || isAdditionalDisabled"
         >
         <span *ngIf="!isLoading">Enviar solicitud</span>
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

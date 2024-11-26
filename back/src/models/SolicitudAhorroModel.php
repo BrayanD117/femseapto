@@ -54,7 +54,7 @@ class SolicitudAhorro {
                 monto_total_ahorrar,
                 quincena,
                 mes,
-                CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud,
+                CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud
             FROM solicitudes_ahorro
             WHERE id = ?");
         $query->bind_param("i", $id);
