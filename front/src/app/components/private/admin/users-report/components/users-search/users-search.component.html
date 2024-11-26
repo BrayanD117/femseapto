@@ -29,4 +29,7 @@
             </button>
         </div>
     </div>
+    <div *ngIf="showNotFoundMessage" class="alert alert-warning mt-3" role="alert">
+        No se encontró información para el número de documento ingresado.
+    </div>
 </div>

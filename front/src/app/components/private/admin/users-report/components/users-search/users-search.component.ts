@@ -19,6 +19,7 @@ export class UsersSearchComponent {
   documentNumber: string = '';
   user: any = null;
   isLoading: boolean = false;
+  showNotFoundMessage: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -27,43 +28,27 @@ export class UsersSearchComponent {
 
   getUserInfo() {
     if(!this.documentNumber) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'No. Documento requerido',
-        detail: 'Por favor, ingrese un número de documento',
-      });
       return;
     }
+
+    this.user = null;
+    this.showNotFoundMessage = false;
 
     this.isLoading = true;
 
     this.userService.getUserInfoByDocumentNumber(this.documentNumber).subscribe({
       next: (response: any) => {
-        console.log("INFO", response);
         this.isLoading = false;
         if (response) {
           this.user = response;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Usuario encontrado',
-            detail: `Se encontró información para el documento ${this.documentNumber}.`,
-          });
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se encontró información para el documento ingresado',
-          });
+          this.showNotFoundMessage = true;
         }
       },
       error: (error) => {
         this.isLoading = false;
+        this.showNotFoundMessage = true;
         console.error(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Ocurrió un error en la solicitud',
-        });
       },
     });
   }
