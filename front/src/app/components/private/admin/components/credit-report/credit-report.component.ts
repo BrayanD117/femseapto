@@ -78,7 +78,7 @@ export class CreditReportComponent {
             if (Array.isArray(credits) && credits.length === 0) {
               this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No hay créditos solicitados en el rango de fechas seleccionado.' });
             } else {
-              console.log("Datos recibidos del backend:", credits);
+              //console.log("Datos recibidos del backend:", credits);
               this.fetchAdditionalInfo(credits);
             }
           },

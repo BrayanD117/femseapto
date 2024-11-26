@@ -175,7 +175,7 @@ export class RequestSavingComponent implements OnInit {
     const filteredSavingLines = this.tipoAsociado === 2
       ? this.savingLines.filter(line => line.nombre === 'Ahorro Extraordinario')
       : this.savingLines;
-    console.log(this.savingLines);
+    //console.log(this.savingLines);
 
     filteredSavingLines.forEach((line: any) => {
       linesArray.push(this.fb.group({

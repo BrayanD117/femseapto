@@ -185,7 +185,7 @@ export class ManageUserComponent {
     //console.log(this.editUserForm.value); 
     if (this.editUserForm.valid) {
       const userFormData = this.editUserForm.value;
-      console.log(userFormData);
+      //console.log(userFormData);
       if(this.isEditMode) {
         //console.log("antes", userFormData);
         this.userService.update(userFormData).subscribe({

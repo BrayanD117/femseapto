@@ -207,7 +207,7 @@ export class ManageExecutiveComponent {
       } else {
         this.userService.create(userFormData).subscribe({
           next: () => {
-            console.log(userFormData);
+            //console.log(userFormData);
             this.users.push(userFormData);
             this.formReset();
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Directivo creado correctamente' });

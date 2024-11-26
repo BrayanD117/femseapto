@@ -213,7 +213,7 @@ export class ManageAdminComponent {
     //console.log(this.editUserForm.value);
     if (this.editUserForm.valid) {
 
-      console.log(this.editUserForm.value);
+      //console.log(this.editUserForm.value);
       const userFormData = this.editUserForm.value;
       if (this.isEditMode) {
         //console.log('antes', userFormData);

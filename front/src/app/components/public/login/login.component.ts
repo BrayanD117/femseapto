@@ -38,7 +38,7 @@ export class LoginComponent {
               domain: environment.cookieDomain,
               secure: environment.cookieSecure,
               sameSite: 'Strict' });
-          console.log(environment.cookieDomain);
+          //console.log(environment.cookieDomain);
   
           const decodedToken = this.jwtHelper.decodeToken(response.token);
           const rol = decodedToken.id_rol;

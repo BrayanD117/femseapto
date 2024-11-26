@@ -74,7 +74,7 @@ export class UsersSearchComponent {
 
     if (worksheet) {
       const user = this.user;
-      console.log("user info", this.user);
+      //console.log("user info", this.user);
 
       // Datos personales
       worksheet.getCell('C6').value = user.primerApellido || '';
