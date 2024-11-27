@@ -90,7 +90,7 @@ export class UsersInfoFilterComponent {
   
     for (const user of this.users) {
       const workbook = new Workbook();
-      await fetch('/assets/FORMATO_DE_VINCULACION.xlsx')
+      await fetch('/assets/FORMATO_CONTRAPARTES.xlsx')
         .then((response) => response.arrayBuffer())
         .then((data) => workbook.xlsx.load(data));
   
