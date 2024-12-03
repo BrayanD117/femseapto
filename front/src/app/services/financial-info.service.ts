@@ -77,4 +77,6 @@ export interface FinancialInformation {
   montoMaxAhorro: number;
   creadoEl: Date;
   actualizadoEl: Date;
+  perfilActualizadoEl?: Date;
+  actualizarPerfilFecha?: boolean;
 }

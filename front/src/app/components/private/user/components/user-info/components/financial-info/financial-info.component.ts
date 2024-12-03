@@ -50,7 +50,8 @@ export class FinancialInfoComponent implements OnInit {
       totalEgresosMensuales: [{ value: 0, disabled: true }],
       totalActivos: [0, Validators.required],
       totalPasivos: [0, Validators.required],
-      totalPatrimonio: [{ value: 0, disabled: true }]
+      totalPatrimonio: [{ value: 0, disabled: true }],
+      actualizarPerfilFecha: [false]
     });
   }
 
@@ -87,7 +88,6 @@ export class FinancialInfoComponent implements OnInit {
       
     }
 
-    // Subscribe to value changes of value1 and value2
     this.financialForm.get('ingresosMensuales')?.valueChanges.subscribe(() => this.updateTotalIncome());
     this.financialForm.get('otrosIngresosMensuales')?.valueChanges.subscribe(() => this.updateTotalIncome());
     this.financialForm.get('primaProductividad')?.valueChanges.subscribe(() => this.updateTotalIncome());
@@ -162,13 +162,17 @@ export class FinancialInfoComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    this.financialForm.get('totalIngresosMensuales')?.enable();
-    this.financialForm.get('totalEgresosMensuales')?.enable();
-    this.financialForm.get('totalPatrimonio')?.enable();
+    //this.financialForm.get('totalIngresosMensuales')?.enable();
+    //this.financialForm.get('totalEgresosMensuales')?.enable();
+    //this.financialForm.get('totalPatrimonio')?.enable();
 
     if (this.financialForm.valid) {
+      this.financialForm.get('actualizarPerfilFecha')?.setValue(true);
+      
+      const formData = this.financialForm.getRawValue();
+      console.log("FORM: ", formData);
 
-      const parsedData = { ...this.financialForm.value };
+      const parsedData = { ...formData };
 
       parsedData.ingresosMensuales = parseInt(this.financialForm.get('ingresosMensuales')?.value.replace(/\./g, ''), 10);
       parsedData.primaProductividad = parseInt(this.financialForm.get('primaProductividad')?.value.replace(/\./g, ''), 10);
@@ -186,16 +190,12 @@ export class FinancialInfoComponent implements OnInit {
         this.financialInfoService.update(parsedData).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera actualizada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información financiera', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información financiera. Vuelve a intentarlo.' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       } else {
@@ -204,28 +204,24 @@ export class FinancialInfoComponent implements OnInit {
             //console.log(response);
             this.financialForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información financiera creada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información financiera', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información financiera. Vuelve a intentarlo.' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       }     
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Vuelve a iniciar sesión e inténtalo de nuevo.' });
-      setTimeout(() => {
-        this.isSubmitting = false;
-      }, 500);
+      this.resetSubmitState();
     }
+  }
 
-    this.financialForm.get('totalIngresosMensuales')?.disable();
-    this.financialForm.get('totalEgresosMensuales')?.disable();
-    this.financialForm.get('totalPatrimonio')?.disable();
+  private resetSubmitState(): void {
+    setTimeout(() => {
+      this.isSubmitting = false;
+    }, 500);
   }
 }
