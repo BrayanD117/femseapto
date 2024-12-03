@@ -17,9 +17,10 @@ class Usuario {
     public $primerIngreso;
     public $creadoEl;
     public $actualizadoEl;
+    public $perfilActualizadoEl;
 
     public function __construct($id = null, $id_rol = null, $usuario = '', $contrasenia = '',
-    $primerApellido = '', $segundoApellido = null, $primerNombre = '', $segundoNombre = null, $idTipoDocumento = '', $numeroDocumento = '', $id_tipo_asociado = '', $activo = null, $primerIngreso = null, $creadoEl = '', $actualizadoEl = '') {
+    $primerApellido = '', $segundoApellido = null, $primerNombre = '', $segundoNombre = null, $idTipoDocumento = '', $numeroDocumento = '', $id_tipo_asociado = '', $activo = null, $primerIngreso = null, $creadoEl = '', $actualizadoEl = '', $perfilActualizadoEl = '') {
         $this->id = $id;
         $this->id_rol = $id_rol;
         $this->usuario = $usuario;
@@ -35,6 +36,7 @@ class Usuario {
         $this->primerIngreso = $primerIngreso;
         $this->creadoEl = $creadoEl;
         $this->actualizadoEl = $actualizadoEl;
+        $this->perfilActualizadoEl = $perfilActualizadoEl;
     }
 
     public function guardar() {
@@ -431,6 +433,29 @@ class Usuario {
         return $usuarios;
     }
 
+    public static function actualizarPerfilActualizadoEl($idUsuario) {
+        $db = getDB();
+        try {
+            $query = $db->prepare("UPDATE usuarios SET perfil_actualizado_el = ? WHERE id = ?");
+            $fechaActual = (new DateTime('now', new DateTimeZone('America/Bogota')))->format('Y-m-d H:i:s');
+            $query->bind_param("si", $fechaActual, $idUsuario);
+            $query->execute();
+    
+            if ($query->error) {
+                throw new Exception('Error al actualizar perfilActualizadoEl: ' . $query->error);
+            }
+    
+            $query->close();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        } finally {
+            $db->close();
+        }
+    
+        return true;
+    }
+
     public static function obtenerDatosCompletoUsuarios($fechaInicio, $fechaFin)
     {
         $db = getDB();
@@ -758,7 +783,6 @@ class Usuario {
 
         return $usuarios;
     }
-
 
     public static function obtenerDatosCompletosPorNumeroDocumento($numeroDocumento)
     {

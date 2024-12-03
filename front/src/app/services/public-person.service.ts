@@ -55,4 +55,5 @@ export interface PublicPerson {
   socioFuncionarioPublico: string;
   creadoEl: Date;
   actualizadoEl: Date;
+  actualizarPerfilFecha?: boolean;
 }

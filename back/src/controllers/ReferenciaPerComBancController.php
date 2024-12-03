@@ -24,6 +24,10 @@ class ReferenciaPersonalComercialBancariaController {
 
         $referencia->guardar();
 
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($referencia->idUsuario);
+        }
+
         return $referencia->id;
     }
 
@@ -46,6 +50,10 @@ class ReferenciaPersonalComercialBancariaController {
         $referencia->correoElectronico = $datos['correoElectronico'];
 
         $referencia->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($referencia->idUsuario);
+        }
 
         return true;
     }

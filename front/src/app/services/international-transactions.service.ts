@@ -56,4 +56,5 @@ export interface InternationalTransaction {
   ciudadCuenta: string;
   creadoEl: Date;
   actualizadoEl: Date;
+  actualizarPerfilFecha?: boolean;
 }

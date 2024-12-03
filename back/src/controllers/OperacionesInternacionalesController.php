@@ -27,6 +27,10 @@ class OperacionesInternacionalesController {
 
         $operacion->guardar();
 
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($operacion->idUsuario);
+        }
+
         return $operacion->id;
     }
 
@@ -50,6 +54,10 @@ class OperacionesInternacionalesController {
         $operacion->ciudadCuenta = $datos['ciudadCuenta'] ?? null;
 
         $operacion->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($operacion->idUsuario);
+        }
 
         return true;
     }

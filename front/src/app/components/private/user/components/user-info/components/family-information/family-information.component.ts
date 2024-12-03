@@ -90,6 +90,7 @@ export class FamilyInformationComponent implements OnInit {
       idNivelEducativo: ['', Validators.required],
       trabaja: ['', Validators.required],
       celular: ['', Validators.required],
+      actualizarPerfilFecha: [false]
     });
   }
 

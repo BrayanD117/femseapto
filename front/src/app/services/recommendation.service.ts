@@ -65,4 +65,5 @@ export interface Recommendation {
   correoElectronico: string;
   creadoEl: Date;
   actualizadoEl: Date;
+  actualizarPerfilFecha?: boolean;
 }

@@ -53,6 +53,10 @@ class PersonaNaturalController {
         );
 
         $personaNatural->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($personaNatural->idUsuario);
+        }
         
         return $personaNatural->id;
     }
@@ -107,6 +111,10 @@ class PersonaNaturalController {
         $personaNatural->numeroCelularEmergencia = $datos['numeroCelularEmergencia'] ?? null;
 
         $personaNatural->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($personaNatural->idUsuario);
+        }
 
         return true;
     }

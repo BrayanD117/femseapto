@@ -20,6 +20,10 @@ class PersonaExpuestaPublicamenteController {
 
         $persona->guardar();
 
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($persona->idUsuario);
+        }
+
         return $persona->id;
     }
 
@@ -39,6 +43,10 @@ class PersonaExpuestaPublicamenteController {
         $persona->socioFuncionarioPublico = $datos['socioFuncionarioPublico'];
 
         $persona->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($persona->idUsuario);
+        }
 
         return true;
     }

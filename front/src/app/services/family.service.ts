@@ -62,4 +62,5 @@ export interface Family {
   celular: string;
   creadoEl: Date;
   actualizadoEl: Date;
+  actualizarPerfilFecha?: boolean;
 }

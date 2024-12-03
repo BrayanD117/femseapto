@@ -10,10 +10,6 @@ class InfoFinancieraController {
 
         $datos = DataUtils::convertirDatos($datos);
 
-        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
-            $datos['perfilActualizadoEl'] = (new DateTime('now', new DateTimeZone('America/Bogota')))->format('Y-m-d H:i:s');
-        }
-
         $infoFinanciera = new InformacionFinanciera(
             null,
             $datos['idUsuario'],
@@ -31,11 +27,14 @@ class InfoFinancieraController {
             $datos['totalEgresosMensuales'],
             $datos['totalActivos'],
             $datos['totalPasivos'],
-            $datos['totalPatrimonio'],
-            $datos['perfilActualizadoEl'] ?? null
+            $datos['totalPatrimonio']
         );
 
         $infoFinanciera->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($infoFinanciera->idUsuario);
+        }
         
         return $infoFinanciera->id;
     }
@@ -64,11 +63,12 @@ class InfoFinancieraController {
         $infoFinanciera->totalActivos = $datos['totalActivos'];
         $infoFinanciera->totalPasivos = $datos['totalPasivos'];
         $infoFinanciera->totalPatrimonio = $datos['totalPatrimonio'];
-        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
-            $infoFinanciera->perfilActualizadoEl = (new DateTime('now', new DateTimeZone('America/Bogota')))->format('Y-m-d H:i:s');
-        }
 
         $infoFinanciera->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($infoFinanciera->idUsuario);
+        }
 
         return true;
     }

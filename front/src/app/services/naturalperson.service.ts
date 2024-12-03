@@ -79,4 +79,5 @@ export interface NaturalPerson {
   numeroCelularEmergencia: string;
   creadoEl: string;
   actualizadoEl: string;
+  actualizarPerfilFecha?: boolean;
 }

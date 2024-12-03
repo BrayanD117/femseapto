@@ -28,6 +28,10 @@ class InformacionNucleoFamiliarController {
 
         $infoFamiliar->guardar();
 
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($infoFamiliar->idUsuario);
+        }
+
         return $infoFamiliar->id;
     }
 
@@ -53,6 +57,10 @@ class InformacionNucleoFamiliarController {
         $infoFamiliar->celular = $datos['celular'];
 
         $infoFamiliar->guardar();
+
+        if (!empty($datos['actualizarPerfilFecha']) && $datos['actualizarPerfilFecha'] === true) {
+            Usuario::actualizarPerfilActualizadoEl($infoFamiliar->idUsuario);
+        }
 
         return true;
     }
