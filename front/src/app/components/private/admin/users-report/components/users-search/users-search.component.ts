@@ -173,6 +173,11 @@ export class UsersSearchComponent {
       worksheet.getCell('A57').value = user.funcionPublicoExtranjero || 'N/A';
       worksheet.getCell('K57').value = user.familiarFuncionPublico || 'N/A';
       worksheet.getCell('R57').value = user.socioFuncionPublico || 'N/A';
+
+      // Contacto de emergencia
+      worksheet.getCell('I72').value = user.nombreEmergencia || 'N/A';
+      worksheet.getCell('S72').value = user.numeroCedulaEmergencia || 'N/A';
+      worksheet.getCell('AG72').value = user.numeroCelularEmergencia || 'N/A';
     }
 
     const buffer = await workbook.xlsx.writeBuffer();
