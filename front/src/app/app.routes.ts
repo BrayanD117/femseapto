@@ -48,6 +48,7 @@ import { SavingRequestHistoryComponent } from './components/private/user/saving-
 import { UserSettingsComponent } from './components/private/user/user-settings/user-settings.component';
 import { AgreementTypesListComponent } from './components/public/agreements/components/agreement-types-list/agreement-types-list.component';
 import { UsersReportComponent } from './components/private/admin/users-report/users-report.component';
+import { RequiredSavingBalanceComponent } from './components/private/user/required-saving-balance/required-saving-balance.component';
 
 export const routes: Routes = [
     { path: '', component: PublicComponent,
@@ -79,7 +80,8 @@ export const routes: Routes = [
                     { path: 'information', component: UserInfoComponent },
                     { path: 'savings',
                         children: [
-                        { path: 'balance', component: SavingBalanceComponent }
+                        { path: 'balance', component: SavingBalanceComponent },
+                        { path: 'required-balance', component: RequiredSavingBalanceComponent }
                     ],
                     },
                     { path: 'credits',

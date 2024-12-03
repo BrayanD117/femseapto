@@ -6,52 +6,65 @@
 <div class="container mt-2 content-animate">
     <div class="row">
 
-        <!-- Card de Mi Perfil -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card shadow text-center h-100">
-                <h4 class="card-header">
-                    Mi Perfil
-                </h4>
-                <div class="card-body">
-                    <h5 class="card-title">Datos Personales</h5>
-                    <a routerLink="/auth/user/information" class="btn btn-primary">Actualiza tus datos aquí</a>
-                </div>
-            </div>
-        </div>
-
         <!-- Card de Servicios de Crédito -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card shadow text-center h-100">
                 <h4 class="card-header">
                     Servicios de Crédito
                 </h4>
                 <div class="card-body">
                     <h5 class="card-title">Conoce los Servicios de Crédito</h5>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/credit">Solicitalo aquí</a>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/credits/balance">Validar saldos</a>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/credit">Solicitar crédito</a>
+                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/credits/balance">Consultar saldos de crédito</a>
                     <!-- <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/credits">Mi historial</a> -->
                 </div>
             </div>
         </div>
 
         <!-- Card de Servicios de Ahorro -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card shadow text-center h-100">
                 <h4 class="card-header">
                     Servicios de Ahorro
                 </h4>
                 <div class="card-body ">
                     <h5 class="card-title">Conoce los Servicios de Ahorro</h5>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving">Solicita tu ahorro aquí</a>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving-withdrawal">Solicita tu retiro de ahorro aquí</a>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/request/saving-history">Ver el historial de solicitudes</a>
-                    <a class="btn btn-primary me-2 mb-1" routerLink="/auth/user/savings/balance">Validar saldos de ahorros</a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary" routerLink="/auth/user/request/saving">Solicitar nuevo ahorro</a>
+                                <a class="btn btn-primary" routerLink="/auth/user/request/saving-withdrawal">Solicitar retiro de ahorros</a>
+                                <a class="btn btn-primary" routerLink="/auth/user/request/saving-history">Historial de solicitudes</a>
+                            </div>    
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary" routerLink="/auth/user/savings/balance">Consultar saldo de ahorros</a>
+                                <a class="btn btn-primary" routerLink="/auth/user/savings/required-balance">Consultar saldo de ahorros obligatorios</a>
+                            </div>           
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Card de Mi Perfil -->
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card shadow text-center h-100">
+                <h4 class="card-header">
+                    Mi Perfil
+                </h4>
+                <div class="card-body">
+                    <h5 class="card-title">Datos Personales</h5>
+                    <a routerLink="/auth/user/information" class="btn btn-primary">Actualizar datos generales</a>
+                </div>
+            </div>
+        </div>
+
+        
+
         <!-- Card de Ajustes -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card shadow text-center h-100">
                 <h4 class="card-header">
                     Ajustes
