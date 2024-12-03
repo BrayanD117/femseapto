@@ -26,6 +26,18 @@
              [style.width.%]="progress['saving']"></div>
     </div>
 
+    <h5>Cargar saldos ahorros obligatorios vigentes</h5>
+    <div class="input-group mb-3">
+        <input type="file" class="form-control" (change)="onFileSelected($event, 'requiredSaving')" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" (click)="onFileUpload('requiredSaving')"
+            [disabled]="!selectedFiles['requiredSaving']">Cargar Archivo</button>
+    </div>
+    <div class="progress mb-3">
+        <div class="progress-text">{{ progress['requiredSaving'] }}%</div>
+        <div class="progress-bar" role="progressbar" 
+             [style.width.%]="progress['requiredSaving']"></div>
+    </div>
+
     <h5>Cargar montos máximos de ahorro</h5>
     <div class="input-group mb-3">
         <input type="file" class="form-control" (change)="onFileSelected($event, 'maxAmount')" aria-label="Upload">

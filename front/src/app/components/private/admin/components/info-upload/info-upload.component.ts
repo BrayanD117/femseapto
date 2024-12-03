@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CreditBalanceService } from '../../../../../services/credit-balance.service';
 import { SavingBalanceService } from '../../../../../services/saving-balance.service';
+import { RequiredSavingBalanceService } from '../../../../../services/required-saving-balance.service';
 import { FinancialInfoService } from '../../../../../services/financial-info.service';
 import { CommonModule } from '@angular/common';
 import * as ExcelJS from 'exceljs';
@@ -20,12 +21,14 @@ export class InfoUploadComponent {
   selectedFiles: { [key: string]: File | null } = {
     credit: null,
     saving: null,
+    requiredSaving: null,
     maxAmount: null
   };
 
   messages: { [key: string]: string | null } = {
     credit: null,
     saving: null,
+    requiredSaving: null,
     maxAmount: null
   };
 
@@ -33,6 +36,7 @@ export class InfoUploadComponent {
   progress: { [key: string]: number } = {
     credit: 0,
     saving: 0,
+    requiredSaving: 0,
     maxAmount: 0
   };
 
@@ -40,12 +44,14 @@ export class InfoUploadComponent {
   completedRequests: { [key: string]: number } = {
     credit: 0,
     saving: 0,
+    requiredSaving: 0,
     maxAmount: 0
   };
 
   constructor(
     private creditBalanceService: CreditBalanceService,
     private savingBalanceService: SavingBalanceService,
+    private requiredSavingBalanceService: RequiredSavingBalanceService,
     private financialInfoService: FinancialInfoService,
     private messageService: MessageService,
     private router: Router
@@ -109,6 +115,7 @@ export class InfoUploadComponent {
 
     const creditClosingDate = new Date(row.getCell(9).value).toISOString().split('T')[0];
     const savingClosingDate = new Date(row.getCell(5).value).toISOString().split('T')[0];
+    const requiredSavingClosingDate = new Date(row.getCell(4).value).toISOString().split('T')[0];
 
     switch (type) {
       case 'credit':
@@ -131,6 +138,13 @@ export class InfoUploadComponent {
           valorSaldo: row.getCell(4).value,
           fechaCorte: savingClosingDate
         };
+      case 'requiredSaving':
+        return {
+          numeroDocumento: row.getCell(1).value,
+          idLineaAhorroObligatoria: row.getCell(2).value,
+          valorSaldo: row.getCell(3).value,
+          fechaCorte: requiredSavingClosingDate
+        };
       case 'maxAmount':
         return {
           numeroDocumento: row.getCell(1).value,
@@ -150,6 +164,9 @@ export class InfoUploadComponent {
         break;
       case 'saving':
         service = this.savingBalanceService;
+        break;
+      case 'requiredSaving':
+        service = this.requiredSavingBalanceService;
         break;
       case 'maxAmount':
         service = this.financialInfoService;

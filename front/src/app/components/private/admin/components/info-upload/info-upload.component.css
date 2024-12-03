@@ -18,3 +18,8 @@
     line-height: 20px;
     color: black;
 }
+
+h1, h5 {
+    color: #00823d;
+    font-weight: bold;
+}
