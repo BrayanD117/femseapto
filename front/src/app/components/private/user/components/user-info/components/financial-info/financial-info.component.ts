@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from '../../../../../../../services/login.service';
 import { FinancialInformation, FinancialInfoService } from '../../../../../../../services/financial-info.service';
@@ -18,6 +18,8 @@ import { BankAccountType, BankAccountTypeService } from '../../../../../../../se
   styleUrls: ['./financial-info.component.css']
 })
 export class FinancialInfoComponent implements OnInit {
+  @Input() actualizarPerfilFecha: boolean = false;
+
   financialForm: FormGroup;
   userId: number | null = null;
   financialInfo: FinancialInformation | null = null;
@@ -60,9 +62,11 @@ export class FinancialInfoComponent implements OnInit {
 
     if (token) {
       this.userId = token.userId;
+      console.log("ENTRA", this.actualizarPerfilFecha);
 
       this.financialForm.patchValue({
-        idUsuario: this.userId
+        idUsuario: this.userId,
+        actualizarPerfilFecha: this.actualizarPerfilFecha
       });
 
       this.financialInfoService.getByUserId(token.userId).subscribe(financialInfo => {
@@ -84,8 +88,7 @@ export class FinancialInfoComponent implements OnInit {
             totalPatrimonio: this.formatToCurrency(parseInt(financialInfo.totalPatrimonio, 10))
           });
         }    
-      });
-      
+      });  
     }
 
     this.financialForm.get('ingresosMensuales')?.valueChanges.subscribe(() => this.updateTotalIncome());
@@ -166,9 +169,7 @@ export class FinancialInfoComponent implements OnInit {
     //this.financialForm.get('totalEgresosMensuales')?.enable();
     //this.financialForm.get('totalPatrimonio')?.enable();
 
-    if (this.financialForm.valid) {
-      this.financialForm.get('actualizarPerfilFecha')?.setValue(true);
-      
+    if (this.financialForm.valid) {      
       const formData = this.financialForm.getRawValue();
       console.log("FORM: ", formData);
 

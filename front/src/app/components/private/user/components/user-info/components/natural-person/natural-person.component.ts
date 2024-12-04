@@ -150,6 +150,7 @@ export class NaturalPersonComponent implements OnInit {
       nombreEmergencia: ['', Validators.required],
       numeroCedulaEmergencia: ['', Validators.required],
       numeroCelularEmergencia: ['', Validators.required],
+      actualizarPerfilFecha: [false]
     });
 
     this.natPersonForm.get('tieneHijos')?.valueChanges.subscribe((value) => {
@@ -338,6 +339,8 @@ export class NaturalPersonComponent implements OnInit {
 
 
     if (this.natPersonForm.valid) {
+      this.natPersonForm.get('actualizarPerfilFecha')?.setValue(true);
+
       const durationHome = this.natPersonForm.get('duracionAntigVivienda')?.value;
       const periodHome = this.natPersonForm.get('periodoAntigVivienda')?.value;
       const durationCompany = this.natPersonForm.get('duracionAntigEmpresa')?.value;
@@ -372,9 +375,7 @@ export class NaturalPersonComponent implements OnInit {
               summary: 'Éxito',
               detail: 'Información actualizada correctamente',
             });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
@@ -384,9 +385,7 @@ export class NaturalPersonComponent implements OnInit {
               detail:
                 'No se pudo actualizar la información. Vuelve a intentarlo.',
             });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
         });
       } else {
@@ -399,9 +398,7 @@ export class NaturalPersonComponent implements OnInit {
               summary: 'Éxito',
               detail: 'Información creada correctamente',
             });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
@@ -410,9 +407,7 @@ export class NaturalPersonComponent implements OnInit {
               summary: 'Error',
               detail: 'No se pudo crear la información. Vuelve a intentarlo.',
             });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
         });
       }
@@ -422,9 +417,7 @@ export class NaturalPersonComponent implements OnInit {
         summary: 'Error',
         detail: 'Algún dato te falta por registrar.',
       });
-      setTimeout(() => {
-        this.isSubmitting = false;
-      }, 500);
+      this.resetSubmitState();
     }
 
     if (this.natPersonForm.get('tieneHijos')?.value === 'NO') {
@@ -434,5 +427,11 @@ export class NaturalPersonComponent implements OnInit {
     if (this.natPersonForm.get('cabezaFamilia')?.value === 'NO') {
       this.natPersonForm.get('personasACargo')?.disable();
     }
+  }
+
+  private resetSubmitState(): void {
+    setTimeout(() => {
+      this.isSubmitting = false;
+    }, 500);
   }
 }

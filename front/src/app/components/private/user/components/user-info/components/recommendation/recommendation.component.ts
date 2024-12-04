@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -26,6 +26,8 @@ import {
   styleUrl: './recommendation.component.css'
 })
 export class RecommendationComponent {
+  @Input() actualizarPerfilFecha: boolean = false;
+
   recommendations: Recommendation[] = [];
   recommendationForm: FormGroup;
   editMode = false;
@@ -51,7 +53,8 @@ export class RecommendationComponent {
       idMunicipio: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
-      correoElectronico: ['', [Validators.required, Validators.email]]
+      correoElectronico: ['', [Validators.required, Validators.email]],
+      actualizarPerfilFecha: [false]
     });
   }
 
@@ -65,6 +68,11 @@ export class RecommendationComponent {
     if (idMpio) {
       this.onDepartmentChange();
     }
+
+    this.recommendationForm.patchValue({
+      actualizarPerfilFecha: this.actualizarPerfilFecha
+    });
+
   }
 
   getUserIdFromToken(): void {

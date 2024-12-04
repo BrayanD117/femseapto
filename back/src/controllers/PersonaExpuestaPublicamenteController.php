@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/PersonaExpuestaPublicamenteModel.php';
+require_once __DIR__ . '/../models/UsuarioModel.php';
 
 class PersonaExpuestaPublicamenteController {
 

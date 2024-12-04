@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/OperacionesInternacionalesModel.php';
+require_once __DIR__ . '/../models/UsuarioModel.php';
 require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class OperacionesInternacionalesController {

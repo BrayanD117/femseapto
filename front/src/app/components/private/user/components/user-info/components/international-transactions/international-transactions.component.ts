@@ -42,7 +42,8 @@ export class InternationalTransactionsComponent implements OnInit {
       cuentaMonedaExtranjera: [{ value: '', disabled: true }],
       monedaCuenta: [{ value: '', disabled: true }],
       idPaisCuenta: [{ value: '', disabled: true }],
-      ciudadCuenta: [{ value: '', disabled: true }]
+      ciudadCuenta: [{ value: '', disabled: true }],
+      actualizarPerfilFecha: [false]
     });
 
     this.intTransForm.get('transaccionesMonedaExtranjera')?.valueChanges.subscribe(value => {
@@ -137,21 +138,18 @@ export class InternationalTransactionsComponent implements OnInit {
     this.isSubmitting = true;
     
     if (this.intTransForm.valid) {
+      this.intTransForm.get('actualizarPerfilFecha')?.setValue(true);
       const data: InternationalTransaction = this.intTransForm.value;
       if (data.id) {
         this.interTransService.update(data).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       } else {
@@ -160,19 +158,21 @@ export class InternationalTransactionsComponent implements OnInit {
             //console.log(response);
             this.intTransForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al crear la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       }
     }
+  }
+
+  private resetSubmitState(): void {
+    setTimeout(() => {
+      this.isSubmitting = false;
+    }, 500);
   }
 }

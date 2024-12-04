@@ -37,7 +37,8 @@ export class PublicPersonComponent {
       actividadPublica: [{ value: '', disabled: true }],
       funcionarioPublicoExtranjero: ['', Validators.required],
       famFuncionarioPublico: ['', Validators.required],
-      socioFuncionarioPublico: ['', Validators.required]
+      socioFuncionarioPublico: ['', Validators.required],
+      actualizarPerfilFecha: [false]
     });
 
     this.publicPersonForm.get('funcionesPublicas')?.valueChanges.subscribe(value => {
@@ -89,21 +90,19 @@ export class PublicPersonComponent {
     this.isSubmitting = true;
 
     if (this.publicPersonForm.valid) {
+      this.publicPersonForm.get('actualizarPerfilFecha')?.setValue(true);
+
       const data: PublicPerson = this.publicPersonForm.value;
       if (data.id) {
         this.publicPersonService.update(data).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información actualizada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al actualizar la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar la información. Vuelve a intentarlo' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       } else {
@@ -112,19 +111,21 @@ export class PublicPersonComponent {
             //console.log(response);
             this.publicPersonForm.patchValue({ id: response.id });
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Información creada correctamente' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           },
           error: (err) => {
             console.error('Error al crear la información', err);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la información' });
-            setTimeout(() => {
-              this.isSubmitting = false;
-            }, 500);
+            this.resetSubmitState();
           }
         });
       }
     }
+  }
+
+  private resetSubmitState(): void {
+    setTimeout(() => {
+      this.isSubmitting = false;
+    }, 500);
   }
 }

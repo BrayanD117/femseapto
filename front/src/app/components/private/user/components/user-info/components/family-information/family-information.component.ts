@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -10,7 +10,6 @@ import { TableModule } from 'primeng/table';
 import { forkJoin, Observable, of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-
 import {
   Family,
   FamilyService,
@@ -40,7 +39,6 @@ import {
   City,
   CitiesService,
 } from '../../../../../../../services/cities.service';
-import { RelationshipType } from 'exceljs';
 
 @Component({
   selector: 'app-family-information',
@@ -51,6 +49,8 @@ import { RelationshipType } from 'exceljs';
   styleUrl: './family-information.component.css',
 })
 export class FamilyInformationComponent implements OnInit {
+  @Input() actualizarPerfilFecha: boolean = false;
+
   family: Family[] = [];
   familiarForm: FormGroup;
   editMode = false;
@@ -107,6 +107,10 @@ export class FamilyInformationComponent implements OnInit {
     if (idMpioExpDoc) {
       this.onDepartmentChange();
     }
+
+    this.familiarForm.patchValue({
+      actualizarPerfilFecha: this.actualizarPerfilFecha
+    });
   }
 
   getAllDepartments(): void {

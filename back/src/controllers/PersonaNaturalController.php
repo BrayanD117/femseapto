@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/PersonaNaturalModel.php';
+require_once __DIR__ . '/../models/UsuarioModel.php';
 require_once __DIR__ . '/../../utils/DataUtils.php';
 
 class PersonaNaturalController {
