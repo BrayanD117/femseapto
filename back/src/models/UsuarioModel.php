@@ -388,50 +388,35 @@ class Usuario {
     public static function obtenerFechasActualizacionPorUsuarios() {
         $db = getDB();
         $query = "
-            SELECT u.id AS idUsuario, 
+            SELECT 
+                u.id AS idUsuario, 
                 u.numero_documento AS numeroDocumento,
                 CONCAT(IFNULL(u.primer_nombre, ''), ' ', IFNULL(u.primer_apellido, '')) AS nombre,
-                MAX(IFNULL(fechas.fecha_actualizacion, '0000-00-00')) AS fechaUltimaActualizacion
+                IFNULL(u.perfil_actualizado_el, '0000-00-00 00:00:00') AS fechaUltimaActualizacion
             FROM usuarios u
-            LEFT JOIN (
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM personas_naturales GROUP BY id_usuario
-                UNION
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM informacion_financiera GROUP BY id_usuario
-                UNION
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM informacion_nucleo_familiar GROUP BY id_usuario
-                UNION
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM referencias_personales_comerciales_bancarias GROUP BY id_usuario
-                UNION
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM operaciones_internacionales GROUP BY id_usuario
-                UNION
-                SELECT id_usuario, MAX(actualizado_el) AS fecha_actualizacion FROM personas_expuestas_publicamente GROUP BY id_usuario
-            ) AS fechas ON u.id = fechas.id_usuario
-            WHERE u.id_rol != 1
-            GROUP BY u.id
+            WHERE u.id_rol NOT IN (1, 3)
+            ORDER BY u.perfil_actualizado_el DESC
         ";
-    
+        
         $result = $db->query($query);
         $usuarios = [];
     
-        $timezoneColombia = new DateTimeZone('America/Bogota');
-
         while ($row = $result->fetch_assoc()) {
-            $fechaServidor = new DateTime($row['fechaUltimaActualizacion']);
-            $fechaServidor->setTimezone($timezoneColombia);
-
-            $fechaServidor->modify('+1 hour');
-            
+            $fecha = $row['fechaUltimaActualizacion'] !== '0000-00-00 00:00:00'
+                ? DateTime::createFromFormat('Y-m-d H:i:s', $row['fechaUltimaActualizacion'])->format('d/m/Y H:i:s')
+                : 'No ha actualizado';
+    
             $usuarios[] = [
                 'id' => $row['idUsuario'],
                 'numeroDocumento' => $row['numeroDocumento'],
                 'nombre' => $row['nombre'],
-                'fechaUltimaActualizacion' => $fechaServidor->format('Y-m-d H:i:s'),
+                'fechaUltimaActualizacion' => $fecha,
             ];
         }
-    
+        
         $db->close();
         return $usuarios;
-    }
+    }        
 
     public static function actualizarPerfilActualizadoEl($idUsuario) {
         $db = getDB();
