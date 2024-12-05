@@ -2,7 +2,7 @@
 deployment:
   tasks:
     - echo "Iniciando despliegue automático..."
-    - export DEPLOY_PATH=/home/femseapto/public_html/development
+    - export DEPLOY_PATH=/home/femseapto/public_html/development/
     - echo "Sincronizando backend PHP al public_html..."
     - rsync -avz --exclude=.git backend/ $DEPLOY_PATH/
     - echo "Backend PHP desplegado en $DEPLOY_PATH."
