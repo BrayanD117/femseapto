@@ -57,7 +57,7 @@ class SaldoAhorroObligatorioController {
                 valor_saldo DECIMAL(15,2),
                 fecha_corte DATE,
                 PRIMARY KEY (numero_documento, id_linea_ahorro_obligatoria)
-            )");
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
             $stmt = $db->prepare("INSERT INTO temp_saldo_ahorros_obligatorios (numero_documento, id_linea_ahorro_obligatoria, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?)");
 

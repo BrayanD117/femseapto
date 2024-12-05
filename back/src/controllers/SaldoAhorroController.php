@@ -60,7 +60,7 @@ class SaldoAhorroController {
                 valor_saldo DECIMAL(10,2),
                 fecha_corte DATE,
                 PRIMARY KEY (numero_documento, id_linea_ahorro)
-            )");
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
             // Preparar inserción en la tabla temporal
             $stmt = $db->prepare("INSERT INTO temp_saldo_ahorros (numero_documento, id_linea_ahorro, ahorro_quincenal, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?)");

@@ -58,7 +58,7 @@ class SaldoCreditoController {
                 valor_saldo DECIMAL(10,2),
                 fecha_corte DATE,
                 PRIMARY KEY (numero_documento, id_linea_credito)
-            )");
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
     
             $stmt = $db->prepare("INSERT INTO temp_saldo_creditos (numero_documento, id_linea_credito, cuota_actual, cuotas_totales, valor_solicitado, cuota_quincenal, valor_pagado, valor_saldo, fecha_corte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
