@@ -20,7 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
   standalone: true,
   imports: [CommonModule, GenerateSavingWithdrawalRequestComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
   templateUrl: './saving-withdrawal-request.component.html',
-  styleUrl: './saving-withdrawal-request.component.css'
+  styleUrls: ['./saving-withdrawal-request.component.css']
 })
 export class SavingWithdrawalRequestComponent {
   @ViewChild('dt2') dt2!: Table;

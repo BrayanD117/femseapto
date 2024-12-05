@@ -43,8 +43,6 @@ export class SavingRequestsComponent implements OnInit {
     this.loadSavingRequests();
   }
 
-  
-
   onFilterGlobal(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {
