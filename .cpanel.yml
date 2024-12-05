@@ -4,10 +4,10 @@ deployment:
     - echo "Iniciando despliegue automático..."
     - export DEPLOY_PATH=/home/femseapto/public_html/development/
     - echo "Sincronizando backend PHP al public_html..."
-    - rsync -avz --exclude=.git backend/ $DEPLOY_PATH/
+    - rsync -avz --exclude=.git back/ $DEPLOY_PATH/
     - echo "Backend PHP desplegado en $DEPLOY_PATH."
     - echo "Instalando dependencias y compilando frontend Angular..."
-    - cd frontend
+    - cd front
     - npm install
     - ng build --configuration production --output-path=$DEPLOY_PATH
     - echo "Frontend Angular compilado y desplegado en $DEPLOY_PATH."
