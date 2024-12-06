@@ -74,6 +74,7 @@ export class GenerateCreditRequestComponent implements OnInit {
   salarioMensual: number | string = 0;
   primaProductividad: number | string = 0;
   otrosIngresos: number | string = 0;
+  conceptoOtrosIngresos: string = '';
   egresosMensuales: number | string = 0;
   obligFinancieras: number | string = 0;
   otrosEgresos: number | string = 0;
@@ -275,6 +276,7 @@ export class GenerateCreditRequestComponent implements OnInit {
           this.salarioMensual = financialInfo.ingresosMensuales;
           this.primaProductividad = financialInfo.primaProductividad;
           this.otrosIngresos = financialInfo.otrosIngresosMensuales;
+          this.conceptoOtrosIngresos = financialInfo.conceptoOtrosIngresosMens;
           this.egresosMensuales = financialInfo.egresosMensuales;
           this.obligFinancieras = financialInfo.obligacionFinanciera;
           this.otrosEgresos = financialInfo.otrosEgresosMensuales;
@@ -385,11 +387,12 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('C11').value = this.nombreAsociado;
 
         worksheet.getCell('A13').value = this.numeroDocumento;
-        worksheet.getCell('F13').value = this.ciudadExpedicionDocumento;
-        worksheet.getCell('H13').value = this.fechaExpedicionDocumento
-          ? new Date(this.fechaExpedicionDocumento)
-          : '';
-        worksheet.getCell('K13').value = `${this.ciudadNacimiento} ${
+        worksheet.getCell('F13').value = `${this.ciudadExpedicionDocumento}, ${
+          this.fechaExpedicionDocumento
+          ? new Date(this.fechaExpedicionDocumento + "T00:00:00").toLocaleDateString()
+          : ''
+        }`;
+        worksheet.getCell('K13').value = `${this.ciudadNacimiento}, ${
           this.fechaNacimiento
             ? new Date(this.fechaNacimiento  + "T00:00:00").toLocaleDateString()
             : ''
@@ -451,7 +454,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('N20').value = this.jefeInmediato;
         worksheet.getCell('F21').value = this.nombreConyuge;
         worksheet.getCell('O21').value = this.cedulaLugarExpConyuge;
-        worksheet.getCell('R21').value = this.telefonoConyuge;
+        worksheet.getCell('R21').value = `Teléfono Cónyuge: ${this.telefonoConyuge}`;
 
         if (this.tipoVivienda === 1) {
           worksheet.getCell('D22').value = 'X';
@@ -481,6 +484,7 @@ export class GenerateCreditRequestComponent implements OnInit {
         worksheet.getCell('C28').value = Number(this.salarioMensual);
         worksheet.getCell('C29').value = Number(this.primaProductividad);
         worksheet.getCell('C30').value = Number(this.otrosIngresos);
+        worksheet.getCell('A32').value = `Concepto Otros Ingresos: ${this.conceptoOtrosIngresos}`;
         worksheet.getCell('O28').value = Number(this.egresosMensuales);
         worksheet.getCell('O29').value = Number(this.obligFinancieras);
         worksheet.getCell('O30').value = Number(this.otrosEgresos);

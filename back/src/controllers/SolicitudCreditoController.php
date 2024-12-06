@@ -107,8 +107,8 @@ class SolicitudCreditoController {
      * @param string $search Término de búsqueda.
      * @return array|array[] Las solicitudes de crédito encontradas o un array con un mensaje de error si no se encuentran.
      */
-    public function obtenerConPaginacion($page, $size, $search) {
-        return SolicitudCredito::obtenerConPaginacion($page, $size, $search);
+    public function obtenerConPaginacion($page, $size, $search = null, $fechaSolicitud = null) {
+        return SolicitudCredito::obtenerConPaginacion($page, $size, $search, $fechaSolicitud);
     }
 
     /**

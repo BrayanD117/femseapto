@@ -17,8 +17,22 @@ export class RequestCreditService {
     return this.http.post(`${this.apiUrl}/solicitudescredito.php`, formData, { withCredentials: true });
   }
 
-  getAll(params: { page: number; size: number; search: string }): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/solicitudescredito.php`, { params , withCredentials: true });
+  getAll(params: { page: number; size: number; search?: string; date?: string }): Observable<{ data: any[], total: number }> {
+    let httpParams = new HttpParams()
+      .set('page', params.page.toString())
+      .set('size', params.size.toString());
+
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+    if (params.date) {
+      httpParams = httpParams.set('date', params.date);
+    }
+
+    return this.http.get<{ data: any[], total: number }>(
+      `${this.apiUrl}/solicitudescredito.php`, 
+      { params: httpParams, withCredentials: true }
+    );
   }
 
   getById(id: number): Observable<any> {

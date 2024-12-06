@@ -32,7 +32,7 @@
       ]"
       [tableStyle]="{ 'min-width': '75rem' }"
     >
-      <!--<ng-template pTemplate="caption">
+      <ng-template pTemplate="caption">
         <div class="flex">
           <p-iconField iconPosition="left" class="ml-auto">
             <p-inputIcon>
@@ -41,12 +41,25 @@
             <input
               pInputText
               type="text"
-              (input)="onFilterGlobal($event)"
+              [formControl]="searchControl"
               placeholder="Buscar palabra clave"
             />
           </p-iconField>
         </div>
-      </ng-template>-->
+        <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              type="text"
+              pInputText
+              placeholder="Fecha (DD/MM/YYYY)"
+              [formControl]="dateControl"
+            />
+          </p-iconField>
+        </div>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 5%">No.</th>

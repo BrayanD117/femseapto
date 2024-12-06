@@ -60,7 +60,7 @@
           <td>{{ request.nombreAsociado }}</td>
           <td>{{ request.nombreLineaAhorro }}</td>
           <td>{{ request.montoRetirar }}</td>
-          <td>{{ request.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
+          <td>{{ request.fechaSolicitud }}</td>
           <td>
             <app-generate-saving-withdrawal-request
               [userId]="request.idUsuario"

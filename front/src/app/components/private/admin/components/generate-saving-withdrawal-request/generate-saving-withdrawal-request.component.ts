@@ -91,9 +91,7 @@ export class GenerateSavingWithdrawalRequestComponent implements OnInit {
 
     this.savingWdRequestService.getById(this.savingWdRequestId).subscribe({
       next: (request: RequestSavingWithdrawal) => {
-        const colTimeZone = new Date(request.fechaSolicitud).toLocaleString('en-US', { timeZone: 'America/Bogota' });
-        const dateInColombia = new Date(colTimeZone); 
-        this.date = this.datePipe.transform(dateInColombia, 'dd/MM/yyyy') || undefined;
+        this.date = request.fechaSolicitud.toString();
         this.totalAmount = Number(request.montoRetirar);
         this.bank = request.banco;
         this.accountNumber = request.numeroCuenta;
