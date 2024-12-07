@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { RequestCreditService } from '../../../../../services/request-credit.service';
 import { UserService, User } from '../../../../../services/user.service';
 import { CommonModule } from '@angular/common';
@@ -17,14 +17,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { InputGroupModule } from 'primeng/inputgroup';
+import { ToolbarModule } from 'primeng/toolbar';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-credit-requests',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, GenerateCreditRequestComponent, CreditReportComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, GenerateCreditRequestComponent, CreditReportComponent, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, DropdownModule, HttpClientModule, InputGroupModule, ToolbarModule, InputGroupAddonModule, ButtonModule],
   templateUrl: './credit-requests.component.html',
-  styleUrls: ['./credit-requests.component.css']
+  styleUrls: ['./credit-requests.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CreditRequestsComponent implements OnInit {
   @ViewChild('dt2') dt2!: Table;
@@ -37,6 +41,7 @@ export class CreditRequestsComponent implements OnInit {
   totalRecords: number = 0;
   loading: boolean = true;
   searchQuery: string = '';
+  dateQuery: string = '';
   rows: number = 10;
   currentPage: number = 1;
   totalPages: number = 0;
@@ -54,24 +59,6 @@ export class CreditRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCreditRequests();
-
-    this.searchControl.valueChanges
-    .pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    )
-    .subscribe(searchQuery => {
-      this.loadCreditRequests(this.currentPage, this.rows, searchQuery, this.dateControl.value);
-    });
-
-    this.dateControl.valueChanges
-    .pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    )
-    .subscribe(fechaSolicitud => {
-      this.loadCreditRequests(this.currentPage, this.rows, this.searchControl.value, fechaSolicitud);
-    });
   }
 
   onFilterGlobal(event: Event) {
@@ -86,6 +73,13 @@ export class CreditRequestsComponent implements OnInit {
     this.requestCreditService.getAll({ page, size, search, date }).subscribe({
       next: response => {
         const requests = response.data;
+        if (requests.length === 0) {
+          this.creditRequests = [];
+          this.totalRecords = 0;
+          this.loading = false;
+          return;
+        }
+
         const userObservables = requests.map((request: any) => this.userService.getById(request.idUsuario));
         const creditLineObservables = requests.map((request: any) => this.creditLineService.obtenerLineaCreditoPorId(request.idLineaCredito));
         const observables = [...userObservables, ...creditLineObservables];
@@ -119,13 +113,23 @@ export class CreditRequestsComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.loadCreditRequests(this.currentPage, this.rows, this.searchControl.value, this.dateControl.value);
+    this.currentPage = 1;
+    this.searchQuery = this.searchControl.value || '';
+    this.dateQuery = this.dateControl.value || '';
+    this.loadCreditRequests(this.currentPage, this.rows, this.searchQuery, this.dateQuery);
   }
 
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadCreditRequests(this.currentPage, this.rows, this.searchControl.value, this.dateControl.value);
+    this.loadCreditRequests(this.currentPage, this.rows, this.searchQuery, this.dateQuery);
   }
+
+  onClear(): void {
+    this.searchControl.setValue('');
+    this.dateControl.setValue('');
+    this.currentPage = 1;
+    this.loadCreditRequests();
+  }  
 
   formatNumber(value: string): string {
     const numericValue = parseFloat(value.replace(',', '.'));

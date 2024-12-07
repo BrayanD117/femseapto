@@ -172,12 +172,14 @@ class SolicitudCredito {
             $whereConditions[] = "(
                 sc.monto_solicitado LIKE ?
                 OR sc.plazo_quincenal LIKE ?
+                OR u.primer_nombre LIKE ?
+                OR u.primer_apellido LIKE ?
                 OR u.numero_documento LIKE ?
                 OR lc.nombre LIKE ?
             )";
             $searchParam = "%" . $search . "%";
-            $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam]);
-            $types .= str_repeat("s", 4);
+            $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
+            $types .= str_repeat("s", 6);
         }
     
         if (!empty($fechaSolicitud)) {
