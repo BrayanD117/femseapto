@@ -39,6 +39,7 @@ export class RequestCreditComponent implements OnInit {
   isAdditionalDisabled: boolean = false;
 
   pdfFile: File | null = null;
+  isSubmitting: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -238,6 +239,7 @@ export class RequestCreditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.creditForm.valid) {
+      this.isSubmitting = true;
       const token = this.loginService.getTokenClaims();
 
       if(token) {
@@ -267,6 +269,7 @@ export class RequestCreditComponent implements OnInit {
           formData.append('rutaDocumento', this.pdfFile, this.pdfFile.name);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe subir la copia del documento' });
+          this.isSubmitting = false;
           return;
         }
 
@@ -274,10 +277,12 @@ export class RequestCreditComponent implements OnInit {
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Solicitud de crédito creada correctamente' });
             setTimeout(() => {
+              this.isSubmitting = false;
               this.router.navigate(['/auth/user']);
             }, 2000);
           },
           error: (err) => {
+            this.isSubmitting = false;
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la solicitud de crédito. Por favor, intente otra vez' });
           }
         });

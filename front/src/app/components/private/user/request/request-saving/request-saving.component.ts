@@ -222,6 +222,7 @@ export class RequestSavingComponent implements OnInit {
   }
 
   resetForm(): void {
+    this.isLoading = false;
     this.savingsForm.reset({
       totalSavingsAmount: 0,
       fortnight: '',
