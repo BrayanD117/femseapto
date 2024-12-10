@@ -4,4 +4,4 @@ deployment:
     - export DEPLOY_PATH=/home/femseapto/public_html/development/
     - rsync -avz --exclude=.git back/ $DEPLOY_PATH/
     - cd front/
-    - ng build --configuration production --output-path=$DEPLOY_PATH
+    - ng build --configuration production --output-path=$DEPLOY_PATH/
