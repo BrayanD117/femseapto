@@ -286,6 +286,8 @@ export class NaturalPersonComponent implements OnInit {
           this.onDepartamentoChange('idDeptoExpDoc');
           this.onDepartamentoChange('idDeptoNacimiento');
           this.onDepartamentoChange('idDeptoResidencia');
+
+          this.onPaisNacimientoChange();
         });
     }
   }

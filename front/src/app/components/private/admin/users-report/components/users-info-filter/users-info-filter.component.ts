@@ -105,7 +105,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('L7').value = user.fechaExpedicionDoc || '';
         worksheet.getCell('Q7').value = user.nombreMpioExpDoc || '';
         worksheet.getCell('AA7').value = user.fechaNacimiento || '';
-        worksheet.getCell('AH7').value = user.nombrePaisNacimiento || 'N/A';
+        worksheet.getCell('AH7').value = user.nombreMpioNac || 'N/A';
         worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} `|| 'N/A';
         worksheet.getCell('B10').value = user.estadoCivil || '';
         worksheet.getCell('L10').value = user.nombreNivelEducativo || '';
