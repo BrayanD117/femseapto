@@ -147,11 +147,11 @@ class SolicitudRetiroAhorro {
                     devolucion_caja,
                     observaciones,
                     continuar_ahorro,
+                    fecha_solicitud AS fecha_sin_formatear,
                     DATE_FORMAT(CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00'), '%d/%m/%Y') AS fecha_solicitud
                 FROM solicitudes_retiro_ahorro
                 $searchQuery
-                ORDER BY fecha_solicitud
-                DESC
+                ORDER BY fecha_sin_formatear DESC
                 LIMIT ?
                 OFFSET ?";
         $stmt = $db->prepare($query);

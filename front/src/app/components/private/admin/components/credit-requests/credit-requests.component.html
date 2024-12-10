@@ -1,25 +1,42 @@
 <div class="container mt-5">
   <h1>Solicitudes de Crédito</h1>
-  <app-credit-report/>
+  <app-credit-report />
   <div class="card">
-    <p-table
-      #dt2
-      [value]="creditRequests"
-      dataKey="id"
-      styleClass="p-datatable-striped"
-      [paginator]="true"
-      [rows]="rows"
-      [totalRecords]="totalRecords"
-      [loading]="loading"
-      [lazy]="true"
-      (onLazyLoad)="
+    <p-toolbar styleClass="mb-1 gap-2">
+      <ng-template pTemplate="left">
+        <div class="input-container flex md:flex-row gap-3">
+          <p-inputGroup>
+            <input type="text" pInputText placeholder="Palabra clave" [formControl]="searchControl" />
+            <button type="button" pButton label="Buscar" (click)="onSearch()"></button>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input type="text" pInputText placeholder="Fecha solicitud (01/01/2024)" [formControl]="dateControl" />
+            <button type="button" pButton label="Buscar" (click)="onSearch()"></button>
+          </p-inputGroup>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="right">
+        <div class="input-container flex md:flex-row gap-3">
+            <button
+            pButton
+            type="button"
+            icon="pi pi-times"
+            class="p-button-rounded p-button-outlined"
+            (click)="onClear()"
+            label="Limpiar"
+          ></button>
+        </div>
+      </ng-template>
+    </p-toolbar>
+    <p-table #dt2 [value]="creditRequests" dataKey="id" styleClass="p-datatable-striped" [paginator]="true"
+      [rows]="rows" [totalRecords]="totalRecords" [loading]="loading" [lazy]="true" (onLazyLoad)="
         loadCreditRequests(
           ($event.first ?? 0) / ($event.rows ?? 10) + 1,
-          $event.rows ?? 10
+          $event.rows ?? 10,
+          searchQuery,
+          dateQuery
         )
-      "
-      [rowsPerPageOptions]="[10, 25, 50]"
-      [globalFilterFields]="[
+      " [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="[
         'id',
         'numeroDocumento',
         'nombreAsociado',
@@ -29,24 +46,7 @@
         'nombreLineaCredito',
         'tasaInteres',
         'fechaSolicitud',
-      ]"
-      [tableStyle]="{ 'min-width': '75rem' }"
-    >
-      <!--<ng-template pTemplate="caption">
-        <div class="flex">
-          <p-iconField iconPosition="left" class="ml-auto">
-            <p-inputIcon>
-              <i class="pi pi-search"></i>
-            </p-inputIcon>
-            <input
-              pInputText
-              type="text"
-              (input)="onFilterGlobal($event)"
-              placeholder="Buscar palabra clave"
-            />
-          </p-iconField>
-        </div>
-      </ng-template>-->
+      ]" [tableStyle]="{ 'min-width': '75rem' }">
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 5%">No.</th>
@@ -55,7 +55,8 @@
             Nombre Completo <p-sortIcon field="nombreAsociado" />
           </th>
           <th style="width: 15%">Monto Solicitado</th>
-          <th pSortableColumn="plazoQuincenal" style="width: 5%">Plazo Quincenal <p-sortIcon field="plazoQuincenal" /></th>
+          <th pSortableColumn="plazoQuincenal" style="width: 5%">Plazo Quincenal <p-sortIcon field="plazoQuincenal" />
+          </th>
           <th style="width: 10%">Valor Cuota Quincenal</th>
           <th pSortableColumn="nombreLineaCredito" style="width: 20%">
             Linea de Crédito <p-sortIcon field="nombreLineaCredito" />
@@ -77,10 +78,8 @@
           <td>{{ creditRequest.tasaInteres }}</td>
           <td>{{ creditRequest.fechaSolicitud | date : "dd/MM/yyyy" }}</td>
           <td>
-            <app-generate-credit-request
-              [userId]="creditRequest.idUsuario"
-              [idSolicitudCredito]="creditRequest.id"
-            ></app-generate-credit-request>
+            <app-generate-credit-request [userId]="creditRequest.idUsuario"
+              [idSolicitudCredito]="creditRequest.id"></app-generate-credit-request>
           </td>
         </tr>
       </ng-template>

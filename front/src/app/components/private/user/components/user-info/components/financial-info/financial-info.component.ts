@@ -62,7 +62,7 @@ export class FinancialInfoComponent implements OnInit {
 
     if (token) {
       this.userId = token.userId;
-      console.log("ENTRA", this.actualizarPerfilFecha);
+      //console.log("ENTRA", this.actualizarPerfilFecha);
 
       this.financialForm.patchValue({
         idUsuario: this.userId,
@@ -171,7 +171,7 @@ export class FinancialInfoComponent implements OnInit {
 
     if (this.financialForm.valid) {      
       const formData = this.financialForm.getRawValue();
-      console.log("FORM: ", formData);
+      //console.log("FORM: ", formData);
 
       const parsedData = { ...formData };
 

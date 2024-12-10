@@ -125,7 +125,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('R8').value = user.nombreMpioResidencia || '';
         worksheet.getCell('AC8').value = user.nombreDptoResidencia || 'N/A';
         worksheet.getCell('B9').value = user.antiguedadVivienda || '';
-        worksheet.getCell('H9').value = user.personasACargo || '';
+        worksheet.getCell('G9').value = user.personasACargo || 0;
         worksheet.getCell('K9').value = user.zonaGeografica || '';
         worksheet.getCell('Q9').value = user.tipoVivienda || '';
         worksheet.getCell('AH9').value = user.estrato || '';
@@ -146,7 +146,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('X35').value = Number(user.otrosEgresosMensuales) || 0;
         worksheet.getCell('G36').value = Number(user.totalIngresosMensuales) || 0;
         worksheet.getCell('X36').value = Number(user.totalEgresosMensuales) || 0;
-        worksheet.getCell('G37').value = user.conceptoOtrosIngresos || '';
+        worksheet.getCell('G37').value = user.conceptoOtrosIngresosMens || '';
         worksheet.getCell('X37').value = Number(user.totalActivos) || 0;
         worksheet.getCell('X38').value = Number(user.totalPasivos) || 0;
         worksheet.getCell('X39').value = Number(user.totalPatrimonio) || 0;
@@ -199,6 +199,9 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('I72').value = user.nombreEmergencia || 'N/A';
         worksheet.getCell('S72').value = user.numeroCedulaEmergencia || 'N/A';
         worksheet.getCell('AG72').value = user.numeroCelularEmergencia || 'N/A';
+
+        // Fecha actualizacion
+        worksheet.getCell('A76').value = `En constancia de haber leído, entendido y aceptado lo anterior, firmo el presente documento el día ${user.fechaActualizacion || ' _____  del mes  _________   del año ___________'}.`;
       }
       
       const buffer = await workbook.xlsx.writeBuffer();

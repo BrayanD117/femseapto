@@ -445,6 +445,8 @@ class Usuario {
     {
         $db = getDB();
 
+        $db->query("SET lc_time_names = 'es_ES';");
+
         $query = "
             SELECT 
                 u.id AS idUsuario,
@@ -453,6 +455,7 @@ class Usuario {
                 u.segundo_nombre AS segundoNombre,
                 u.primer_apellido AS primerApellido,
                 u.segundo_apellido AS segundoApellido,
+                DATE_FORMAT(MAX(u.perfil_actualizado_el), '%d del mes de %M del año %Y') AS fechaActualizacion,
                 MAX(g.nombre) AS generoNombre,
                 MAX(pn.id_genero) AS idGenero,
                 DATE_FORMAT(MAX(pn.fecha_expedicion_doc), '%d/%m/%Y') AS fechaExpedicionDoc,
@@ -541,15 +544,6 @@ class Usuario {
                 MAX(pep.funcion_publico_extranjero) AS funcionPublicoExtranjero,
                 MAX(pep.fam_funcion_publico) AS familiarFuncionPublico,
                 MAX(pep.socio_funcion_publico) AS socioFuncionPublico,
-                DATE_FORMAT(CONVERT_TZ((SELECT MAX(actualizado_el) FROM (
-                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
-                ) AS subquery), '+00:00', '-05:00'), '%d/%m/%Y') AS ultimaActualizacion,
                 (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreCompleto', sub_nf.nombre_completo,
@@ -673,6 +667,7 @@ class Usuario {
                 'segundoNombre' => $row['segundoNombre'],
                 'primerApellido' => $row['primerApellido'],
                 'segundoApellido' => $row['segundoApellido'],
+                'fechaActualizacion' => $row['fechaActualizacion'],
                 'generoNombre' => $row['generoNombre'],
                 'fechaExpedicionDoc' => $row['fechaExpedicionDoc'],
                 'nombreDptoExpDoc' => $row['nombreDptoExpDoc'],
@@ -758,8 +753,7 @@ class Usuario {
                 'familiarFuncionPublico' => $row['familiarFuncionPublico'],
                 'socioFuncionPublico' => $row['socioFuncionPublico'],
                 'familiares' => json_decode($row['familiares'], true),
-                'referencias' => json_decode($row['referencias'], true),
-                'ultimaActualizacion' => $row['ultimaActualizacion'],
+                'referencias' => json_decode($row['referencias'], true)
             ];
         }
 
@@ -773,6 +767,8 @@ class Usuario {
     {
         $db = getDB();
 
+        $db->query("SET lc_time_names = 'es_ES';");
+
         $query = "
             SELECT 
                 u.id AS idUsuario,
@@ -781,6 +777,7 @@ class Usuario {
                 u.segundo_nombre AS segundoNombre,
                 u.primer_apellido AS primerApellido,
                 u.segundo_apellido AS segundoApellido,
+                DATE_FORMAT(MAX(u.perfil_actualizado_el), '%d del mes de %M del año %Y') AS fechaActualizacion,
                 MAX(g.nombre) AS generoNombre,
                 MAX(pn.id_genero) AS idGenero,
                 DATE_FORMAT(MAX(pn.fecha_expedicion_doc), '%d/%m/%Y') AS fechaExpedicionDoc,
@@ -869,15 +866,6 @@ class Usuario {
                 MAX(pep.funcion_publico_extranjero) AS funcionPublicoExtranjero,
                 MAX(pep.fam_funcion_publico) AS familiarFuncionPublico,
                 MAX(pep.socio_funcion_publico) AS socioFuncionPublico,
-                DATE_FORMAT(CONVERT_TZ((SELECT MAX(actualizado_el) FROM (
-                    SELECT actualizado_el FROM personas_naturales WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_financiera WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM informacion_nucleo_familiar WHERE id_usuario = u.id
-                    UNION ALL
-                    SELECT actualizado_el FROM referencias_personales_comerciales_bancarias WHERE id_usuario = u.id
-                ) AS subquery), '+00:00', '-05:00'), '%d/%m/%Y') AS ultimaActualizacion,
                 (SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'nombreCompleto', sub_nf.nombre_completo,
@@ -993,6 +981,7 @@ class Usuario {
                 'segundoNombre' => $row['segundoNombre'],
                 'primerApellido' => $row['primerApellido'],
                 'segundoApellido' => $row['segundoApellido'],
+                'fechaActualizacion' => $row['fechaActualizacion'],
                 'generoNombre' => $row['generoNombre'],
                 'fechaExpedicionDoc' => $row['fechaExpedicionDoc'],
                 'nombreDptoExpDoc' => $row['nombreDptoExpDoc'],
@@ -1078,8 +1067,7 @@ class Usuario {
                 'familiarFuncionPublico' => $row['familiarFuncionPublico'],
                 'socioFuncionPublico' => $row['socioFuncionPublico'],
                 'familiares' => json_decode($row['familiares'], true),
-                'referencias' => json_decode($row['referencias'], true),
-                'ultimaActualizacion' => $row['ultimaActualizacion'],
+                'referencias' => json_decode($row['referencias'], true)
             ];
         }
 

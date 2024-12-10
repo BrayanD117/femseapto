@@ -121,9 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $size = isset($_GET['size']) ? (int)$_GET['size'] : 10;
-        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : null;
+        $date = isset($_GET['date']) ? $_GET['date'] : null;
 
-        $resp = $controlador->obtenerConPaginacion($page, $size, $search);
+        $resp = $controlador->obtenerConPaginacion($page, $size, $search, $date);
         header('Content-Type: application/json');
         echo json_encode($resp);
     }

@@ -111,9 +111,11 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="creditForm.invalid || isAdditionalDisabled"
+            [disabled]="creditForm.invalid || isAdditionalDisabled || isSubmitting"
           >
-            Enviar Solicitud
+            <span *ngIf="!isSubmitting">Enviar Solicitud</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="isSubmitting"> Enviando...</span>
           </button>
         </div>
       </form>

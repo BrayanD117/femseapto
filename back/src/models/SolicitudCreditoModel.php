@@ -131,42 +131,130 @@ class SolicitudCredito {
         return $solicitudes;
     }
 
-    public static function obtenerConPaginacion($page, $size, $search) {
+    public static function obtenerConPaginacion($page, $size, $search = null, $fechaSolicitud = null) {
         $db = getDB();
         $offset = ($page - 1) * $size;
-        $searchQuery = !empty($search) ? "WHERE nombre LIKE '%$search%' OR estado LIKE '%$search%'" : "";
-        $query = "SELECT
-                    id,
-                    id_usuario,
-                    monto_solicitado,
-                    plazo_quincenal,
-                    valor_cuota_quincenal,
-                    id_linea_credito,
-                    reestructurado,
-                    periocidad_pago,
-                    tasa_interes,
-                    ruta_documento,
-                    CONVERT_TZ(fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud 
-                FROM solicitudes_credito
-                $searchQuery
-                ORDER BY fecha_solicitud
-                DESC
-                LIMIT ?
-                OFFSET ?";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param("ii", $size, $offset);
+    
+        $baseQuery = "
+            FROM solicitudes_credito sc
+            INNER JOIN usuarios u ON sc.id_usuario = u.id
+            INNER JOIN lineas_credito lc ON sc.id_linea_credito = lc.id
+        ";
+    
+        $selectQuery = "
+            SELECT 
+                sc.id,
+                sc.id_usuario,
+                sc.monto_solicitado,
+                sc.plazo_quincenal,
+                sc.valor_cuota_quincenal,
+                sc.id_linea_credito,
+                sc.reestructurado,
+                sc.periocidad_pago,
+                sc.tasa_interes,
+                sc.ruta_documento,
+                CONVERT_TZ(sc.fecha_solicitud, '+00:00', '-05:00') AS fecha_solicitud,
+                u.primer_nombre,
+                u.segundo_nombre,
+                u.primer_apellido,
+                u.segundo_apellido,
+                u.numero_documento,
+                lc.nombre
+        ";
+    
+        $countQuery = "SELECT COUNT(*) AS total";
+    
+        $whereConditions = [];
+        $params = [];
+        $types = "";
+    
+        if (!empty($search)) {
+            $whereConditions[] = "(
+                sc.monto_solicitado LIKE ?
+                OR sc.plazo_quincenal LIKE ?
+                OR u.primer_nombre LIKE ?
+                OR u.primer_apellido LIKE ?
+                OR u.numero_documento LIKE ?
+                OR lc.nombre LIKE ?
+            )";
+            $searchParam = "%" . $search . "%";
+            $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
+            $types .= str_repeat("s", 6);
+        }
+    
+        if (!empty($fechaSolicitud)) {
+            $fechaConvertida = DateTime::createFromFormat('d/m/Y', $fechaSolicitud);
+            if ($fechaConvertida === false) {
+                die('Formato de fecha inválido, debe ser DD/MM/YYYY.');
+            }
+            $fechaSQL = $fechaConvertida->format('Y-m-d');
+    
+            $whereConditions[] = "DATE(CONVERT_TZ(sc.fecha_solicitud, '+00:00', '-05:00')) = ?";
+            $params[] = $fechaSQL;
+            $types .= "s";
+        }
+    
+        $whereClause = count($whereConditions) > 0 ? " WHERE " . implode(" AND ", $whereConditions) : "";
+    
+        $finalSelectQuery = $selectQuery . $baseQuery . $whereClause . " ORDER BY sc.fecha_solicitud DESC LIMIT ? OFFSET ?";
+        $finalCountQuery = $countQuery . $baseQuery . $whereClause;
+    
+        $params[] = $size;
+        $params[] = $offset;
+        $types .= "ii";
+    
+        $stmt = $db->prepare($finalSelectQuery);
+        if ($stmt === false) {
+            die('Error en la preparación de la consulta: ' . $db->error);
+        }
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+    
         $stmt->execute();
+        if ($stmt->errno) {
+            die('Error en la ejecución de la consulta: ' . $stmt->error);
+        }
+    
         $result = $stmt->get_result();
         $solicitudes = [];
+    
         while ($row = $result->fetch_assoc()) {
-            $solicitudes[] = new SolicitudCredito($row['id'], $row['id_usuario'], $row['monto_solicitado'], $row['plazo_quincenal'], $row['valor_cuota_quincenal'], $row['id_linea_credito'], $row['reestructurado'], $row['periocidad_pago'], $row['tasa_interes'], $row['ruta_documento'], $row['fecha_solicitud']);
+            $solicitudes[] = new SolicitudCredito(
+                $row['id'],
+                $row['id_usuario'],
+                $row['monto_solicitado'],
+                $row['plazo_quincenal'],
+                $row['valor_cuota_quincenal'],
+                $row['id_linea_credito'],
+                $row['reestructurado'],
+                $row['periocidad_pago'],
+                $row['tasa_interes'],
+                $row['ruta_documento'],
+                $row['fecha_solicitud']
+            );
         }
-        
-        $countQuery = "SELECT COUNT(*) as total FROM solicitudes_credito $searchQuery";
-        $countResult = $db->query($countQuery);
+    
+        $countStmt = $db->prepare($finalCountQuery);
+        if ($countStmt === false) {
+            die('Error en la preparación de la consulta de conteo: ' . $db->error);
+        }
+    
+        if (!empty($countParams = array_slice($params, 0, count($params) - 2))) {
+            $countTypes = substr($types, 0, -2);
+            $countStmt->bind_param($countTypes, ...$countParams);
+        }
+    
+        $countStmt->execute();
+        if ($countStmt->errno) {
+            die('Error en la ejecución de la consulta de conteo: ' . $countStmt->error);
+        }
+    
+        $countResult = $countStmt->get_result();
         $total = $countResult->fetch_assoc()['total'];
-
+    
         $db->close();
+    
         return [
             'data' => $solicitudes,
             'total' => $total
