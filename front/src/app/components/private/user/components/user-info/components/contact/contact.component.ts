@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -21,6 +21,8 @@ import { LoginService } from '../../../../../../../services/login.service';
   styleUrl: './contact.component.css',
 })
 export class ContactComponent {
+  @Output() notifyParent = new EventEmitter<void>();
+
   selectForm!: FormGroup;
   options: { id: number; nombre: string }[] = [];
   selectedOptions: string[] = [];
@@ -102,14 +104,7 @@ export class ContactComponent {
           console.warn('No se encontraron registros para el usuario.');
           this.setDefaultOptions();
 
-          this.showFirstTimeNotification = true;
-          this.messageService.add({
-            closable: false,
-            severity: 'warn',
-            summary: 'Atención',
-            detail: 'contact-update',
-            sticky: true,
-          });
+          this.notifyParent.emit();
         } else {
           console.error('Error al cargar las opciones del usuario:', error);
         }

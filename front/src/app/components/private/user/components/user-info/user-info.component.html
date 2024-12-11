@@ -1,3 +1,18 @@
+<p-toast>
+  <ng-template let-message pTemplate="message">
+    <div *ngIf="message.detail === 'contact-update'; else defaultMessage">
+      <strong>{{ message.summary }}</strong>
+      <p class="message-content">
+        Por favor, actualice la 
+        <a href="javascript:void(0)" (click)="scrollToContact()">información de contacto</a>
+        requerida por la Ley 2300.
+      </p>
+    </div>
+    <ng-template #defaultMessage>
+      <p>{{ message.detail }}</p>
+    </ng-template>
+  </ng-template>
+</p-toast>
 <div class="container mt-5 mb-3">
   <h1>Actualización de Información</h1>
   <p>Los campos con <span class="required-label"></span> son obligatorios</p>
@@ -46,10 +61,10 @@
         data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
-          <app-contact></app-contact>
+          <app-contact (notifyParent)="showContactNotification()"></app-contact>
         </div>
       </div>
-    </div>
+    </div>    
 
     <div class="accordion-item">
       <h2 class="accordion-header">
