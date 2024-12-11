@@ -48,7 +48,7 @@ class MedioComunicacion {
         $result = $db->query($query);
         $mediosComunicacion = [];
         while ($row = $result->fetch_assoc()) {
-            $mediosComunicacion[] = new MedioComunicacion($row['id'], $row['nombre']);
+            $mediosComunicacion[] = new MedioComunicacion((int)$row['id'], $row['nombre']);
         }
         $db->close();
         return $mediosComunicacion;
