@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { MediaService } from '../../../../../../../services/media.service';
 import { UsersMediaService } from '../../../../../../../services/usersMedia.service';
 import { LoginService } from '../../../../../../../services/login.service';
@@ -15,6 +16,7 @@ import { LoginService } from '../../../../../../../services/login.service';
   selector: 'app-contact',
   standalone: true,
   imports: [ToastModule, CommonModule, ReactiveFormsModule],
+  providers: [MessageService],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css',
 })
@@ -23,13 +25,15 @@ export class ContactComponent {
   options: { id: number; nombre: string }[] = [];
   selectedOptions: string[] = [];
   isLoading = true;
+  isSubmitting = false;
   userId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private mediaService: MediaService,
     private usersMediaService: UsersMediaService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +65,6 @@ export class ContactComponent {
           nombre: media.nombre,
         }));
 
-        console.log('Opciones cargadas:', this.options);
-
         this.loadUserMedia();
       },
       error: (error) => {
@@ -80,11 +82,12 @@ export class ContactComponent {
 
     this.usersMediaService.getMediaByUser(this.userId).subscribe({
       next: (response) => {
-        const userOptions = response.map((media: any) => media.nombre);
-
-        this.selectedOptions = userOptions.length > 0
-          ? [...userOptions]
-          : this.options.map((option) => option.nombre);
+        const selectedIds = response.map(
+          (media: any) => media.idMedioComunicacion
+        );
+        this.selectedOptions = this.options
+          .filter((option) => selectedIds.includes(option.id))
+          .map((option) => option.nombre);
 
         this.selectForm.get('selectedOptions')?.setValue(this.selectedOptions);
         this.isLoading = false;
@@ -129,10 +132,9 @@ export class ContactComponent {
 
   onSubmit(): void {
     if (this.selectForm.valid && this.userId !== null) {
+      this.isSubmitting = true;
       const selectedIds = this.selectedOptions
-        .map((option) =>
-          this.options.find((o) => o.nombre === option)?.id
-        )
+        .map((option) => this.options.find((o) => o.nombre === option)?.id)
         .filter((id): id is number => id !== undefined);
 
       const requestBody = {
@@ -140,18 +142,28 @@ export class ContactComponent {
         idsMedios: selectedIds,
       };
 
-      console.log('Petición a enviar:', requestBody);
-
       this.usersMediaService.updateMediaForUser(requestBody).subscribe({
-        next: (response) => {
-          console.log('Respuesta del servidor:', response);
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado Exitoso',
+            detail: 'Las opciones seleccionadas se han guardado correctamente.',
+          });
+          this.isSubmitting = false;
         },
         error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Ocurrió un error al guardar las opciones seleccionadas.',
+          });
           console.error('Error al enviar la información:', error);
+          this.isSubmitting = false;
         },
       });
     } else {
       console.log('Formulario inválido o falta userId.');
+      this.isSubmitting = false;
     }
   }
 }

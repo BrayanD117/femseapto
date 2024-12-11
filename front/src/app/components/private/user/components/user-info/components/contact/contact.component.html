@@ -1,35 +1,35 @@
 <p-toast></p-toast>
 <form [formGroup]="selectForm" (ngSubmit)="onSubmit()">
-  <div class="row g-3">
-    <div class="col-md-12">
-      <label class="form-label required-label">Seleccione opciones para contactarnos con usted (mínimo 2)</label>
-      
-      <div *ngIf="isLoading" class="text-center">
-        <p>Cargando opciones...</p>
-      </div>
+    <div class="row g-3">
+        <div class="col-md-12">
+            <label class="form-label required-label">En virtud de la ley 2300 de 2023, autorizo al FEMSEAPTO, o a quien
+                represente sus derechos a realizar la gestión de cobranza, y en general, para ser contactado a través de
+                cualquiera de los siguientes canales:</label>
 
-      <div *ngIf="!isLoading">
-        <div *ngFor="let option of options" class="form-check">
-            <input 
-                class="form-check-input" 
-                type="checkbox" 
-                [value]="option.nombre" 
-                [checked]="selectedOptions.includes(option.nombre)" 
-                (change)="onCheckboxChange($event)"
-            />
-            <label class="form-check-label">
-                {{ option.nombre }}
-            </label>
+            <div *ngIf="isLoading" class="text-center">
+                <p>Cargando opciones...</p>
+            </div>
+
+            <div *ngIf="!isLoading">
+                <div *ngFor="let option of options" class="form-check">
+                    <input class="form-check-input" type="checkbox" [value]="option.nombre"
+                        [checked]="selectedOptions.includes(option.nombre)" (change)="onCheckboxChange($event)" />
+                    <label class="form-check-label">
+                        {{ option.nombre }}
+                    </label>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-success" [disabled]="selectForm.invalid || isLoading || isSubmitting" type="submit">
+                <ng-container *ngIf="!isSubmitting; else loading">
+                    Guardar
+                </ng-container>
+                <ng-template #loading>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Guardando...
+                </ng-template>
+            </button>
+        </div>
     </div>
-    <div class="d-grid gap-2 mt-3">
-      <button 
-        class="btn btn-success" 
-        [disabled]="selectForm.invalid || isLoading" 
-        type="submit">
-        Guardar
-      </button>
-    </div>
-  </div>
 </form>
