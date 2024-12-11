@@ -1,5 +1,6 @@
 <div class="container mt-5 mb-3">
   <h1>Actualización de Información</h1>
+  <p>Los campos con <span class="required-label"></span> son obligatorios</p>
 
   <div class="accordion" id="accordionExample">
     <div class="accordion-item">
@@ -25,6 +26,31 @@
         </div>
       </div>
     </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseContact"
+          aria-expanded="true"
+          aria-controls="collapseContact"
+        >
+          Información de Contacto (Ley 2300)
+        </button>
+      </h2>
+      <div
+        id="collapseContact"
+        class="accordion-collapse collapse show"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <app-contact></app-contact>
+        </div>
+      </div>
+    </div>
+
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button
