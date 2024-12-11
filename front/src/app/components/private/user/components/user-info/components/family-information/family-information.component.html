@@ -109,7 +109,7 @@
             <div class="row g-3">
               <input type="hidden" formControlName="id" />
               <div class="col-md-12">
-                <label for="nombreCompleto" class="form-label"
+                <label for="nombreCompleto" class="form-label required-label"
                   >Nombre completo</label
                 >
                 <input
@@ -120,7 +120,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="idTipoDocumento" class="form-label"
+                <label for="idTipoDocumento" class="form-label required-label"
                   >Tipo de documento</label
                 >
                 <select class="form-select" formControlName="idTipoDocumento">
@@ -131,7 +131,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="numeroDocumento" class="form-label"
+                <label for="numeroDocumento" class="form-label required-label"
                   >Número de documento</label
                 >
                 <input
@@ -142,7 +142,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="idDptoExpDoc" class="form-label">Departamento de expedición del documento</label>
+                <label for="idDptoExpDoc" class="form-label required-label">Departamento de expedición del documento</label>
                 <select class="form-select" id="idDptoExpDoc" formControlName="idDptoExpDoc" (change)="onDepartmentChange()">
                   <option value="" selected>Seleccione...</option>
                   <option *ngFor="let department of departments" [value]="department.id">
@@ -151,7 +151,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idMpioExpDoc" class="form-label">Municipio de expedición del documento</label>
+                <label for="idMpioExpDoc" class="form-label required-label">Municipio de expedición del documento</label>
                 <select class="form-select" id="idMpioExpDoc" formControlName="idMpioExpDoc">
                   <option value="" selected>Seleccione...</option>
                   <option *ngFor="let city of citiesExpDoc" [value]="city.id">
@@ -160,7 +160,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idParentesco" class="form-label">Parentesco</label>
+                <label for="idParentesco" class="form-label required-label">Parentesco</label>
                 <select class="form-select" formControlName="idParentesco">
                   <option value="" disabled selected>Seleccione...</option>
                   <option *ngFor="let type of relationships" [value]="type.id">
@@ -169,7 +169,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idGenero" class="form-label">Género</label>
+                <label for="idGenero" class="form-label required-label">Género</label>
                 <select class="form-select" formControlName="idGenero">
                   <option value="" disabled selected>Seleccione...</option>
                   <option *ngFor="let type of genders" [value]="type.id">
@@ -178,7 +178,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="fechaNacimiento" class="form-label"
+                <label for="fechaNacimiento" class="form-label required-label"
                   >Fecha de nacimiento</label
                 >
                 <input
@@ -188,7 +188,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="idNivelEducativo" class="form-label"
+                <label for="idNivelEducativo" class="form-label required-label"
                   >Nivel educativo</label
                 >
                 <select class="form-select" formControlName="idNivelEducativo">
@@ -202,7 +202,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="trabaja" class="form-label">¿Trabaja?</label>
+                <label for="trabaja" class="form-label required-label">¿Trabaja?</label>
                 <select class="form-select" formControlName="trabaja">
                   <option value="" disabled selected>Seleccione...</option>
                   <option value="SI">Sí</option>
@@ -210,7 +210,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="celular" class="form-label"
+                <label for="celular" class="form-label required-label"
                   >Número de celular</label
                 >
                 <input
