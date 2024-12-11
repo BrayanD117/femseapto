@@ -16,7 +16,7 @@ class ReferenciaPersonalComercialBancaria {
     public $actualizadoEl;
 
     public function __construct($id = null, $idUsuario = '', $nombreRazonSocial = '', $parentesco = '', $idTipoReferencia = '', $idDpto = '',
-                    $idMunicipio = '', $direccion = '', $telefono = '', $correoElectronico = '', $creadoEl = '', $actualizadoEl = '') {
+                    $idMunicipio = '', $direccion = '', $telefono = '', $correoElectronico = null, $creadoEl = '', $actualizadoEl = '') {
         $this->id = $id;
         $this->idUsuario = $idUsuario;
         $this->nombreRazonSocial = $nombreRazonSocial;

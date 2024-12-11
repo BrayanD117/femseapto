@@ -20,7 +20,7 @@ class ReferenciaPersonalComercialBancariaController {
             $datos['idMunicipio'],
             $datos['direccion'],
             $datos['telefono'],
-            $datos['correoElectronico']
+            $datos['correoElectronico'] ?? null
         );
 
         $referencia->guardar();
@@ -48,7 +48,7 @@ class ReferenciaPersonalComercialBancariaController {
         $referencia->idMunicipio = $datos['idMunicipio'];
         $referencia->direccion = $datos['direccion'];
         $referencia->telefono = $datos['telefono'];
-        $referencia->correoElectronico = $datos['correoElectronico'];
+        $referencia->correoElectronico = $datos['correoElectronico'] ?? null;
 
         $referencia->guardar();
 

@@ -53,7 +53,7 @@ export class RecommendationComponent {
       idMunicipio: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
-      correoElectronico: ['', [Validators.required, Validators.email]],
+      correoElectronico: [null, Validators.email],
       actualizarPerfilFecha: [false]
     });
   }
