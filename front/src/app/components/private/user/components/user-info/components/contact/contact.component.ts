@@ -15,7 +15,7 @@ import { LoginService } from '../../../../../../../services/login.service';
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [ToastModule, CommonModule, ReactiveFormsModule],
+  imports: [ToastModule, CommonModule, ReactiveFormsModule,],
   providers: [MessageService],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css',
@@ -36,6 +36,10 @@ export class ContactComponent {
     private loginService: LoginService,
     private messageService: MessageService
   ) {}
+
+  provideClientHydration(): void {
+    this.scrollToSection();
+  }
 
   ngOnInit(): void {
     this.getUserIdFromToken();
@@ -103,8 +107,7 @@ export class ContactComponent {
             closable: false,
             severity: 'warn',
             summary: 'Atención',
-            detail:
-              'Por favor, actualice la información de contacto requerida por la Ley 2300.',
+            detail: 'contact-update',
             sticky: true,
           });
         } else {
@@ -112,6 +115,19 @@ export class ContactComponent {
         }
       },
     });
+  }
+
+  scrollToSection(): void {
+    const section = document.getElementById('contact-section');
+    if (section) {
+      const offset = -70;
+      const topPosition = section.getBoundingClientRect().top + window.scrollY + offset;
+  
+      window.scrollTo({
+        top: topPosition,
+        behavior: 'smooth',
+      });
+    }
   }
 
   setDefaultOptions(): void {

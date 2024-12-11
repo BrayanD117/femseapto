@@ -1,10 +1,21 @@
-<p-toast></p-toast>
+<p-toast>
+    <ng-template let-message pTemplate="message">
+      <div *ngIf="message.detail === 'contact-update';">
+        <strong>{{ message.summary }}</strong>
+        <p class="message-content">
+          Por favor, actualice la 
+          <a href="javascript:void(0)" (click)="scrollToSection()">información de contacto</a>
+          requerida por la Ley 2300.
+        </p>
+      </div>
+    </ng-template>
+  </p-toast>  
 <form [formGroup]="selectForm" (ngSubmit)="onSubmit()">
     <div class="row g-3">
         <div class="col-md-12">
-            <label class="form-label required-label">En virtud de la ley 2300 de 2023, autorizo al FEMSEAPTO, o a quien
-                represente sus derechos a realizar la gestión de cobranza, y en general, para ser contactado a través de
-                cualquiera de los siguientes canales:</label>
+            <label class="form-label required-label">De conformidad con la Ley 2300 de 2023,
+                autorizo a FEMSEAPTO, o a quien este delegue, para realizar gestiones de cobranza y,
+                en general, contactarme a través de cualquiera de los siguientes canales:</label>
 
             <div *ngIf="isLoading" class="text-center">
                 <p>Cargando opciones...</p>
