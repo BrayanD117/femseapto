@@ -3,7 +3,7 @@
   <div class="row g-3">
     <input type="hidden" formControlName="id" />
     <div class="col-md-6">
-        <label for="transaccionesMonedaExtranjera" class="form-label">¿Realiza transacciones en monedas extranjeras?</label>
+        <label for="transaccionesMonedaExtranjera" class="form-label required-label">¿Realiza transacciones en monedas extranjeras?</label>
         <select class="form-select" formControlName="transaccionesMonedaExtranjera">
           <option value="" selected disabled>Seleccione...</option>
           <option value="SI">Sí</option>
@@ -19,7 +19,7 @@
       <input formControlName="otrasOperaciones" type="text" class="form-control" />
     </div>
     <div class="col-md-6">
-      <label for="cuentasMonedaExtranjera" class="form-label">¿Tiene cuentas en moneda extranjera?</label>
+      <label for="cuentasMonedaExtranjera" class="form-label required-label">¿Tiene cuentas en moneda extranjera?</label>
       <select class="form-select" formControlName="cuentasMonedaExtranjera">
         <option value="" selected disabled>Seleccione...</option>
         <option value="SI">Sí</option>

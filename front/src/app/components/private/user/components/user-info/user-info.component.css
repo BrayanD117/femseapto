@@ -2,3 +2,9 @@ h1 {
     color: #00823d;
     font-weight: bold;
 }
+
+.required-label::after {
+    content: " *";
+    color: red;
+    margin-left: 1px;
+}

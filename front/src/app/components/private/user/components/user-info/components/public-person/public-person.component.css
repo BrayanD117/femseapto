@@ -12,3 +12,9 @@
         transform: rotate(360deg);
     }
 }
+
+.required-label::after {
+    content: " *";
+    color: red;
+    margin-left: 1px;
+}
