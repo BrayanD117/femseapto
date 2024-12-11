@@ -1,15 +1,4 @@
-<p-toast>
-    <ng-template let-message pTemplate="message">
-      <div *ngIf="message.detail === 'contact-update';">
-        <strong>{{ message.summary }}</strong>
-        <p class="message-content">
-          Por favor, actualice la 
-          <a href="javascript:void(0)" (click)="scrollToSection()">información de contacto</a>
-          requerida por la Ley 2300.
-        </p>
-      </div>
-    </ng-template>
-  </p-toast>  
+<p-toast></p-toast>  
 <form [formGroup]="selectForm" (ngSubmit)="onSubmit()">
     <div class="row g-3">
         <div class="col-md-12">
