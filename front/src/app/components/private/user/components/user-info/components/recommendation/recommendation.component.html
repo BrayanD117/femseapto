@@ -102,7 +102,7 @@
             <div class="row g-3">
               <input type="hidden" formControlName="id" />
               <div class="col-md-12">
-                <label for="nombreRazonSocial" class="form-label"
+                <label for="nombreRazonSocial" class="form-label required-label"
                   >Nombre completo</label
                 >
                 <input
@@ -113,7 +113,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="parentesco" class="form-label">Parentesco</label>
+                <label for="parentesco" class="form-label required-label">Parentesco</label>
                 <input
                   formControlName="parentesco"
                   placeholder="Escribe el parentesco"
@@ -122,7 +122,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="idTipoReferencia" class="form-label"
+                <label for="idTipoReferencia" class="form-label required-label"
                   >Tipo de referencia</label
                 >
                 <select class="form-select" formControlName="idTipoReferencia">
@@ -136,7 +136,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idDpto" class="form-label">Departamento de residencia</label>
+                <label for="idDpto" class="form-label required-label">Departamento residencia</label>
                 <select class="form-select" id="idDpto" formControlName="idDpto" (change)="onDepartmentChange()">
                   <option value="" selected>Seleccione...</option>
                   <option *ngFor="let department of departments" [value]="department.id">
@@ -145,7 +145,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="idMunicipio" class="form-label">Municipio de residencia</label>
+                <label for="idMunicipio" class="form-label required-label">Municipio residencia</label>
                 <select class="form-select" id="idMunicipio" formControlName="idMunicipio">
                   <option value="" selected>Seleccione...</option>
                   <option *ngFor="let city of cities" [value]="city.id">
@@ -154,7 +154,7 @@
                 </select>
               </div>
               <div class="col-md-12">
-                <label for="direccion" class="form-label"
+                <label for="direccion" class="form-label required-label"
                   >Dirección de residencia u oficina</label
                 >
                 <input
@@ -164,7 +164,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="telefono" class="form-label">Teléfono</label>
+                <label for="telefono" class="form-label required-label">Teléfono</label>
                 <input
                   formControlName="telefono"
                   type="text"
