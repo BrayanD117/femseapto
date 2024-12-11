@@ -27,6 +27,7 @@ export class ContactComponent {
   isLoading = true;
   isSubmitting = false;
   userId: number | null = null;
+  showFirstTimeNotification = false;
 
   constructor(
     private fb: FormBuilder,
@@ -93,8 +94,22 @@ export class ContactComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error al cargar las opciones del usuario:', error);
-        this.setDefaultOptions();
+        if (error.status === 404) {
+          console.warn('No se encontraron registros para el usuario.');
+          this.setDefaultOptions();
+
+          this.showFirstTimeNotification = true;
+          this.messageService.add({
+            closable: false,
+            severity: 'warn',
+            summary: 'Atención',
+            detail:
+              'Por favor, actualice la información de contacto requerida por la Ley 2300.',
+            sticky: true,
+          });
+        } else {
+          console.error('Error al cargar las opciones del usuario:', error);
+        }
       },
     });
   }
@@ -150,6 +165,10 @@ export class ContactComponent {
             detail: 'Las opciones seleccionadas se han guardado correctamente.',
           });
           this.isSubmitting = false;
+          this.showFirstTimeNotification = false;
+          setTimeout(() => {
+            this.messageService.clear();
+          }, 3000);
         },
         error: (error) => {
           this.messageService.add({
