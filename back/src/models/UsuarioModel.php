@@ -582,7 +582,17 @@ class Usuario {
                     LIMIT 2
                 ) AS sub_rpcb
                 LEFT JOIN tipos_referencia tr ON sub_rpcb.id_tipo_referencia = tr.id
-                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias
+                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias,
+                (SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'idMedioComunicacion', sub_usu_com.id_medio_comunicacion
+                    )
+                )
+                FROM (
+                    SELECT DISTINCT id_medio_comunicacion
+                    FROM usuarios_comunicacion
+                    WHERE id_usuario = u.id
+                ) AS sub_usu_com) AS mediosComunicacion
             FROM 
                 usuarios u
             LEFT JOIN 
@@ -753,7 +763,8 @@ class Usuario {
                 'familiarFuncionPublico' => $row['familiarFuncionPublico'],
                 'socioFuncionPublico' => $row['socioFuncionPublico'],
                 'familiares' => json_decode($row['familiares'], true),
-                'referencias' => json_decode($row['referencias'], true)
+                'referencias' => json_decode($row['referencias'], true),
+                'mediosComunicacion' => json_decode($row['mediosComunicacion'], true)  
             ];
         }
 
@@ -904,7 +915,18 @@ class Usuario {
                     LIMIT 2
                 ) AS sub_rpcb
                 LEFT JOIN tipos_referencia tr ON sub_rpcb.id_tipo_referencia = tr.id
-                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias
+                LEFT JOIN municipios m ON sub_rpcb.id_mpio = m.id) AS referencias,
+                (SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'idMedioComunicacion', sub_usu_com.id_medio_comunicacion
+                    )
+                )
+                FROM (
+                    SELECT DISTINCT id_medio_comunicacion
+                    FROM usuarios_comunicacion
+                    WHERE id_usuario = u.id
+                ) AS sub_usu_com) AS mediosComunicacion
+
             FROM 
                 usuarios u
             LEFT JOIN 
@@ -1067,7 +1089,8 @@ class Usuario {
                 'familiarFuncionPublico' => $row['familiarFuncionPublico'],
                 'socioFuncionPublico' => $row['socioFuncionPublico'],
                 'familiares' => json_decode($row['familiares'], true),
-                'referencias' => json_decode($row['referencias'], true)
+                'referencias' => json_decode($row['referencias'], true),
+                'mediosComunicacion' => json_decode($row['mediosComunicacion'], true) 
             ];
         }
 

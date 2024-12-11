@@ -24,10 +24,10 @@ export class UsersSearchComponent {
   constructor(
     private userService: UserService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   getUserInfo() {
-    if(!this.documentNumber) {
+    if (!this.documentNumber) {
       return;
     }
 
@@ -80,12 +80,12 @@ export class UsersSearchComponent {
       worksheet.getCell('C6').value = user.primerApellido || '';
       worksheet.getCell('L6').value = user.segundoApellido || '';
       worksheet.getCell('S6').value = `${user.primerNombre || ''} ${user.segundoNombre || ''}`.trim();
-      worksheet.getCell('D7').value = user.numeroDocumento ? Number(user.numeroDocumento) : '';   
+      worksheet.getCell('D7').value = user.numeroDocumento ? Number(user.numeroDocumento) : '';
       worksheet.getCell('L7').value = user.fechaExpedicionDoc || '';
       worksheet.getCell('Q7').value = user.nombreMpioExpDoc || '';
       worksheet.getCell('AA7').value = user.fechaNacimiento || '';
-      worksheet.getCell('AH7').value = user.nombreMpioNac || 'N/A';
-      worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} `|| 'N/A';
+      worksheet.getCell('AH7').value = user.nombreMpioNac || user.otroLugarNacimiento || 'N/A';
+      worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} ` || 'N/A';
       worksheet.getCell('B10').value = user.estadoCivil || '';
       worksheet.getCell('L10').value = user.nombreNivelEducativo || '';
       worksheet.getCell('W10').value = user.tieneHijos || '';
@@ -178,6 +178,36 @@ export class UsersSearchComponent {
       worksheet.getCell('I72').value = user.nombreEmergencia || 'N/A';
       worksheet.getCell('S72').value = user.numeroCedulaEmergencia || 'N/A';
       worksheet.getCell('AG72').value = user.numeroCelularEmergencia || 'N/A';
+
+      // Autorización de medios de comunicación
+      const mediosDict: { [key: number]: string } = {
+        1: "Teléfono",
+        2: "SMS",
+        3: "Correo electrónico",
+        4: "WhatsApp",
+        5: "Comunicaciones físicas"
+      };
+
+      const linea: { [key: string]: string } = {
+        "Teléfono": "___",
+        "SMS": "___",
+        "Correo electrónico": "___",
+        "WhatsApp": "___",
+        "Comunicaciones físicas": "___"
+      };
+
+      user.mediosComunicacion.forEach((medio: any) => {
+        const idMedio = medio.idMedioComunicacion;
+        if (mediosDict[idMedio]) {
+          linea[mediosDict[idMedio]] = "_X̲_";
+        }
+      });
+
+      const resultado = Object.entries(linea)
+        .map(([key, value]) => `${key}:${value}`)
+        .join(" ");
+
+      worksheet.getCell('O70').value = resultado;
 
       // Fecha actualizacion
       worksheet.getCell('A76').value = `En constancia de haber leído, entendido y aceptado lo anterior, firmo el presente documento el día ${user.fechaActualizacion || ' _____  del mes  _________   del año ___________'}.`;

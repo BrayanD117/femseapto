@@ -27,9 +27,9 @@ export class UsersInfoFilterComponent {
   isLoading: boolean = false;
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private messageService: MessageService,
-  ) {}
+  ) { }
 
   filterByDates() {
     if (!this.startDate || !this.endDate) {
@@ -84,18 +84,18 @@ export class UsersInfoFilterComponent {
       });
       return;
     }
-  
+
     this.isLoading = true;
     const zip = new JSZip();
-  
+
     for (const user of this.users) {
       const workbook = new Workbook();
       await fetch('/assets/FORMATO_CONTRAPARTES.xlsx')
         .then((response) => response.arrayBuffer())
         .then((data) => workbook.xlsx.load(data));
-  
+
       const worksheet = workbook.getWorksheet(1);
-  
+
       if (worksheet) {
         // Datos personales
         worksheet.getCell('C6').value = user.primerApellido || '';
@@ -105,8 +105,8 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('L7').value = user.fechaExpedicionDoc || '';
         worksheet.getCell('Q7').value = user.nombreMpioExpDoc || '';
         worksheet.getCell('AA7').value = user.fechaNacimiento || '';
-        worksheet.getCell('AH7').value = user.nombreMpioNac || 'N/A';
-        worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} `|| 'N/A';
+        worksheet.getCell('AH7').value = user.nombreMpioNac || user.otroLugarNacimiento || 'N/A';
+        worksheet.getCell('A8').value = `GENERO: ${user.generoNombre} ` || 'N/A';
         worksheet.getCell('B10').value = user.estadoCivil || '';
         worksheet.getCell('L10').value = user.nombreNivelEducativo || '';
         worksheet.getCell('W10').value = user.tieneHijos || '';
@@ -200,10 +200,41 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('S72').value = user.numeroCedulaEmergencia || 'N/A';
         worksheet.getCell('AG72').value = user.numeroCelularEmergencia || 'N/A';
 
+        // Autorización de medios de comunicación
+        const mediosDict: { [key: number]: string } = {
+          1: "Teléfono",
+          2: "SMS",
+          3: "Correo electronico",
+          4: "WhatsApp",
+          5: "Comunicaciones físicas"
+        };
+
+        const linea: { [key: string]: string } = {
+          "Teléfono": "___",
+          "SMS": "___",
+          "Correo electrónico": "___",
+          "WhatsApp": "___",
+          "Comunicaciones físicas": "___"
+        };
+
+        user.mediosComunicacion.forEach((medio: any) => {
+          const idMedio = medio.idMedioComunicacion;
+          if (mediosDict[idMedio]) {
+            linea[mediosDict[idMedio]] = "_X̲_";
+          }
+        });
+
+        const resultado = Object.entries(linea)
+          .map(([key, value]) => `${key}:${value}`)
+          .join(" ");
+
+
+        worksheet.getCell('O70').value = resultado;
+
         // Fecha actualizacion
         worksheet.getCell('A76').value = `En constancia de haber leído, entendido y aceptado lo anterior, firmo el presente documento el día ${user.fechaActualizacion || ' _____  del mes  _________   del año ___________'}.`;
       }
-      
+
       const buffer = await workbook.xlsx.writeBuffer();
       const fileName = `Formato_Vinculacion_${user.numeroDocumento}.xlsx`;
 
@@ -223,5 +254,5 @@ export class UsersInfoFilterComponent {
       summary: 'Excels generados',
       detail: 'Los archivos Excel han sido generados con éxito.',
     });
-  }  
+  }
 }
