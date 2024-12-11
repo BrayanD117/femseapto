@@ -2,11 +2,11 @@
 <form [formGroup]="financialForm" (ngSubmit)="onSubmit()">
   <div class="row g-3">
     <div class="col-md-6">
-      <label for="nombreBanco" class="form-label">Nombre del Banco</label>
+      <label for="nombreBanco" class="form-label required-label">Nombre del Banco</label>
       <input formControlName="nombreBanco" type="text" class="form-control" />
     </div>
     <div class="col-md-6">
-      <label for="idTipoCuentaBanc" class="form-label">Tipo de Cuenta Bancaria</label>
+      <label for="idTipoCuentaBanc" class="form-label required-label">Tipo de Cuenta Bancaria</label>
       <select class="form-select" formControlName="idTipoCuentaBanc">
         <option value="" disabled selected>Seleccione..</option>
         <option *ngFor="let type of bankAccountTypes" [value]="type.id">
@@ -15,29 +15,29 @@
       </select>
     </div>
     <div class="col-md-6">
-      <label for="numeroCuentaBanc" class="form-label">Número de Cuenta Bancaria</label>
+      <label for="numeroCuentaBanc" class="form-label required-label">Número de Cuenta Bancaria</label>
       <input formControlName="numeroCuentaBanc" type="text" class="form-control" />
     </div>
     <div class="col-md-6">
-      <label for="ingresosMensuales" class="form-label">Salario Básico</label>
+      <label for="ingresosMensuales" class="form-label required-label">Salario Básico</label>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
           type="text" 
-          class="form-control" 
+          class="form-control required-label" 
           formControlName="ingresosMensuales" 
           (input)="formatCurrency('ingresosMensuales')" 
           aria-label="Ingresos Mensuales">
       </div>
     </div>    
     <div class="col-md-6">
-      <label for="primaProductividad" class="form-label">Prima de Productividad</label>
+      <label for="primaProductividad" class="form-label required-label">Prima de Productividad</label>
       <br>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
           type="text" 
-          class="form-control" 
+          class="form-control required-label" 
           formControlName="primaProductividad" 
           (input)="formatCurrency('primaProductividad')" 
           aria-label="Prima de Productividad">
@@ -61,7 +61,7 @@
       <input placeholder="Solo si tiene otros ingresos" formControlName="conceptoOtrosIngresosMens" type="text" class="form-control" />
     </div>
     <div class="col-md-6">
-      <label for="totalIngresosMensuales" class="form-label">Total de Ingresos Mensuales</label>
+      <label for="totalIngresosMensuales" class="form-label required-label">Total de Ingresos Mensuales</label>
       <br>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="egresosMensuales" class="form-label">Egresos Mensuales</label>
+      <label for="egresosMensuales" class="form-label required-label">Egresos Mensuales</label>
       <br>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
@@ -113,7 +113,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="totalEgresosMensuales" class="form-label">Total de Egresos Mensuales</label>
+      <label for="totalEgresosMensuales" class="form-label required-label">Total de Egresos Mensuales</label>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
@@ -125,7 +125,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="totalActivos" class="form-label">Total de Activos</label>
+      <label for="totalActivos" class="form-label required-label">Total de Activos</label>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
@@ -137,7 +137,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="totalPasivos" class="form-label">Total de Pasivos</label>
+      <label for="totalPasivos" class="form-label required-label">Total de Pasivos</label>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
@@ -149,7 +149,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="totalPatrimonio" class="form-label">Total de Patrimonio</label>
+      <label for="totalPatrimonio" class="form-label required-label">Total de Patrimonio</label>
       <div class="input-group mb-3">
         <span class="input-group-text">$</span>
         <input 
