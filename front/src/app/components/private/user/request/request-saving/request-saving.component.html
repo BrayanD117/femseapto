@@ -117,7 +117,7 @@
 
         <button
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-success"
           [disabled]="savingsForm.invalid || savingsForm.get('totalSavingsAmount')?.errors?.['max'] || isAdditionalDisabled || isLoading"
         >
         <span *ngIf="!isLoading">Enviar solicitud</span>
