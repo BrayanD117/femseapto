@@ -23,7 +23,6 @@
         <button
           class="accordion-button"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseOne"
           aria-expanded="true"
           aria-controls="collapseOne"
@@ -34,7 +33,6 @@
       <div
         id="collapseOne"
         class="accordion-collapse collapse show"
-        data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
           <app-user></app-user>
@@ -47,7 +45,6 @@
         <button
           class="accordion-button"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseContact"
           aria-expanded="true"
           aria-controls="collapseContact"
@@ -58,7 +55,6 @@
       <div
         id="collapseContact"
         class="accordion-collapse collapse show"
-        data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
           <app-contact (notifyParent)="showContactNotification()"></app-contact>
@@ -71,7 +67,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseTwo"
           aria-expanded="false"
           aria-controls="collapseTwo"
@@ -81,8 +76,7 @@
       </h2>
       <div
         id="collapseTwo"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-natural-person></app-natural-person>
@@ -94,7 +88,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseThree"
           aria-expanded="false"
           aria-controls="collapseThree"
@@ -104,8 +97,7 @@
       </h2>
       <div
         id="collapseThree"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-financial-info [actualizarPerfilFecha]="true"></app-financial-info>
@@ -117,7 +109,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseFour"
           aria-expanded="false"
           aria-controls="collapseFour"
@@ -127,8 +118,7 @@
       </h2>
       <div
         id="collapseFour"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-family-information [actualizarPerfilFecha]="true"></app-family-information>
@@ -140,7 +130,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseFive"
           aria-expanded="false"
           aria-controls="collapseFive"
@@ -150,8 +139,7 @@
       </h2>
       <div
         id="collapseFive"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-recommendation [actualizarPerfilFecha]="true"></app-recommendation>
@@ -163,7 +151,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseSix"
           aria-expanded="false"
           aria-controls="collapseSix"
@@ -173,8 +160,7 @@
       </h2>
       <div
         id="collapseSix"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-international-transactions></app-international-transactions>
@@ -186,7 +172,6 @@
         <button
           class="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
           data-bs-target="#collapseSeven"
           aria-expanded="false"
           aria-controls="collapseSeven"
@@ -196,8 +181,7 @@
       </h2>
       <div
         id="collapseSeven"
-        class="accordion-collapse collapse"
-        data-bs-parent="#accordionExample"
+        class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
           <app-public-person></app-public-person>

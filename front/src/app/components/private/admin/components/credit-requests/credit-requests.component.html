@@ -7,11 +7,11 @@
         <div class="input-container flex md:flex-row gap-3">
           <p-inputGroup>
             <input type="text" pInputText placeholder="Palabra clave" [formControl]="searchControl" />
-            <button type="button" pButton label="Buscar" (click)="onSearch()"></button>
+            <button type="button" class="button" pButton label="Buscar" (click)="onSearch()"></button>
           </p-inputGroup>
           <p-inputGroup>
             <input type="text" pInputText placeholder="Fecha solicitud (01/01/2024)" [formControl]="dateControl" />
-            <button type="button" pButton label="Buscar" (click)="onSearch()"></button>
+            <button type="button" class="button" pButton label="Buscar" (click)="onSearch()"></button>
           </p-inputGroup>
         </div>
       </ng-template>
@@ -24,6 +24,7 @@
             class="p-button-rounded p-button-outlined"
             (click)="onClear()"
             label="Limpiar"
+            class="button"
           ></button>
         </div>
       </ng-template>

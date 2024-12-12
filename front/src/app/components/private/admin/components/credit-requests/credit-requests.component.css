@@ -32,3 +32,9 @@ h1 {
   flex: 1;
   min-width: 150px;
 }
+
+.button {
+  background-color: rgba(250, 182, 0, 1);
+  border-color: rgba(250, 182, 0, 1);
+  color: white;
+}

@@ -4,20 +4,20 @@
     <div class="col-12 col-md-6">
       <div class="p-field p-col-12">
         <label for="startDate">Fecha de inicio:</label>
-        <p-calendar [(ngModel)]="startDate" [maxDate]="maxDate" inputId="startDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
+        <p-calendar class="generateExcelButton" [(ngModel)]="startDate" [maxDate]="maxDate" inputId="startDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
       </div>
     </div>
     <div class="col-12 col-md-6">
       <div class="p-field p-col-12">
         <label for="endDate">Fecha de fin:</label>
-        <p-calendar [(ngModel)]="endDate" [maxDate]="maxDate" inputId="endDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
+        <p-calendar class="generateExcelButton" [(ngModel)]="endDate" [maxDate]="maxDate" inputId="endDate" dateFormat="yy-mm-dd" showIcon="true" styleClass="small-calendar"></p-calendar>
       </div>
     </div>
     <div class="p-field p-col-12 mb-5" style="text-align: center; margin-top: 10px;">
         <button pButton type="button" 
           [label]="isGenerating ? 'Generando...' : 'Generar Reporte'" 
-          [icon]="isGenerating ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'" 
-          class="p-button-success" 
+          [icon]="isGenerating ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
+          class="generateExcelButton"
           [disabled]="isGenerating"  
           (click)="generateExcel()">
         </button>
