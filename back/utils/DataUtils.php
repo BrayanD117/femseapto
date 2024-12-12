@@ -8,7 +8,13 @@ class DataUtils {
                 case 'usuario':
                     $datos[$key] = is_string($value) ? strtolower($value) : $value;
                     break;
-        
+                case 'contrasenia':
+                    if ($key === 'correoElectronico' || $key === 'usuario') {
+                        $datos[$key] = is_string($value) ? strtolower($value) : $value;
+                    } else {
+                        $datos[$key] = $value; 
+                    }
+                    break;
                 case 'antigVivienda':
                 case 'antigEmpresa':
                     $datos[$key] = $value;
