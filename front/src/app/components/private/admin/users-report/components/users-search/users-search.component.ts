@@ -211,6 +211,10 @@ export class UsersSearchComponent {
 
       // Fecha actualizacion
       worksheet.getCell('A76').value = `En constancia de haber leído, entendido y aceptado lo anterior, firmo el presente documento el día ${user.fechaActualizacion || ' _____  del mes  _________   del año ___________'}.`;
+
+      // Firma
+      const nombreCompletoAsociado = `${user.primerNombre || ''} ${user.segundoNombre || ''} ${user.primerApellido || ''} ${user.segundoApellido || ''}`.trim();
+      worksheet.getCell('A86').value = `${nombreCompletoAsociado || ''}\nFirma del Representante Legal/Persona Natural\nC.C. Nº ${user.numeroDocumento || '                                                   '} De: ${user.nombreMpioExpDoc || ''}`;
     }
 
     const buffer = await workbook.xlsx.writeBuffer();
