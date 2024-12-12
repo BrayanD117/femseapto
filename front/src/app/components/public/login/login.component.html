@@ -12,14 +12,26 @@
             <form class="row g-3" (ngSubmit)="onLogin()">
               <div class="col-md-12">
                 <label class="form-label">Usuario</label>
-                <input type="email" class="form-control" [(ngModel)]="usuario" name="usuario" placeholder="Número de documento">
+                <input type="email" class="form-control" [(ngModel)]="usuario" name="usuario"
+                  placeholder="Número de documento">
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 position-relative">
                 <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control" [(ngModel)]="contrasenia" name="contrasenia" placeholder="********">
+                <div class="input-group">
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control" 
+                    [(ngModel)]="contrasenia"
+                    name="contrasenia" 
+                    placeholder="********">
+                  <span class="input-group-text bg-white border-0" style="cursor: pointer;"
+                        (click)="toggleShowPassword()">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-fill' : 'bi-eye-slash-fill'"></i>
+                  </span>
+                </div>
               </div>
               <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <button type="submit" class="btn btn-success w-100">Ingresar</button>
               </div>
             </form>
           </div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Login Animation
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
@@ -13,7 +14,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LottieComponent, FormsModule, ToastModule],
+  imports: [LottieComponent, FormsModule, ToastModule, CommonModule],
   providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -22,6 +23,7 @@ export class LoginComponent {
 
   usuario: string = '';
   contrasenia: string = '';
+  showPassword: boolean = false;
 
   constructor(private loginService: LoginService, private cookieService: CookieService,  private router: Router, private jwtHelper: JwtHelperService,
     private messageService: MessageService,
@@ -66,7 +68,10 @@ export class LoginComponent {
       },
     });
   }  
-  
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   options: AnimationOptions = {
     path: '../../../assets/json/WelcomePeople.json',
