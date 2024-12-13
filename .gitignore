@@ -1,3 +1,4 @@
 .env
 /back/vendor
 /back/uploads
+/back/.htaccess
