@@ -20,7 +20,7 @@ import { NaturalpersonService } from '../../../../../services/naturalperson.serv
 @Component({
   selector: 'app-request-credit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastModule, CurrencyFormatPipe, InfoRequestCreditComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule],
   providers: [MessageService],
   templateUrl: './request-credit.component.html',
   styleUrls: ['./request-credit.component.css']
@@ -231,11 +231,22 @@ export class RequestCreditComponent implements OnInit {
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.pdfFile = input.files[0];
-      this.creditForm.patchValue({ rutaDocumento: this.pdfFile });
-      this.creditForm.get('rutaDocumento')?.updateValueAndValidity();
+      const file = input.files[0];
+      if (file.type === 'application/pdf') {
+        this.pdfFile = file;
+        this.creditForm.patchValue({ rutaDocumento: this.pdfFile });
+        this.creditForm.get('rutaDocumento')?.updateValueAndValidity();
+      } else {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Archivo no válido', 
+          detail: 'Solo se permiten archivos en formato PDF' 
+        });
+        input.value = '';
+      }
     }
   }
+  
 
   onSubmit(): void {
     if (this.creditForm.valid) {
