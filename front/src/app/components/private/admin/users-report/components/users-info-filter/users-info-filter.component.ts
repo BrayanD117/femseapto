@@ -151,7 +151,7 @@ export class UsersInfoFilterComponent {
         worksheet.getCell('X38').value = Number(user.totalPasivos) || 0;
         worksheet.getCell('X39').value = Number(user.totalPatrimonio) || 0;
 
-        const familiares = Array.isArray(user.familiares) ? user.familiares.slice(0, 4) : [];
+        const familiares = Array.isArray(user?.familiares) ? user.familiares.slice(0, 4) : [];
         const startRow = 42;
         familiares.forEach((familiar: any, index: number) => {
           const row = startRow + index;
@@ -166,7 +166,7 @@ export class UsersInfoFilterComponent {
           worksheet.getCell(`AE${row}`).value = familiar.celular ? Number(familiar.celular) : '';
         });
 
-        const referencias = Array.isArray(user.referencias) ? user.referencias.slice(0, 2) : [];
+        const referencias = Array.isArray(user?.referencias) ? user.referencias.slice(0, 2) : [];
         const startRowRef = 48;
         referencias.forEach((referencia: any, index: number) => {
           const row = startRowRef + index;
@@ -217,7 +217,8 @@ export class UsersInfoFilterComponent {
           "Comunicaciones físicas": "___"
         };
 
-        user.mediosComunicacion.forEach((medio: any) => {
+        const mediosComunicacion = Array.isArray(user?.mediosComunicacion) ? user.mediosComunicacion : [];
+        mediosComunicacion.forEach((medio: any) => {
           const idMedio = medio.idMedioComunicacion;
           if (mediosDict[idMedio]) {
             linea[mediosDict[idMedio]] = "_X̲_";
