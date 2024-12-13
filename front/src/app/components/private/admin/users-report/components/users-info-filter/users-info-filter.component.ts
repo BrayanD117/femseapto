@@ -90,7 +90,7 @@ export class UsersInfoFilterComponent {
 
     for (const user of this.users) {
       const workbook = new Workbook();
-      await fetch('/assets/FORMATO_CONTRAPARTES.xlsx')
+      await fetch('/assets/FORMATO_CONTRAPARTES2.xlsx')
         .then((response) => response.arrayBuffer())
         .then((data) => workbook.xlsx.load(data));
 
