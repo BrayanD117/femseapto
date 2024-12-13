@@ -39,11 +39,3 @@ h1 {
   color: white;
 }
 
-.p-datatable table {
-  font-size: 0.875rem;
-}
-
-.p-datatable td, 
-.p-datatable th {
-  padding: 0.5rem;
-}
