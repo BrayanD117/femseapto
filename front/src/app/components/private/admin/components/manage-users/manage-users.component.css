@@ -2,3 +2,16 @@ h1 {
     color: #00823d;
     font-weight: bold;
 }
+
+.nav-pills .nav-link {
+    color: green;
+}
+
+.nav-pills .nav-link.active {
+    background-color: green;
+}
+
+
+.nav-link.active {
+    color: white;
+}

@@ -1,4 +1,4 @@
-<button class="btn btn-sm" (click)="onGenerateClick()" [disabled]="isLoading">
+<button class="btn btn-sm custom-button" (click)="onGenerateClick()" [disabled]="isLoading">
     <span *ngIf="!isLoading">Generar</span>
     <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     <span *ngIf="isLoading"> Generando...</span>

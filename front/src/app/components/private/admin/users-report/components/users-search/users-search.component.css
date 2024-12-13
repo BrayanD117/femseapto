@@ -2,3 +2,8 @@ h4 {
     color: #00823d;
     font-weight: bold;
 }
+
+button {
+    background-color: #00823d;
+    border-color: #00823d;
+}
