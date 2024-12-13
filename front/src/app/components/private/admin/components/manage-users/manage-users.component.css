@@ -3,15 +3,14 @@ h1 {
     font-weight: bold;
 }
 
-.nav-pills .nav-link {
+.nav-pills {
+    color: white;
+}
+
+.nav-link {
     color: green;
 }
 
 .nav-pills .nav-link.active {
-    background-color: green;
-}
-
-
-.nav-link.active {
-    color: white;
+    background-color: rgba(250, 182, 0, 1);
 }
