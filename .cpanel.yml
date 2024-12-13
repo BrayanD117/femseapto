@@ -1,7 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOY_PATH=/home/femseapto/public_html/development/
+    - export DEPLOY_PATH=/home/femseapto/public_html/back/
     - rsync -avz --exclude=.git back/ $DEPLOY_PATH/
-    - cd front/
-    - ng build --configuration production --output-path=$DEPLOY_PATH/
