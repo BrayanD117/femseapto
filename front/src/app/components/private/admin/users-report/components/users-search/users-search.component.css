@@ -3,7 +3,12 @@ h4 {
     font-weight: bold;
 }
 
-button {
+.custom-btn {
     background-color: #00823d;
     border-color: #00823d;
+}
+
+.custom-btn:hover {
+    background-color: #008f43;
+    border-color: #008f43;
 }
