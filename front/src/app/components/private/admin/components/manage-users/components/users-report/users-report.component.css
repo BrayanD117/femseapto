@@ -2,3 +2,7 @@ button {
     background-color: #00823d;
     border-color: #00823d;
 }
+
+button:hover {
+    background-color: #008f43;
+}
