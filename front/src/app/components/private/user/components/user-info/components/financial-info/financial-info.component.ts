@@ -62,7 +62,6 @@ export class FinancialInfoComponent implements OnInit {
 
     if (token) {
       this.userId = token.userId;
-      //console.log("ENTRA", this.actualizarPerfilFecha);
 
       this.financialForm.patchValue({
         idUsuario: this.userId,
@@ -163,17 +162,16 @@ export class FinancialInfoComponent implements OnInit {
 
     if (this.financialForm.valid) {      
       const formData = this.financialForm.getRawValue();
-      //console.log("FORM: ", formData);
 
       const parsedData = { ...formData };
 
       parsedData.ingresosMensuales = parseInt(this.financialForm.get('ingresosMensuales')?.value.replace(/\./g, ''), 10);
-      parsedData.primaProductividad = parseInt(this.financialForm.get('primaProductividad')?.value.replace(/\./g, ''), 10);
-      parsedData.otrosIngresosMensuales = parseInt(this.financialForm.get('otrosIngresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.primaProductividad = parseInt(this.financialForm.get('primaProductividad')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.otrosIngresosMensuales = parseInt(this.financialForm.get('otrosIngresosMensuales')?.value.toString().replace(/\./g, ''), 10);
       parsedData.totalIngresosMensuales = parseInt(this.financialForm.get('totalIngresosMensuales')?.value.replace(/\./g, ''), 10);
       parsedData.egresosMensuales = parseInt(this.financialForm.get('egresosMensuales')?.value.replace(/\./g, ''), 10);
-      parsedData.obligacionFinanciera = parseInt(this.financialForm.get('obligacionFinanciera')?.value.replace(/\./g, ''), 10);
-      parsedData.otrosEgresosMensuales = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.obligacionFinanciera = parseInt(this.financialForm.get('obligacionFinanciera')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.otrosEgresosMensuales = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.toString().replace(/\./g, ''), 10);
       parsedData.totalEgresosMensuales = parseInt(this.financialForm.get('totalEgresosMensuales')?.value.replace(/\./g, ''), 10);
       parsedData.totalActivos = parseInt(this.financialForm.get('totalActivos')?.value.replace(/\./g, ''), 10);
       parsedData.totalPasivos = parseInt(this.financialForm.get('totalPasivos')?.value.replace(/\./g, ''), 10);

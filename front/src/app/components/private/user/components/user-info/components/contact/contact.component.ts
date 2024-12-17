@@ -170,7 +170,6 @@ export class ContactComponent {
 
       this.usersMediaService.updateMediaForUser(requestBody).subscribe({
         next: () => {
-          console.log("ENTRANDO A ESA MRD")
           this.messageService.add({
             severity: 'success',
             summary: 'Guardado Exitoso',
