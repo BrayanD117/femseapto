@@ -22,6 +22,7 @@ import { LoginService } from '../../../../../../../services/login.service';
 })
 export class ContactComponent {
   @Output() notifyParent = new EventEmitter<void>();
+  @Output() clearNotification = new EventEmitter<void>();
 
   selectForm!: FormGroup;
   options: { id: number; nombre: string }[] = [];
@@ -176,7 +177,8 @@ export class ContactComponent {
             detail: 'Las opciones seleccionadas se han guardado correctamente.',
           });
           this.isSubmitting = false;
-          this.showFirstTimeNotification = false;
+          this.notifyParent.emit();
+          this.clearNotification.emit();
           setTimeout(() => {
             this.messageService.clear();
           }, 3000);

@@ -57,7 +57,10 @@
         class="accordion-collapse collapse show"
       >
         <div class="accordion-body">
-          <app-contact (notifyParent)="showContactNotification()"></app-contact>
+          <app-contact
+          (notifyParent)="showContactNotification()" 
+          (clearNotification)="clearContactNotification()">
+          </app-contact>
         </div>
       </div>
     </div>    

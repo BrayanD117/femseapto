@@ -38,6 +38,10 @@ export class UserInfoComponent {
       sticky: true,
     });
   }
+
+  clearContactNotification(): void {
+    this.messageService.clear();
+  }
   
   scrollToContact(): void {
     const contactSection = document.getElementById('contact-section');
