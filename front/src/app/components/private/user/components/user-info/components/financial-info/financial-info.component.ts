@@ -165,17 +165,17 @@ export class FinancialInfoComponent implements OnInit {
 
       const parsedData = { ...formData };
 
-      parsedData.ingresosMensuales = parseInt(this.financialForm.get('ingresosMensuales')?.value.replace(/\./g, ''), 10);
+      parsedData.ingresosMensuales = parseInt(this.financialForm.get('ingresosMensuales')?.value.toString().replace(/\./g, ''), 10);
       parsedData.primaProductividad = parseInt(this.financialForm.get('primaProductividad')?.value.toString().replace(/\./g, ''), 10);
       parsedData.otrosIngresosMensuales = parseInt(this.financialForm.get('otrosIngresosMensuales')?.value.toString().replace(/\./g, ''), 10);
-      parsedData.totalIngresosMensuales = parseInt(this.financialForm.get('totalIngresosMensuales')?.value.replace(/\./g, ''), 10);
-      parsedData.egresosMensuales = parseInt(this.financialForm.get('egresosMensuales')?.value.replace(/\./g, ''), 10);
-      parsedData.obligacionFinanciera = parseInt(this.financialForm.get('obligacionFinanciera')?.value.toString().replace(/\./g, ''), 10);
-      parsedData.otrosEgresosMensuales = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.toString().replace(/\./g, ''), 10);
-      parsedData.totalEgresosMensuales = parseInt(this.financialForm.get('totalEgresosMensuales')?.value.replace(/\./g, ''), 10);
-      parsedData.totalActivos = parseInt(this.financialForm.get('totalActivos')?.value.replace(/\./g, ''), 10);
-      parsedData.totalPasivos = parseInt(this.financialForm.get('totalPasivos')?.value.replace(/\./g, ''), 10);
-      parsedData.totalPatrimonio = parseInt(this.financialForm.get('totalPatrimonio')?.value.replace(/\./g, ''), 10);
+      parsedData.totalIngresosMensuales = parseInt(this.financialForm.get('totalIngresosMensuales')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.egresosMensuales = parseInt(this.financialForm.get('egresosMensuales')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.obligacionFinanciera = parseInt(this.financialForm.get('obligacionFinanciera')?.value.toString().toString().replace(/\./g, ''), 10);
+      parsedData.otrosEgresosMensuales = parseInt(this.financialForm.get('otrosEgresosMensuales')?.value.toString().toString().replace(/\./g, ''), 10);
+      parsedData.totalEgresosMensuales = parseInt(this.financialForm.get('totalEgresosMensuales')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.totalActivos = parseInt(this.financialForm.get('totalActivos')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.totalPasivos = parseInt(this.financialForm.get('totalPasivos')?.value.toString().replace(/\./g, ''), 10);
+      parsedData.totalPatrimonio = parseInt(this.financialForm.get('totalPatrimonio')?.value.toString().replace(/\./g, ''), 10);
 
       if(parsedData.id) {
         this.financialInfoService.update(parsedData).subscribe({
